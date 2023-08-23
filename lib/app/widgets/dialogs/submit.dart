@@ -1,0 +1,61 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../theme/colors/main_colors.dart';
+
+class SubmitDialog {
+  SubmitDialog(this.onSubmit, {required this.content});
+
+  final void Function() onSubmit;
+  final String content;
+
+  static BuildContext? _dialogContext;
+
+  void show(BuildContext context) {
+    final AppLocalizations? arb = AppLocalizations.of(context);
+
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext _) {
+        _dialogContext = _;
+
+        return CupertinoAlertDialog(
+          title: Text(arb!.attention,
+              style: Theme.of(context).textTheme.titleLarge),
+          content: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(content, style: Theme.of(context).textTheme.bodyLarge),
+          ),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () => dismiss(),
+              child: Text(arb.no, style: Theme.of(context).textTheme.bodyLarge),
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              onPressed: () {
+                dismiss();
+                Future<void>.delayed(const Duration(milliseconds: 250), () {
+                  onSubmit();
+                });
+              },
+              child: Text(
+                arb.yes,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: MainColors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void dismiss() {
+    if (_dialogContext != null) Navigator.pop(_dialogContext!);
+  }
+}

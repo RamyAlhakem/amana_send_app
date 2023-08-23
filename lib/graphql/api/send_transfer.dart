@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:graphql/client.dart';
+import 'package:provider/provider.dart';
+
+import '/app/views/main_pages/transfers/provider/transfers_state.dart';
+import '/app/widgets/dialogs/loading.dart';
+import '/graphql/explorer/mutations.dart';
+import '/graphql/graphql.dart';
+import '/helper/debug_colors.dart';
+import '/helper/helper.dart';
+import '/models/transfer.dart';
+import '/router/app_route.dart';
+import 'get_user.dart';
+
+class SendTransfer {
+  SendTransfer(
+    this.context,
+    this.page, {
+    required this.recipientAmount,
+    required this.sendAmount,
+    required this.recipientId,
+    required this.providerId,
+    required this.paymentMethodId,
+    required this.isReceiveInUSD,
+  });
+
+  final BuildContext context;
+  final PageController page;
+  final double recipientAmount, sendAmount;
+  final int providerId, paymentMethodId, recipientId;
+  final bool isReceiveInUSD;
+
+  static AppLocalizations? _arb;
+  static late TransfersState _pr;
+  static Map<String, dynamic> _variables = const <String, dynamic>{};
+
+  Future<void> request() async {
+    _pr = Provider.of<TransfersState>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _arb = AppLocalizations.of(context);
+    });
+
+    LoadingDialog().show();
+
+    _variables = <String, dynamic>{
+      'recipientAmount': recipientAmount,
+      'sendAmount': sendAmount,
+      'recipientId': recipientId,
+      'isReceiveInUSD': isReceiveInUSD,
+      'paymentMethodId': paymentMethodId,
+      'providerId': providerId,
+    };
+
+    Helper.debugger('transfer');
+    Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
+
+    await GraphQL.client().mutate(
+      MutationOptions(
+        document: gql(Mutations.transfer),
+        variables: _variables,
+        onCompleted: (Map<String, dynamic>? data) {
+          LoadingDialog.dismiss();
+
+          Helper.debug('transfer', '$data');
+
+          if (data != null) return _result(data);
+        },
+        onError: (OperationException? error) {
+          Helper.log('error: $error', color: DebugColor.red);
+
+          if (error != null) {
+            return _error(error);
+          } else {
+            Helper.toast(_arb!.somethingWentWrong);
+          }
+        },
+      ),
+    );
+  }
+
+  void _result(Map<String, dynamic> data) async {
+    if (data.isNotEmpty && data.containsKey('transfer')) {
+      final TransferModel transfer = TransferModel.fromJson(data['transfer']);
+      const Duration duration = Duration(milliseconds: 250);
+      page.nextPage(duration: duration, curve: Curves.easeIn);
+      _pr.getTransfer(transfer);
+
+      GetUserMeta.request();
+
+      // context.pushReplacementNamed(
+      //   AppRoute.success,
+      //   pathParameters: <String, String>{'transfer': jsonEncode(transfer)},
+      // );
+    }
+  }
+
+  void _error(OperationException error) async {
+    if (error.graphqlErrors.isNotEmpty) {
+      switch (error.graphqlErrors.first.extensions?['code']) {
+        case 302:
+          context.pushNamed(
+            '/${AppRoute.webView}',
+            pathParameters: <String, String>{
+              'url': error.graphqlErrors.first.extensions?['message'],
+            },
+          );
+          break;
+        case 452:
+          Helper.bannerWarning(
+            '\n${_arb!.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
+          );
+          break;
+
+        case 463:
+          Helper.bannerWarning(
+            _arb!.youHaveExceededTheMaximumSendingAmountThisMonth,
+          );
+          break;
+
+        default:
+          Helper.toast(
+              '${_arb!.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
+      }
+    } else {
+      Helper.toast(_arb!.somethingWentWrong);
+    }
+  }
+}

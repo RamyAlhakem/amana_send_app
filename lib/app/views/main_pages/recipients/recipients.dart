@@ -1,0 +1,117 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '/app/theme/colors/main_colors.dart';
+import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/main_pages/recipients/provider/recipients_state.dart';
+import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
+import '/app/widgets/buttons/button.dart';
+import '/app/widgets/row.dart';
+import '/app/widgets/shimmer/shimmer_load.dart';
+import '/app/widgets/text/text_x.dart';
+import '/graphql/api/get_recipients.dart';
+import '/helper/helper.dart';
+import '/models/metadata.dart';
+import '/router/app_route.dart';
+
+class Recipients extends StatefulWidget {
+  const Recipients({super.key});
+
+  @override
+  State<Recipients> createState() => _RecipientsState();
+}
+
+class _RecipientsState extends State<Recipients> {
+  late AppLocalizations? _arb;
+
+  @override
+  void initState() {
+    super.initState();
+    GetRecipients.request();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _arb = AppLocalizations.of(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<RecipientsState>(
+      builder: (_, state, child) {
+        child = Visibility(
+          visible: !state.isLoading,
+          replacement: ListView(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+              children: const [
+                ShimmerLoad(height: 80, verticalCount: 4),
+              ]),
+          child: Stack(
+            children: [
+              RefreshIndicator(
+                onRefresh: () async {
+                  await GetRecipients.request();
+                },
+                edgeOffset: 50,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+                  itemCount: state.recipients.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Container(
+                      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+                      width: MediaQuery.of(context).size.width,
+                      child: GestureDetector(
+                        onTap: () => context.pushNamed(
+                          AppRoute.recipient,
+                          pathParameters: <String, String>{
+                            'recipient': jsonEncode(state.recipients[i]),
+                          },
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          child: RowSpaceBetween([
+                            RecipientIconDetail(recipient: state.recipients[i]),
+                            Button(
+                              () {
+                                if (AppMetadata.get.maintenanceMode) {
+                                  return Helper.bannerWarning(
+                                    '\n${AppMetadata.get.maintenanceMessage}\n',
+                                  );
+                                }
+                                Provider.of<Calculator>(
+                                  context,
+                                  listen: false,
+                                ).recipientSend(
+                                  state.recipients[i],
+                                  navigate: true,
+                                );
+                              },
+                              height: 38,
+                              padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                              color: MainColors.color1,
+                              TextX(
+                                _arb!.send.toUpperCase(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+        return child;
+      },
+    );
+  }
+}
