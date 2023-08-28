@@ -11,13 +11,12 @@ import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/screens/components/bottom_buttons.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
+import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
-import '/database/injector.dart';
 import '/models/transfer.dart';
-import '/models/user.dart';
 import '/router/app_route.dart';
 
 class Success extends StatelessWidget {
@@ -28,7 +27,6 @@ class Success extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
-    final UserModel user = Database().getUser;
     final transfer = TransferModel.fromJson(jsonDecode(transferData));
     return WillPopScope(
       onWillPop: () async {
@@ -154,9 +152,7 @@ class Success extends StatelessWidget {
                         TextSpan(
                           text: '${transfer.fees.toStringAsFixed(2)} ',
                         ),
-                        TextSpan(
-                          text: user.country.currency.code,
-                        ),
+                        const TextSpan(text: 'USDT'),
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -176,9 +172,7 @@ class Success extends StatelessWidget {
                         TextSpan(
                           text: '${transfer.totalAmount.toStringAsFixed(2)} ',
                         ),
-                        TextSpan(
-                          text: user.country.currency.code,
-                        ),
+                        const TextSpan(text: 'USDT'),
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -213,6 +207,26 @@ class Success extends StatelessWidget {
         ),
         bottomNavigationBar: BottomButtons(
           firstButton: Button(
+            () => context.goNamed(
+              AppRoute.home,
+              queryParameters: <String, String>{'i': '0'},
+            ),
+            color: MainColors.color2,
+            FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextX(
+                    arb.home.toUpperCase(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(LineIcons.home, color: Colors.white),
+                ],
+              ),
+            ),
+          ),
+          secondButton: ExpandButton(
             () {
               context.goNamed(
                 AppRoute.home,
@@ -235,28 +249,6 @@ class Success extends StatelessWidget {
                     arb.trackTransfer.toUpperCase(),
                     style: const TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
-            ),
-          ),
-          secondButton: Button(
-            () {
-              context.goNamed(
-                AppRoute.home,
-                queryParameters: <String, String>{'i': '0'},
-              );
-            },
-            color: MainColors.color2,
-            FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextX(
-                    arb.home.toUpperCase(),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(LineIcons.home, color: Colors.white),
                 ],
               ),
             ),

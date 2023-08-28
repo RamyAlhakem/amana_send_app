@@ -14,7 +14,7 @@ import '/app/widgets/text_form_field/tools/text_form_validator.dart';
 import '/graphql/api/change_email.dart';
 import '/graphql/api/change_password.dart';
 import '/helper/helper.dart';
-import '../../../../../database/injector.dart';
+import '/database/injector.dart';
 import '/models/user.dart';
 
 class EditAccount extends StatefulWidget {
@@ -83,77 +83,68 @@ class _EditAccountState extends State<EditAccount> {
           children: [
             Form(
               key: form,
-              child: Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                    tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                    title: TextX(_arb!.changeEmail),
-                    children: [
-                      Theme(
-                        data: Theme.of(context).copyWith(
-                          dividerColor: context.isDarkMode
-                              ? Colors.grey[850]
-                              : Colors.grey[350],
-                        ),
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: TextFieldX(
-                            controller: _email,
-                            hint: _arb!.email,
-                            prefixIcon: const Padding(
-                              padding: EdgeInsets.all(12),
-                              child: HeroIcon(HeroIcons.atSymbol),
-                            ),
-                            type: TextInputType.emailAddress,
+              child: ExpansionTile(
+                  tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  title: TextX(_arb!.changeEmail),
+                  shape: const Border(),
+                  children: [
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        dividerColor: context.isDarkMode
+                            ? Colors.grey[850]
+                            : Colors.grey[350],
+                      ),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: TextFieldX(
+                          controller: _email,
+                          hint: _arb!.email,
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: HeroIcon(HeroIcons.atSymbol),
                           ),
+                          type: TextInputType.emailAddress,
                         ),
                       ),
-                    ]),
-              ),
+                    ),
+                  ]),
             ),
             const SizedBox(height: 8),
             const HDivider(thickness: 0.2),
             const SizedBox(height: 8),
             Form(
               key: form2,
-              child: Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                  title: TextX(_arb!.changePassword),
-                  children: <Widget>[
-                    _pass(_currentPassword, _arb!.currentPassword),
-                    _pass(_newPassword, _arb!.newPassword),
-                    _pass(_confirmPassword, _arb!.confirmNewPassword),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+              child: ExpansionTile(
+                tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                title: TextX(_arb!.changePassword),
+                shape: const Border(),
+                children: <Widget>[
+                  _pass(_currentPassword, _arb!.currentPassword),
+                  _pass(_newPassword, _arb!.newPassword),
+                  _pass(_confirmPassword, _arb!.confirmNewPassword),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
             const SizedBox(height: 8),
             const HDivider(thickness: 0.2),
-            Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                title: TextX(_arb!.deleteAccount),
-                children: <Widget>[
-                  Button(
-                    () => DeleteAccountDialog.show(),
-                    height: 45,
-                    width: MediaQuery.of(context).size.width,
-                    TextX(
-                      _arb!.deleteMyAccount.toUpperCase(),
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    color: Colors.red.withOpacity(0.2),
+            ExpansionTile(
+              tilePadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+              title: TextX(_arb!.deleteAccount),
+              shape: const Border(),
+              children: <Widget>[
+                Button(
+                  () => DeleteAccountDialog.show(),
+                  height: 45,
+                  width: MediaQuery.of(context).size.width,
+                  TextX(
+                    _arb!.deleteMyAccount.toUpperCase(),
+                    style: const TextStyle(color: Colors.red),
                   ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                  color: Colors.red.withOpacity(0.2),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
             // const SizedBox(height: 8),
             // const HDivider(thickness: 0.2),
