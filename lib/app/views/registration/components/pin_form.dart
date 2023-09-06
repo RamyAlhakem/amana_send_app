@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../theme/colors/main_colors.dart';
 import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/text_form_field/tools/text_form_validator.dart';
 
@@ -27,10 +26,7 @@ class PinForm extends StatelessWidget {
     final defaultPinTheme = PinTheme(
       width: 60,
       height: 64,
-      textStyle: const TextStyle(
-        fontSize: 22,
-        color: MainColors.color2,
-      ),
+      textStyle: const TextStyle(fontSize: 22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -87,7 +83,7 @@ class PinForm extends StatelessWidget {
             if (onSubmit != null) onSubmit!();
           },
           submittedPinTheme: defaultPinTheme.copyWith(
-            decoration: defaultPinTheme.decoration!.copyWith(
+            decoration: defaultPinTheme.decoration?.copyWith(
               color: const Color.fromRGBO(243, 246, 249, 0),
               borderRadius: BorderRadius.circular(19),
               border: Border.all(

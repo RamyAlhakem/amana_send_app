@@ -12,9 +12,9 @@ import '/helper/helper.dart';
 import '/router/app_route.dart';
 
 class ResendOTP {
-  ResendOTP({required this.email, this.buttonCtrl, this.captcha = ''});
+  ResendOTP({required this.mobile, this.buttonCtrl, this.captcha = ''});
 
-  final String email, captcha;
+  final String mobile, captcha;
   final LoadingButtonController? buttonCtrl;
 
   late AppLocalizations? _arb;
@@ -23,16 +23,15 @@ class ResendOTP {
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<int> request() async {
-    _status = 0;
     _variables = <String, dynamic>{
-      'email': email,
+      'mobile': mobile,
       'captchaResponse': captcha,
     };
 
     Helper.debugger('requestNewOTP');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
-    await GraphQL.client().mutate(
+    GraphQL.client().mutate(
       MutationOptions(
         document: gql(Mutations.requestNewOTP(captcha)),
         variables: _variables,
@@ -48,7 +47,7 @@ class ResendOTP {
 
                 await Future.delayed(const Duration(milliseconds: 700), () {
                   _context.pushReplacementNamed('/${AppRoute.resetPassword}',
-                      pathParameters: <String, String>{'email': email});
+                      pathParameters: <String, String>{'mobile': mobile});
                 });
               }
             }

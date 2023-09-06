@@ -28,7 +28,7 @@ class Queries {
         usdRatio
         phoneNumber
         whatsapp
-        twitterUrl
+        xUrl
         registerAddress
         registrationNumber
         whoWeAre

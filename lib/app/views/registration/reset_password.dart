@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '/global/variables.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/loading_button.dart';
@@ -15,9 +15,9 @@ import '/helper/helper.dart';
 import 'components/pin_form.dart';
 
 class ResetPassword extends StatefulWidget {
-  const ResetPassword({super.key, required this.email});
+  const ResetPassword({super.key, required this.mobile});
 
-  final String email;
+  final String mobile;
   @override
   State<ResetPassword> createState() => _ResetPasswordState();
 }
@@ -62,30 +62,26 @@ class _ResetPasswordState extends State<ResetPassword> {
     return GestureDetector(
       onTap: () => Helper.unFocusCursor(context),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/splash.png'),
+            image: AssetImage(
+              'assets/images/splash${context.isDarkMode ? '' : '_light'}.png',
+            ),
             fit: BoxFit.cover,
           ),
         ),
         child: Scaffold(
-          backgroundColor: Colors.black.withOpacity(0.65),
-          appBar: AutoAppBar(
-            title: arb!.resetPassword,
-            titleStyle: formInputStyle,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarBrightness: Global.brightnessLight(),
-              statusBarIconBrightness: Global.brightnessLight(),
-            ),
-          ),
+          backgroundColor: Colors.transparent,
+          appBar: AutoAppBar(title: arb!.resetPassword),
           body: Form(
             key: formKey,
             child: Container(
               margin: const EdgeInsets.fromLTRB(12, 10, 12, 20),
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
-                color: Colors.white12,
+                color: context.isDarkMode
+                    ? Colors.white12
+                    : Colors.black.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ListView(
@@ -189,7 +185,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     ResetPasswordAPI(
       context,
       buttonCtrl,
-      email: widget.email,
+      mobile: widget.mobile,
       pinNode: pinNode,
       code: pin,
       newPassword: password.text,

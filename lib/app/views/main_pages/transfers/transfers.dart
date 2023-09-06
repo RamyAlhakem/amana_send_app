@@ -40,7 +40,7 @@ class _TransfersState extends State<Transfers> {
                 edgeOffset: 50,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 80),
                   itemCount: state.transfers.length,
                   itemBuilder: (BuildContext context, int i) {
                     return TransferRecent(state.transfers[i]);

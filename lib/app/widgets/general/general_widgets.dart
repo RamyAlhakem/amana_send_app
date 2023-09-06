@@ -1,3 +1,5 @@
+import 'package:amana_send/app/theme/colors/main_colors.dart';
+
 import '/app/extensions/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -61,7 +63,7 @@ class GeneralWidgets {
         margin: const EdgeInsets.only(bottom: 9),
         width: 22,
         height: 1,
-        color: const Color.fromRGBO(23, 171, 144, 1),
+        color: MainColors.color1,
       ),
     ],
   );

@@ -20,12 +20,12 @@ import 'get_notifications.dart';
 class LogInAPI {
   LogInAPI(
     this.buttonCtrl, {
-    required this.email,
+    required this.mobile,
     required this.password,
     this.captcha = '',
   });
 
-  final String email, password, captcha;
+  final String mobile, password, captcha;
   final LoadingButtonController buttonCtrl;
 
   late AppLocalizations? _arb;
@@ -34,7 +34,7 @@ class LogInAPI {
 
   Future<void> request() async {
     _variables = <String, dynamic>{
-      'email': email,
+      'mobile': mobile,
       'password': password,
       'firebaseToken': Database().getUserBase.firebase.token,
       'captchaResponse': captcha,
@@ -94,17 +94,17 @@ class LogInAPI {
     if (errors.isNotEmpty) {
       switch (errors.first.extensions?['code']) {
         case 401:
-          Helper.bannerError(_arb!.wrongPassword);
+          Helper.bannerError(_arb!.wrongLogin);
           break;
 
         case 404:
-          Helper.bannerError(_arb!.wrongEmail);
+          Helper.bannerError(_arb!.invalidMobileNumber);
           break;
 
         case 422:
-          _context.pushNamed(
+          _context.pushReplacementNamed(
             '/${AppRoute.accountActivation}',
-            pathParameters: <String, String>{'email': email},
+            pathParameters: <String, String>{'mobile': mobile},
             queryParameters: <String, String>{'reSendOTP': 'true'},
           );
           break;

@@ -14,7 +14,7 @@ class ResetPasswordAPI {
   ResetPasswordAPI(
     this.context,
     this.buttonCtrl, {
-    required this.email,
+    required this.mobile,
     required this.pinNode,
     required this.code,
     required this.newPassword,
@@ -24,20 +24,20 @@ class ResetPasswordAPI {
   final BuildContext context;
   final FocusNode pinNode;
   final TextEditingController code;
-  final String email, newPassword, confirmPassword;
+  final String mobile, newPassword, confirmPassword;
   final LoadingButtonController buttonCtrl;
 
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
     _variables = <String, dynamic>{
-      'email': email,
-      'OTPKey': code.text,
+      'mobile': mobile,
+      'OTPKey': int.parse(code.text),
       'newPassword': newPassword,
       'confirmNewPassword': confirmPassword,
     };
 
-    Helper.debugger('userResetPassword');
+    Helper.debugger('resetPassword');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
     GraphQL.client().mutate(
@@ -58,7 +58,7 @@ class ResetPasswordAPI {
   }
 
   void _result(Map<String, dynamic> data) async {
-    if (data.isNotEmpty && data.containsKey('userResetPassword')) {
+    if (data.isNotEmpty && data.containsKey('resetPassword')) {
       buttonCtrl.success();
 
       Helper.banner(

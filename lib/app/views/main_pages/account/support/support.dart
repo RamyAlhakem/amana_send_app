@@ -156,6 +156,7 @@ class Support extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(logoPad, 40, logoPad, 20),
               child: Image.asset(
                 'assets/images/icon${context.isDarkMode ? '_light' : ''}.png',
+                height: 120,
               ),
             ),
             Container(
@@ -223,10 +224,10 @@ class Support extends StatelessWidget {
             break;
           case 'assets/svg/whatsapp.svg':
             Helper.launchURL(
-                'https://api.whatsapp.com/send/?phone=+442088111222&text&app_absent=0');
+                'https://api.whatsapp.com/send/?phone=+44711222&text&app_absent=0');
             break;
           case 'assets/svg/location.svg':
-            Helper.launchURL('https://goo.gl/maps/dRaoWwPjP6y5PdR89');
+            Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');
             break;
         }
       },

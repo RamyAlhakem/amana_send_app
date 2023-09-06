@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import '/app/widgets/general/general_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/auto_app_bar.dart';
+import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/loading_button.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/vertical_fade.dart';
-import '/global/variables.dart';
 import '/graphql/api/authenticate_account.dart';
 import '/graphql/api/resend_otp.dart';
 import '/helper/helper.dart';
@@ -20,12 +19,12 @@ import 'components/pin_form.dart';
 
 class AccountActivation extends StatefulWidget {
   const AccountActivation(
-    this.email, {
+    this.mobile, {
     super.key,
     this.q = const <String, String>{'reSendOTP': 'false'},
   });
 
-  final String email;
+  final String mobile;
   final Map<String, String> q;
 
   @override
@@ -42,8 +41,6 @@ class _AccountActivationState extends State<AccountActivation>
   final FocusNode pinNode = FocusNode();
 
   final LoadingButtonController buttonCtrl = LoadingButtonController();
-
-  final TextStyle formInputStyle = const TextStyle(color: Colors.white);
 
   int duration = 170;
   late AnimationController ctrl;
@@ -63,7 +60,7 @@ class _AccountActivationState extends State<AccountActivation>
   void initState() {
     super.initState();
     if (widget.q['reSendOTP'] == 'true') {
-      ResendOTP(email: widget.email).request();
+      ResendOTP(mobile: widget.mobile).request();
     }
 
     ctrl = AnimationController(
@@ -97,24 +94,17 @@ class _AccountActivationState extends State<AccountActivation>
     return GestureDetector(
       onTap: () => Helper.unFocusCursor(context),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/splash.png'),
+            image: AssetImage(
+              'assets/images/splash${context.isDarkMode ? '' : '_light'}.png',
+            ),
             fit: BoxFit.cover,
           ),
         ),
         child: Scaffold(
-          backgroundColor: Colors.black.withOpacity(0.65),
-          appBar: AutoAppBar(
-            title: arb!.verifyEmail,
-            titleStyle: formInputStyle,
-            flexibleSpace: const SizedBox(),
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarBrightness: Global.brightnessLight(),
-              statusBarIconBrightness: Global.brightnessLight(),
-            ),
-          ),
+          backgroundColor: Colors.transparent,
+          appBar: AutoAppBar(title: arb!.verifyMobileNumber),
           body: Form(
             key: formKey,
             child: Container(
@@ -123,7 +113,9 @@ class _AccountActivationState extends State<AccountActivation>
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.white12,
+                color: context.isDarkMode
+                    ? Colors.white12
+                    : Colors.black.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ListView(
@@ -135,29 +127,26 @@ class _AccountActivationState extends State<AccountActivation>
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                       child: TextX(
                         arb!.verification,
-                        style:
-                            const TextStyle(fontSize: 24, color: Colors.white),
+                        style: const TextStyle(fontSize: 24),
                       ),
                     ),
                   ),
                   Center(
                     child: TextX(
-                      arb!.enterOTPcodeSentToTheEmail,
-                      style:
-                          const TextStyle(fontSize: 12, color: Colors.white70),
+                      arb!.enterOTPcodeSentToTheNumber,
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 8),
                   Center(
                     child: TextC(
-                      widget.email,
+                      widget.mobile,
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 20),
                   PinForm(
                     onSubmit: () => _submit(),
                     focusNode: pinNode,
@@ -243,17 +232,21 @@ class _AccountActivationState extends State<AccountActivation>
   }
 
   Future<void> _reSend() async {
-    ctrl.reset();
+    ctrl.dispose();
     resendTimer?.cancel();
 
     if (duration == 0) {
       setState(() => duration = 170);
+      ctrl = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: duration),
+      );
 
       ctrl.forward();
       isTimeOut();
 
       Helper.toast(arb!.codeSuccessfullySentKindlyPatience);
-      await ResendOTP(email: widget.email).request().then((status) {
+      await ResendOTP(mobile: widget.mobile).request().then((status) {
         if (status == 200) message();
       });
     }
@@ -267,7 +260,7 @@ class _AccountActivationState extends State<AccountActivation>
       buttonCtrl,
       pinNode: pinNode,
       pin: pin,
-      email: widget.email,
+      mobile: widget.mobile,
     ).request();
   }
 }

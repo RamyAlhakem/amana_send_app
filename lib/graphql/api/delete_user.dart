@@ -23,17 +23,17 @@ class DeleteUser {
 
     _variables = <String, dynamic>{'password': password};
 
-    Helper.debugger('deleteUser');
+    Helper.debugger('userDelete');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
     await GraphQL.client().mutate(
       MutationOptions(
-        document: gql(Mutations.deleteUser),
+        document: gql(Mutations.userDelete),
         variables: _variables,
         onCompleted: (Map<String, dynamic>? data) {
           LoadingDialog.dismiss();
 
-          Helper.debug('deleteUser', '$data');
+          Helper.debug('userDelete', '$data');
 
           if (data != null) return _result(data);
         },
@@ -49,7 +49,7 @@ class DeleteUser {
   void _result(Map<String, dynamic> data) async {
     _arb = AppLocalizations.of(context);
 
-    if (data.isNotEmpty && data.containsKey('deleteUser')) {
+    if (data.isNotEmpty && data.containsKey('userDelete')) {
       Helper.banner(_arb!.accountHasBeenDeletedSuccessfully);
 
       UserService.clearUser(context);

@@ -16,7 +16,7 @@ class AppMetadata extends SafetyModel {
     this.usdRate = 0,
     this.phoneNumber = '',
     this.whatsapp = '',
-    this.twitterUrl = '',
+    this.xUrl = '',
     this.registerAddress = '',
     this.registrationNumber = '',
     this.appSignInCaptcha = false,
@@ -39,7 +39,7 @@ class AppMetadata extends SafetyModel {
   double usdRatio = 0;
   String phoneNumber = '';
   String whatsapp = '';
-  String twitterUrl = '';
+  String xUrl = '';
   String registerAddress = '';
   String registrationNumber = '';
   bool appSignInCaptcha = false, appSignUpCaptcha = false;
@@ -62,7 +62,7 @@ class AppMetadata extends SafetyModel {
     usdRatio = doubleFromJson(json, 'usdRatio', decimal: 10);
     phoneNumber = stringFromJson(json, 'phoneNumber');
     whatsapp = stringFromJson(json, 'whatsapp');
-    twitterUrl = stringFromJson(json, 'twitterUrl');
+    xUrl = stringFromJson(json, 'xUrl');
     registerAddress = stringFromJson(json, 'registerAddress');
     registrationNumber = stringFromJson(json, 'registrationNumber');
     appSignInCaptcha = boolFromJson(json, 'appSignInCaptcha');
@@ -88,7 +88,7 @@ class AppMetadata extends SafetyModel {
         'usdRatio': usdRatio,
         'phoneNumber': phoneNumber,
         'whatsapp': whatsapp,
-        'twitterUrl': twitterUrl,
+        'xUrl': xUrl,
         'registerAddress': registerAddress,
         'registrationNumber': registrationNumber,
         'appSignInCaptcha': appSignInCaptcha,

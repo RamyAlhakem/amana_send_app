@@ -21,19 +21,19 @@ class ChangeEmail {
   Future<void> request() async {
     _variables = <String, dynamic>{'email': email};
 
-    Helper.debugger('editUser');
+    Helper.debugger('userEdit');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
     LoadingDialog().show();
 
     await GraphQL.client().mutate(
       MutationOptions(
-        document: gql(Mutations.editUser),
+        document: gql(Mutations.userEdit),
         variables: _variables,
         update: (GraphQLDataProxy cache, QueryResult<Object?>? result) => cache,
         onCompleted: (Map<String, dynamic>? data) {
           LoadingDialog.dismiss();
-          Helper.debug('editUser', '$data');
+          Helper.debug('userEdit', '$data');
 
           if (data != null && data.isNotEmpty) return _result(data);
         },
@@ -47,7 +47,7 @@ class ChangeEmail {
   }
 
   void _result(Map<String, dynamic> data) async {
-    if (data.containsKey('editUser')) {
+    if (data.containsKey('userEdit')) {
       LoadingDialog().show();
       GetUserMeta.request().whenComplete(() => LoadingDialog.dismiss());
 

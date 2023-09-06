@@ -18,12 +18,12 @@ class AuthenticateAccount {
     this.buttonCtrl, {
     required this.pinNode,
     required this.pin,
-    required this.email,
+    required this.mobile,
   });
 
   final BuildContext context;
   final TextEditingController pin;
-  final String email;
+  final String mobile;
   final FocusNode pinNode;
   final LoadingButtonController buttonCtrl;
 
@@ -36,7 +36,7 @@ class AuthenticateAccount {
 
     buttonCtrl.start();
 
-    _variables = <String, dynamic>{'OTPKey': pin.text, 'email': email};
+    _variables = <String, dynamic>{'OTPKey': pin.text, 'mobile': mobile};
 
     Helper.debugger('userAuthenticateAccount');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);

@@ -9,18 +9,18 @@ class Configs {
   static String version = ''; // initialized in Metadata API request.
   static String buildNumber = ''; // initialized in Metadata API request.
 
-  static const String stagingUrl = 'https://amanaSend-staging.pages.dev/';
-  static const String productionUrl = 'https://amanaSend.pages.dev/';
+  static const String stagingUrl = 'https://api.amanasend.pages.dev/';
+  static const String productionUrl = 'https://api.amanasend.pages.dev/';
 
   static const String graphqlStaging =
-      'https://staging-api-ca.iii0.com/graphql';
-  static const String graphqlProduction = 'https://api-ca.iii0.com/graphql';
+      'https://api.amanasend.com/staging/graphql';
+  static const String graphqlProduction = 'https://api.amanasend.com/graphql';
 
-  static const String apiStaging = 'https://staging-api-ca.iii0.com/';
-  static const String apiProduction = 'https://api-ca.iii0.com/';
+  static const String apiStaging = 'https://api.amanasend.com/staging/';
+  static const String apiProduction = 'https://api.amanasend.com/';
 
-  static const String photoStaging = 'https://staging-api-ca.iii0.com/photo';
-  static const String photoProduction = 'https://api-ca.iii0.com/photo';
+  static const String photoStaging = 'https://api.amanasend.com/staging/photo';
+  static const String photoProduction = 'https://api.amanasend.com/photo';
 
   static const String baseUrl = debug ? stagingUrl : productionUrl;
   static const String graphql = debug ? graphqlStaging : graphqlProduction;

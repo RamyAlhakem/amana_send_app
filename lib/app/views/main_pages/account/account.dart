@@ -54,7 +54,7 @@ class _AccountState extends State<Account> {
         Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 4),
               child: UserAvatar(size: 40, code: user.country.coCode),
             ),
             TextX(
@@ -72,10 +72,8 @@ class _AccountState extends State<Account> {
           ],
         ),
         Expanded(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-            color: Theme.of(context).cardColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 14, 10, 0),
             child: ListView(
               children: [
                 const HDivider(),

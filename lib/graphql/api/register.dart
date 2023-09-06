@@ -71,9 +71,9 @@ class RegisterAPI {
       buttonCtrl.success();
 
       await Future.delayed(const Duration(milliseconds: 700), () {
-        context.pushNamed(
+        context.pushReplacementNamed(
           '/${AppRoute.accountActivation}',
-          pathParameters: <String, String>{'email': email},
+          pathParameters: <String, String>{'mobile': mob},
           queryParameters: <String, String>{'reSendOTP': 'false'},
         );
       });

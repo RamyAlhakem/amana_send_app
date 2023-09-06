@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../theme/colors/main_colors.dart';
+import '/app/extensions/dark_mode.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/transfers/widgets/detail.dart';
@@ -15,7 +15,6 @@ import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';
-import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
@@ -26,11 +25,7 @@ class TransferMain extends StatefulWidget {
 
   final String transfer;
 
-  static const TextStyle style = TextStyle(color: Colors.white);
-  static const TextStyle boldStyle = TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-  );
+  static const TextStyle boldStyle = TextStyle(fontWeight: FontWeight.bold);
 
   static iconColor(BuildContext context) =>
       Theme.of(context).textTheme.labelLarge?.color;
@@ -83,27 +78,21 @@ class _TransferMainState extends State<TransferMain> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/splash.png'),
+          image: AssetImage(
+            'assets/images/splash${context.isDarkMode ? '' : '_light'}.png',
+          ),
           fit: BoxFit.cover,
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.black.withOpacity(0.65),
-        appBar: AutoAppBar(
-          title: 'ID: ${transfer.id}',
-          titleStyle: TransferMain.style,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarBrightness: Global.brightnessLight(),
-            statusBarIconBrightness: Global.brightnessLight(),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
+        appBar: AutoAppBar(title: 'ID: ${transfer.id}'),
         body: Column(
           children: [
             const SizedBox(height: 12),
-            Center(child: TextX(_arb!.sent, style: TransferMain.style)),
+            Center(child: TextX(_arb!.sent)),
             const SizedBox(height: 6),
             Center(
               child: TextX(
@@ -115,7 +104,6 @@ class _TransferMainState extends State<TransferMain> {
             Center(
               child: TextX(
                 '${transfer.recipient.arFirstName} ${transfer.recipient.arLastName}',
-                style: TransferMain.style.copyWith(fontSize: 15),
               ),
             ),
             Expanded(
@@ -207,12 +195,7 @@ class _TransferMainState extends State<TransferMain> {
                             bottomRight: Radius.circular(16),
                           ),
                         ),
-                        TextX(
-                          _arb!.resendAgain.toUpperCase(),
-                          style: TransferMain.style.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        TextX(_arb!.resendAgain.toUpperCase()),
                       ),
                     )
                   ],

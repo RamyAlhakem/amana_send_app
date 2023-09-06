@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/captcha.dart';
 import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/loading_button.dart';
 import '/app/widgets/text/text_x.dart';
-import '/app/widgets/text_form_field/text_form.dart';
 import '/app/widgets/vertical_fade.dart';
-import '/global/variables.dart';
 import '/graphql/api/resend_otp.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
+import 'components/phone_country_picker.dart';
 import 'provider/registration_state.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -29,8 +28,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final LoadingButtonController buttonCtrl = LoadingButtonController();
-
-  final TextStyle formInputStyle = const TextStyle(color: Colors.white);
 
   @override
   void initState() {
@@ -49,54 +46,35 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return GestureDetector(
       onTap: () => Helper.unFocusCursor(context),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/splash.png'),
+            image: AssetImage(
+              'assets/images/splash${context.isDarkMode ? '' : '_light'}.png',
+            ),
             fit: BoxFit.cover,
           ),
         ),
         child: Scaffold(
-          backgroundColor: Colors.black.withOpacity(0.65),
-          appBar: AutoAppBar(
-            title: arb!.forgotPassword.substring(0, 15),
-            titleStyle: formInputStyle,
-            flexibleSpace: const SizedBox(),
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarBrightness: Global.brightnessLight(),
-              statusBarIconBrightness: Global.brightnessLight(),
-            ),
-          ),
+          backgroundColor: Colors.transparent,
+          appBar: AutoAppBar(title: arb!.forgotPassword.substring(0, 15)),
           body: Form(
             key: formKey,
             child: Container(
               margin: const EdgeInsets.fromLTRB(12, 10, 12, 20),
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
-                color: Colors.white12,
+                color: context.isDarkMode
+                    ? Colors.white12
+                    : Colors.black.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ListView(
                 children: [
                   const SizedBox(height: 30),
                   GeneralWidgets.loginLogo(context),
-                  TextX(arb!.weWillSendResetPassword, style: formInputStyle),
+                  TextX(arb!.weWillSendResetPassword),
                   const SizedBox(height: 40),
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: TextFieldX(
-                      controller: _pr.email,
-                      hint: arb!.email,
-                      type: TextInputType.emailAddress,
-                      labelStyle:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Colors.white38,
-                              ),
-                      style: formInputStyle,
-                      onSubmitted: (_) => _submit(),
-                      isValidateEmail: true,
-                    ),
-                  ),
+                  const PhoneCountryPicker(),
                   Container(
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.03,
@@ -125,6 +103,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 
   void _submit() {
+    if (_pr.country == null) return Helper.bannerWarning(arb!.selectCountry);
+
     if (!formKey.currentState!.validate()) return;
 
     if (buttonCtrl.currentState == ButtonState.loading) return;
@@ -135,12 +115,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     if (AppMetadata.get.appForgetPasswordCaptcha) {
       return CaptchaDialog(
         onSubmit: (value) => ResendOTP(
-          email: _pr.email.text,
+          mobile: '+${_pr.country?.phoneCode}${_pr.mobile.text}',
           buttonCtrl: buttonCtrl,
         ).request(),
       ).show();
     } else {
-      ResendOTP(email: _pr.email.text, buttonCtrl: buttonCtrl).request();
+      ResendOTP(
+        mobile: '+${_pr.country?.phoneCode}${_pr.mobile.text}',
+        buttonCtrl: buttonCtrl,
+      ).request();
     }
   }
 }

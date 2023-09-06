@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/row.dart';
@@ -55,10 +54,8 @@ class _TransferRecentState extends State<TransferRecent> {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
-    return Container(
-      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
-      width: MediaQuery.of(context).size.width,
-      decoration: Decorations.flat(context),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       child: Button(
         () => context.pushNamed(
           AppRoute.transfer,

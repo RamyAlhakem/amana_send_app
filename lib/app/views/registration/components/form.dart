@@ -80,28 +80,29 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
               ],
             ),
           ),
-          SizeTransition(
-            sizeFactor: animate,
-            axis: Axis.vertical,
-            axisAlignment: context.isKeyboardOpen ? -2 : 0,
-            child: const PhoneCountryPicker(),
-          ),
+          const PhoneCountryPicker(),
           Directionality(
             textDirection: TextDirection.ltr,
-            child: TextFieldX(
-              controller: p.email,
-              hint: arb!.email,
-              type: TextInputType.emailAddress,
-              onSubmitted: (_) {
-                if (!p.isRegister) {
-                  FocusScope.of(context).requestFocus(p.passwordNode);
-                }
-              },
-              isValidateEmail: true,
+            child: SizeTransition(
+              sizeFactor: animate,
+              axis: Axis.vertical,
+              axisAlignment: context.isKeyboardOpen ? -2 : 0,
+              child: TextFieldX(
+                controller: p.email,
+                hint: arb!.email,
+                type: TextInputType.emailAddress,
+                labelStyle: Theme.of(context).textTheme.titleSmall,
+                validator: (String? val) {
+                  if (p.isRegister) {
+                    return TextFieldValidator.validateEmail(context, val);
+                  } else {
+                    return null;
+                  }
+                },
+              ),
             ),
           ),
           _password(
-            node: p.passwordNode,
             onSubmitted: (String? v) {
               if (p.isRegister) {
                 FocusScope.of(context).requestFocus(p.confirmPasswordNode);

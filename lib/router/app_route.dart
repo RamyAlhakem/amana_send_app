@@ -170,13 +170,13 @@ class AppRoute {
         },
       ),
       GoRoute(
-        path: '/$accountActivation/:email',
+        path: '/$accountActivation/:mobile',
         name: '/$accountActivation',
         pageBuilder: (BuildContext context, GoRouterState state) {
           return MaterialPage(
             key: state.pageKey,
             child: AccountActivation(
-              state.pathParameters['email']!,
+              state.pathParameters['mobile']!,
               q: state.queryParameters,
             ),
           );
@@ -192,12 +192,12 @@ class AppRoute {
         },
       ),
       GoRoute(
-        path: '/$resetPassword/:email',
+        path: '/$resetPassword/:mobile',
         name: '/$resetPassword',
         pageBuilder: (BuildContext context, GoRouterState state) {
           return MaterialPage(
             key: state.pageKey,
-            child: ResetPassword(email: state.pathParameters['email']!),
+            child: ResetPassword(mobile: state.pathParameters['mobile']!),
           );
         },
       ),

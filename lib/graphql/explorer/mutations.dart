@@ -2,8 +2,8 @@ import 'explorer.dart';
 
 class Mutations {
   static String userSignIn(String captcha) => '''
-    mutation userSignIn(\$email: NonEmptyString!, \$password: NonEmptyString!, \$firebaseToken: String!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
-      userSignIn(email: \$email, password: \$password, firebaseToken: \$firebaseToken${captcha.isNotEmpty ? ', captchaResponse: \$captchaResponse' : ''}) {
+    mutation userSignIn(\$mobile: NonEmptyString!, \$password: NonEmptyString!, \$firebaseToken: String!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
+      userSignIn(mobile: \$mobile, password: \$password, firebaseToken: \$firebaseToken${captcha.isNotEmpty ? ', captchaResponse: \$captchaResponse' : ''}) {
         ${Explorer.user}
         ${Explorer.country}
       }
@@ -28,9 +28,9 @@ class Mutations {
     }
       ''';
 
-  static const String editUser = '''
-    mutation editUser(\$email: NonEmptyString!) {
-      editUser(email: \$email) {
+  static const String userEdit = '''
+    mutation userEdit(\$email: NonEmptyString!) {
+      userEdit(email: \$email) {
         message
       }
     }
@@ -56,9 +56,9 @@ class Mutations {
     }
       ''';
 
-  static const String deleteUser = '''
-    mutation deleteUser(\$password: NonEmptyString!) {
-      deleteUser(password: \$password) {
+  static const String userDelete = '''
+    mutation userDelete(\$password: NonEmptyString!) {
+      userDelete(password: \$password) {
         message
       }
     }
@@ -133,26 +133,25 @@ class Mutations {
       ''';
 
   static const String userAuthenticateAccount = '''
-    mutation userAuthenticateAccount(\$OTPKey: String!, \$email: NonEmptyString!) {
-      userAuthenticateAccount(OTPKey: \$OTPKey, email: \$email) {
+   mutation userAuthenticateAccount(\$OTPKey: String!, \$mobile: NonEmptyString!) {
+      userAuthenticateAccount(OTPKey: \$OTPKey, mobile: \$mobile) {
         ${Explorer.user}
-        ${Explorer.country}
       }
     }
       ''';
 
   static String requestNewOTP(String captcha) => '''
-    mutation requestNewOTP(\$email: NonEmptyString!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
-      requestNewOTP(email: \$email${captcha.isNotEmpty ? ', captchaResponse: \$captchaResponse' : ''}) {
+    mutation requestNewOTP(\$mobile: NonEmptyString!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
+      requestNewOTP(mobile: \$mobile${captcha.isNotEmpty ? ', captchaResponse: \$captchaResponse' : ''}) {
         message
       }
     }
       ''';
 
   static const String userResetPassword = '''
-    mutation userResetPassword(\$email: NonEmptyString!, \$OTPKey: String!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
+    mutation userResetPassword(\$mobile: NonEmptyString!, \$OTPKey: Int!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
       userResetPassword(
-        email: \$email
+        mobile: \$mobile
         OTPKey: \$OTPKey
         newPassword: \$newPassword
         confirmNewPassword: \$confirmNewPassword

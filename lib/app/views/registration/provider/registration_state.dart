@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '/app/widgets/dialogs/captcha.dart';
-import '/models/metadata.dart';
 
+import '/app/widgets/dialogs/captcha.dart';
 import '/app/widgets/loading_button.dart';
 import '/graphql/api/log_in.dart';
 import '/graphql/api/register.dart';
 import '/helper/helper.dart';
 import '/models/city.dart';
 import '/models/country.dart';
+import '/models/metadata.dart';
 
 class RegistrationState extends ChangeNotifier {
   bool _isRegister = false;
 
-  final FocusNode _passwordNode = FocusNode();
   final FocusNode _confirmPasswordNode = FocusNode();
 
   late AnimationController _expander;
@@ -40,7 +39,6 @@ class RegistrationState extends ChangeNotifier {
 
   bool get isRegister => _isRegister;
 
-  FocusNode get passwordNode => _passwordNode;
   FocusNode get confirmPasswordNode => _confirmPasswordNode;
 
   AnimationController get expander => _expander;
@@ -106,9 +104,7 @@ class RegistrationState extends ChangeNotifier {
     if (!loginForm.currentState!.validate()) return;
     if (isRegister && !registerForm.currentState!.validate()) return;
 
-    if (country == null && isRegister) {
-      return Helper.bannerWarning(arb!.selectCountry);
-    }
+    if (country == null) return Helper.bannerWarning(arb!.selectCountry);
 
     if (isRegister && password.text.length < 8) {
       return Helper.bannerWarning(arb!.passwordMustContainAtLeast8Characters);
@@ -144,7 +140,7 @@ class RegistrationState extends ChangeNotifier {
 
     Future<void> logInAPI(String value) async => await LogInAPI(
           buttonCtrl,
-          email: email.text,
+          mobile: '+$phoneCode${mobile.text}',
           password: password.text,
           captcha: value,
         ).request();
