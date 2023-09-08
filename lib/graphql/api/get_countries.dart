@@ -11,7 +11,6 @@ import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
 import '/helper/helper.dart';
 import '/models/country.dart';
-import '/models/provider.dart';
 
 class GetCountriesAPI {
   static late Calculator _p;
@@ -59,7 +58,6 @@ class GetCountriesAPI {
         );
 
         _p.getReceiveCountries(receiveCountries);
-        _p.setReceiveType(ProviderModel());
       }
       Helper.toast(
         _arb!.currenciesPricesUpToDate,

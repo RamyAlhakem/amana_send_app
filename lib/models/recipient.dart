@@ -16,14 +16,12 @@ class RecipientModel extends SafetyModel {
     this.cityId = 0,
     this.area = '',
     this.dateAdded = '',
-    this.bankAccountNumber = '',
-    this.bankAccountHolder = '',
   });
 
   int id = 0;
   String firstName = '', arFirstName = '', fatherName = '', arFatherName = '';
   String lastName = '', arLastName = '', relative = '', area = '';
-  String dateAdded = '', bankAccountNumber = '', bankAccountHolder = '';
+  String dateAdded = '';
   int mobile = 0, cityId = 0, status = 0;
   CountryModel country = CountryModel();
 
@@ -41,8 +39,7 @@ class RecipientModel extends SafetyModel {
     cityId = intFromJson(json, 'cityId');
     area = stringFromJson(json, 'area');
     dateAdded = stringFromJson(json, 'dateAdded');
-    bankAccountNumber = stringFromJson(json, 'accountNumber');
-    bankAccountHolder = stringFromJson(json, 'accountHolder');
+
     country = objectFromJson(json, 'country', (x) => CountryModel.fromJson(x),
         defaultValue: CountryModel());
     super.fromJson(json);
@@ -63,8 +60,6 @@ class RecipientModel extends SafetyModel {
         'cityId': cityId,
         'area': area,
         'dateAdded': dateAdded,
-        'accountNumber': bankAccountNumber,
-        'accountHolder': bankAccountHolder,
         'country': country,
       };
 }

@@ -86,7 +86,7 @@ class SelectRecipient extends StatefulWidget {
               '${arb.minimumReceivingLimitToThisCountryIs} ${calculator.selectedRecipient!.country.minAmount} ${calculator.selectedRecipient!.country.currency.code}',
             );
           }
-          if (calculator.receiveType == 0) {
+          if (calculator.receiverProvider.id == 0) {
             return Helper.bannerWarning(arb.pleaseSelectReceiveType);
           }
 

@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
@@ -62,9 +61,6 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _area = TextEditingController();
   String _pickUp = '';
 
-  TextEditingController _bankAccountNumber = TextEditingController();
-  TextEditingController _bankName = TextEditingController();
-
   bool bankFocus = false;
   bool keepSendProcess = false;
 
@@ -94,9 +90,6 @@ class _AddRecipientState extends State<AddRecipient> {
       _relation = TextEditingController(text: _recipient?.relative);
 
       _area = TextEditingController(text: _recipient?.area);
-      _bankAccountNumber =
-          TextEditingController(text: _recipient?.bankAccountNumber);
-      _bankName = TextEditingController(text: _recipient?.bankAccountHolder);
 
       if (_recipient!.country.cities.isNotEmpty) {
         _pickUp = _recipient?.country.cities.first.areaNote ?? '';
@@ -297,50 +290,6 @@ class _AddRecipientState extends State<AddRecipient> {
                 type: TextInputType.name,
               ),
 
-              // bank.
-              Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  tilePadding: EdgeInsets.zero,
-                  initiallyExpanded: bankFocus,
-                  title: TextX(
-                    _arb!.recipientBankDetailsOptional,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  children: <Widget>[
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                        dividerColor: context.isDarkMode
-                            ? Colors.grey[850]
-                            : Colors.grey[350],
-                      ),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Column(
-                          children: [
-                            TextFieldX(
-                              controller: _bankAccountNumber,
-                              hint: _arb!.accountNumber,
-                              focusNode: _bankAccountNumberNode,
-                              validator: (v) => null,
-                            ),
-                            TextFieldX(
-                              controller: _bankName,
-                              hint: _arb!.bankName,
-                              type: TextInputType.name,
-                              onChanged: (v) =>
-                                  TextFieldValidator.latin(context, _bankName),
-                              validator: (v) => null,
-                              onSubmitted: (v) => _submit(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 18),
 
               RowSpaceBetween([
@@ -429,10 +378,6 @@ class _AddRecipientState extends State<AddRecipient> {
       return Helper.toast(_arb!.enterRecipientEnglishName);
     }
 
-    if (_bankAccountNumber.text.isNotEmpty) {
-      if (_bankName.text.isEmpty) return Helper.toast('Enter bank name');
-    }
-
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
 
     AddEditRecipientAPI(
@@ -448,8 +393,6 @@ class _AddRecipientState extends State<AddRecipient> {
       mobile: _registerState.mobile.text,
       cityId: _registerState.city!.id,
       area: _area.text,
-      bankAccountNumber: _bankAccountNumber.text,
-      bankName: _bankName.text,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {

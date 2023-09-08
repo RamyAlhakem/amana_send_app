@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/widgets/loader.dart';
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/registration/components/city_picker.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
@@ -25,6 +26,8 @@ import '/models/metadata.dart';
 import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
+import '/services/lang_service.dart';
+import 'widgets/country_roller.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -128,6 +131,51 @@ class _HomeState extends State<Home> {
                   //   ],
                   // ),
 
+                  Row(
+                    children: [
+                      // Select country
+                      Expanded(
+                        child: CountryRoller(
+                          title: _arb!.receiverCountries,
+                          borderRadius: 11,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+
+                      // Select city.
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            CityPicker(
+                              onChange: (city) => state.setReceiveCity(city),
+                              country: state.receiverCountry,
+                              cities: state.receiverCountry.cities,
+                              city: state.receiverCity,
+                              fieldColor: Theme.of(context).cardColor,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: LangService.isAR() ? 4 : null,
+                              left: LangService.isAR() ? null : 4,
+                              child: Container(
+                                decoration: Decorations.flat(context),
+                                padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                                child: TextX(
+                                  _arb!.selectCity,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontSize: 10,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   // "You send", "Receiver gets"
                   const SendFormFields(),
 
@@ -169,7 +217,7 @@ class _HomeState extends State<Home> {
                         );
                       }
 
-                      if (state.receiveType == 0) {
+                      if (state.receiverProvider.id == 0) {
                         return Helper.snack(_arb!.pleaseSelectReceiveType);
                       }
 

@@ -11,28 +11,15 @@ class CountryModel extends SafetyModel {
     this.arName = '',
     this.recipientArabicMandatory = false,
     this.recipientEnglishMandatory = false,
-    this.receiveCash = false,
-    this.receiveMobileWallet = false,
-    this.receiveBank = false,
-    this.usdAvailability = 0,
     this.minAmount = 0.0,
     this.maxAmount = 0.0,
     this.cities = const <CityModel>[],
   });
 
   int id = 0;
-  String coCode = '';
-  String enName = '';
-  String arName = '';
-  String phoneCode = '0';
-  bool recipientArabicMandatory = false;
-  bool recipientEnglishMandatory = false;
-  bool receiveBank = false;
-  bool receiveCash = false;
-  bool receiveMobileWallet = false;
-  int usdAvailability = 0;
-  double minAmount = 0;
-  double maxAmount = 0;
+  String coCode = '', enName = '', arName = '', phoneCode = '0';
+  bool recipientArabicMandatory = false, recipientEnglishMandatory = false;
+  double minAmount = 0, maxAmount = 0;
   CurrencyModel currency = CurrencyModel();
   List<CityModel> cities = const <CityModel>[];
 
@@ -44,10 +31,6 @@ class CountryModel extends SafetyModel {
     phoneCode = stringFromJson(json, 'phoneCode', defaultValue: '0');
     recipientArabicMandatory = boolFromJson(json, 'recipientArabicMandatory');
     recipientEnglishMandatory = boolFromJson(json, 'recipientEnglishMandatory');
-    receiveCash = boolFromJson(json, 'receiveCash');
-    receiveMobileWallet = boolFromJson(json, 'receiveMobileWallet');
-    receiveBank = boolFromJson(json, 'receiveBank');
-    usdAvailability = intFromJson(json, 'usdAvailability');
     minAmount = doubleFromJson(json, 'minAmount');
     maxAmount = doubleFromJson(json, 'maxAmount');
     currency = objectFromJson(
@@ -66,10 +49,6 @@ class CountryModel extends SafetyModel {
         'phoneCode': phoneCode,
         'recipientArabicMandatory': recipientArabicMandatory,
         'recipientEnglishMandatory': recipientEnglishMandatory,
-        'receiveCash': receiveCash,
-        'receiveMobileWallet': receiveMobileWallet,
-        'receiveBank': receiveBank,
-        'usdAvailability': usdAvailability,
         'minAmount': minAmount,
         'maxAmount': maxAmount,
         'currency': currency,

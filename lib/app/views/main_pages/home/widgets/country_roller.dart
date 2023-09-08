@@ -9,7 +9,6 @@ import '/app/widgets/dialogs/settings.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/picker_form.dart';
 import '/models/country.dart';
-import '/models/provider.dart';
 import '/services/lang_service.dart';
 import 'country.dart';
 
@@ -60,7 +59,6 @@ class CountryRoller extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       onTap: () => setState(() {
                         state.setReceiverCountry(state.receiveCountries[i]);
-                        state.setReceiveType(ProviderModel());
 
                         country = state.receiverCountry;
                         countries = state.receiveCountries;

@@ -45,8 +45,10 @@ class Explorer {
   static const String provider = '''
       id
       name
-      status
       iconUrl
+      rate
+      receiveFees
+      usdAvailability
       ''';
 
   static const String city = '''
@@ -69,18 +71,15 @@ class Explorer {
       phoneCode
       minAmount
       maxAmount
-      usdAvailability
       recipientEnglishMandatory
       recipientArabicMandatory
-      receiveBank
-      receiveCash
-      receiveMobileWallet
       defaultMessage
       currency {
+        id
+        ceil
         code
         name
-        profitRatio
-        rate
+        status
         symbol
       }
       cities {

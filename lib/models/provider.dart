@@ -6,11 +6,15 @@ class ProviderModel extends SafetyModel {
     this.name = '',
     this.iconUrl = '',
     this.status = 0,
+    this.rate = 0,
+    this.receiveFees = 0,
+    this.usdAvailability = 0,
     this.selected = false,
   });
 
-  int id = 0, status = 0;
+  int id = 0, status = 0, usdAvailability = 0;
   String name = '', iconUrl = '';
+  double receiveFees = 0, rate = 0;
   bool selected = false;
 
   ProviderModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +22,9 @@ class ProviderModel extends SafetyModel {
     name = stringFromJson(json, 'name');
     iconUrl = stringFromJson(json, 'iconUrl');
     status = intFromJson(json, 'status');
+    rate = doubleFromJson(json, 'rate');
+    receiveFees = doubleFromJson(json, 'receiveFees');
+    usdAvailability = intFromJson(json, 'usdAvailability');
     selected = boolFromJson(json, 'x');
     super.fromJson(json);
   }
@@ -28,6 +35,9 @@ class ProviderModel extends SafetyModel {
         'name': name,
         'iconUrl': iconUrl,
         'status': status,
+        'rate': rate,
+        'receiveFees': receiveFees,
+        'usdAvailability': usdAvailability,
         'x': selected,
       };
 }

@@ -72,7 +72,7 @@ abstract class SafetyModel {
               : defaultValue
           : defaultValue!;
     } catch (e) {
-      throw Exception('Error while parsing ${attribute!}[$e]');
+      return {};
     }
   }
 
@@ -107,7 +107,7 @@ abstract class SafetyModel {
       }
       return double.parse(defaultValue.toStringAsFixed(decimal));
     } catch (e) {
-      throw Exception('Error while parsing ${attribute!}[$e]');
+      return 0;
     }
   }
 
@@ -128,7 +128,7 @@ abstract class SafetyModel {
       }
       return defaultValue;
     } catch (e) {
-      throw Exception('Error while parsing ${attribute!}[$e]');
+      return false;
     }
   }
 

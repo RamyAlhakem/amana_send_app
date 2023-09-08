@@ -159,6 +159,20 @@ class StructureKit {
             ),
           ],
         );
+      case 4:
+        return title = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextX(
+              _arb!.support,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            TextX(
+              _arb!.contactSupportTeam,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        );
 
       default:
         title;
@@ -213,6 +227,8 @@ class StructureKit {
           ),
         ];
       case 3:
+        return title = <Widget>[notifications];
+      case 4:
         return title = <Widget>[notifications];
 
       default:

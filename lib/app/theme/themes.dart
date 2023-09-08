@@ -219,7 +219,7 @@ class Themes {
         selectedIconTheme: IconThemeData(color: MainColors.color3),
         unselectedIconTheme: IconThemeData(color: LightColors.d1),
         selectedLabelStyle: TextStyle(
-          color: MainColors.color1,
+          color: MainColors.color2,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),

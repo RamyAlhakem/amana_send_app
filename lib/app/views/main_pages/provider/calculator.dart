@@ -4,14 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
-import '/app/widgets/buttons/button.dart';
-import '/app/widgets/text/text_x.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/city.dart';
 import '/models/country.dart';
-import '/models/currency.dart';
 import '/models/metadata.dart';
 import '/models/payment_method.dart';
 import '/models/provider.dart';
@@ -47,11 +44,11 @@ class Calculator extends ChangeNotifier {
   CountryModel _sendCountry = CountryModel();
   CountryModel _receiverCountry = CountryModel();
   CityModel _receiverCity = CityModel();
+  ProviderModel _receiverProvider = ProviderModel();
 
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
 
-  int _receiveType = 0;
   String _receiveTypeTitle = '';
   bool _sendUSD = false;
 
@@ -81,15 +78,15 @@ class Calculator extends ChangeNotifier {
 
   List<CountryModel> get sendCountries => _sendCountries;
   List<CountryModel> get receiveCountries => _receiveCountries;
-  CityModel get receiverCity => _receiverCity;
 
   CountryModel get sendCountry => _sendCountry;
   CountryModel get receiverCountry => _receiverCountry;
+  CityModel get receiverCity => _receiverCity;
+  ProviderModel get receiverProvider => _receiverProvider;
 
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
 
-  int get receiveType => _receiveType;
   String get receiveTypeTitle => _receiveTypeTitle;
   bool get sendUSD => _sendUSD;
 
@@ -146,18 +143,9 @@ class Calculator extends ChangeNotifier {
   //**Get receiver countries to add a recipient & setting exchange rates.
   void getReceiveCountries(List<CountryModel> countries) {
     _receiveCountries = countries;
-    if (countries.isNotEmpty) {
-      _receiverCountry = countries.first;
-      if (countries.first.cities.isNotEmpty) {
-        _receiverCity = countries.first.cities.first;
-      }
-    }
-
-    // if [usdAvailability] is mandatory which is equal 2.
-    _sendUSD = _receiverCountry.usdAvailability == 2;
+    if (countries.isNotEmpty) setReceiverCountry(countries.first);
 
     initializeData();
-    setExchangeRate();
     notifyListeners();
   }
 
@@ -234,10 +222,15 @@ class Calculator extends ChangeNotifier {
   CountryModel setReceiverCountry(CountryModel country) {
     _receiverCountry = country;
     _receiverCity = CityModel();
-    if (country.cities.isNotEmpty) _receiverCity = country.cities.first;
+    if (country.cities.isNotEmpty) {
+      _receiverCity = country.cities.first;
+      if (country.cities.first.providers.isNotEmpty) {
+        setProvider(country.cities.first.providers.first);
+      }
+    }
 
     // if [usdAvailability] is mandatory which is equal 2.
-    _sendUSD = _receiverCountry.usdAvailability == 2;
+    _sendUSD = receiverProvider.usdAvailability == 2;
 
     setExchangeRate();
     notifyListeners();
@@ -246,17 +239,19 @@ class Calculator extends ChangeNotifier {
   }
 
   void setExchangeRate() {
-    final rate = receiverCountry.currency.rate / sendCountry.currency.rate;
+    // final rate = receiverCountry.currency.rate / sendCountry.currency.rate;
+    final rate = receiverProvider.rate / 1;
 
     if (_sendUSD) {
       _exchangeRate = _usdRate;
     } else {
-      _exchangeRate = rate / receiverCountry.currency.profitRatio;
+      // _exchangeRate = rate / receiverCountry.currency.profitRatio;
+      _exchangeRate = rate / receiverProvider.receiveFees;
     }
   }
 
-  void setReceiveType(ProviderModel provider) {
-    _receiveType = provider.id;
+  void setProvider(ProviderModel provider) {
+    _receiverProvider = provider;
     _receiveTypeTitle = ' ';
     Global.snackKey.currentState?.hideCurrentSnackBar();
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
@@ -271,18 +266,17 @@ class Calculator extends ChangeNotifier {
   void setPrice(String value, CountryModel country) {
     //
     // Calculate minimum recipient amount limit if USD
-    if (country.coCode == _receiverCountry.coCode) {
-      final CurrencyModel cu = country.currency;
-      if (_sendUSD) {
-        _minUSD = country.minAmount /
-            (cu.rate / _usdRate / cu.profitRatio) /
-            cu.profitRatio;
-        _maxUSD = country.maxAmount /
-            (cu.rate / _usdRate / cu.profitRatio) /
-            cu.profitRatio;
-      }
-    }
-    //
+    // if (country.coCode == _receiverCountry.coCode) {
+    //   final CurrencyModel cu = country.currency;
+    //   if (_sendUSD) {
+    //     _minUSD = country.minAmount /
+    //         (cu.rate / _usdRate / cu.profitRatio) /
+    //         cu.profitRatio;
+    //     _maxUSD = country.maxAmount /
+    //         (cu.rate / _usdRate / cu.profitRatio) /
+    //         cu.profitRatio;
+    //   }
+    // }
 
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);
@@ -320,8 +314,8 @@ class Calculator extends ChangeNotifier {
       receiverRate = _usdRate;
       receiverRatio = _usdRatio;
     } else {
-      receiverRate = _receiverCountry.currency.rate;
-      receiverRatio = _receiverCountry.currency.profitRatio;
+      receiverRate = receiverProvider.rate;
+      receiverRatio = receiverProvider.receiveFees;
     }
 
     // double profit = receiverRate / sendCountry.currency.rate / receiverRatio;
@@ -362,16 +356,14 @@ class Calculator extends ChangeNotifier {
     bool allConditions = true;
 
     if (transfer != null) {
-      setReceiveType(ProviderModel()); // reset setReceiveType.
-
       setReceiverCountry(transfer.recipient.country);
-      if (transfer.recipient.country.usdAvailability == 2) {
+      if (transfer.provider.usdAvailability == 2) {
         _sendUSD = true;
       } else {
         _sendUSD = transfer.isReceiveInUsd;
       }
 
-      setReceiveType(transfer.provider);
+      setProvider(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
     }
 
@@ -382,26 +374,6 @@ class Calculator extends ChangeNotifier {
       context,
       listen: false,
     ).recipients.any((e) => e.id == recipient.id)) {
-      if (receiveType == 2 && recipient.bankAccountNumber.isEmpty) {
-        Helper.bannerWarning(
-          _arb!
-              .recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails,
-          action: Button(
-            () {
-              Global.snackKey.currentState?.hideCurrentMaterialBanner();
-              context.read<RecipientsState>().editRecipient(
-                    context,
-                    recipient,
-                    bankFocus: true,
-                    keepSendProcess: true,
-                  );
-            },
-            TextX(_arb!.editRecipient),
-          ),
-        );
-        return allConditions = false;
-      }
-
       if (isRecipientArabicMandatoryNameEmpty(recipient)) {
         context.read<RecipientsState>().editRecipient(
               context,

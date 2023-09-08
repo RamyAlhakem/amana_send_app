@@ -42,7 +42,7 @@ class CheckOut extends StatefulWidget {
             sendAmount: double.parse(calculator.sender.text),
             recipientId: calculator.selectedRecipient!.id,
             isReceiveInUSD: calculator.sendUSD,
-            providerId: calculator.receiveType,
+            providerId: calculator.receiverProvider.id,
             paymentMethodId: 1,
           ).request();
         },

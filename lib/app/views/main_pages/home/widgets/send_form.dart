@@ -4,15 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
-import '/app/views/registration/components/city_picker.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/helper/dart_ui.dart';
-import '/services/lang_service.dart';
 import '/tools/tools.dart';
-import 'country_roller.dart';
 import 'currency_roller.dart';
 import 'receive_button.dart';
 import 'total_fees.dart';
@@ -68,49 +64,6 @@ class _SendFormFieldsState extends State<SendFormFields>
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              // Select country
-              Expanded(
-                child: CountryRoller(
-                  title: _arb!.receiverCountries,
-                  borderRadius: borderRadius,
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              // Select city.
-              Expanded(
-                child: Stack(
-                  children: [
-                    CityPicker(
-                      onChange: (city) => state.setReceiveCity(city),
-                      country: state.receiverCountry,
-                      cities: state.receiverCountry.cities,
-                      city: state.receiverCity,
-                      fieldColor: Theme.of(context).cardColor,
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: LangService.isAR() ? 4 : null,
-                      left: LangService.isAR() ? null : 4,
-                      child: Container(
-                        decoration: Decorations.flat(context),
-                        padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                        child: TextX(
-                          _arb!.selectCity,
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontSize: 10,
-                                  ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
           TextFieldX(
             hint: _arb!.youSend,
             controller: state.sender,
@@ -175,7 +128,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                     selection =
                         Tools.setSelect(state.receiverCity.providers, <bool>[]);
                     selection[i] = !selection[i];
-                    state.setReceiveType(state.receiverCity.providers[i]);
+                    state.setProvider(state.receiverCity.providers[i]);
                   },
                   selected: selection[i],
                   title: state.receiverCity.providers[i].name,
