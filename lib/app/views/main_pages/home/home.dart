@@ -40,6 +40,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late AppLocalizations? _arb;
   late UserModel user;
+  String selection = '';
 
   Future<void> getResources() async {
     GetMetadata.request();
@@ -109,6 +110,7 @@ class _HomeState extends State<Home> {
                 state.setPrice(state.sender.text, state.receiverCountry);
               },
               child: ListView(
+                shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 children: [
                   // Row(
@@ -178,7 +180,7 @@ class _HomeState extends State<Home> {
                   ),
                   // "You send", "Receiver gets"
                   const SendFormFields(),
-
+                
                   Button(
                     () {
                       if (Global.appSettings.token.isEmpty) {

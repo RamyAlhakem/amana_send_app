@@ -268,17 +268,18 @@ class Calculator extends ChangeNotifier {
     // Calculate minimum recipient amount limit if USD
     // if (country.coCode == _receiverCountry.coCode) {
     //   final CurrencyModel cu = country.currency;
-    //   if (_sendUSD) {
-    //     _minUSD = $sendAmount / p.rate < country.minAmount;
-    //     _maxUSD = $sendAmount / p.rate > country.maxAmount;
-    //     _minUSD = country.minAmount /
-    //         (cu.rate / _usdRate / cu.profitRatio) /
-    //         cu.profitRatio;
-    //     _maxUSD = country.maxAmount /
-    //         (cu.rate / _usdRate / cu.profitRatio) /
-    //         cu.profitRatio;
-    //   }
-    // }
+
+    if (_sendUSD) {
+      _minUSD = receiverCountry.minAmount / receiverAgent.rate;
+      _maxUSD = receiverCountry.maxAmount / receiverAgent.rate;
+      //     _minUSD = country.minAmount /
+      //         (cu.rate / _usdRate / cu.profitRatio) /
+      //         cu.profitRatio;
+      //     _maxUSD = country.maxAmount /
+      //         (cu.rate / _usdRate / cu.profitRatio) /
+      //         cu.profitRatio;
+      //   }
+    }
 
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);

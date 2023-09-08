@@ -109,27 +109,28 @@ class _SendFormFieldsState extends State<SendFormFields>
               padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
               child: TextX(_arb!.selectReceiveType),
             ),
-          if (state.receiverCity.agents.isNotEmpty)
-            MasonryGridView.count(
-              padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: DartUI.isTablet ? 4 : 2,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              itemCount: state.receiverCity.agents.length,
-              itemBuilder: (_, i) {
-                selection = '${state.receiverAgent.id}';
-                return AgentButton(
-                  () {
-                    selection = '${state.receiverCity.agents[i].id}';
-                    state.setProvider(state.receiverCity.agents[i]);
-                  },
-                  selected: selection == '${state.receiverCity.agents[i].id}',
-                  agent: state.receiverCity.agents[i],
-                );
-              },
-            ),
+          if (!widget.keepAlive)
+            if (state.receiverCity.agents.isNotEmpty)
+              MasonryGridView.count(
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: DartUI.isTablet ? 4 : 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                itemCount: state.receiverCity.agents.length,
+                itemBuilder: (_, i) {
+                  selection = '${state.receiverAgent.id}';
+                  return AgentButton(
+                    () {
+                      selection = '${state.receiverCity.agents[i].id}';
+                      state.setProvider(state.receiverCity.agents[i]);
+                    },
+                    selected: selection == '${state.receiverCity.agents[i].id}',
+                    agent: state.receiverCity.agents[i],
+                  );
+                },
+              ),
           const Padding(
             padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: TotalFees(),
