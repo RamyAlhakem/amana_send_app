@@ -1,5 +1,5 @@
 import '/helper/safety_model.dart';
-import '/models/provider.dart';
+import 'agent.dart';
 import '/models/recipient.dart';
 import '/models/wallet.dart';
 
@@ -38,7 +38,7 @@ class TransferModel extends SafetyModel {
   int receiveType = 0, source = 0;
   String paymentReference = '', paymentData = '', addedAt = '';
   RecipientModel recipient = RecipientModel();
-  ProviderModel provider = ProviderModel();
+  AgentModel provider = AgentModel();
   WalletModel wallet = WalletModel();
   TransferStatus status = TransferStatus.pending;
 
@@ -84,9 +84,8 @@ class TransferModel extends SafetyModel {
     recipient = objectFromJson(
         json, 'recipient', (x) => RecipientModel.fromJson(x),
         defaultValue: RecipientModel());
-    provider = objectFromJson(
-        json, 'provider', (x) => ProviderModel.fromJson(x),
-        defaultValue: ProviderModel());
+    provider = objectFromJson(json, 'provider', (x) => AgentModel.fromJson(x),
+        defaultValue: AgentModel());
     wallet = objectFromJson(
         json, 'walletAddress', (x) => WalletModel.fromJson(x),
         defaultValue: WalletModel());

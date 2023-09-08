@@ -7,11 +7,11 @@ import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
+import '/models/agent.dart';
 import '/models/city.dart';
 import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/payment_method.dart';
-import '/models/provider.dart';
 import '/models/recipient.dart';
 import '/models/transfer.dart';
 import '/models/user.dart';
@@ -35,7 +35,7 @@ class Calculator extends ChangeNotifier {
 
   RecipientModel? _selectedRecipient;
 
-  List<ProviderModel> _providers = <ProviderModel>[];
+  List<AgentModel> _agents = <AgentModel>[];
   List<PaymentMethodModel> _payments = <PaymentMethodModel>[];
 
   List<CountryModel> _sendCountries = <CountryModel>[];
@@ -44,7 +44,7 @@ class Calculator extends ChangeNotifier {
   CountryModel _sendCountry = CountryModel();
   CountryModel _receiverCountry = CountryModel();
   CityModel _receiverCity = CityModel();
-  ProviderModel _receiverProvider = ProviderModel();
+  AgentModel _receiverAgent = AgentModel();
 
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
@@ -74,7 +74,7 @@ class Calculator extends ChangeNotifier {
   RecipientModel? get selectedRecipient => _selectedRecipient;
 
   List<PaymentMethodModel> get payments => _payments;
-  List<ProviderModel> get providers => _providers;
+  List<AgentModel> get agents => _agents;
 
   List<CountryModel> get sendCountries => _sendCountries;
   List<CountryModel> get receiveCountries => _receiveCountries;
@@ -82,7 +82,7 @@ class Calculator extends ChangeNotifier {
   CountryModel get sendCountry => _sendCountry;
   CountryModel get receiverCountry => _receiverCountry;
   CityModel get receiverCity => _receiverCity;
-  ProviderModel get receiverProvider => _receiverProvider;
+  AgentModel get receiverAgent => _receiverAgent;
 
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
@@ -204,8 +204,8 @@ class Calculator extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getProviders(List<ProviderModel> elements) {
-    _providers = elements;
+  void getAgents(List<AgentModel> elements) {
+    _agents = elements;
 
     notifyListeners();
   }
@@ -224,13 +224,13 @@ class Calculator extends ChangeNotifier {
     _receiverCity = CityModel();
     if (country.cities.isNotEmpty) {
       _receiverCity = country.cities.first;
-      if (country.cities.first.providers.isNotEmpty) {
-        setProvider(country.cities.first.providers.first);
+      if (country.cities.first.agents.isNotEmpty) {
+        setProvider(country.cities.first.agents.first);
       }
     }
 
     // if [usdAvailability] is mandatory which is equal 2.
-    _sendUSD = receiverProvider.usdAvailability == 2;
+    _sendUSD = receiverAgent.usdAvailability == 2;
 
     setExchangeRate();
     notifyListeners();
@@ -240,18 +240,18 @@ class Calculator extends ChangeNotifier {
 
   void setExchangeRate() {
     // final rate = receiverCountry.currency.rate / sendCountry.currency.rate;
-    final rate = receiverProvider.rate / 1;
+    final rate = receiverAgent.rate / 1;
 
     if (_sendUSD) {
       _exchangeRate = _usdRate;
     } else {
       // _exchangeRate = rate / receiverCountry.currency.profitRatio;
-      _exchangeRate = rate / receiverProvider.receiveFees;
+      _exchangeRate = rate / receiverAgent.receiveFees;
     }
   }
 
-  void setProvider(ProviderModel provider) {
-    _receiverProvider = provider;
+  void setProvider(AgentModel provider) {
+    _receiverAgent = provider;
     _receiveTypeTitle = ' ';
     Global.snackKey.currentState?.hideCurrentSnackBar();
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
@@ -269,6 +269,8 @@ class Calculator extends ChangeNotifier {
     // if (country.coCode == _receiverCountry.coCode) {
     //   final CurrencyModel cu = country.currency;
     //   if (_sendUSD) {
+    //     _minUSD = $sendAmount / p.rate < country.minAmount;
+    //     _maxUSD = $sendAmount / p.rate > country.maxAmount;
     //     _minUSD = country.minAmount /
     //         (cu.rate / _usdRate / cu.profitRatio) /
     //         cu.profitRatio;
@@ -314,8 +316,8 @@ class Calculator extends ChangeNotifier {
       receiverRate = _usdRate;
       receiverRatio = _usdRatio;
     } else {
-      receiverRate = receiverProvider.rate;
-      receiverRatio = receiverProvider.receiveFees;
+      receiverRate = receiverAgent.rate;
+      receiverRatio = receiverAgent.receiveFees;
     }
 
     // double profit = receiverRate / sendCountry.currency.rate / receiverRatio;

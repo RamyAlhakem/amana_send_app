@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '/global/variables.dart';
 
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/loading_animations/build_loading_animation.dart';
+import '/global/variables.dart';
 
 class LoadingDialog {
   LoadingDialog({this.loader, this.barrierColor});

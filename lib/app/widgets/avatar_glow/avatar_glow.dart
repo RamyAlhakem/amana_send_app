@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../theme/colors/main_colors.dart';
+
+import '/app/theme/colors/main_colors.dart';
 
 class AvatarGlow extends StatefulWidget {
   final Widget child;

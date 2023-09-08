@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/services/lang_service.dart';
 import 'shimmer.dart';
 

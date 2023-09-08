@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../../database/injector.dart';
-import '/app/widgets/row.dart';
 
 import '/app/widgets/divider.dart';
+import '/app/widgets/row.dart';
 import '/app/widgets/shimmer/shimmer_load.dart';
+import '/database/injector.dart';
 
 class HomeLoader extends StatelessWidget {
   const HomeLoader({super.key});

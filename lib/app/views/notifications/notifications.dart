@@ -4,7 +4,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
 import '/app/extensions/dark_mode.dart';
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/shimmer/shimmer_load.dart';

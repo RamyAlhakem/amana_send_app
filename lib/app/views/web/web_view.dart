@@ -6,7 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/loading.dart';

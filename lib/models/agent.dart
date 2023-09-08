@@ -1,7 +1,7 @@
 import '/helper/safety_model.dart';
 
-class ProviderModel extends SafetyModel {
-  ProviderModel({
+class AgentModel extends SafetyModel {
+  AgentModel({
     this.id = 0,
     this.name = '',
     this.iconUrl = '',
@@ -17,7 +17,7 @@ class ProviderModel extends SafetyModel {
   double receiveFees = 0, rate = 0;
   bool selected = false;
 
-  ProviderModel.fromJson(Map<String, dynamic> json) {
+  AgentModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
     name = stringFromJson(json, 'name');
     iconUrl = stringFromJson(json, 'iconUrl');

@@ -8,9 +8,8 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/helper/dart_ui.dart';
-import '/tools/tools.dart';
 import 'currency_roller.dart';
-import 'receive_button.dart';
+import 'agent_button.dart';
 import 'total_fees.dart';
 
 class SendFormFields extends StatefulWidget {
@@ -27,7 +26,7 @@ class _SendFormFieldsState extends State<SendFormFields>
   late AppLocalizations? _arb;
   late Calculator _calculator;
 
-  List<bool> selection = <bool>[];
+  String selection = '';
 
   final List<TextInputFormatter> _input = [
     LengthLimitingTextInputFormatter(9),
@@ -105,12 +104,12 @@ class _SendFormFieldsState extends State<SendFormFields>
             onChanged: (String value) =>
                 state.setPrice(value, state.sendCountry),
           ),
-          if (state.receiverCity.providers.isNotEmpty)
+          if (state.receiverCity.agents.isNotEmpty)
             Padding(
               padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
               child: TextX(_arb!.selectReceiveType),
             ),
-          if (state.receiverCity.providers.isNotEmpty)
+          if (state.receiverCity.agents.isNotEmpty)
             MasonryGridView.count(
               padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
               shrinkWrap: true,
@@ -118,21 +117,16 @@ class _SendFormFieldsState extends State<SendFormFields>
               crossAxisCount: DartUI.isTablet ? 4 : 2,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
-              itemCount: state.receiverCity.providers.length,
+              itemCount: state.receiverCity.agents.length,
               itemBuilder: (_, i) {
-                // Fill up select list once empty or when recipients list is changed.
-                selection =
-                    Tools.setSelect(state.receiverCity.providers, selection);
-                return ReceiveButton(
+                selection = '${state.receiverAgent.id}';
+                return AgentButton(
                   () {
-                    selection =
-                        Tools.setSelect(state.receiverCity.providers, <bool>[]);
-                    selection[i] = !selection[i];
-                    state.setProvider(state.receiverCity.providers[i]);
+                    selection = '${state.receiverCity.agents[i].id}';
+                    state.setProvider(state.receiverCity.agents[i]);
                   },
-                  selected: selection[i],
-                  title: state.receiverCity.providers[i].name,
-                  icon: state.receiverCity.providers[i].iconUrl,
+                  selected: selection == '${state.receiverCity.agents[i].id}',
+                  agent: state.receiverCity.agents[i],
                 );
               },
             ),

@@ -61,7 +61,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   void dispose() {
     super.dispose();
     _calculator.clearRecipient();
-    // _calculator.setReceiveType(ProviderModel());
+    // _calculator.setReceiveType(AgentModel());
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
   }
 

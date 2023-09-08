@@ -217,7 +217,7 @@ class _HomeState extends State<Home> {
                         );
                       }
 
-                      if (state.receiverProvider.id == 0) {
+                      if (state.receiverAgent.id == 0) {
                         return Helper.snack(_arb!.pleaseSelectReceiveType);
                       }
 

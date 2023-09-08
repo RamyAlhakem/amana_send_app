@@ -8,7 +8,7 @@ import '/graphql/explorer/queries.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
 import '/helper/helper.dart';
-import '/models/provider.dart';
+import '/models/agent.dart';
 
 class GetProviders {
   static final BuildContext context = Global.key.currentContext!;
@@ -39,10 +39,10 @@ class GetProviders {
   void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('providers')) {
       if (data['providers'] is List && data['providers'].isNotEmpty) {
-        List<ProviderModel> payments = List<ProviderModel>.from(
-          data['providers'].map((x) => ProviderModel.fromJson(x)),
+        List<AgentModel> payments = List<AgentModel>.from(
+          data['providers'].map((x) => AgentModel.fromJson(x)),
         );
-        _pr.getProviders(payments);
+        _pr.getAgents(payments);
       }
     }
   }

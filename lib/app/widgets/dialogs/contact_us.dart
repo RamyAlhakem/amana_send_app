@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:line_icons/line_icons.dart';
 
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
@@ -10,7 +10,6 @@ import '/helper/dart_ui.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
 import 'settings.dart';
-
 
 class ContactUs {
   ContactUs({required this.message});

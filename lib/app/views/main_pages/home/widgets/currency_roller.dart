@@ -20,7 +20,7 @@ class CurrencyRoller extends StatelessWidget {
       child = Button(
         () {
           // if [usdAvailability] is mandatory which is equal 2:
-          if (c.receiverProvider.usdAvailability == 2) {
+          if (c.receiverAgent.usdAvailability == 2) {
             return Helper.banner(
               'Receive only in USD for this country',
               leadingIcon: HeroIcons.checkCircle,
@@ -29,7 +29,7 @@ class CurrencyRoller extends StatelessWidget {
           }
 
           // if [usdAvailability] is optional which is equal 1:
-          if (c.receiverProvider.usdAvailability == 1) {
+          if (c.receiverAgent.usdAvailability == 1) {
             SettingsDialog(
               onSubmit: null,
               title: arb!.selectCurrency,
@@ -71,7 +71,7 @@ class CurrencyRoller extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(100),
                       onTap: () {
-                        if (c.receiverProvider.usdAvailability > 0) {
+                        if (c.receiverAgent.usdAvailability > 0) {
                           c.setUSD(true);
                         } else {
                           c.setUSD(false);

@@ -1,9 +1,3 @@
-import '/app/widgets/divider.dart';
-import '/app/widgets/row.dart';
-
-import '/app/views/notifications/provider/notifications_state.dart';
-import '/app/widgets/buttons/button.dart';
-import '/services/lang_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -11,12 +5,17 @@ import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
+import '/app/views/notifications/provider/notifications_state.dart';
 import '/app/widgets/blurry_container.dart';
+import '/app/widgets/buttons/button.dart';
+import '/app/widgets/divider.dart';
+import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
+import '/database/injector.dart';
 import '/global/variables.dart';
-import '../../../../database/injector.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
+import '/services/lang_service.dart';
 
 class StructureKit {
   StructureKit({required this.pageIndex});

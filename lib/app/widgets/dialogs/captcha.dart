@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import '../../theme/colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/blurry_container.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';

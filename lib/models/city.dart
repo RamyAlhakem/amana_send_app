@@ -1,5 +1,5 @@
 import '/helper/safety_model.dart';
-import '/models/provider.dart';
+import 'agent.dart';
 
 class CityModel extends SafetyModel {
   CityModel({
@@ -7,22 +7,21 @@ class CityModel extends SafetyModel {
     this.name = '',
     this.areaNote = '',
     this.defaultMessage = '',
-    this.providers = const <ProviderModel>[],
+    this.agents = const <AgentModel>[],
   });
 
   int id = 0;
   String name = '';
   String areaNote = '';
   String defaultMessage = '';
-  List<ProviderModel> providers = const <ProviderModel>[];
+  List<AgentModel> agents = const <AgentModel>[];
 
   CityModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
     name = stringFromJson(json, 'name');
     areaNote = stringFromJson(json, 'areaNote');
     defaultMessage = stringFromJson(json, 'defaultMessage');
-    providers =
-        listFromJson(json, 'providers', (v) => ProviderModel.fromJson(v));
+    agents = listFromJson(json, 'providers', (v) => AgentModel.fromJson(v));
     super.fromJson(json);
   }
 
@@ -32,6 +31,6 @@ class CityModel extends SafetyModel {
         'name': name,
         'areaNote': areaNote,
         'defaultMessage': defaultMessage,
-        'providers': providers,
+        'providers': agents,
       };
 }
