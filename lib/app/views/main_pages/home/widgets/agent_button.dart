@@ -1,10 +1,13 @@
-import 'package:amana_send/models/agent.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
+import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/text/text_x.dart';
+import '/helper/helper.dart';
+import '/models/agent.dart';
 
 class AgentButton extends StatelessWidget {
   const AgentButton(
@@ -46,37 +49,48 @@ class AgentButton extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: TextX(
-                        agent.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        TextX(
-                          '1 USDT = ',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontSize: 11,
-                                  ),
-                        ),
-                        TextX(
-                          'MYR ${agent.rate}',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontSize: 11,
-                                  ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: TextX(
+                          agent.name,
+                          style: Theme.of(context).textTheme.bodySmall,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      Flexible(
+                        child: FittedBox(
+                          child: Text.rich(
+                            textScaleFactor: 1.0,
+                            TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '1 USDT = ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(fontSize: 11),
+                                ),
+                                TextSpan(
+                                  text: Helper.priced(agent.rate,
+                                      currencyCode: context.select(
+                                          (Calculator c) =>
+                                              c.receiverCountry.currency.code)),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(fontSize: 11),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

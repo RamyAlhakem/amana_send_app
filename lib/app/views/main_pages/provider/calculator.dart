@@ -49,7 +49,6 @@ class Calculator extends ChangeNotifier {
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
 
-  String _receiveTypeTitle = '';
   bool _sendUSD = false;
 
   double _fees = 0;
@@ -61,7 +60,7 @@ class Calculator extends ChangeNotifier {
 
   double get percentFee => _percentFee;
   double get minFee => _minFee;
-  double get usdPrice => _usdRate;
+  double get usdRate => _usdRate;
   double get usdRatio => _usdRatio;
   double get maxUSD => _maxUSD;
   double get minUSD => _minUSD;
@@ -87,7 +86,6 @@ class Calculator extends ChangeNotifier {
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
 
-  String get receiveTypeTitle => _receiveTypeTitle;
   bool get sendUSD => _sendUSD;
 
   double get fees => _fees;
@@ -222,10 +220,11 @@ class Calculator extends ChangeNotifier {
   CountryModel setReceiverCountry(CountryModel country) {
     _receiverCountry = country;
     _receiverCity = CityModel();
+    _receiverAgent = AgentModel();
     if (country.cities.isNotEmpty) {
       _receiverCity = country.cities.first;
       if (country.cities.first.agents.isNotEmpty) {
-        setProvider(country.cities.first.agents.first);
+        setAgent(country.cities.first.agents.first);
       }
     }
 
@@ -239,56 +238,32 @@ class Calculator extends ChangeNotifier {
   }
 
   void setExchangeRate() {
-    // final rate = receiverCountry.currency.rate / sendCountry.currency.rate;
     final rate = receiverAgent.rate / 1;
-
-    if (_sendUSD) {
-      _exchangeRate = _usdRate;
-    } else {
-      // _exchangeRate = rate / receiverCountry.currency.profitRatio;
-      _exchangeRate = rate / receiverAgent.receiveFees;
-    }
+    sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
+    notifyListeners();
   }
 
-  void setProvider(AgentModel provider) {
-    _receiverAgent = provider;
-    _receiveTypeTitle = ' ';
+  void setAgent(AgentModel agent) {
+    _receiverAgent = agent;
     Global.snackKey.currentState?.hideCurrentSnackBar();
+    setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
   void setUSD(bool usd) {
     _sendUSD = usd;
-
-    setPrice(_sender.text, _receiverCountry);
+    setPrice(sender.text);
   }
 
-  void setPrice(String value, CountryModel country) {
-    //
-    // Calculate minimum recipient amount limit if USD
-    // if (country.coCode == _receiverCountry.coCode) {
-    //   final CurrencyModel cu = country.currency;
-
+  void setPrice(String value) {
     if (_sendUSD) {
       _minUSD = receiverCountry.minAmount / receiverAgent.rate;
       _maxUSD = receiverCountry.maxAmount / receiverAgent.rate;
-      //     _minUSD = country.minAmount /
-      //         (cu.rate / _usdRate / cu.profitRatio) /
-      //         cu.profitRatio;
-      //     _maxUSD = country.maxAmount /
-      //         (cu.rate / _usdRate / cu.profitRatio) /
-      //         cu.profitRatio;
-      //   }
     }
 
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);
       convertedAmount = calculate(value, sender.text, receiver.text);
-      double feesPercent = sender.text.isEmpty
-          ? 0.00
-          : (_percentFee / 100) * double.parse(sender.text);
-
-      _minFee = _minFee > feesPercent ? _minFee : feesPercent;
 
       if (value == sender.text) {
         _receiver = TextEditingController(
@@ -304,49 +279,54 @@ class Calculator extends ChangeNotifier {
       clearFields();
     }
 
-    setExchangeRate();
     notifyListeners();
   }
 
   double calculate(String controller, String sender, String receiver) {
-    //percent: final rate
-    //recipientCountry.rate: currency rate or USD rate
-    //recipientCountry.ratio: profit
-    double receiverRate = 0, receiverRatio = 0;
-    if (_sendUSD) {
-      receiverRate = _usdRate;
-      receiverRatio = _usdRatio;
+    double receiverRate = 0;
+    final double receiverRatio = receiverAgent.receiveFees;
+
+    if (sendUSD) {
+      receiverRate = usdRate;
     } else {
       receiverRate = receiverAgent.rate;
-      receiverRatio = receiverAgent.receiveFees;
     }
 
-    // double profit = receiverRate / sendCountry.currency.rate / receiverRatio;
-    double profit = receiverRate / 1 / receiverRatio;
-
-    // ROUND UP DOUBLE two numbers only after comma
-    double percent = double.parse(profit.toStringAsFixed(2));
-
+    double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
 
-    converted = (controller == receiver)
-        ? double.parse(controller) / percent
-        : double.parse(controller) * percent;
+    if (controller == sender) {
+      double userCountryFees = (percentFee * amount) / 100;
+      double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
 
-    double amount = 0;
-    amount = (controller == receiver) ? converted : double.parse(sender);
+      _fees = sendFees;
+      double amountWithoutCountryFees = amount - sendFees;
+      converted = sendUSD
+          ? amountWithoutCountryFees
+          : amountWithoutCountryFees * receiverRate;
 
-    double percentFee = amount * (_percentFee / 100);
-    if (percentFee > AppMetadata.get.minimumSendFee) {
-      _fees = percentFee;
+      double ceil = receiverCountry.currency.ceil;
+      _amountPlusFee = amount + receiverRatio;
+
+      if (!sendUSD && ceil > 0) {
+        converted = (converted / ceil).ceilToDouble() * ceil;
+      } else {
+        converted = converted.ceilToDouble();
+      }
     } else {
-      _fees = AppMetadata.get.minimumSendFee;
+      double newAmountInUsd = sendUSD ? amount : amount / receiverAgent.rate;
+      double newAmount =
+          sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
+      double newFees =
+          sendUSD ? (percentFee * newAmount) / 100 : newAmount - newAmountInUsd;
+      double sendFees = newFees > minFee ? newFees : minFee;
+
+      _fees = sendFees;
+      converted = newAmount;
+      _amountPlusFee = newAmount + receiverRatio;
     }
 
-    _amountPlusFee = amount + _fees;
-
     setExchangeRate();
-
     return converted;
   }
 
@@ -359,6 +339,8 @@ class Calculator extends ChangeNotifier {
     bool allConditions = true;
 
     if (transfer != null) {
+      _sender.text = '${transfer.sendAmount}';
+      _receiver.text = '${transfer.recipientAmount}';
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
         _sendUSD = true;
@@ -366,12 +348,8 @@ class Calculator extends ChangeNotifier {
         _sendUSD = transfer.isReceiveInUsd;
       }
 
-      setProvider(transfer.provider);
-      _sender.text = '${transfer.sendAmount}';
+      setAgent(transfer.provider);
     }
-
-    // Check if user wants to send from recipient/recipients page.
-    if (sender.text.isEmpty) setReceiverCountry(recipient.country);
 
     if (Provider.of<RecipientsState>(
       context,
@@ -398,7 +376,8 @@ class Calculator extends ChangeNotifier {
       }
 
       if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
-        setPrice(sender.text, recipient.country);
+        Helper.log(sender.text);
+        Helper.log(receiver.text);
         selectRecipient(recipient);
         if (receiver.text.isNotEmpty) {
           if (double.parse(receiver.text) < recipient.country.minAmount) {

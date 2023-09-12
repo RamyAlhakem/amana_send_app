@@ -52,13 +52,13 @@ class SelectRecipient extends StatefulWidget {
       ),
       secondButton: ExpandButton(
         () {
-          if (user.verified != 1) {
-            Helper.userVerify(context, user.verified, navigate: true);
-            Helper.bannerWarning(
-              arb.toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount,
-            );
-            return;
-          }
+          // if (user.verified != 1) {
+          //   Helper.userVerify(context, user.verified, navigate: true);
+          //   Helper.bannerWarning(
+          //     arb.toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount,
+          //   );
+          //   return;
+          // }
 
           if (calculator.selectedRecipient == null) {
             return Helper.bannerWarning(arb.pleaseSelectRecipient);

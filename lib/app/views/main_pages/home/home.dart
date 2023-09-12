@@ -107,7 +107,7 @@ class _HomeState extends State<Home> {
             child: RefreshIndicator(
               onRefresh: () async {
                 await getResources();
-                state.setPrice(state.sender.text, state.receiverCountry);
+                state.setPrice(state.sender.text);
               },
               child: ListView(
                 shrinkWrap: true,
@@ -180,7 +180,7 @@ class _HomeState extends State<Home> {
                   ),
                   // "You send", "Receiver gets"
                   const SendFormFields(),
-                
+
                   Button(
                     () {
                       if (Global.appSettings.token.isEmpty) {
@@ -219,6 +219,9 @@ class _HomeState extends State<Home> {
                         );
                       }
 
+                      if (state.receiverCity.id == 0) {
+                        return Helper.snack(_arb!.selectCity);
+                      }
                       if (state.receiverAgent.id == 0) {
                         return Helper.snack(_arb!.pleaseSelectReceiveType);
                       }

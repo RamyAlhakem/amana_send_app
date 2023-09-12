@@ -11,6 +11,7 @@ class TextFieldX extends StatelessWidget {
     this.border,
     Key? key,
     this.onSubmitted,
+    this.onTap,
     this.validateHint,
     this.readOnly = false,
     this.isValidateEmail = false,
@@ -46,6 +47,7 @@ class TextFieldX extends StatelessWidget {
 
   final Function(String)? onChanged;
   final void Function(String)? onSubmitted;
+  final void Function()? onTap;
   final TextEditingController? controller;
   final bool readOnly;
   final bool isValidateEmail;
@@ -101,6 +103,7 @@ class TextFieldX extends StatelessWidget {
                       ),
             initialValue: initialValue,
             enabled: enabled,
+            onTap: onTap,
             controller: controller,
             inputFormatters: input,
             obscureText: obscureText,

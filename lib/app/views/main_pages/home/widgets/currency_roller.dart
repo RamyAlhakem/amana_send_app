@@ -111,7 +111,7 @@ class CurrencyRoller extends StatelessWidget {
         color: Colors.transparent,
         padding: EdgeInsets.zero,
         TextX(
-          c.receiverCountry.currency.code,
+          c.sendUSD ? 'USD' : c.receiverCountry.currency.code,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       );

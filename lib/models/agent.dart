@@ -22,7 +22,7 @@ class AgentModel extends SafetyModel {
     name = stringFromJson(json, 'name');
     iconUrl = stringFromJson(json, 'iconUrl');
     status = intFromJson(json, 'status');
-    rate = doubleFromJson(json, 'rate');
+    rate = doubleFromJson(json, 'rate', decimal: 10);
     receiveFees = doubleFromJson(json, 'receiveFees');
     usdAvailability = intFromJson(json, 'usdAvailability');
     selected = boolFromJson(json, 'x');

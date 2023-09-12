@@ -1,13 +1,12 @@
-import 'package:amana_send/app/theme/colors/main_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:heroicons/heroicons.dart';
 
 import '/app/extensions/dark_mode.dart';
-import 'package:flutter/material.dart';
-import 'package:heroicons/heroicons.dart';
+import '/app/theme/colors/main_colors.dart';
+import '/app/widgets/text/text_x.dart';
 import '/configs/configs.dart';
 import '/helper/helper.dart';
-import '/app/widgets/text/text_x.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '/services/lang_service.dart';
 
 class GeneralWidgets {

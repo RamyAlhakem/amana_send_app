@@ -215,6 +215,24 @@ class _TransferDetailState extends State<TransferDetail> {
               ]),
               const SizedBox(height: 4),
               RowSpaceBetween([
+                TextX(_arb!.providerFees),
+                Text.rich(
+                  textScaleFactor: 1.0,
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text:
+                            '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
+                      ),
+                      TextSpan(
+                        text: user.country.currency.code,
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 4),
+              RowSpaceBetween([
                 TextX(_arb!.receiveType),
                 TextX(receiveType),
               ]),

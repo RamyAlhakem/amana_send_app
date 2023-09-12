@@ -5,11 +5,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/widgets/expander.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/helper/dart_ui.dart';
-import 'currency_roller.dart';
 import 'agent_button.dart';
+import 'currency_roller.dart';
 import 'total_fees.dart';
 
 class SendFormFields extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SendFormFieldsState extends State<SendFormFields>
   late Calculator _calculator;
 
   String selection = '';
+  FocusNode senderNode = FocusNode();
 
   final List<TextInputFormatter> _input = [
     LengthLimitingTextInputFormatter(9),
@@ -63,52 +65,59 @@ class _SendFormFieldsState extends State<SendFormFields>
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFieldX(
-            hint: _arb!.youSend,
-            controller: state.sender,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: Container(
-              width: 60,
-              alignment: Alignment.center,
-              child: TextX(
-                'USDT',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+          Expander(
+            expand: state.receiverAgent.name.isNotEmpty,
+            child: Wrap(
+              children: [
+                TextFieldX(
+                  hint: _arb!.youSend,
+                  controller: state.sender,
+                  focusNode: senderNode,
+                  type: TextInputType.phone,
+                  input: _input,
+                  suffixIcon: Container(
+                    width: 60,
+                    alignment: Alignment.center,
+                    child: TextX(
+                      'USDT',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  borderRadius: borderRadius,
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
+                  onChanged: (String value) => state.setPrice(value),
                 ),
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
-            onChanged: (String value) => state.setPrice(
-              value,
-              state.receiverCountry,
+                TextFieldX(
+                  hint: '${_arb!.receiverGets} (${_arb!.readOnly})',
+                  controller: state.receiver,
+                  type: TextInputType.phone,
+                  input: _input,
+                  suffixIcon: const CurrencyRoller(),
+                  borderRadius: borderRadius,
+                  filled: false,
+                  readOnly: true,
+                  onTap: () => senderNode.requestFocus(),
+                  fillColor: Theme.of(context).cardColor,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                  onChanged: (String value) => state.setPrice(value),
+                ),
+              ],
             ),
           ),
-          TextFieldX(
-            hint: _arb!.receiverGets,
-            controller: state.receiver,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: const CurrencyRoller(),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) =>
-                state.setPrice(value, state.sendCountry),
-          ),
-          if (state.receiverCity.agents.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
-              child: TextX(_arb!.selectReceiveType),
-            ),
+          if (!widget.keepAlive)
+            if (state.receiverCity.agents.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
+                child: TextX(_arb!.selectProvider),
+              ),
           if (!widget.keepAlive)
             if (state.receiverCity.agents.isNotEmpty)
               MasonryGridView.count(
@@ -124,18 +133,21 @@ class _SendFormFieldsState extends State<SendFormFields>
                   return AgentButton(
                     () {
                       selection = '${state.receiverCity.agents[i].id}';
-                      state.setProvider(state.receiverCity.agents[i]);
+                      state.setAgent(state.receiverCity.agents[i]);
                     },
                     selected: selection == '${state.receiverCity.agents[i].id}',
                     agent: state.receiverCity.agents[i],
                   );
                 },
               ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-            child: TotalFees(),
+          Expander(
+            expand: state.receiverAgent.name.isNotEmpty,
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+              child: TotalFees(),
+            ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: state.receiverAgent.name.isNotEmpty ? 15 : 5),
         ],
       );
       return child;

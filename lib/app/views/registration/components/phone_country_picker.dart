@@ -123,8 +123,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                               }
                               _pr.setCities(_countries[i].cities);
 
-                              _calculator.setPrice(
-                                  _calculator.sender.text, _pr.country!);
+                              _calculator.setPrice(_calculator.sender.text);
                             });
 
                             SettingsDialog.dismiss();

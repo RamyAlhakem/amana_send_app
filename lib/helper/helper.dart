@@ -100,11 +100,9 @@ class Helper {
     bool currency = true,
     String currencyCode = 'USDT',
   }) {
-    double fraction = (amount % 1);
-
-    int fixed = fraction != 0 ? 2 : 0;
-
-    String price = currency
+    final double fraction = (amount % 1);
+    final int fixed = fraction != 0 ? 2 : 0;
+    final String price = currency
         ? '$currencyCode ${amount.toStringAsFixed(fixed)}'
         : amount.toStringAsFixed(fixed);
     return price;

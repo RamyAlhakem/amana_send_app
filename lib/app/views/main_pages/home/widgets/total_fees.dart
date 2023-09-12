@@ -41,6 +41,24 @@ class TotalFees extends StatelessWidget {
                 ]),
                 const SizedBox(height: 4),
                 RowSpaceBetween([
+                  TextX(arb.providerFees),
+                  Text.rich(
+                    textScaleFactor: 1.0,
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text:
+                              '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
+                        ),
+                        TextSpan(
+                          text: state.sendCountry.currency.code,
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 4),
+                RowSpaceBetween([
                   TextX(arb.amountWeWillConvert),
                   Text.rich(
                     textScaleFactor: 1.0,
@@ -62,35 +80,36 @@ class TotalFees extends StatelessWidget {
                   child: RowSpaceBetween([
                     TextX(arb.receiveType),
                     Visibility(
-                      visible: state.receiveTypeTitle.isNotEmpty,
+                      visible: state.receiverAgent.name.isNotEmpty,
                       replacement: TextX(arb.cashPickUp),
-                      child: TextX(state.receiveTypeTitle),
+                      child: TextX(state.receiverAgent.name),
                     ),
                   ]),
                 ),
                 const SizedBox(height: 4),
-                RowSpaceBetween([
-                  TextX(arb.todayExchangeRate),
-                  Text.rich(
-                    textScaleFactor: 1.0,
-                    TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              '${isAr ? '' : '1'} ${state.sendCountry.currency.code} ${isAr ? '1 ' : ''}= ',
-                        ),
-                        TextSpan(
-                          text: state.exchangeRate.toStringAsFixed(2),
-                        ),
-                        TextSpan(
-                          text:
-                              ' ${state.sendUSD ? 'USD' : state.receiverCountry.currency.code}',
-                        ),
-                      ],
-                    ),
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ]),
+                // RowSpaceBetween([
+                //   TextX(arb.todayExchangeRate),
+                //   Text.rich(
+                //     textScaleFactor: 1.0,
+                //     TextSpan(
+                //       children: <TextSpan>[
+                //         TextSpan(
+                //           text:
+                //               '${state.sendCountry.currency.code} ${isAr ? '' : '1'}${isAr ? '1 ' : ''} = ',
+                //         ),
+                //         TextSpan(
+                //           text: Helper.priced(
+                //             state.exchangeRate,
+                //             currencyCode: state.sendUSD
+                //                 ? 'USD'
+                //                 : state.receiverCountry.currency.code,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //     style: Theme.of(context).textTheme.bodyLarge,
+                //   ),
+                // ]),
               ],
             ),
           ),

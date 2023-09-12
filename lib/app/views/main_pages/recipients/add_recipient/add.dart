@@ -61,10 +61,7 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _area = TextEditingController();
   String _pickUp = '';
 
-  bool bankFocus = false;
   bool keepSendProcess = false;
-
-  final FocusNode _bankAccountNumberNode = FocusNode();
 
   bool arabicMandatory() =>
       (_registerState.country ?? CountryModel()).recipientArabicMandatory;
@@ -96,10 +93,6 @@ class _AddRecipientState extends State<AddRecipient> {
       }
 
       if (widget.query.isNotEmpty) {
-        if (widget.query['bankFocus'] == 'true') {
-          bankFocus = true;
-          _bankAccountNumberNode.requestFocus();
-        }
         if (widget.query['keepSendProcess'] == 'true') keepSendProcess = true;
       }
     }
@@ -285,6 +278,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               TextFieldX(
+                onSubmitted: (_) => _submit(),
                 controller: _relation,
                 hint: _arb!.relativeRelation,
                 type: TextInputType.name,

@@ -63,7 +63,7 @@ class CountryRoller extends StatelessWidget {
                         country = state.receiverCountry;
                         countries = state.receiveCountries;
 
-                        state.setPrice(state.sender.text, country);
+                        state.setPrice(state.sender.text);
                         SettingsDialog.dismiss();
                       }),
                       child: Country(
