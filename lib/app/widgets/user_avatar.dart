@@ -29,7 +29,7 @@ class UserAvatar extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: MainColors.color1.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(100),
             border: Border.all(color: MainColors.color1),
           ),
           child: icon ??

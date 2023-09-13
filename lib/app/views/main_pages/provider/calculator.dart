@@ -255,6 +255,25 @@ class Calculator extends ChangeNotifier {
     setPrice(sender.text);
   }
 
+  void roundReceiverAmount() {
+    double ceil = receiverCountry.currency.ceil;
+    double round = double.tryParse(receiver.text) ?? 0;
+
+    if (!sendUSD) {
+      round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
+    } else {
+      round = round.ceilToDouble();
+    }
+
+    Helper.log('round: $round');
+    if (receiver.text.isNotEmpty) {
+      _receiver.text = '$round';
+      _receiver.text =
+          Helper.priced(double.parse(_receiver.text), currency: false);
+    }
+    notifyListeners();
+  }
+
   void setPrice(String value) {
     if (_sendUSD) {
       _minUSD = receiverCountry.minAmount / receiverAgent.rate;
@@ -308,8 +327,9 @@ class Calculator extends ChangeNotifier {
       double ceil = receiverCountry.currency.ceil;
       _amountPlusFee = amount + receiverRatio;
 
-      if (!sendUSD && ceil > 0) {
-        converted = (converted / ceil).ceilToDouble() * ceil;
+      if (!sendUSD) {
+        converted =
+            ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
       } else {
         converted = converted.ceilToDouble();
       }

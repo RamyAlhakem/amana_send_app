@@ -24,11 +24,10 @@ class SendFormFields extends StatefulWidget {
 
 class _SendFormFieldsState extends State<SendFormFields>
     with AutomaticKeepAliveClientMixin {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
   late Calculator _calculator;
 
   String selection = '';
-  FocusNode senderNode = FocusNode();
 
   final List<TextInputFormatter> _input = [
     LengthLimitingTextInputFormatter(9),
@@ -45,7 +44,7 @@ class _SendFormFieldsState extends State<SendFormFields>
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -70,9 +69,8 @@ class _SendFormFieldsState extends State<SendFormFields>
             child: Wrap(
               children: [
                 TextFieldX(
-                  hint: _arb!.youSend,
+                  hint: arb.youSend,
                   controller: state.sender,
-                  focusNode: senderNode,
                   type: TextInputType.phone,
                   input: _input,
                   suffixIcon: Container(
@@ -93,21 +91,20 @@ class _SendFormFieldsState extends State<SendFormFields>
                   onChanged: (String value) => state.setPrice(value),
                 ),
                 TextFieldX(
-                  hint: '${_arb!.receiverGets} (${_arb!.readOnly})',
+                  hint: arb.receiverGets,
                   controller: state.receiver,
                   type: TextInputType.phone,
                   input: _input,
                   suffixIcon: const CurrencyRoller(),
                   borderRadius: borderRadius,
-                  filled: false,
-                  readOnly: true,
-                  onTap: () => senderNode.requestFocus(),
+                  filled: true,
                   fillColor: Theme.of(context).cardColor,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                   onChanged: (String value) => state.setPrice(value),
+                  onSubmitted: (_) => state.roundReceiverAmount(),
                 ),
               ],
             ),
@@ -116,7 +113,7 @@ class _SendFormFieldsState extends State<SendFormFields>
             if (state.receiverCity.agents.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
-                child: TextX(_arb!.selectProvider),
+                child: TextX(arb.selectProvider),
               ),
           if (!widget.keepAlive)
             if (state.receiverCity.agents.isNotEmpty)

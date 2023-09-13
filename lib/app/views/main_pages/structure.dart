@@ -54,7 +54,11 @@ class _StructureState extends State<Structure> {
     return WillPopScope(
       onWillPop: () => StructureHandler.onWillPop(),
       child: GestureDetector(
-        onTap: () => Helper.unFocusCursor(context),
+        onTap: () {
+          final state = Provider.of<Calculator>(context, listen: false);
+          state.roundReceiverAmount();
+          Helper.unFocusCursor(context);
+        },
         child: Scaffold(
           appBar: AutoAppBar(
             bGColor: Theme.of(context).cardColor,

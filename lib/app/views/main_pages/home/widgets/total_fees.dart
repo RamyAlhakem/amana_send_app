@@ -7,7 +7,6 @@ import '/app/widgets/divider.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
-import '/services/lang_service.dart';
 
 class TotalFees extends StatelessWidget {
   const TotalFees({super.key});
@@ -15,7 +14,6 @@ class TotalFees extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
-    final bool isAr = LangService.isAR();
     return Consumer<Calculator>(builder: (_, state, child) {
       child = Column(
         children: [

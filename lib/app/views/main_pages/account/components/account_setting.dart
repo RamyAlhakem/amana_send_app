@@ -31,7 +31,7 @@ class AccountSetting extends StatelessWidget {
         decoration: BoxDecoration(
           color: MainColors.color1.withOpacity(0.2),
           border: Border.all(color: MainColors.color1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(100),
         ),
         child: HeroIcon(icon, size: 25, color: iconColor ?? MainColors.color1),
       ),

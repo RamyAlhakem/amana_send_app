@@ -111,6 +111,7 @@ class _HomeState extends State<Home> {
               },
               child: ListView(
                 shrinkWrap: true,
+                clipBehavior: Clip.none,
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 children: [
                   // Row(
