@@ -6,7 +6,6 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
-import '/global/variables.dart';
 
 class TotalFees extends StatelessWidget {
   const TotalFees({super.key});
