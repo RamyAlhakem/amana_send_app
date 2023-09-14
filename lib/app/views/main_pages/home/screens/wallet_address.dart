@@ -20,6 +20,7 @@ import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
+import '/models/metadata.dart';
 import '/router/app_route.dart';
 
 class WalletAddress extends StatefulWidget {
@@ -34,14 +35,14 @@ class _WalletAddressState extends State<WalletAddress>
   late AppLocalizations? arb;
   late TransfersState provider;
 
-  int duration = 3600; // one hour.
+  int duration = 120;
   int reDuration = 5; // five seconds.
   late AnimationController ctrl;
   Timer? timer;
   Timer? reTimer;
 
   void isTimeOut() {
-    if (duration != 0) {
+    if (duration > 0) {
       timer = Timer.periodic(
         Duration(seconds: duration),
         (_) => setState(() => duration = 0),
@@ -68,6 +69,7 @@ class _WalletAddressState extends State<WalletAddress>
   void initState() {
     super.initState();
     provider = Provider.of<TransfersState>(context, listen: false);
+    duration = AppMetadata.get.walletAddressValidTime * 60;
     ctrl = AnimationController(
       vsync: this,
       duration: Duration(seconds: duration),

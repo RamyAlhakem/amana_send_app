@@ -61,7 +61,6 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   void dispose() {
     super.dispose();
     _calculator.clearRecipient();
-    // _calculator.setReceiveType(AgentModel());
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
   }
 
@@ -73,11 +72,13 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return WillPopScope(
       onWillPop: () async {
-        SubmitDialog(
-          () => context.pop(),
-          content: _arb!.areYouSureYouWantToCancelThisTransfer,
-        ).show(context);
-        return false;
+        if (_index != 2) {
+          SubmitDialog(
+            () => context.pop(),
+            content: _arb!.areYouSureYouWantToCancelThisTransfer,
+          ).show(context);
+        }
+        return _index != 2 ? false : true;
       },
       child: Scaffold(
         appBar: AutoAppBar(
@@ -93,10 +94,12 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
             statusBarBrightness: Global.brightnessLight(),
             statusBarIconBrightness: Global.brightnessLight(),
           ),
-          onPressed: () => SubmitDialog(
-            () => context.pop(),
-            content: _arb!.areYouSureYouWantToCancelThisTransfer,
-          ).show(context),
+          onPressed: _index != 2
+              ? () => SubmitDialog(
+                    () => context.pop(),
+                    content: _arb!.areYouSureYouWantToCancelThisTransfer,
+                  ).show(context)
+              : null,
         ),
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),

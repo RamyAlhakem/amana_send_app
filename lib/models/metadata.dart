@@ -14,6 +14,7 @@ class AppMetadata extends SafetyModel {
     this.minimumSendFee = 0,
     this.sendsFees = 0,
     this.usdRate = 0,
+    this.walletAddressValidTime = 0,
     this.phoneNumber = '',
     this.whatsapp = '',
     this.xUrl = '',
@@ -24,19 +25,15 @@ class AppMetadata extends SafetyModel {
     this.appForgetPasswordCaptcha = false,
   });
 
-  String address = '';
-  String androidUrl = '';
-  String appGalleryUrl = '';
-  String appStoreUrl = '';
-  String companyHouseNumber = '';
-  String contactEmail = '';
-  String facebookUrl = '';
+  String address = '', androidUrl = '', appGalleryUrl = '', appStoreUrl = '';
+  String companyHouseNumber = '', contactEmail = '', facebookUrl = '';
   String maintenanceMessage = '';
   bool maintenanceMode = false;
   double minimumSendFee = 0;
   double sendsFees = 0;
   double usdRate = 0;
   double usdRatio = 0;
+  int walletAddressValidTime = 0;
   String phoneNumber = '';
   String whatsapp = '';
   String xUrl = '';
@@ -60,6 +57,7 @@ class AppMetadata extends SafetyModel {
     sendsFees = doubleFromJson(json, 'sendsFees', decimal: 10);
     usdRate = doubleFromJson(json, 'usdRate', decimal: 10);
     usdRatio = doubleFromJson(json, 'usdRatio', decimal: 10);
+    walletAddressValidTime = intFromJson(json, 'walletAddressValidTime');
     phoneNumber = stringFromJson(json, 'phoneNumber');
     whatsapp = stringFromJson(json, 'whatsapp');
     xUrl = stringFromJson(json, 'xUrl');
@@ -86,6 +84,7 @@ class AppMetadata extends SafetyModel {
         'sendsFees': sendsFees,
         'usdRate': usdRate,
         'usdRatio': usdRatio,
+        'walletAddressValidTime': walletAddressValidTime,
         'phoneNumber': phoneNumber,
         'whatsapp': whatsapp,
         'xUrl': xUrl,

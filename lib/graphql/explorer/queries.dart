@@ -27,6 +27,7 @@ class Queries {
         usdRate
         usdRatio
         phoneNumber
+        walletAddressValidTime
         whatsapp
         xUrl
         registerAddress

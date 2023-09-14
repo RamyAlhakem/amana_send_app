@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/app/extensions/dark_mode.dart';
-import '../colors/main_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/theme/gradient/gradients.dart';
 
 class Decorations {
