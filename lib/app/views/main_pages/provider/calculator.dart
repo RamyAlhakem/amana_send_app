@@ -17,7 +17,7 @@ import '/models/transfer.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 
-class Calculator extends ChangeNotifier {
+class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
 
@@ -158,32 +158,9 @@ class Calculator extends ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
+      _fees = 0;
       _amountPlusFee = 0;
     });
-  }
-
-  bool isRecipientArabicMandatoryNameEmpty(RecipientModel recipient) {
-    bool empty = false;
-
-    if (recipient.country.recipientArabicMandatory) {
-      if (recipient.arFirstName.isEmpty) empty = true;
-      if (recipient.arFatherName.isEmpty) empty = true;
-      if (recipient.arLastName.isEmpty) empty = true;
-    }
-
-    return empty;
-  }
-
-  bool isRecipientEnglishMandatoryNameEmpty(RecipientModel recipient) {
-    bool empty = false;
-
-    if (recipient.country.recipientEnglishMandatory) {
-      if (recipient.firstName.isEmpty) empty = true;
-      if (recipient.fatherName.isEmpty) empty = true;
-      if (recipient.lastName.isEmpty) empty = true;
-    }
-
-    return empty;
   }
 
   void getPayments(List<PaymentMethodModel> elements) {
@@ -256,22 +233,22 @@ class Calculator extends ChangeNotifier {
   }
 
   void roundReceiverAmount() {
-    double ceil = receiverCountry.currency.ceil;
-    double round = double.tryParse(receiver.text) ?? 0;
-
-    if (!sendUSD) {
-      round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
-    } else {
-      round = round.ceilToDouble();
-    }
-
-    Helper.log('round: $round');
     if (receiver.text.isNotEmpty) {
+      double ceil = receiverCountry.currency.ceil;
+      double round = double.tryParse(receiver.text) ?? 0;
+
+      if (!sendUSD) {
+        round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
+      } else {
+        round = round.ceilToDouble();
+      }
+
+      Helper.log('round: $round');
       _receiver.text = '$round';
       _receiver.text =
           Helper.priced(double.parse(_receiver.text), currency: false);
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void setPrice(String value) {
@@ -371,30 +348,12 @@ class Calculator extends ChangeNotifier {
       setAgent(transfer.provider);
     }
 
+    // Check if selected recipient country is available:
     if (Provider.of<RecipientsState>(
       context,
       listen: false,
     ).recipients.any((e) => e.id == recipient.id)) {
-      if (isRecipientArabicMandatoryNameEmpty(recipient)) {
-        context.read<RecipientsState>().editRecipient(
-              context,
-              recipient,
-              keepSendProcess: true,
-            );
-        Helper.bannerWarning(_arb!.enterRecipientArabicName);
-        return allConditions = false;
-      }
-
-      if (isRecipientEnglishMandatoryNameEmpty(recipient)) {
-        context.read<RecipientsState>().editRecipient(
-              context,
-              recipient,
-              keepSendProcess: true,
-            );
-        Helper.bannerWarning(_arb!.enterRecipientEnglishName);
-        return allConditions = false;
-      }
-
+      // Check if selected recipient has been modified or deleted
       if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
         Helper.log(sender.text);
         Helper.log(receiver.text);

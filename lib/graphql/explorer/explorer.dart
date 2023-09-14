@@ -71,8 +71,6 @@ class Explorer {
       phoneCode
       minAmount
       maxAmount
-      recipientEnglishMandatory
-      recipientArabicMandatory
       defaultMessage
       currency {
         id
@@ -91,13 +89,9 @@ class Explorer {
   static const String recipient = '''
       id
       firstName
-      arFirstName
       fatherName
-      arFatherName
       lastName
-      arLastName
       mobile
-      relativeRelation
       status
       city {
         $city
@@ -105,7 +99,6 @@ class Explorer {
           $provider
         }
       }
-      area
       dateAdded
       $country
       ''';

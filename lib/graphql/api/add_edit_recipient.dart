@@ -17,23 +17,15 @@ class AddEditRecipientAPI {
     required this.firstName,
     required this.lastName,
     required this.fatherName,
-    required this.arFirstName,
-    required this.arLastName,
-    required this.arFatherName,
-    required this.relation,
     required this.countryCode,
     required this.mobile,
     required this.cityId,
-    required this.area,
-    this.bankAccountNumber = '',
-    this.bankName = '',
     this.id = 0,
   });
 
   final BuildContext context;
   final String firstName, lastName, fatherName;
-  final String arFirstName, arLastName, arFatherName, bankAccountNumber;
-  final String relation, countryCode, mobile, area, bankName;
+  final String countryCode, mobile;
   final int cityId;
   final int id;
 
@@ -48,16 +40,9 @@ class AddEditRecipientAPI {
       'firstName': firstName,
       'lastName': lastName,
       'fatherName': fatherName,
-      'arFirstName': arFirstName,
-      'arLastName': arLastName,
-      'arFatherName': arFatherName,
-      'relativeRelation': relation,
       'countryCode': countryCode,
       'mobile': mobile,
       'cityId': cityId,
-      'area': area,
-      'bankAccountNumber': bankAccountNumber,
-      'bankAccountHolder': bankName,
     };
 
     Helper.debugger(json);

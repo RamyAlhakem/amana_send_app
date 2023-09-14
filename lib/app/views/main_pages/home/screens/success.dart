@@ -133,7 +133,7 @@ class Success extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   TextX(
-                    '${transfer.recipient.arFirstName} ${transfer.recipient.arLastName}',
+                    '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

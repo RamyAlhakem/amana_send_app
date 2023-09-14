@@ -28,12 +28,12 @@ class UserAvatar extends StatelessWidget {
           width: maxRadius,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: MainColors.color1.withOpacity(0.2),
+            color: MainColors.color2.withOpacity(0.2),
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: MainColors.color1),
+            border: Border.all(color: MainColors.color2),
           ),
           child: icon ??
-              HeroIcon(HeroIcons.user, color: MainColors.color1, size: size),
+              HeroIcon(HeroIcons.user, color: MainColors.color2, size: size),
         ),
         if (code.isNotEmpty)
           Positioned(

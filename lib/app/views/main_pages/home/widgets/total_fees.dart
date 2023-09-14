@@ -39,24 +39,6 @@ class TotalFees extends StatelessWidget {
                 ]),
                 const SizedBox(height: 4),
                 RowSpaceBetween([
-                  TextX(arb.providerFees),
-                  Text.rich(
-                    textScaleFactor: 1.0,
-                    TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
-                        ),
-                        TextSpan(
-                          text: state.sendCountry.currency.code,
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 4),
-                RowSpaceBetween([
                   TextX(arb.amountWeWillConvert),
                   Text.rich(
                     textScaleFactor: 1.0,

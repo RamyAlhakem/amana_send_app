@@ -103,7 +103,7 @@ class _TransferMainState extends State<TransferMain> {
             const SizedBox(height: 4),
             Center(
               child: TextX(
-                '${transfer.recipient.arFirstName} ${transfer.recipient.arLastName}',
+                '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
               ),
             ),
             Expanded(

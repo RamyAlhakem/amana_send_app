@@ -168,7 +168,7 @@
   "pleaseSelectReceiveType": "Please select receive type",
   "enterAccountHolderName": "Enter account holder name",
   "enterRecipientArabicName": "Enter recipient Arabic name",
-  "enterRecipientEnglishName": "Enter recipient English name",
+  "enterRecipientName": "Enter recipient name",
   "countries": "Countries",
   "cities": "Cities",
   "city": "City",

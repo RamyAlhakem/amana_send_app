@@ -168,7 +168,7 @@
   "pleaseSelectReceiveType": "الرجاء تحديد نوع الاستلام",
   "enterAccountHolderName": "أدخل اسم صاحب الحساب",
   "enterRecipientArabicName": "أدخل اسم المستلم باللغة العربية",
-  "enterRecipientEnglishName": "أدخل اسم المستلم باللغة الإنجليزية",
+  "enterRecipientName": "أدخل اسم المستلم",
   "countries": "الدول",
   "cities": "المدن",
   "city": "المدينة",

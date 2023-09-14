@@ -55,8 +55,10 @@ class _StructureState extends State<Structure> {
       onWillPop: () => StructureHandler.onWillPop(),
       child: GestureDetector(
         onTap: () {
-          final state = Provider.of<Calculator>(context, listen: false);
-          state.roundReceiverAmount();
+          if (_index == Pages.home.index) {
+            final state = Provider.of<Calculator>(context, listen: false);
+            state.roundReceiverAmount();
+          }
           Helper.unFocusCursor(context);
         },
         child: Scaffold(

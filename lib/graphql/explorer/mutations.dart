@@ -72,22 +72,15 @@ class Mutations {
 
   static String recipientAdd(int id) {
     return '''
-    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$arFirstName: String!, \$arLastName: String!, \$arFatherName: String!, \$relativeRelation: NonEmptyString!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$cityId: NonEmptyInteger!, \$area: String!, \$bankAccountNumber: String!, \$bankAccountHolder: String!) {
+    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$cityId: NonEmptyInteger!) {
       recipient${id == 0 ? 'Add' : 'Edit'}(
         ${id != 0 ? 'id: \$id' : ''}
         firstName: \$firstName
         lastName: \$lastName
         fatherName: \$fatherName
-        arFirstName: \$arFirstName
-        arLastName: \$arLastName
-        arFatherName: \$arFatherName
-        relativeRelation: \$relativeRelation
         countryCode: \$countryCode
         mobile: \$mobile
         cityId: \$cityId
-        area: \$area
-        bankAccountNumber: \$bankAccountNumber
-        bankAccountHolder: \$bankAccountHolder
       ) {
         message
       }

@@ -318,9 +318,6 @@ class Helper {
   static String getRecipientName(RecipientModel recipient) {
     String name = '';
 
-    if (recipient.arFirstName.isNotEmpty) name = recipient.arFirstName;
-    if (recipient.arLastName.isNotEmpty) name += ' ${recipient.arLastName}';
-
     if (recipient.firstName.isNotEmpty) name = recipient.firstName;
     if (recipient.lastName.isNotEmpty) name += ' ${recipient.lastName}';
 

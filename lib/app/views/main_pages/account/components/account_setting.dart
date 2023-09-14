@@ -29,11 +29,11 @@ class AccountSetting extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: MainColors.color1.withOpacity(0.2),
-          border: Border.all(color: MainColors.color1),
+          color: MainColors.color2.withOpacity(0.2),
+          border: Border.all(color: MainColors.color2),
           borderRadius: BorderRadius.circular(100),
         ),
-        child: HeroIcon(icon, size: 25, color: iconColor ?? MainColors.color1),
+        child: HeroIcon(icon, size: 25, color: iconColor ?? MainColors.color2),
       ),
       title: TextX(title, style: TextStyle(color: textColor)),
       trailing: trailing ??

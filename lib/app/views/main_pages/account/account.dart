@@ -10,8 +10,6 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/dialogs/language.dart';
 import '/app/widgets/dialogs/submit.dart';
 import '/app/widgets/divider.dart';
-import '/app/widgets/text/text_x.dart';
-import '/app/widgets/user_avatar.dart';
 import '/configs/configs.dart';
 import '/database/injector.dart';
 import '/helper/helper.dart';
@@ -51,32 +49,32 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 4),
-              child: UserAvatar(size: 40, code: user.country.coCode),
-            ),
-            TextX(
-              user.firstName,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextX(user.mobile, textDirection: TextDirection.ltr),
-                if (user.country.cities.isNotEmpty)
-                  TextX(' / ${user.country.cities.first.name}'),
-              ],
-            ),
-          ],
-        ),
+        // Column(
+        //   children: [
+        //     Padding(
+        //       padding: const EdgeInsets.fromLTRB(0, 20, 0, 4),
+        //       child: UserAvatar(size: 40, code: user.country.coCode),
+        //     ),
+        //     TextX(
+        //       user.firstName,
+        //       style: Theme.of(context).textTheme.bodyLarge,
+        //     ),
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         TextX(user.mobile, textDirection: TextDirection.ltr),
+        //         if (user.country.cities.isNotEmpty)
+        //           TextX(' / ${user.country.cities.first.name}'),
+        //       ],
+        //     ),
+        //   ],
+        // ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 14, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: ListView(
               children: [
-                const HDivider(),
+                // const HDivider(),
                 AccountSetting(
                   onTap: () => Helper.userVerify(
                     context,

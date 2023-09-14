@@ -22,7 +22,6 @@ import '/global/variables.dart';
 import '/graphql/api/add_edit_recipient.dart';
 import '/helper/helper.dart';
 import '/models/city.dart';
-import '/models/country.dart';
 import '/models/recipient.dart';
 
 class AddRecipient extends StatefulWidget {
@@ -40,7 +39,7 @@ class AddRecipient extends StatefulWidget {
 }
 
 class _AddRecipientState extends State<AddRecipient> {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
   RecipientModel? _recipient;
 
   late RegistrationState _registerState; // Includes countryCode & mobile.
@@ -52,21 +51,9 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _lastName = TextEditingController();
   TextEditingController _fatherName = TextEditingController();
 
-  TextEditingController _arFirstName = TextEditingController();
-  TextEditingController _arLastName = TextEditingController();
-  TextEditingController _arFatherName = TextEditingController();
-
-  TextEditingController _relation = TextEditingController();
-
-  TextEditingController _area = TextEditingController();
   String _pickUp = '';
 
   bool keepSendProcess = false;
-
-  bool arabicMandatory() =>
-      (_registerState.country ?? CountryModel()).recipientArabicMandatory;
-  bool englishMandatory() =>
-      (_registerState.country ?? CountryModel()).recipientEnglishMandatory;
 
   @override
   void initState() {
@@ -80,14 +67,6 @@ class _AddRecipientState extends State<AddRecipient> {
       _lastName = TextEditingController(text: _recipient?.lastName);
       _fatherName = TextEditingController(text: _recipient?.fatherName);
 
-      _arFirstName = TextEditingController(text: _recipient?.arFirstName);
-      _arLastName = TextEditingController(text: _recipient?.arLastName);
-      _arFatherName = TextEditingController(text: _recipient?.arFatherName);
-
-      _relation = TextEditingController(text: _recipient?.relative);
-
-      _area = TextEditingController(text: _recipient?.area);
-
       if (_recipient!.country.cities.isNotEmpty) {
         _pickUp = _recipient?.country.cities.first.areaNote ?? '';
       }
@@ -100,7 +79,7 @@ class _AddRecipientState extends State<AddRecipient> {
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -109,17 +88,9 @@ class _AddRecipientState extends State<AddRecipient> {
     super.dispose();
     _formKey.currentState?.dispose();
 
-    _arFirstName.dispose();
-    _arLastName.dispose();
-    _arFatherName.dispose();
-
     _firstName.dispose();
     _lastName.dispose();
     _fatherName.dispose();
-
-    _relation.dispose();
-
-    _area.dispose();
 
     _registerState.setCountry(null);
     _registerState.setCities(<CityModel>[]);
@@ -133,8 +104,8 @@ class _AddRecipientState extends State<AddRecipient> {
       child: Scaffold(
         appBar: AutoAppBar(
           title: widget.recipient != 'null'
-              ? _arb!.editRecipient
-              : _arb!.addNewRecipient,
+              ? arb.editRecipient
+              : arb.addNewRecipient,
         ),
         body: Form(
           key: _formKey,
@@ -142,7 +113,7 @@ class _AddRecipientState extends State<AddRecipient> {
             padding: const EdgeInsets.fromLTRB(12, 12, 12, kToolbarHeight),
             children: [
               TextX(
-                _arb!.contactDetails,
+                arb.contactDetails,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
 
@@ -163,12 +134,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 cities: _registerState.cities,
                 city: _registerState.city,
               ),
-              TextFieldX(
-                controller: _area,
-                hint: _arb!.areaOptionalEXStreetName,
-                type: TextInputType.name,
-                validator: (v) => null,
-              ),
+
               Container(
                 decoration: Decorations.border(context),
                 margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -177,7 +143,7 @@ class _AddRecipientState extends State<AddRecipient> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextX(
-                      _arb!.pickUpPointsReadOnly,
+                      arb.pickUpPointsReadOnly,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 4),
@@ -188,50 +154,10 @@ class _AddRecipientState extends State<AddRecipient> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
 
-              TextX(
-                arabicMandatory()
-                    ? _arb!.recipientNameArabic
-                    : _arb!.recipientNameArabicOptional,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              Row(children: [
-                Expanded(
-                  child: TextFieldX(
-                    controller: _arFirstName,
-                    hint: _arb!.firstName,
-                    type: TextInputType.name,
-                    onChanged: (v) =>
-                        TextFieldValidator.arabic(context, _arFirstName),
-                    validator: (v) => null,
-                  ),
-                ),
-                const SizedBox(width: 13),
-                Expanded(
-                  child: TextFieldX(
-                    controller: _arLastName,
-                    hint: _arb!.lastName,
-                    type: TextInputType.name,
-                    onChanged: (v) =>
-                        TextFieldValidator.arabic(context, _arLastName),
-                    validator: (v) => null,
-                  ),
-                ),
-              ]),
-              TextFieldX(
-                controller: _arFatherName,
-                hint: _arb!.fatherName,
-                type: TextInputType.name,
-                onChanged: (v) =>
-                    TextFieldValidator.arabic(context, _arFatherName),
-                validator: (v) => null,
-              ),
               const SizedBox(height: 8),
               TextX(
-                englishMandatory()
-                    ? _arb!.recipientNameEnglish
-                    : _arb!.recipientNameEnglishOptional,
+                arb.recipientName,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               Directionality(
@@ -242,7 +168,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       Expanded(
                         child: TextFieldX(
                           controller: _firstName,
-                          hint: _arb!.firstName,
+                          hint: arb.firstName,
                           type: TextInputType.name,
                           onChanged: (v) =>
                               TextFieldValidator.latin(context, _firstName),
@@ -253,7 +179,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       Expanded(
                         child: TextFieldX(
                           controller: _lastName,
-                          hint: _arb!.lastName,
+                          hint: arb.lastName,
                           type: TextInputType.name,
                           onChanged: (v) =>
                               TextFieldValidator.latin(context, _lastName),
@@ -263,7 +189,7 @@ class _AddRecipientState extends State<AddRecipient> {
                     ]),
                     TextFieldX(
                       controller: _fatherName,
-                      hint: _arb!.fatherName,
+                      hint: arb.fatherName,
                       type: TextInputType.name,
                       onChanged: (v) =>
                           TextFieldValidator.latin(context, _fatherName),
@@ -271,17 +197,6 @@ class _AddRecipientState extends State<AddRecipient> {
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 15),
-              TextX(
-                _arb!.relation,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              TextFieldX(
-                onSubmitted: (_) => _submit(),
-                controller: _relation,
-                hint: _arb!.relativeRelation,
-                type: TextInputType.name,
               ),
 
               const SizedBox(height: 18),
@@ -296,7 +211,7 @@ class _AddRecipientState extends State<AddRecipient> {
                     children: [
                       const Icon(Icons.close),
                       const SizedBox(width: 5),
-                      TextX(_arb!.cancel),
+                      TextX(arb.cancel),
                     ],
                   ),
                 ),
@@ -314,8 +229,8 @@ class _AddRecipientState extends State<AddRecipient> {
                       const SizedBox(width: 5),
                       TextX(
                         widget.recipient == 'null'
-                            ? _arb!.addRecipient
-                            : _arb!.editRecipient,
+                            ? arb.addRecipient
+                            : arb.editRecipient,
                       ),
                     ],
                   ),
@@ -328,14 +243,6 @@ class _AddRecipientState extends State<AddRecipient> {
     );
   }
 
-  bool isArNameEmpty() {
-    bool empty = false;
-    if (_arFirstName.text.isEmpty) empty = true;
-    if (_arFatherName.text.isEmpty) empty = true;
-    if (_arLastName.text.isEmpty) empty = true;
-    return empty;
-  }
-
   bool isNameEmpty() {
     bool empty = false;
     if (_firstName.text.isEmpty) empty = true;
@@ -346,31 +253,13 @@ class _AddRecipientState extends State<AddRecipient> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    if (_registerState.country == null) {
-      return Helper.toast(_arb!.selectCountry);
-    }
 
+    if (_registerState.country == null) return Helper.toast(arb.selectCountry);
     if (_registerState.mobile.text.isEmpty) {
-      return Helper.toast(_arb!.enterMobileNumber);
+      return Helper.toast(arb.enterMobileNumber);
     }
-
-    if (_registerState.city == null) return Helper.toast(_arb!.selectCity);
-
-    if (_registerState.country!.recipientArabicMandatory) {
-      if (isArNameEmpty()) {
-        return Helper.toast(_arb!.enterRecipientArabicName);
-      }
-    }
-
-    if (_registerState.country!.recipientEnglishMandatory) {
-      if (isNameEmpty()) {
-        return Helper.toast(_arb!.enterRecipientEnglishName);
-      }
-    }
-
-    if (isArNameEmpty() && isNameEmpty()) {
-      return Helper.toast(_arb!.enterRecipientEnglishName);
-    }
+    if (_registerState.city == null) return Helper.toast(arb.selectCity);
+    if (isNameEmpty()) return Helper.toast(arb.enterRecipientName);
 
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
 
@@ -379,14 +268,9 @@ class _AddRecipientState extends State<AddRecipient> {
       firstName: _firstName.text,
       lastName: _lastName.text,
       fatherName: _fatherName.text,
-      arFirstName: _arFirstName.text,
-      arLastName: _arLastName.text,
-      arFatherName: _arFatherName.text,
-      relation: _relation.text,
       countryCode: '${_registerState.country?.coCode}',
       mobile: _registerState.mobile.text,
       cityId: _registerState.city!.id,
-      area: _area.text,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {

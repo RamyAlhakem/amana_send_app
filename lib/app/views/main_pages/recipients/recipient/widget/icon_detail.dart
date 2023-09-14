@@ -28,22 +28,24 @@ class RecipientIconDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isTransfer)
-                TextX(
-                  date,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 10,
-                      ),
-                ),
               TextX(
                 Helper.getRecipientName(recipient),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              if (!isTransfer)
+              Row(children: [
+                if (!isTransfer)
+                  TextX(
+                    '${recipient.country.currency.code} - ',
+                    style: const TextStyle(fontSize: 8),
+                  ),
                 TextX(
-                  recipient.relative,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  isTransfer ? date : recipient.country.enName,
+                  style: TextStyle(
+                    fontSize: isTransfer ? 10 : 8,
+                    color: isTransfer ? Colors.grey : null,
+                  ),
                 ),
+              ]),
             ],
           ),
         ),

@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
@@ -57,7 +56,6 @@ class _RecipientsState extends State<Recipients> {
                 onRefresh: () async {
                   await GetRecipients.request();
                 },
-                edgeOffset: 50,
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
@@ -93,12 +91,17 @@ class _RecipientsState extends State<Recipients> {
                                 );
                               },
                               height: 38,
-                              padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                              color: MainColors.color1,
-                              TextX(
-                                _arb!.send.toUpperCase(),
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                              padding: EdgeInsets.zero,
+                              color: Colors.transparent,
+                              Row(children: [
+                                const SizedBox(width: 10),
+                                TextX(
+                                  _arb!.send.toUpperCase(),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                const SizedBox(width: 10),
+                                const Icon(Icons.chevron_right)
+                              ]),
                             ),
                           ]),
                         ),

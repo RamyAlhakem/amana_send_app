@@ -52,7 +52,7 @@ class _RecipientState extends State<Recipient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AutoAppBar(
-        title: '${_recipient.arFirstName} ${_recipient.arLastName}',
+        title: '${_recipient.firstName} ${_recipient.lastName}',
         actions: [
           Button(
             () => _pr.editRecipient(context, _recipient),
@@ -96,11 +96,6 @@ class _RecipientState extends State<Recipient> {
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
-              RowSpaceBetween([
-                TextX(_arb!.relativeRelation),
-                TextX(_recipient.relative),
-              ]),
               const SizedBox(height: 8),
               RowSpaceBetween([
                 TextX(_arb!.mobileNumber),
@@ -114,11 +109,6 @@ class _RecipientState extends State<Recipient> {
                       '${_recipient.country.enName}/${_recipient.country.cities.first.name}'),
               ]),
               const SizedBox(height: 8),
-              RowSpaceBetween([
-                TextX(_arb!.area),
-                TextX(_recipient.area),
-              ]),
-              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -128,7 +118,7 @@ class _RecipientState extends State<Recipient> {
             () => SubmitDialog(
               () => DeleteRecipient(context, id: _recipient.id).request(),
               content:
-                  '${_arb!.areYouSureYouWantToDelete} ${_recipient.arFirstName}',
+                  '${_arb!.areYouSureYouWantToDelete} ${_recipient.firstName}',
             ).show(context),
             height: 50,
             color: Colors.transparent,
