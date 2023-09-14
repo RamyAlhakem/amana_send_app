@@ -30,9 +30,7 @@ class TotalFees extends StatelessWidget {
                         TextSpan(
                           text: '${state.fees.toStringAsFixed(2)} ',
                         ),
-                        TextSpan(
-                          text: state.sendCountry.currency.code,
-                        ),
+                        const TextSpan(text: 'USDT'),
                       ],
                     ),
                   ),
@@ -47,26 +45,12 @@ class TotalFees extends StatelessWidget {
                         TextSpan(
                           text: '${state.sender.text} ',
                         ),
-                        TextSpan(
-                          text: state.sendCountry.currency.code,
-                        ),
+                        const TextSpan(text: 'USDT'),
                       ],
                     ),
                   ),
                 ]),
-                const SizedBox(height: 4),
-                Visibility(
-                  visible: Global.appSettings.token.isNotEmpty,
-                  child: RowSpaceBetween([
-                    TextX(arb.receiveType),
-                    Visibility(
-                      visible: state.receiverAgent.name.isNotEmpty,
-                      replacement: TextX(arb.cashPickUp),
-                      child: TextX(state.receiverAgent.name),
-                    ),
-                  ]),
-                ),
-                const SizedBox(height: 4),
+
                 // RowSpaceBetween([
                 //   TextX(arb.todayExchangeRate),
                 //   Text.rich(
@@ -93,7 +77,7 @@ class TotalFees extends StatelessWidget {
               ],
             ),
           ),
-          const HDivider(height: 30),
+          const HDivider(height: 20),
           RowSpaceBetween([
             TextX(arb.total),
             Text.rich(
@@ -103,9 +87,7 @@ class TotalFees extends StatelessWidget {
                   TextSpan(
                     text: '${state.amountPlusFee.toStringAsFixed(2)} ',
                   ),
-                  TextSpan(
-                    text: state.sendCountry.currency.code,
-                  ),
+                  const TextSpan(text: 'USDT'),
                 ],
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,

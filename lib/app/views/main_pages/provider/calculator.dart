@@ -50,6 +50,7 @@ class Calculator with ChangeNotifier {
   TextEditingController _receiver = TextEditingController();
 
   bool _sendUSD = false;
+  bool _showAgents = false;
 
   double _fees = 0;
 
@@ -87,6 +88,7 @@ class Calculator with ChangeNotifier {
   TextEditingController get receiver => _receiver;
 
   bool get sendUSD => _sendUSD;
+  bool get showAgents => _showAgents;
 
   double get fees => _fees;
   double get amountPlusFee => _amountPlusFee;
@@ -327,6 +329,11 @@ class Calculator with ChangeNotifier {
     return converted;
   }
 
+  void agentsVisibility(bool show) {
+    _showAgents = show;
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+  }
+
   Future<bool> recipientSend(
     RecipientModel recipient, {
     bool navigate = false,
@@ -346,7 +353,11 @@ class Calculator with ChangeNotifier {
       }
 
       setAgent(transfer.provider);
+      _sender.text = '${transfer.sendAmount}';
     }
+
+    // Check if user wants to send from recipient/recipients page.
+    if (showAgents) setReceiverCountry(recipient.country);
 
     // Check if selected recipient country is available:
     if (Provider.of<RecipientsState>(
@@ -355,8 +366,6 @@ class Calculator with ChangeNotifier {
     ).recipients.any((e) => e.id == recipient.id)) {
       // Check if selected recipient has been modified or deleted
       if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
-        Helper.log(sender.text);
-        Helper.log(receiver.text);
         selectRecipient(recipient);
         if (receiver.text.isNotEmpty) {
           if (double.parse(receiver.text) < recipient.country.minAmount) {

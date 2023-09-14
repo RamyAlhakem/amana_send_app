@@ -8,10 +8,8 @@ import '/app/widgets/dotted_border/dotted_border.dart';
 import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
-import '/database/injector.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
-import '/models/user.dart';
 import '/services/lang_service.dart';
 import '/tools/attachment_tools.dart';
 
@@ -25,8 +23,7 @@ class TransferDetail extends StatefulWidget {
 }
 
 class _TransferDetailState extends State<TransferDetail> {
-  late AppLocalizations? _arb;
-  late UserModel user;
+  late AppLocalizations arb;
   late TransferModel transfer;
 
   double exchangeRate = 0;
@@ -36,7 +33,6 @@ class _TransferDetailState extends State<TransferDetail> {
   @override
   void initState() {
     super.initState();
-    user = Database().getUser;
     transfer = widget.transfer;
 
     exchangeRate = transfer.recipientAmount / transfer.sendAmount;
@@ -44,7 +40,7 @@ class _TransferDetailState extends State<TransferDetail> {
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
 
     receiveType = Helper.receiveType(context)[transfer.receiveType];
@@ -53,9 +49,7 @@ class _TransferDetailState extends State<TransferDetail> {
   @override
   Widget build(BuildContext context) {
     final bool isAr = LangService.isAR();
-    return ListView(
-      shrinkWrap: true,
-      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+    return Column(
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -63,12 +57,12 @@ class _TransferDetailState extends State<TransferDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextX(
-                _arb!.transferDetails,
+                arb.transferDetails,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 4),
               TextX(
-                _arb!.transferInformationDetails,
+                arb.transferInformationDetails,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               SizedBox(height: transfer.receiptPic.isNotEmpty ? 15 : 25),
@@ -87,7 +81,7 @@ class _TransferDetailState extends State<TransferDetail> {
                     child: Column(
                       children: [
                         TextX(
-                          _arb!.receipt,
+                          arb.receipt,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 4),
@@ -123,7 +117,7 @@ class _TransferDetailState extends State<TransferDetail> {
                 ),
               ),
               RowSpaceBetween([
-                TextX(_arb!.youSent),
+                TextX(arb.youSent),
                 Text.rich(
                   textScaleFactor: 1.0,
                   TextSpan(
@@ -131,9 +125,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${transfer.sendAmount.toStringAsFixed(2)} ',
                       ),
-                      TextSpan(
-                        text: user.country.currency.code,
-                      ),
+                      const TextSpan(text: 'USDT'),
                     ],
                   ),
                 ),
@@ -150,12 +142,12 @@ class _TransferDetailState extends State<TransferDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextX(
-                  _arb!.transferDate,
+                  arb.transferDate,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: Colors.grey,
                       ),
                 ),
-                TextX(_arb!.exchangeRate),
+                TextX(arb.exchangeRate),
                 const SizedBox(height: 4),
               ],
             ),
@@ -173,8 +165,7 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text:
-                            '${isAr ? '' : '1'} ${user.country.currency.code} ${isAr ? '1 ' : ''}= ',
+                        text: '${isAr ? '' : '1'} USDT ${isAr ? '1 ' : ''}= ',
                       ),
                       TextSpan(
                         text: exchangeRate.toStringAsFixed(2),
@@ -198,7 +189,7 @@ class _TransferDetailState extends State<TransferDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RowSpaceBetween([
-                TextX(_arb!.fees),
+                TextX(arb.fees),
                 Text.rich(
                   textScaleFactor: 1.0,
                   TextSpan(
@@ -206,39 +197,20 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${transfer.fees.toStringAsFixed(2)} ',
                       ),
-                      TextSpan(
-                        text: user.country.currency.code,
-                      ),
+                      const TextSpan(text: 'USDT'),
                     ],
                   ),
                 ),
               ]),
               const SizedBox(height: 4),
-              RowSpaceBetween([
-                TextX(_arb!.providerFees),
-                Text.rich(
-                  textScaleFactor: 1.0,
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text:
-                            '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
-                      ),
-                      TextSpan(
-                        text: user.country.currency.code,
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-              const SizedBox(height: 4),
-              RowSpaceBetween([
-                TextX(_arb!.receiveType),
-                TextX(receiveType),
-              ]),
+              if (transfer.provider.name.isNotEmpty)
+                RowSpaceBetween([
+                  TextX(arb.provider),
+                  TextX(transfer.provider.name),
+                ]),
               const HDivider(height: 40),
               RowSpaceBetween([
-                TextX(_arb!.totalPaid),
+                TextX(arb.totalPaid),
                 Text.rich(
                   textScaleFactor: 1.0,
                   TextSpan(
@@ -246,9 +218,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${transfer.totalAmount.toStringAsFixed(2)} ',
                       ),
-                      TextSpan(
-                        text: user.country.currency.code,
-                      ),
+                      const TextSpan(text: 'USDT'),
                     ],
                   ),
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -256,7 +226,7 @@ class _TransferDetailState extends State<TransferDetail> {
               ]),
               const SizedBox(height: 4),
               RowSpaceBetween([
-                TextX(_arb!.recipientGets),
+                TextX(arb.recipientGets),
                 Text.rich(
                   textScaleFactor: 1.0,
                   TextSpan(

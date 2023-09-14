@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
     super.initState();
     user = Database().getUser;
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
+    Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
     getResources().whenComplete(() => LoadingDialog.dismiss());
   }
 
@@ -222,9 +223,6 @@ class _HomeState extends State<Home> {
 
                       if (state.receiverCity.id == 0) {
                         return Helper.snack(_arb!.selectCity);
-                      }
-                      if (state.receiverAgent.id == 0) {
-                        return Helper.snack(_arb!.pleaseSelectReceiveType);
                       }
 
                       Global.snackKey.currentState?.hideCurrentSnackBar();

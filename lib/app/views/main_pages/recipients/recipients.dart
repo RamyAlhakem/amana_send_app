@@ -82,10 +82,12 @@ class _RecipientsState extends State<Recipients> {
                                     '\n${AppMetadata.get.maintenanceMessage}\n',
                                   );
                                 }
-                                Provider.of<Calculator>(
+                                final calculator = Provider.of<Calculator>(
                                   context,
                                   listen: false,
-                                ).recipientSend(
+                                );
+                                calculator.agentsVisibility(true);
+                                calculator.recipientSend(
                                   state.recipients[i],
                                   navigate: true,
                                 );

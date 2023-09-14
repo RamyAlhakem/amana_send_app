@@ -52,7 +52,7 @@ class TransferModel extends SafetyModel {
         return TransferStatus.processing;
       case 'completed':
         return TransferStatus.completed;
-      case 'canceled':
+      case 'cancel':
         return TransferStatus.canceled;
       default:
         return TransferStatus.pending;

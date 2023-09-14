@@ -52,6 +52,7 @@ class _SendFormFieldsState extends State<SendFormFields>
   void dispose() {
     super.dispose();
     _calculator.clearFields();
+    _calculator.agentsVisibility(false);
   }
 
   @override
@@ -115,7 +116,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
                 child: TextX(arb.selectProvider),
               ),
-          if (!widget.keepAlive)
+          if (state.showAgents)
             if (state.receiverCity.agents.isNotEmpty)
               MasonryGridView.count(
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),

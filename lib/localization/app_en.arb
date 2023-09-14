@@ -172,6 +172,7 @@
   "countries": "Countries",
   "cities": "Cities",
   "city": "City",
+  "provider": "Provider",
   "accountNumber": "Account number",
   "bankName": "Bank name",
   "recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails": "Recipient bank info is missing, Please Edit recipient by adding bank account details",

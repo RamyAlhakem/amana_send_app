@@ -172,6 +172,7 @@
   "countries": "الدول",
   "cities": "المدن",
   "city": "المدينة",
+  "provider": "المزود",
   "accountNumber": "رقم الحساب",
   "bankName": "اسم البنك",
   "recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails": "معلومات بنك المستلم مفقودة ، يرجى تحرير المستلم بإضافة تفاصيل الحساب المصرفي",

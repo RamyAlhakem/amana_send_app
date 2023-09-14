@@ -7,7 +7,7 @@ class ExpandButton extends StatelessWidget {
     Key? key,
     this.height,
     this.color,
-    this.foregroundColor,
+    this.foreground,
     this.borderColor = Colors.transparent,
     this.borderRadius = 10.0,
     this.customShape,
@@ -18,7 +18,7 @@ class ExpandButton extends StatelessWidget {
   final Widget child;
   final double? height;
   final Color? color;
-  final Color? foregroundColor;
+  final Color? foreground;
   final Color borderColor;
   final double borderRadius;
   final OutlinedBorder? customShape;
@@ -33,7 +33,7 @@ class ExpandButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             elevation: 0,
             padding: padding,
-            foregroundColor: foregroundColor,
+            foregroundColor: foreground,
             backgroundColor: color,
             side: BorderSide(color: borderColor),
             shape: customShape ??
