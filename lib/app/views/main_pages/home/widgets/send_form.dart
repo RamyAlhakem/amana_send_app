@@ -5,11 +5,13 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/registration/components/city_picker.dart';
 import '/app/widgets/expander.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/helper/dart_ui.dart';
 import 'agent_button.dart';
+import 'country_roller.dart';
 import 'currency_roller.dart';
 import 'total_fees.dart';
 
@@ -65,6 +67,30 @@ class _SendFormFieldsState extends State<SendFormFields>
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (state.showAgents)
+            Row(
+              children: [
+                // Select country
+                if (state.selectedRecipient == null)
+                  Expanded(
+                    child: CountryRoller(
+                      title: arb.receiverCountries,
+                      borderRadius: 11,
+                    ),
+                  ),
+                if (state.selectedRecipient == null) const SizedBox(width: 10),
+
+                // Select city.
+                Expanded(
+                  child: CityPicker(
+                    country: state.receiverCountry,
+                    onChange: (city) => state.setReceiveCity(city),
+                    fieldColor: Theme.of(context).cardColor,
+                  ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 4),
           Expander(
             expand: state.receiverAgent.name.isNotEmpty,
             child: Wrap(

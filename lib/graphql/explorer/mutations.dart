@@ -72,7 +72,7 @@ class Mutations {
 
   static String recipientAdd(int id) {
     return '''
-    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$cityId: NonEmptyInteger!) {
+    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!) {
       recipient${id == 0 ? 'Add' : 'Edit'}(
         ${id != 0 ? 'id: \$id' : ''}
         firstName: \$firstName
@@ -80,7 +80,6 @@ class Mutations {
         fatherName: \$fatherName
         countryCode: \$countryCode
         mobile: \$mobile
-        cityId: \$cityId
       ) {
         message
       }
@@ -89,10 +88,11 @@ class Mutations {
   }
 
   static const String transfer = '''
-      mutation transfer(\$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$recipientAmount: Float!, \$recipientId: Int!, \$sendAmount: Float!) {
+      mutation transfer(\$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$receivingCityId: Int!, \$recipientAmount: Float!, \$recipientId: Int!, \$sendAmount: Float!) {
         transfer(
           isReceiveInUSD: \$isReceiveInUSD
           paymentMethodId: \$paymentMethodId
+          receivingCityId: \$receivingCityId
           providerId: \$providerId
           recipientAmount: \$recipientAmount
           recipientId: \$recipientId
@@ -104,19 +104,14 @@ class Mutations {
       ''';
 
   static const String userVerifyAccount = '''
-    mutation userVerifyAccount(\$fullName: String!, \$city: NonEmptyString!, \$postCode: NonEmptyString!, \$street: NonEmptyString!, \$building: String!, \$flat: NonEmptyString!, \$addressPicId: Int!, \$birthday: NonEmptyString!, \$idNumber: NonEmptyString!, \$idIssuedDate: NonEmptyString!, \$idExpireDate: NonEmptyString!, \$mainIdPicId: Int!, \$selfPicId: Int!) {
+    mutation userVerifyAccount(\$arFirstName: String!, \$arFatherName: String!, \$arLastName: String!, \$cityId: Int!, \$postCode: NonEmptyString!, \$fullAddress: NonEmptyString!, \$mainIdPicId: Int!, \$selfPicId: Int!) {
       userVerifyAccount(
-        fullName: \$fullName
-        city: \$city
+        arFirstName: \$arFirstName
+        arFatherName: \$arFatherName
+        arLastName: \$arLastName
+        cityId: \$cityId
         postCode: \$postCode
-        street: \$street
-        building: \$building
-        flat: \$flat
-        addressPicId: \$addressPicId
-        birthday: \$birthday
-        idNumber: \$idNumber
-        idIssuedDate: \$idIssuedDate
-        idExpireDate: \$idExpireDate
+        fullAddress: \$fullAddress
         mainIdPicId: \$mainIdPicId
         selfPicId: \$selfPicId
       ) {

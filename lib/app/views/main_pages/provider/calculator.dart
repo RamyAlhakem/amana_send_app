@@ -46,13 +46,13 @@ class Calculator with ChangeNotifier {
   CityModel _receiverCity = CityModel();
   AgentModel _receiverAgent = AgentModel();
 
-  TextEditingController _sender = TextEditingController();
+  TextEditingController _sender = TextEditingController(text: '100');
   TextEditingController _receiver = TextEditingController();
 
   bool _sendUSD = false;
   bool _showAgents = false;
 
-  double _fees = 0;
+  // double _fees = 0;
 
   double _amountPlusFee = 0;
   double _exchangeRate = 0;
@@ -90,7 +90,7 @@ class Calculator with ChangeNotifier {
   bool get sendUSD => _sendUSD;
   bool get showAgents => _showAgents;
 
-  double get fees => _fees;
+  // double get fees => _fees;
   double get amountPlusFee => _amountPlusFee;
   double get exchangeRate => _exchangeRate;
 
@@ -111,7 +111,7 @@ class Calculator with ChangeNotifier {
     _usdRate = AppMetadata.get.usdRate;
     _usdRatio = AppMetadata.get.usdRatio;
 
-    _fees = _minFee;
+    // _fees = _minFee;
   }
 
   //**Select a recipient.
@@ -142,10 +142,11 @@ class Calculator with ChangeNotifier {
 
   //**Get receiver countries to add a recipient & setting exchange rates.
   void getReceiveCountries(List<CountryModel> countries) {
+    initializeData();
+
     _receiveCountries = countries;
     if (countries.isNotEmpty) setReceiverCountry(countries.first);
 
-    initializeData();
     notifyListeners();
   }
 
@@ -160,7 +161,8 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
-      _fees = 0;
+      _sender = TextEditingController(text: '100');
+      // _fees = 0;
       _amountPlusFee = 0;
     });
   }
@@ -297,7 +299,7 @@ class Calculator with ChangeNotifier {
       double userCountryFees = (percentFee * amount) / 100;
       double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
 
-      _fees = sendFees;
+      // _fees = sendFees;
       double amountWithoutCountryFees = amount - sendFees;
       converted = sendUSD
           ? amountWithoutCountryFees
@@ -320,7 +322,7 @@ class Calculator with ChangeNotifier {
           sendUSD ? (percentFee * newAmount) / 100 : newAmount - newAmountInUsd;
       double sendFees = newFees > minFee ? newFees : minFee;
 
-      _fees = sendFees;
+      // _fees = sendFees;
       converted = newAmount;
       _amountPlusFee = newAmount + receiverRatio;
     }

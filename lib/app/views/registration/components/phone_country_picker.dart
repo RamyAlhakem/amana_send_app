@@ -15,14 +15,9 @@ import '/models/country.dart';
 import '/services/lang_service.dart';
 
 class PhoneCountryPicker extends StatefulWidget {
-  const PhoneCountryPicker({
-    super.key,
-    this.isRegistration = true,
-    this.areaNote,
-  });
+  const PhoneCountryPicker({super.key, this.isRegistration = true});
 
   final bool isRegistration;
-  final Function(String)? areaNote;
 
   @override
   State<PhoneCountryPicker> createState() => _PhoneCountryPickerState();
@@ -105,7 +100,6 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                           borderRadius: BorderRadius.circular(100),
                           onTap: () => state(() {
                             setState(() {
-                              _pr.setCity(null);
                               if (isRegistration) {
                                 _pr.setCountry(
                                   _calculator.setSendCountry(_countries[i]),
@@ -114,12 +108,6 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                                 _pr.setCountry(
                                   _calculator.setReceiverCountry(_countries[i]),
                                 );
-
-                                // clear previous city [areaNote] when recipient
-                                // country changed in add/edit recipient page.
-                                if (widget.areaNote != null) {
-                                  widget.areaNote!('');
-                                }
                               }
                               _pr.setCities(_countries[i].cities);
 

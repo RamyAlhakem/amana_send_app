@@ -14,78 +14,60 @@ import '/models/user.dart';
 
 class VerifyAccountAPI {
   VerifyAccountAPI(
-    this.context,
     this.buttonCtrl, {
-    this.fullName = '',
-    required this.city,
+    required this.arFirstName,
+    required this.arFatherName,
+    required this.arLastName,
+    required this.cityId,
     required this.postCode,
-    required this.street,
-    required this.building,
-    required this.flat,
-    this.addressPicId,
-    required this.birthday,
-    required this.idNumber,
-    required this.idIssuedDate,
-    required this.idExpireDate,
+    required this.fullAddress,
     this.mainIdPicId,
     this.selfiePicId,
   });
 
-  final BuildContext context;
-  final String fullName, city, postCode, street, building, flat, birthday;
-  final String idNumber, idIssuedDate, idExpireDate;
-  final int? addressPicId, mainIdPicId, selfiePicId;
+  final String arFirstName, arFatherName, arLastName, postCode, fullAddress;
+  final int? mainIdPicId, selfiePicId;
+  final int cityId;
   final LoadingButtonController buttonCtrl;
 
-  static late AppLocalizations? _arb;
+  static late AppLocalizations _arb;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
+  static final BuildContext _context = Global.key.currentContext!;
   Future<void> request() async {
-    _arb = AppLocalizations.of(context);
+    _arb = AppLocalizations.of(_context)!;
 
     final UserModel user = Database().getUser;
 
-    if (fullName.isEmpty) return Helper.bannerWarning(_arb!.enterFullName);
-    if (city.isEmpty) return Helper.bannerWarning(_arb!.enterCity);
-    if (postCode.isEmpty) return Helper.bannerWarning(_arb!.enterPostCode);
-    if (street.isEmpty) return Helper.bannerWarning(_arb!.enterStreet);
-    if (flat.isEmpty) return Helper.bannerWarning(_arb!.enterHouseNumber);
-
-    if (user.addressPic.isEmpty && addressPicId == null) {
-      return Helper.bannerWarning(_arb!.pleaseUploadProofOfAddress);
-    }
-
-    if (idNumber.isEmpty) {
-      return Helper.bannerWarning(_arb!.enterIdentityNumber);
-    }
+    if (arFirstName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
+    if (arFatherName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
+    if (arLastName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
+    if (cityId == 0) return Helper.bannerWarning(_arb.enterCity);
+    if (postCode.isEmpty) return Helper.bannerWarning(_arb.enterPostCode);
+    if (fullAddress.isEmpty) return Helper.bannerWarning(_arb.enterFullAddress);
 
     if (user.mainIdPic.isEmpty && mainIdPicId == null) {
-      return Helper.bannerWarning(_arb!.pleaseUploadIdentityImage);
+      return Helper.bannerWarning(_arb.pleaseUploadIdentityImage);
     }
     if (user.selfiePic.isEmpty && selfiePicId == null) {
-      return Helper.bannerWarning(_arb!.pleaseUploadSelfie);
+      return Helper.bannerWarning(_arb.pleaseUploadSelfie);
     }
 
     if (buttonCtrl.currentState == ButtonState.loading) return;
     if (buttonCtrl.currentState == ButtonState.error) return;
     if (buttonCtrl.currentState == ButtonState.success) return;
 
-    FocusScope.of(context).unfocus();
+    FocusScope.of(_context).unfocus();
 
     buttonCtrl.start();
 
     _variables = <String, dynamic>{
-      'fullName': fullName,
-      'city': city,
+      'arFirstName': arFirstName,
+      'arFatherName': arFatherName,
+      'arLastName': arLastName,
+      'cityId': cityId,
       'postCode': postCode,
-      'street': street,
-      'building': building,
-      'flat': flat,
-      'addressPicId': addressPicId ?? 0,
-      'birthday': birthday,
-      'idNumber': idNumber,
-      'idIssuedDate': idIssuedDate,
-      'idExpireDate': idExpireDate,
+      'fullAddress': fullAddress,
       'mainIdPicId': mainIdPicId ?? 0,
       'selfPicId': selfiePicId ?? 0,
     };
@@ -115,10 +97,10 @@ class VerifyAccountAPI {
       UserModel.get = UserModel.fromJson(data['userVerifyAccount']);
       await Future.delayed(
         const Duration(milliseconds: 800),
-        () => context.pop(),
+        () => _context.pop(),
       ).whenComplete(() {
         // Show verify in process message
-        Helper.userVerify(context, 0, returnSnack: true);
+        Helper.userVerify(0, returnSnack: true);
       });
 
       await Future.delayed(const Duration(milliseconds: 200));
@@ -127,33 +109,33 @@ class VerifyAccountAPI {
   }
 
   void _error(OperationException error) async {
-    _arb = AppLocalizations.of(context);
+    _arb = AppLocalizations.of(_context)!;
 
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {
         case 452:
-          Helper.bannerError(_arb!.iDExpireDateAlreadyExpired);
+          Helper.bannerError(_arb.iDExpireDateAlreadyExpired);
           break;
 
         case 453:
-          Helper.bannerError(_arb!.iDIssuedDateIsInvalid);
+          Helper.bannerError(_arb.iDIssuedDateIsInvalid);
           break;
 
         case 455:
-          Helper.bannerError(_arb!.accountDeactivated);
+          Helper.bannerError(_arb.accountDeactivated);
           break;
 
         case 456:
-          Helper.bannerError(_arb!.accountIsUnderReview);
+          Helper.bannerError(_arb.accountIsUnderReview);
           break;
 
         case 457:
-          Helper.bannerError(_arb!.accountIsAlreadyVerified);
+          Helper.bannerError(_arb.accountIsAlreadyVerified);
           break;
 
         default:
           Helper.toast(
-              '${_arb!.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
+              '${_arb.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
       }
       buttonCtrl.error();
 

@@ -6,15 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
-import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
-import '/app/views/registration/components/city_picker.dart';
 import '/app/views/registration/components/phone_country_picker.dart';
 import '/app/views/registration/provider/registration_state.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/row.dart';
-import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/app/widgets/text_form_field/tools/text_form_validator.dart';
@@ -51,8 +48,6 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _lastName = TextEditingController();
   TextEditingController _fatherName = TextEditingController();
 
-  String _pickUp = '';
-
   bool keepSendProcess = false;
 
   @override
@@ -66,10 +61,6 @@ class _AddRecipientState extends State<AddRecipient> {
       _firstName = TextEditingController(text: _recipient?.firstName);
       _lastName = TextEditingController(text: _recipient?.lastName);
       _fatherName = TextEditingController(text: _recipient?.fatherName);
-
-      if (_recipient!.country.cities.isNotEmpty) {
-        _pickUp = _recipient?.country.cities.first.areaNote ?? '';
-      }
 
       if (widget.query.isNotEmpty) {
         if (widget.query['keepSendProcess'] == 'true') keepSendProcess = true;
@@ -94,7 +85,6 @@ class _AddRecipientState extends State<AddRecipient> {
 
     _registerState.setCountry(null);
     _registerState.setCities(<CityModel>[]);
-    _registerState.setCity(null);
   }
 
   @override
@@ -118,42 +108,7 @@ class _AddRecipientState extends State<AddRecipient> {
               ),
 
               // Phone country select
-              PhoneCountryPicker(
-                isRegistration: false,
-                // clear previous city [areaNote] when recipient country changed.
-                areaNote: (clear) => setState(() => _pickUp = clear),
-              ),
-
-              // City select
-              CityPicker(
-                onChange: (city) {
-                  setState(() => _pickUp = city.areaNote);
-                  _registerState.setCity(city);
-                },
-                country: _registerState.country,
-                cities: _registerState.cities,
-                city: _registerState.city,
-              ),
-
-              Container(
-                decoration: Decorations.border(context),
-                margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextX(
-                      arb.pickUpPointsReadOnly,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    const SizedBox(height: 4),
-                    TextC(
-                      _pickUp,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-              ),
+              const PhoneCountryPicker(isRegistration: false),
 
               const SizedBox(height: 8),
               TextX(
@@ -172,7 +127,6 @@ class _AddRecipientState extends State<AddRecipient> {
                           type: TextInputType.name,
                           onChanged: (v) =>
                               TextFieldValidator.latin(context, _firstName),
-                          validator: (v) => null,
                         ),
                       ),
                       const SizedBox(width: 13),
@@ -183,7 +137,6 @@ class _AddRecipientState extends State<AddRecipient> {
                           type: TextInputType.name,
                           onChanged: (v) =>
                               TextFieldValidator.latin(context, _lastName),
-                          validator: (v) => null,
                         ),
                       ),
                     ]),
@@ -193,7 +146,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       type: TextInputType.name,
                       onChanged: (v) =>
                           TextFieldValidator.latin(context, _fatherName),
-                      validator: (v) => null,
+                      onSubmitted: (_) => _submit(),
                     ),
                   ],
                 ),
@@ -258,19 +211,16 @@ class _AddRecipientState extends State<AddRecipient> {
     if (_registerState.mobile.text.isEmpty) {
       return Helper.toast(arb.enterMobileNumber);
     }
-    if (_registerState.city == null) return Helper.toast(arb.selectCity);
     if (isNameEmpty()) return Helper.toast(arb.enterRecipientName);
 
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
 
     AddEditRecipientAPI(
-      context,
       firstName: _firstName.text,
       lastName: _lastName.text,
       fatherName: _fatherName.text,
       countryCode: '${_registerState.country?.coCode}',
       mobile: _registerState.mobile.text,
-      cityId: _registerState.city!.id,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {

@@ -39,8 +39,8 @@ class _AccountState extends State<Account> {
     _arb = AppLocalizations.of(context);
     user = Database().getUser;
 
-    verifyStatus = Helper.userVerify(context, user.verified)['status'];
-    verifyColor = Helper.userVerify(context, user.verified)['color'];
+    verifyStatus = Helper.userVerify(user.verified)['status'];
+    verifyColor = Helper.userVerify(user.verified)['color'];
 
     super.didChangeDependencies();
   }
@@ -77,7 +77,6 @@ class _AccountState extends State<Account> {
                 // const HDivider(),
                 AccountSetting(
                   onTap: () => Helper.userVerify(
-                    context,
                     user.verified,
                     returnSnack: true,
                     navigate: true,

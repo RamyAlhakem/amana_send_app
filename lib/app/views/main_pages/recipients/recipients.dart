@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
@@ -95,11 +96,13 @@ class _RecipientsState extends State<Recipients> {
                               height: 38,
                               padding: EdgeInsets.zero,
                               color: Colors.transparent,
+                              foregroundColor: context.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
                               Row(children: [
                                 const SizedBox(width: 10),
                                 TextX(
                                   _arb!.send.toUpperCase(),
-                                  style: const TextStyle(color: Colors.white),
                                 ),
                                 const SizedBox(width: 10),
                                 const Icon(Icons.chevron_right)

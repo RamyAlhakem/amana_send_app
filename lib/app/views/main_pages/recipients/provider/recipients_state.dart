@@ -55,7 +55,6 @@ class RecipientsState extends ChangeNotifier {
       return c.coCode == recipient.country.coCode;
     });
 
-    context.read<RegistrationState>().setCity(recipient.country.cities.first);
     context.read<RegistrationState>().mobile.text = '${recipient.mobile}';
     context.pushNamed(
       AppRoute.addRecipient,

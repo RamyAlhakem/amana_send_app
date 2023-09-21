@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/dialogs/settings.dart';
-import '/app/widgets/divider.dart';
 import '/app/widgets/picker_form.dart';
 import '/models/country.dart';
 import '/services/lang_service.dart';
@@ -48,37 +47,33 @@ class CountryRoller extends StatelessWidget {
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               children: [
-                ListView.separated(
+                ListView(
                   shrinkWrap: true,
                   padding: EdgeInsets.fromLTRB(
                       isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: countries.length,
-                  itemBuilder: (BuildContext _, int i) {
-                    return InkWell(
-                      borderRadius: BorderRadius.circular(100),
-                      onTap: () => setState(() {
-                        state.setReceiverCountry(state.receiveCountries[i]);
+                  children: [
+                    for (int i = 0; i < countries.length; i++)
+                      if (countries[i].cities.isNotEmpty)
+                        if (countries[i].cities.first.agents.isNotEmpty)
+                          InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: () => setState(() {
+                              state.setReceiverCountry(
+                                  state.receiveCountries[i]);
 
-                        country = state.receiverCountry;
-                        countries = state.receiveCountries;
+                              country = state.receiverCountry;
+                              countries = state.receiveCountries;
 
-                        state.setPrice(state.sender.text);
-                        SettingsDialog.dismiss();
-                      }),
-                      child: Country(
-                        country: countries[i],
-                        selected: country.coCode == countries[i].coCode,
-                      ),
-                    );
-                  },
-                  separatorBuilder: (__, ___) {
-                    return const HDivider(
-                      color: Colors.white,
-                      height: 8,
-                      thickness: 0.1,
-                    );
-                  },
+                              state.setPrice(state.sender.text);
+                              SettingsDialog.dismiss();
+                            }),
+                            child: Country(
+                              country: countries[i],
+                              selected: country.coCode == countries[i].coCode,
+                            ),
+                          ),
+                  ],
                 ),
               ],
             ),

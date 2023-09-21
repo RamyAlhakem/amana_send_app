@@ -334,12 +334,12 @@ class Helper {
   }
 
   static Map<String, dynamic> userVerify(
-    BuildContext context,
     int status, {
     bool returnSnack = false,
     bool navigate = false,
     bool showDialog = false,
   }) {
+    final BuildContext context = Global.key.currentContext!;
     _arb = AppLocalizations.of(context);
 
     String verifyStatus = _arb!.verifyAccount;

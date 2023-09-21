@@ -1,4 +1,5 @@
 import '/helper/safety_model.dart';
+import '/models/city.dart';
 import 'country.dart';
 import 'level.dart';
 
@@ -8,29 +9,18 @@ class UserModel extends SafetyModel {
     this.token = '',
     this.firstName = '',
     this.lastName = '',
+    this.arFirstName = '',
+    this.arFatherName = '',
+    this.arLastName = '',
     this.mobile = '',
     this.email = '',
     this.verified = -1,
-    this.fullName = '',
-    this.city = '',
+    this.fullAddress = '',
     this.postCode = '',
-    this.street = '',
-    this.building = '',
-    this.addressPic = '',
     this.birthday = '1997-01-01',
     this.mainIdPic = '',
-    this.idNumber = '',
-    this.idIssuedDate = '2022-01-01',
-    this.idExpireDate = '2026-01-01',
     this.selfiePic = '',
-    this.doc1 = '',
-    this.doc2 = '',
-    this.doc3 = '',
-    this.doc4 = '',
     this.userNote = '',
-    this.cardNumber = '',
-    this.expiryDate = '',
-    this.cardHolderName = '',
     this.remainingSendLimit = 10,
   });
 
@@ -38,37 +28,22 @@ class UserModel extends SafetyModel {
   String token = '';
   String firstName = '';
   String lastName = '';
+  String arFirstName = '';
+  String arFatherName = '';
+  String arLastName = '';
+  String fullAddress = '';
   String mobile = '';
   String email = '';
   int verified = -1;
-  String fullName = '';
-  String city = '';
   String postCode = '';
-  String street = '';
-  String building = '';
-  String flat = '';
-  String addressPic = '';
   String mainIdPic = '';
   String selfiePic = '';
   String birthday = '1997-01-01';
-  String idNumber = '';
-  String idIssuedDate = '2022-01-01';
-  String idExpireDate = '2026-01-01';
-  String doc1 = '';
-  String doc2 = '';
-  String doc3 = '';
-  String doc4 = '';
+  CityModel city = CityModel();
   CountryModel country = CountryModel();
   String userNote = '';
   double remainingSendLimit = 10;
   LevelModel level = LevelModel();
-
-  // **CREDIT CARD DETAILS** locally saved
-
-  String cardNumber = '';
-  String expiryDate = '';
-  String cardHolderName = '';
-  //
 
   static UserModel get = UserModel();
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -76,23 +51,18 @@ class UserModel extends SafetyModel {
     token = stringFromJson(json, 'session');
     firstName = stringFromJson(json, 'firstName');
     lastName = stringFromJson(json, 'lastName');
+    arFirstName = stringFromJson(json, 'arFirstName');
+    arFatherName = stringFromJson(json, 'arFatherName');
+    arLastName = stringFromJson(json, 'arLastName');
     mobile = stringFromJson(json, 'mobile');
     email = stringFromJson(json, 'email');
     verified = intFromJson(json, 'verified', defaultValue: -1);
-    fullName = stringFromJson(json, 'fullName');
-    city = stringFromJson(json, 'city');
+    fullAddress = stringFromJson(json, 'fullAddress');
+    city = objectFromJson(json, 'city', (v) => CityModel.fromJson(v),
+        defaultValue: CityModel());
     postCode = stringFromJson(json, 'postCode');
-    street = stringFromJson(json, 'street');
-    flat = stringFromJson(json, 'flat');
-    building = stringFromJson(json, 'building');
-    addressPic = stringFromJson(json, 'addressPic');
     birthday = dateFromJson(json, 'birthday', defaultValue: '1997-01-01');
     mainIdPic = stringFromJson(json, 'mainIdPic');
-    idNumber = stringFromJson(json, 'idNumber');
-    idIssuedDate =
-        dateFromJson(json, 'idIssuedDate', defaultValue: '2022-01-01');
-    idExpireDate =
-        dateFromJson(json, 'idExpireDate', defaultValue: '2026-01-01');
     selfiePic = stringFromJson(json, 'selfiePic');
     country = objectFromJson(json, 'country', (v) => CountryModel.fromJson(v),
         defaultValue: CountryModel());
@@ -109,28 +79,21 @@ class UserModel extends SafetyModel {
         'session': token,
         'firstName': firstName,
         'lastName': lastName,
+        'arFirstName': arFirstName,
+        'arFatherName': arFatherName,
+        'arLastName': arLastName,
         'mobile': mobile,
         'email': email,
         'verified': verified,
-        'fullName': fullName,
-        'city': city,
+        'fullAddress': fullAddress,
+        'city': city.toJson(),
         'postCode': postCode,
-        'street': street,
-        'building': building,
-        'flat': flat,
-        'addressPic': addressPic,
         'birthday': birthday,
         'mainIdPic': mainIdPic,
-        'idNumber': idNumber,
-        'idIssuedDate': idIssuedDate,
-        'idExpireDate': idExpireDate,
         'selfiePic': selfiePic,
-        'country': country,
+        'country': country.toJson(),
         'allowedSendAmount': remainingSendLimit,
-        'level': level,
-        'cardNumber': cardNumber,
-        'expiryDate': expiryDate,
-        'cardHolderName': cardHolderName,
+        'level': level.toJson(),
         'userNote': userNote,
       };
 }

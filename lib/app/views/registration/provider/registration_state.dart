@@ -30,7 +30,7 @@ class RegistrationState extends ChangeNotifier {
   // login form --(
   CountryModel? _country; // selected country.
   List<CityModel> _cities = <CityModel>[]; // cities from selected country.
-  CityModel? _city; // selected city.
+  // CityModel? _city; // selected city.
   final TextEditingController _mobile = TextEditingController();
   final TextEditingController _password = TextEditingController();
   // )--
@@ -53,7 +53,7 @@ class RegistrationState extends ChangeNotifier {
 
   CountryModel? get country => _country; // selected country.
   List<CityModel> get cities => _cities; // cities from selected country.
-  CityModel? get city => _city; // selected city.
+  // CityModel? get city => _city; // selected city.
   TextEditingController get mobile => _mobile;
   TextEditingController get email => _email;
   TextEditingController get password => _password;
@@ -90,10 +90,10 @@ class RegistrationState extends ChangeNotifier {
     if (cities.isNotEmpty) notifyListeners();
   }
 
-  void setCity(CityModel? city) {
-    _city = city;
-    if (city != null) notifyListeners();
-  }
+  // void setCity(CityModel? city) {
+  //   _city = city;
+  //   if (city != null) notifyListeners();
+  // }
 
   Future<void> submitForm(
     BuildContext context,

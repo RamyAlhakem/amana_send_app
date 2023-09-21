@@ -4,24 +4,21 @@ class Explorer {
       session
       firstName
       lastName
+      arFirstName
+      arFatherName
+      arLastName
       mobile
       email
       verified
-      fullName
-      city
+      city {
+        $city
+      }
       postCode
-      street
-      building
-      flat
-      addressPic
-      birthday
       mainIdPic
-      idNumber
-      idIssuedDate
-      idExpireDate
       selfiePic
       userNote
       allowedSendAmount
+      fullAddress
       level {
         id
         iconUrl
@@ -53,7 +50,6 @@ class Explorer {
 
   static const String city = '''
       id
-      areaNote
       coCode
       name
       defaultMessage
@@ -93,12 +89,6 @@ class Explorer {
       lastName
       mobile
       status
-      city {
-        $city
-        providers {
-          $provider
-        }
-      }
       dateAdded
       $country
       ''';

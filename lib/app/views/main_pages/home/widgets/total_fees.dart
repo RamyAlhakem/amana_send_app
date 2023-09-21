@@ -27,7 +27,8 @@ class TotalFees extends StatelessWidget {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${state.fees.toStringAsFixed(2)} ',
+                          text:
+                              '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
                         ),
                         const TextSpan(text: 'USDT'),
                       ],

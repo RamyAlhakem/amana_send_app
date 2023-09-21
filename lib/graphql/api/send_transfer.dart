@@ -6,13 +6,13 @@ import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/dialogs/loading.dart';
+import '/graphql/api/get_transfers.dart';
 import '/graphql/explorer/mutations.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/router/app_route.dart';
-import 'get_user.dart';
 
 class SendTransfer {
   SendTransfer(
@@ -21,6 +21,7 @@ class SendTransfer {
     required this.recipientAmount,
     required this.sendAmount,
     required this.recipientId,
+    required this.receivingCityId,
     required this.providerId,
     required this.paymentMethodId,
     required this.isReceiveInUSD,
@@ -29,7 +30,7 @@ class SendTransfer {
   final BuildContext context;
   final PageController page;
   final double recipientAmount, sendAmount;
-  final int providerId, paymentMethodId, recipientId;
+  final int receivingCityId, providerId, paymentMethodId, recipientId;
   final bool isReceiveInUSD;
 
   static AppLocalizations? _arb;
@@ -50,6 +51,7 @@ class SendTransfer {
       'recipientId': recipientId,
       'isReceiveInUSD': isReceiveInUSD,
       'paymentMethodId': paymentMethodId,
+      'receivingCityId': receivingCityId,
       'providerId': providerId,
     };
 
@@ -86,13 +88,7 @@ class SendTransfer {
       const Duration duration = Duration(milliseconds: 250);
       page.nextPage(duration: duration, curve: Curves.easeIn);
       _pr.getTransfer(transfer);
-
-      GetUserMeta.request();
-
-      // context.pushReplacementNamed(
-      //   AppRoute.success,
-      //   pathParameters: <String, String>{'transfer': jsonEncode(transfer)},
-      // );
+      GetTransfers(context).request();
     }
   }
 

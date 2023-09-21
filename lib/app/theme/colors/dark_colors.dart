@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DarkColors {
   static const Color main = Color(0xff1a1d21);
-  static const Color sec = Color(0xff1e2421);
+  static const Color sec = Color(0xff252525);
   static const Color third = Color(0xff5C6B5F);
 
   static const Color t1 = Color(0xffFAFAFA);

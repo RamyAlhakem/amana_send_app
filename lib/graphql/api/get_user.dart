@@ -37,7 +37,6 @@ class GetUserMeta {
       Global.appSettings.loadSettings(rebuild: false).whenComplete(() {
         final UserModel user = Database().getUser;
         Helper.userVerify(
-          context,
           user.verified,
           showDialog: true,
           returnSnack: user.verified == 0,

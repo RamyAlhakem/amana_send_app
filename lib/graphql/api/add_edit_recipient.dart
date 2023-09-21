@@ -12,25 +12,22 @@ import '/helper/debug_colors.dart';
 import '/helper/helper.dart';
 
 class AddEditRecipientAPI {
-  AddEditRecipientAPI(
-    this.context, {
+  AddEditRecipientAPI({
     required this.firstName,
     required this.lastName,
     required this.fatherName,
     required this.countryCode,
     required this.mobile,
-    required this.cityId,
     this.id = 0,
   });
 
-  final BuildContext context;
   final String firstName, lastName, fatherName;
   final String countryCode, mobile;
-  final int cityId;
   final int id;
 
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
+  static final BuildContext _context = Global.key.currentContext!;
   Future<void> request() async {
     final String json = id != 0 ? 'recipientEdit' : 'recipientAdd';
     LoadingDialog().show();
@@ -42,7 +39,6 @@ class AddEditRecipientAPI {
       'fatherName': fatherName,
       'countryCode': countryCode,
       'mobile': mobile,
-      'cityId': cityId,
     };
 
     Helper.debugger(json);
@@ -74,13 +70,13 @@ class AddEditRecipientAPI {
 
       await GetRecipients.request().whenComplete(() {
         LoadingDialog.dismiss();
-        context.pop();
+        _context.pop();
       });
     }
   }
 
   void _error(OperationException error) async {
-    final AppLocalizations? arb = AppLocalizations.of(context);
+    final AppLocalizations? arb = AppLocalizations.of(_context);
 
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {

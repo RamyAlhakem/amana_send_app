@@ -42,6 +42,7 @@ class CheckOut extends StatefulWidget {
             sendAmount: calculator.amountPlusFee,
             recipientId: calculator.selectedRecipient!.id,
             isReceiveInUSD: calculator.sendUSD,
+            receivingCityId: calculator.receiverCity.id,
             providerId: calculator.receiverAgent.id,
             paymentMethodId: 1,
           ).request();
@@ -101,6 +102,7 @@ class _CheckOutState extends State<CheckOut> {
   Widget build(BuildContext context) {
     final bool isAr = LangService.isAR();
     return Consumer<Calculator>(builder: (_, state, child) {
+      final rate = state.receiverAgent.rate * (1 - (state.percentFee / 100));
       child = Container(
         margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
@@ -145,15 +147,11 @@ class _CheckOutState extends State<CheckOut> {
                 TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text:
-                          '${isAr ? '' : '1'} ${state.sendCountry.currency.code} ${isAr ? '1 ' : ''}= ',
+                      text: '${isAr ? '' : '1'} USDT ${isAr ? '1 ' : ''}= ',
                     ),
                     TextSpan(
-                      text: state.exchangeRate.toStringAsFixed(2),
-                    ),
-                    TextSpan(
-                      text:
-                          ' ${state.sendUSD ? 'USD' : state.receiverCountry.currency.code}',
+                      text: Helper.priced(rate,
+                          currencyCode: state.receiverCountry.currency.code),
                     ),
                   ],
                 ),
@@ -167,11 +165,10 @@ class _CheckOutState extends State<CheckOut> {
                 TextSpan(
                   children: <TextSpan>[
                     TextSpan(
-                      text: '${state.fees.toStringAsFixed(2)} ',
+                      text:
+                          '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
                     ),
-                    TextSpan(
-                      text: state.sendCountry.currency.code,
-                    ),
+                    const TextSpan(text: 'USDT'),
                   ],
                 ),
               ),
