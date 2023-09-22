@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/registration/components/city_picker.dart';
-import '/app/widgets/expander.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
+import '/global/variables.dart';
 import '/helper/dart_ui.dart';
 import 'agent_button.dart';
 import 'country_roller.dart';
@@ -67,6 +67,12 @@ class _SendFormFieldsState extends State<SendFormFields>
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (Global.appSettings.token.isEmpty)
+            CountryRoller(
+              send: true,
+              title: arb.sendCountries,
+              borderRadius: 11,
+            ),
           if (state.showAgents)
             Row(
               children: [
@@ -91,50 +97,43 @@ class _SendFormFieldsState extends State<SendFormFields>
               ],
             ),
           const SizedBox(height: 4),
-          Expander(
-            expand: state.receiverAgent.name.isNotEmpty,
-            child: Wrap(
-              children: [
-                TextFieldX(
-                  hint: arb.youSend,
-                  controller: state.sender,
-                  type: TextInputType.phone,
-                  input: _input,
-                  suffixIcon: Container(
-                    width: 60,
-                    alignment: Alignment.center,
-                    child: TextX(
-                      'USDT',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  borderRadius: borderRadius,
-                  filled: true,
-                  fillColor: Theme.of(context).cardColor,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
-                  onChanged: (String value) => state.setPrice(value),
-                ),
-                TextFieldX(
-                  hint: arb.receiverGets,
-                  controller: state.receiver,
-                  type: TextInputType.phone,
-                  input: _input,
-                  suffixIcon: const CurrencyRoller(),
-                  borderRadius: borderRadius,
-                  filled: true,
-                  fillColor: Theme.of(context).cardColor,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                  onChanged: (String value) => state.setPrice(value),
-                  onSubmitted: (_) => state.roundReceiverAmount(),
-                ),
-              ],
+          TextFieldX(
+            hint: arb.youSend,
+            controller: state.sender,
+            type: TextInputType.phone,
+            input: _input,
+            suffixIcon: Container(
+              width: 60,
+              alignment: Alignment.center,
+              child: TextX(
+                'USDT',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
+            borderRadius: borderRadius,
+            filled: true,
+            fillColor: Theme.of(context).cardColor,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
+            onChanged: (String value) => state.setPrice(value),
+          ),
+          TextFieldX(
+            hint: arb.receiverGets,
+            controller: state.receiver,
+            type: TextInputType.phone,
+            input: _input,
+            suffixIcon: const CurrencyRoller(),
+            borderRadius: borderRadius,
+            filled: true,
+            fillColor: Theme.of(context).cardColor,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+            onChanged: (String value) => state.setPrice(value),
+            onSubmitted: (_) => state.roundReceiverAmount(),
           ),
           if (!widget.keepAlive)
             if (state.receiverCity.agents.isNotEmpty)
@@ -164,12 +163,9 @@ class _SendFormFieldsState extends State<SendFormFields>
                   );
                 },
               ),
-          Expander(
-            expand: state.receiverAgent.name.isNotEmpty,
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-              child: TotalFees(),
-            ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+            child: TotalFees(),
           ),
           SizedBox(height: state.receiverAgent.name.isNotEmpty ? 15 : 5),
         ],

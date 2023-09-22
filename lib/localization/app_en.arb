@@ -290,6 +290,7 @@
   "changeImage": "Change image",
   "uploadImage": "Upload Image",
   "submit": "Submit",
+  "oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours": "Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours",
   "areYouSureYouWantToDeleteYourAccount": "Are you sure you want to delete your account!?",
   "support": "Support",
   "cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer": "Cannot send this transfer due to recipient details has been modified or delete, Kindly make new transfer",

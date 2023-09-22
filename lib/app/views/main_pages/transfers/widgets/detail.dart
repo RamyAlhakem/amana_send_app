@@ -188,6 +188,7 @@ class _TransferDetailState extends State<TransferDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              RowSpaceBetween([TextX(arb.city), TextX(transfer.city.name)]),
               RowSpaceBetween([
                 TextX(arb.fees),
                 Text.rich(

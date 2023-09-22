@@ -289,6 +289,7 @@
   "changeImage": "تغيير الصورة",
   "uploadImage": "رفع صورة",
   "submit": "إرسال", 
+  "oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours": "بمجرد تأكيد الدفع في نظامنا، سيتم إعلامك وستبدأ معالجة المعاملة خلال 24 ساعة",
   "areYouSureYouWantToDeleteYourAccount": "هل انت متأكد انك تريد حذف حسابك!؟",
   "support": "الدعم",
   "cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer": "لا يمكن إرسال هذه الحوالة بسبب تعديل أو حذف معلومات المستلم، يرجى إرسال حوالة جديدة",

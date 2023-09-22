@@ -24,17 +24,17 @@ class DeleteRecipient {
 
     _variables = <String, dynamic>{'id': id};
 
-    Helper.debugger('deleteRecipient');
+    Helper.debugger('recipientDelete');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
     await GraphQL.client().mutate(
       MutationOptions(
-        document: gql(Mutations.deleteRecipient),
+        document: gql(Mutations.recipientDelete),
         variables: _variables,
         onCompleted: (Map<String, dynamic>? data) {
           LoadingDialog.dismiss();
 
-          Helper.debug('deleteRecipient', '$data');
+          Helper.debug('recipientDelete', '$data');
 
           if (data != null) return _result(data);
         },
@@ -50,7 +50,7 @@ class DeleteRecipient {
   void _result(Map<String, dynamic> data) async {
     _arb = AppLocalizations.of(context);
 
-    if (data.isNotEmpty && data.containsKey('deleteRecipient')) {
+    if (data.isNotEmpty && data.containsKey('recipientDelete')) {
       Helper.toast(
         _arb!.recipientHasBeenDeletedSuccessfully,
         bgColor: Colors.green,

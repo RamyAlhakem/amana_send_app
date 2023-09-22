@@ -14,12 +14,14 @@ import 'country.dart';
 class CountryRoller extends StatelessWidget {
   const CountryRoller({
     super.key,
+    this.send = false,
     required this.title,
     this.width,
     this.borderRadius = 8,
   });
 
   final String title;
+  final bool send;
   final double? width;
   final double borderRadius;
 
@@ -28,9 +30,9 @@ class CountryRoller extends StatelessWidget {
     final AppLocalizations? arb = AppLocalizations.of(context);
     final bool isAr = LangService.isAR();
     return Consumer<Calculator>(builder: (_, state, child) {
-      CountryModel country = state.receiverCountry;
-      List<CountryModel> countries = state.receiveCountries;
-
+      CountryModel country = send ? state.sendCountry : state.receiverCountry;
+      List<CountryModel> countries =
+          send ? state.sendCountries : state.receiveCountries;
       child = PickerForm(
         () => SettingsDialog(
           onSubmit: null,
@@ -54,16 +56,20 @@ class CountryRoller extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     for (int i = 0; i < countries.length; i++)
-                      if (countries[i].cities.isNotEmpty)
-                        if (countries[i].cities.first.agents.isNotEmpty)
+                      if (send || countries[i].cities.isNotEmpty)
+                        if (send || countries[i].cities.first.agents.isNotEmpty)
                           InkWell(
                             borderRadius: BorderRadius.circular(100),
                             onTap: () => setState(() {
-                              state.setReceiverCountry(
-                                  state.receiveCountries[i]);
-
-                              country = state.receiverCountry;
-                              countries = state.receiveCountries;
+                              if (send) {
+                                country = state.setSendCountry(
+                                  state.sendCountries[i],
+                                );
+                              } else {
+                                country = state.setReceiverCountry(
+                                  state.receiveCountries[i],
+                                );
+                              }
 
                               state.setPrice(state.sender.text);
                               SettingsDialog.dismiss();
@@ -79,11 +85,14 @@ class CountryRoller extends StatelessWidget {
             ),
           ),
         ).show(),
-        hint: '${arb!.send} ${arb.to}',
+        hint: '${arb!.send} ${send ? arb.from : arb.to}',
         value: country.currency.code,
         width: width,
         borderRadius: borderRadius,
-        hintIcon: const HeroIcon(HeroIcons.arrowDownRight, size: 15),
+        hintIcon: HeroIcon(
+          send ? HeroIcons.arrowUpRight : HeroIcons.arrowDownRight,
+          size: 15,
+        ),
         valueIcon: Flag.fromString(
           country.coCode.isEmpty ? 'us' : country.coCode,
           height: 28,

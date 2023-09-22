@@ -231,9 +231,16 @@ class _WalletAddressState extends State<WalletAddress>
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ]),
-          const SizedBox(height: kToolbarHeight),
+          const SizedBox(height: kTextTabBarHeight / 2),
           TextX(
-            arb!.pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers,
+            arb!.pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers
+                .toUpperCase(),
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 15),
+          TextX(
+            arb!.oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours,
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),

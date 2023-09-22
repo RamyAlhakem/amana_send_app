@@ -46,7 +46,7 @@ class Calculator with ChangeNotifier {
   CityModel _receiverCity = CityModel();
   AgentModel _receiverAgent = AgentModel();
 
-  TextEditingController _sender = TextEditingController(text: '100');
+  TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
 
   bool _sendUSD = false;
@@ -126,6 +126,8 @@ class Calculator with ChangeNotifier {
 
   //**Get sender countries for registration purpose & setting exchange rates.
   void getSendCountries(List<CountryModel> countries) {
+    initializeData();
+
     final UserModel user = Database().getUser;
 
     _sendCountries = countries;
@@ -142,8 +144,6 @@ class Calculator with ChangeNotifier {
 
   //**Get receiver countries to add a recipient & setting exchange rates.
   void getReceiveCountries(List<CountryModel> countries) {
-    initializeData();
-
     _receiveCountries = countries;
     if (countries.isNotEmpty) setReceiverCountry(countries.first);
 
@@ -161,7 +161,6 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
-      _sender = TextEditingController(text: '100');
       // _fees = 0;
       _amountPlusFee = 0;
     });
@@ -221,6 +220,8 @@ class Calculator with ChangeNotifier {
   void setExchangeRate() {
     final rate = receiverAgent.rate / 1;
     sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
+    _percentFee = sendCountry.sendFees;
+
     notifyListeners();
   }
 
@@ -318,10 +319,10 @@ class Calculator with ChangeNotifier {
       double newAmountInUsd = sendUSD ? amount : amount / receiverAgent.rate;
       double newAmount =
           sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
-      double newFees =
-          sendUSD ? (percentFee * newAmount) / 100 : newAmount - newAmountInUsd;
-      double sendFees = newFees > minFee ? newFees : minFee;
 
+      // double newFees =
+      //     sendUSD ? (percentFee * newAmount) / 100 : newAmount - newAmountInUsd;
+      // double sendFees = newFees > minFee ? newFees : minFee;
       // _fees = sendFees;
       converted = newAmount;
       _amountPlusFee = newAmount + receiverRatio;

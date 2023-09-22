@@ -149,9 +149,9 @@ class Mutations {
     }
       ''';
 
-  static const String deleteRecipient = '''
-    mutation deleteRecipient(\$id: Int!) {
-      deleteRecipient(id: \$id) {
+  static const String recipientDelete = '''
+    mutation recipientDelete(\$id: Int!) {
+      recipientDelete(id: \$id) {
         message
       }
     }

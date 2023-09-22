@@ -67,6 +67,8 @@ class Explorer {
       phoneCode
       minAmount
       maxAmount
+      sendsFees
+      minimumSendsFees
       defaultMessage
       currency {
         id
@@ -109,6 +111,9 @@ class Explorer {
       paymentReference
       paymentMethod {
         $paymentMethod
+      }
+      city {
+        $city
       }
       provider {
         $provider

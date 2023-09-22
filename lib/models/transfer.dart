@@ -1,7 +1,8 @@
 import '/helper/safety_model.dart';
-import 'agent.dart';
+import '/models/city.dart';
 import '/models/recipient.dart';
 import '/models/wallet.dart';
+import 'agent.dart';
 
 enum TransferStatus { pending, isNew, processing, completed, canceled }
 
@@ -38,6 +39,7 @@ class TransferModel extends SafetyModel {
   int receiveType = 0, source = 0;
   String paymentReference = '', paymentData = '', addedAt = '';
   RecipientModel recipient = RecipientModel();
+  CityModel city = CityModel();
   AgentModel provider = AgentModel();
   WalletModel wallet = WalletModel();
   TransferStatus status = TransferStatus.pending;
@@ -84,6 +86,8 @@ class TransferModel extends SafetyModel {
     recipient = objectFromJson(
         json, 'recipient', (x) => RecipientModel.fromJson(x),
         defaultValue: RecipientModel());
+    city = objectFromJson(json, 'city', (x) => CityModel.fromJson(x),
+        defaultValue: CityModel());
     provider = objectFromJson(json, 'provider', (x) => AgentModel.fromJson(x),
         defaultValue: AgentModel());
     wallet = objectFromJson(
@@ -115,6 +119,7 @@ class TransferModel extends SafetyModel {
         'paymentReference': paymentReference,
         'paymentData': paymentData,
         'recipient': recipient.toJson(),
+        'city': city.toJson(),
         'provider': provider.toJson(),
         'walletAddress': wallet.toJson(),
       };
