@@ -264,7 +264,7 @@ class Calculator with ChangeNotifier {
 
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);
-      convertedAmount = calculate(value, sender.text, receiver.text);
+      convertedAmount = calculate(value);
 
       if (value == sender.text) {
         _receiver = TextEditingController(
@@ -283,24 +283,20 @@ class Calculator with ChangeNotifier {
     notifyListeners();
   }
 
-  double calculate(String controller, String sender, String receiver) {
+  double calculate(String controller) {
     double receiverRate = 0;
     final double receiverRatio = receiverAgent.receiveFees;
 
-    if (sendUSD) {
-      receiverRate = usdRate;
-    } else {
-      receiverRate = receiverAgent.rate;
-    }
+    // Set receiverRate (recipient)
+    sendUSD ? receiverRate = usdRate : receiverRate = receiverAgent.rate;
 
-    double amount = double.tryParse(controller) ?? 0;
+    final double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
 
-    if (controller == sender) {
+    if (controller == sender.text) {
       double userCountryFees = (percentFee * amount) / 100;
       double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
 
-      // _fees = sendFees;
       double amountWithoutCountryFees = amount - sendFees;
       converted = sendUSD
           ? amountWithoutCountryFees
@@ -320,10 +316,6 @@ class Calculator with ChangeNotifier {
       double newAmount =
           sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
 
-      // double newFees =
-      //     sendUSD ? (percentFee * newAmount) / 100 : newAmount - newAmountInUsd;
-      // double sendFees = newFees > minFee ? newFees : minFee;
-      // _fees = sendFees;
       converted = newAmount;
       _amountPlusFee = newAmount + receiverRatio;
     }

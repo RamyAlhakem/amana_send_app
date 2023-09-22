@@ -9,6 +9,7 @@ import '/app/widgets/loading_button.dart';
 import '/database/injector.dart';
 import '/firebase/firebase.dart';
 import '/global/variables.dart';
+import '/graphql/api/get_countries.dart';
 import '/graphql/explorer/mutations.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
@@ -79,6 +80,7 @@ class LogInAPI {
         // save user in device local storage
         await Global.appSettings.loadSettings().whenComplete(() {
           GetNotifications.request();
+          GetCountriesAPI.request();
         });
       });
 

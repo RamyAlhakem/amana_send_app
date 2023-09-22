@@ -290,6 +290,7 @@
   "changeImage": "Change image",
   "uploadImage": "Upload Image",
   "submit": "Submit",
+  "providerIsInactiveForTheReceivingCity": "Provider is inactive for the receiving city",
   "oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours": "Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours",
   "areYouSureYouWantToDeleteYourAccount": "Are you sure you want to delete your account!?",
   "support": "Support",

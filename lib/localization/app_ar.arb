@@ -289,6 +289,7 @@
   "changeImage": "تغيير الصورة",
   "uploadImage": "رفع صورة",
   "submit": "إرسال", 
+  "providerIsInactiveForTheReceivingCity": "الموفر غير نشط للمدينة المستقبلة",
   "oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours": "بمجرد تأكيد الدفع في نظامنا، سيتم إعلامك وستبدأ معالجة المعاملة خلال 24 ساعة",
   "areYouSureYouWantToDeleteYourAccount": "هل انت متأكد انك تريد حذف حسابك!؟",
   "support": "الدعم",

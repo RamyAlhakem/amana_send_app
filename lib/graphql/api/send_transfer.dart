@@ -33,14 +33,14 @@ class SendTransfer {
   final int receivingCityId, providerId, paymentMethodId, recipientId;
   final bool isReceiveInUSD;
 
-  static AppLocalizations? _arb;
+  static late AppLocalizations _arb;
   static late TransfersState _pr;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
     _pr = Provider.of<TransfersState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _arb = AppLocalizations.of(context);
+      _arb = AppLocalizations.of(context)!;
     });
 
     LoadingDialog().show();
@@ -75,7 +75,7 @@ class SendTransfer {
           if (error != null) {
             return _error(error);
           } else {
-            Helper.toast(_arb!.somethingWentWrong);
+            Helper.toast(_arb.somethingWentWrong);
           }
         },
       ),
@@ -105,22 +105,26 @@ class SendTransfer {
           break;
         case 452:
           Helper.bannerWarning(
-            '\n${_arb!.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
+            '\n${_arb.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
           );
           break;
 
         case 463:
           Helper.bannerWarning(
-            _arb!.youHaveExceededTheMaximumSendingAmountThisMonth,
+            _arb.youHaveExceededTheMaximumSendingAmountThisMonth,
           );
+          break;
+
+        case 492:
+          Helper.bannerWarning(_arb.providerIsInactiveForTheReceivingCity);
           break;
 
         default:
           Helper.toast(
-              '${_arb!.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
+              '${_arb.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
       }
     } else {
-      Helper.toast(_arb!.somethingWentWrong);
+      Helper.toast(_arb.somethingWentWrong);
     }
   }
 }
