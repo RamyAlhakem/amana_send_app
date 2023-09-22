@@ -14,15 +14,12 @@ import '/models/country.dart';
 
 class GetCountriesAPI {
   static late Calculator _p;
-  static late AppLocalizations? _arb;
+  static late AppLocalizations _arb;
 
   static final BuildContext context = Global.key.currentContext!;
   static Future<void> request() async {
     _p = Provider.of<Calculator>(context, listen: false);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _arb = AppLocalizations.of(context);
-    });
+    _arb = AppLocalizations.of(context)!;
 
     if (_p.sendCountries.isEmpty) _p.isRequestLoading(true);
 
@@ -60,7 +57,7 @@ class GetCountriesAPI {
         _p.getReceiveCountries(receiveCountries);
       }
       Helper.toast(
-        _arb!.currenciesPricesUpToDate,
+        _arb.currenciesPricesUpToDate,
         bgColor: Colors.white.withOpacity(0.95),
         textColor: Colors.black54,
         gravity: ToastGravity.TOP,
@@ -78,7 +75,7 @@ class GetCountriesAPI {
 
         default:
           Helper.toast(
-              '${_arb!.somethingWentWrong} [${errors.first.extensions?['code']}]');
+              '${_arb.somethingWentWrong} [${errors.first.extensions?['code']}]');
       }
     }
   }

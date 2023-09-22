@@ -6,10 +6,12 @@ import 'package:provider/provider.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
+import '/graphql/api/get_exchange_currencies.dart';
 import '/helper/helper.dart';
 import '/models/agent.dart';
 import '/models/city.dart';
 import '/models/country.dart';
+import '/models/currency.dart';
 import '/models/metadata.dart';
 import '/models/payment_method.dart';
 import '/models/recipient.dart';
@@ -40,6 +42,7 @@ class Calculator with ChangeNotifier {
 
   List<CountryModel> _sendCountries = <CountryModel>[];
   List<CountryModel> _receiveCountries = <CountryModel>[];
+  List<CurrencyModel> _currencies = <CurrencyModel>[];
 
   CountryModel _sendCountry = CountryModel();
   CountryModel _receiverCountry = CountryModel();
@@ -78,6 +81,7 @@ class Calculator with ChangeNotifier {
 
   List<CountryModel> get sendCountries => _sendCountries;
   List<CountryModel> get receiveCountries => _receiveCountries;
+  List<CurrencyModel> get currencies => _currencies;
 
   CountryModel get sendCountry => _sendCountry;
   CountryModel get receiverCountry => _receiverCountry;
@@ -150,6 +154,12 @@ class Calculator with ChangeNotifier {
     notifyListeners();
   }
 
+  void getCurrencies(List<CurrencyModel> elements) {
+    _currencies = elements;
+
+    notifyListeners();
+  }
+
   //**Get receiver city.
   void setReceiveCity(CityModel city) {
     _receiverCity = city;
@@ -213,6 +223,7 @@ class Calculator with ChangeNotifier {
 
     setExchangeRate();
     notifyListeners();
+    GetExchangeCurrenciesAPI(countryCoCode: country.coCode).request();
 
     return country;
   }

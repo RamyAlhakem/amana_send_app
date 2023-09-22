@@ -5,18 +5,20 @@ class CurrencyModel extends SafetyModel {
     this.code = '',
     this.name = '',
     this.ceil = 0,
+    this.rate = 0,
     this.symbol = '',
   });
 
   String code = '';
   String name = '';
-  double ceil = 0;
+  double ceil = 0, rate = 0;
   String symbol = '';
 
   CurrencyModel.fromJson(Map<String, dynamic> json) {
     code = stringFromJson(json, 'code');
     name = stringFromJson(json, 'name');
     ceil = doubleFromJson(json, 'ceil', decimal: 10);
+    rate = doubleFromJson(json, 'rate');
     symbol = stringFromJson(json, 'symbol');
     super.fromJson(json);
   }
@@ -26,6 +28,7 @@ class CurrencyModel extends SafetyModel {
         'code': code,
         'name': name,
         'ceil': ceil,
+        'rate': rate,
         'symbol': symbol,
       };
 }
