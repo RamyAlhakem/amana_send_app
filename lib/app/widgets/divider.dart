@@ -24,11 +24,12 @@ class HDivider extends StatelessWidget {
 class VDivider extends StatelessWidget {
   const VDivider({
     this.thickness,
+    this.margin,
     this.color,
     Key? key,
   }) : super(key: key);
 
-  final double? thickness;
+  final double? thickness, margin;
   final Color? color;
 
   @override
@@ -36,6 +37,8 @@ class VDivider extends StatelessWidget {
     return VerticalDivider(
       thickness: thickness ?? 0.6,
       color: color ?? Theme.of(context).dividerColor,
+      indent: margin,
+      endIndent: margin,
     );
   }
 }

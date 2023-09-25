@@ -25,6 +25,7 @@ import '/models/metadata.dart';
 import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
+import 'widgets/currencies_bar.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -38,6 +39,8 @@ class _HomeState extends State<Home> {
   late AppLocalizations? _arb;
   late UserModel user;
   String selection = '';
+
+  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 0, 14, 0);
 
   Future<void> getResources() async {
     GetMetadata.request();
@@ -70,72 +73,55 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
-      child = Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-        child: Visibility(
-          visible: !AppMetadata.get.maintenanceMode,
-          replacement: Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, kToolbarHeight),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const HeroIcon(HeroIcons.wrenchScrewdriver, size: 40),
-                  const SizedBox(height: 10),
-                  DottedBorder(
-                    borderType: BorderType.rRect,
-                    radius: const Radius.circular(8),
-                    padding: const EdgeInsets.all(8),
-                    dashPattern: const [8, 8],
-                    color: Theme.of(context).dividerColor,
-                    child: Container(
-                      decoration: Decorations.note(context),
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                      width: MediaQuery.of(context).size.width,
-                      child: TextX(AppMetadata.get.maintenanceMessage),
-                    ),
+      child = Visibility(
+        visible: !AppMetadata.get.maintenanceMode,
+        replacement: Center(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, kToolbarHeight),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const HeroIcon(HeroIcons.wrenchScrewdriver, size: 40),
+                const SizedBox(height: 10),
+                DottedBorder(
+                  borderType: BorderType.rRect,
+                  radius: const Radius.circular(8),
+                  padding: const EdgeInsets.all(8),
+                  dashPattern: const [8, 8],
+                  color: Theme.of(context).dividerColor,
+                  child: Container(
+                    decoration: Decorations.note(context),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    width: MediaQuery.of(context).size.width,
+                    child: TextX(AppMetadata.get.maintenanceMessage),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          child: Visibility(
-            visible: !state.isLoading,
-            replacement: const HomeLoader(),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await getResources();
-                state.setPrice(state.sender.text);
-              },
-              child: ListView(
-                shrinkWrap: true,
-                clipBehavior: Clip.none,
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Visibility(
-                  //       visible: Global.appSettings.token.isEmpty &&
-                  //           state.sendCountries.isNotEmpty,
-                  //       child: CountryRoller(title: _arb!.sendCountries),
-                  //     ),
-                  //     if (Global.appSettings.token.isEmpty)
-                  //       const SizedBox(width: 8),
-                  //     Visibility(
-                  //       visible: state.receiveCountries.isNotEmpty,
-                  //       child: CountryRoller(
-                  //         title: _arb!.receiverCountries,
-                  //         send: false,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+        ),
+        child: Visibility(
+          visible: !state.isLoading,
+          replacement: Padding(padding: padding, child: const HomeLoader()),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await getResources();
+              state.setPrice(state.sender.text);
+            },
+            child: ListView(
+              shrinkWrap: true,
+              clipBehavior: Clip.none,
+              children: [
+                // Currencies exchange rate price
+                if (state.currencies.isNotEmpty)
+                  CurrenciesNews(currencies: state.currencies),
 
-                  // "You send", "Receiver gets"
-                  const SendFormFields(),
+                // "You send", "Receiver gets"
+                Padding(padding: padding, child: const SendFormFields()),
 
-                  Button(
+                Padding(
+                  padding: padding,
+                  child: Button(
                     () {
                       if (Global.appSettings.token.isEmpty) {
                         context.pushNamed('/${AppRoute.logIn}');
@@ -191,8 +177,8 @@ class _HomeState extends State<Home> {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
