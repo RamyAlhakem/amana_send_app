@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
-import '/graphql/api/get_exchange_currencies.dart';
 import '/helper/helper.dart';
 import '/models/agent.dart';
 import '/models/city.dart';
@@ -144,6 +143,7 @@ class Calculator with ChangeNotifier {
 
     setExchangeRate();
     notifyListeners();
+    getCurrencies();
   }
 
   //**Get receiver countries to add a recipient & setting exchange rates.
@@ -154,15 +154,20 @@ class Calculator with ChangeNotifier {
     notifyListeners();
   }
 
-  void getCurrencies(List<CurrencyModel> elements) {
-    _currencies = elements;
+  void getCurrencies() {
+    final List<CurrencyModel> elements = <CurrencyModel>[];
+    List.generate(sendCountries.length, (i) {
+      elements.add(sendCountries[i].currency);
+    });
 
+    _currencies = elements;
     notifyListeners();
   }
 
   //**Get receiver city.
   void setReceiveCity(CityModel city) {
     _receiverCity = city;
+    if (city.agents.isNotEmpty) setAgent(city.agents.first);
 
     notifyListeners();
   }
@@ -218,12 +223,8 @@ class Calculator with ChangeNotifier {
       }
     }
 
-    // if [usdAvailability] is mandatory which is equal 2.
-    _sendUSD = receiverAgent.usdAvailability == 2;
-
     setExchangeRate();
     notifyListeners();
-    GetExchangeCurrenciesAPI(countryCoCode: country.coCode).request();
 
     return country;
   }
@@ -241,11 +242,6 @@ class Calculator with ChangeNotifier {
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
-  }
-
-  void setUSD(bool usd) {
-    _sendUSD = usd;
-    setPrice(sender.text);
   }
 
   void roundReceiverAmount() {
@@ -267,8 +263,15 @@ class Calculator with ChangeNotifier {
     }
   }
 
-  void setPrice(String value) {
-    if (_sendUSD) {
+  void setPrice(String value, {bool? usd}) {
+    if (usd == null) {
+      // if [usdAvailability] is mandatory which is equal 2.
+      _sendUSD = receiverAgent.usdAvailability == 2;
+    } else {
+      _sendUSD = usd;
+    }
+
+    if (sendUSD) {
       _minUSD = receiverCountry.minAmount / receiverAgent.rate;
       _maxUSD = receiverCountry.maxAmount / receiverAgent.rate;
     }

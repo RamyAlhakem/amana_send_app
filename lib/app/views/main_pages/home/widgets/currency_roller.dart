@@ -16,11 +16,11 @@ class CurrencyRoller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
-    return Consumer<Calculator>(builder: (_, c, child) {
+    return Consumer<Calculator>(builder: (_, state, child) {
       child = Button(
         () {
           // if [usdAvailability] is mandatory which is equal 2:
-          if (c.receiverAgent.usdAvailability == 2) {
+          if (state.receiverAgent.usdAvailability == 2) {
             return Helper.banner(
               'Receive only in USD for this country',
               leadingIcon: HeroIcons.checkCircle,
@@ -29,7 +29,7 @@ class CurrencyRoller extends StatelessWidget {
           }
 
           // if [usdAvailability] is optional which is equal 1:
-          if (c.receiverAgent.usdAvailability == 1) {
+          if (state.receiverAgent.usdAvailability == 1) {
             SettingsDialog(
               onSubmit: null,
               title: arb!.selectCurrency,
@@ -45,7 +45,7 @@ class CurrencyRoller extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(100),
                       onTap: () {
-                        c.setUSD(false);
+                        state.setPrice(state.sender.text, usd: false);
                         SettingsDialog.dismiss();
                       },
                       child: Container(
@@ -55,10 +55,10 @@ class CurrencyRoller extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextX(
-                              '${c.receiverCountry.currency.code} (${c.receiverCountry.currency.name})',
+                              '${state.receiverCountry.currency.code} (${state.receiverCountry.currency.name})',
                               style: const TextStyle(color: Colors.white),
                             ),
-                            if (!c.sendUSD)
+                            if (!state.sendUSD)
                               const HeroIcon(
                                 HeroIcons.checkCircle,
                                 color: Colors.white,
@@ -71,10 +71,10 @@ class CurrencyRoller extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(100),
                       onTap: () {
-                        if (c.receiverAgent.usdAvailability > 0) {
-                          c.setUSD(true);
+                        if (state.receiverAgent.usdAvailability > 0) {
+                          state.setPrice(state.sender.text, usd: true);
                         } else {
-                          c.setUSD(false);
+                          state.setPrice(state.sender.text, usd: false);
 
                           Helper.bannerWarning(
                             arb.usdIsNotAvailableForThisCountry,
@@ -92,7 +92,7 @@ class CurrencyRoller extends StatelessWidget {
                               arb.usdDollar,
                               style: const TextStyle(color: Colors.white),
                             ),
-                            if (c.sendUSD)
+                            if (state.sendUSD)
                               const HeroIcon(
                                 HeroIcons.checkCircle,
                                 color: Colors.white,
@@ -111,7 +111,7 @@ class CurrencyRoller extends StatelessWidget {
         color: Colors.transparent,
         padding: EdgeInsets.zero,
         TextX(
-          c.sendUSD ? 'USD' : c.receiverCountry.currency.code,
+          state.sendUSD ? 'USD' : state.receiverCountry.currency.code,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       );

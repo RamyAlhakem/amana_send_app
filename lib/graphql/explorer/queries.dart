@@ -84,15 +84,6 @@ class Queries {
     }
       ''';
 
-  static String exchangeCurrencies(String countryCoCode) => '''
-    query exchangeCurrencies {
-      exchangeCurrencies(countryCoCode: "$countryCoCode") {
-        code
-        rate
-      }
-    }
-      ''';
-
   static String transactions({int id = 0}) {
     return '''
     query ${id > 0 ? 'transaction(\$id: ID!)' : 'transactions'} {

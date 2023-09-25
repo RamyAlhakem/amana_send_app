@@ -137,7 +137,7 @@ class Mutations {
       ''';
 
   static const String userResetPassword = '''
-    mutation userResetPassword(\$mobile: NonEmptyString!, \$OTPKey: Int!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
+    mutation userResetPassword(\$mobile: NonEmptyString!, \$OTPKey: String!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
       userResetPassword(
         mobile: \$mobile
         OTPKey: \$OTPKey

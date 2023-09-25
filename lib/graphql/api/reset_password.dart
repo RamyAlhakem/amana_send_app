@@ -30,14 +30,15 @@ class ResetPasswordAPI {
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
+    Global.snackKey.currentState?.hideCurrentMaterialBanner();
     _variables = <String, dynamic>{
       'mobile': mobile,
-      'OTPKey': int.parse(code.text),
+      'OTPKey': code.text,
       'newPassword': newPassword,
       'confirmNewPassword': confirmPassword,
     };
 
-    Helper.debugger('resetPassword');
+    Helper.debugger('userResetPassword');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
 
     GraphQL.client().mutate(
@@ -58,14 +59,13 @@ class ResetPasswordAPI {
   }
 
   void _result(Map<String, dynamic> data) async {
-    if (data.isNotEmpty && data.containsKey('resetPassword')) {
+    if (data.isNotEmpty && data.containsKey('userResetPassword')) {
       buttonCtrl.success();
-
-      Helper.banner(
-          'Password successfully changed, Please sign in with the new password');
 
       await Future.delayed(const Duration(milliseconds: 700), () {
         context.pop();
+        Helper.banner(
+            'Password successfully changed, Please sign in with the new password');
       });
     }
   }

@@ -74,6 +74,7 @@ class Explorer {
         id
         ceil
         code
+        rate
         name
         status
         symbol

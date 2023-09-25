@@ -35,8 +35,6 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   final LoadingButtonController buttonCtrl = LoadingButtonController();
 
-  final TextStyle formInputStyle = const TextStyle(color: Colors.white);
-
   void message() => Helper.banner(arb!.codeSuccessfullySentKindlyPatience);
 
   @override
@@ -90,7 +88,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                   GeneralWidgets.loginLogo(context),
                   TextX(
                     arb!.enterOTPVerificationCodeToResetYourPassword,
-                    style: formInputStyle,
                   ),
                   const SizedBox(height: 25),
                   PinForm(
@@ -109,11 +106,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       padding: const EdgeInsets.only(top: 8),
                       maxLines: 1,
                       input: [LengthLimitingTextInputFormatter(50)],
-                      style: formInputStyle,
-                      labelStyle:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Colors.white38,
-                              ),
+                      labelStyle: Theme.of(context).textTheme.titleSmall,
                       onChanged: (String? v) =>
                           TextFieldValidator.latin(context, password),
                     ),
@@ -128,11 +121,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       padding: const EdgeInsets.only(top: 8),
                       maxLines: 1,
                       input: [LengthLimitingTextInputFormatter(50)],
-                      style: formInputStyle,
-                      labelStyle:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Colors.white38,
-                              ),
+                      labelStyle: Theme.of(context).textTheme.titleSmall,
                       onChanged: (String? v) =>
                           TextFieldValidator.latin(context, confirmPassword),
                     ),
