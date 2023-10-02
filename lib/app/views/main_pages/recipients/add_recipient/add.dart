@@ -124,9 +124,7 @@ class _AddRecipientState extends State<AddRecipient> {
                         child: TextFieldX(
                           controller: _firstName,
                           hint: arb.firstName,
-                          type: TextInputType.name,
-                          onChanged: (v) =>
-                              TextFieldValidator.latin(context, _firstName),
+                          type: TextInputType.name,                      
                         ),
                       ),
                       const SizedBox(width: 13),
@@ -134,9 +132,7 @@ class _AddRecipientState extends State<AddRecipient> {
                         child: TextFieldX(
                           controller: _lastName,
                           hint: arb.lastName,
-                          type: TextInputType.name,
-                          onChanged: (v) =>
-                              TextFieldValidator.latin(context, _lastName),
+                          type: TextInputType.name,           
                         ),
                       ),
                     ]),
@@ -144,8 +140,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       controller: _fatherName,
                       hint: arb.fatherName,
                       type: TextInputType.name,
-                      onChanged: (v) =>
-                          TextFieldValidator.latin(context, _fatherName),
+                  
                       onSubmitted: (_) => _submit(),
                     ),
                   ],

@@ -34,9 +34,9 @@ class ContactUs {
           borderRadius: 100,
           () => Helper.launchURL(
               'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0'),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               TextX(
                 'WhatsApp',
                 style: TextStyle(color: MainColors.whatsApp),

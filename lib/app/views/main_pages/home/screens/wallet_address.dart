@@ -126,7 +126,7 @@ class _WalletAddressState extends State<WalletAddress>
                 size: 200,
                 embeddedImage: const AssetImage('assets/images/icon.png'),
                 errorStateBuilder: (cxt, err) {
-                  return Center(
+                  return const Center(
                     child: Text(
                       'Uh oh! Something went wrong...',
                       textAlign: TextAlign.center,
