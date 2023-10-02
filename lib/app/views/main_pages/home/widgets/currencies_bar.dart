@@ -19,12 +19,12 @@ class CurrenciesNews extends StatefulWidget {
 class _CurrenciesNewsState extends State<CurrenciesNews> {
   final ScrollController controller = ScrollController();
   late Timer timer;
-  final double scrollSpeed = 2.0; // Adjust scroll speed.
+  final double scrollSpeed = 4.0; // Adjust scroll speed.
   double scrollOffset = 0;
 
   void _startAutoScroll() {
     // Start the timer to auto-scroll the ListView
-    timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+    timer = Timer.periodic(const Duration(milliseconds: 10), (_) {
       if (controller.hasClients) {
         scrollOffset += scrollSpeed;
         controller.animateTo(
@@ -51,17 +51,16 @@ class _CurrenciesNewsState extends State<CurrenciesNews> {
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      behavior: HitTestBehavior.translucent,
-      onPointerDown: (event) => timer.cancel(),
-      onPointerMove: (event) => scrollOffset = controller.offset,
-      onPointerUp: (event) {
-        controller.position.isScrollingNotifier.addListener(() {
-          if (!controller.position.isScrollingNotifier.value) {
-            timer.cancel();
-            _startAutoScroll();
-          }
-        });
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollStartNotification) {
+          timer.cancel();
+        } else if (notification is ScrollUpdateNotification) {
+          scrollOffset = controller.offset;
+        } else if (notification is ScrollEndNotification) {
+          _startAutoScroll();
+        }
+        return notification.metrics.hasPixels;
       },
       child: Container(
         height: 35, // Adjust the height as needed
