@@ -14,7 +14,6 @@ import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
-import '/app/widgets/text_form_field/tools/text_form_validator.dart';
 import '/global/variables.dart';
 import '/graphql/api/add_edit_recipient.dart';
 import '/helper/helper.dart';
