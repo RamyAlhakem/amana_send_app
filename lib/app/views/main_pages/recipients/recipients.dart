@@ -15,6 +15,7 @@ import '/app/widgets/shimmer/shimmer_load.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/helper/helper.dart';
+import '/models/country.dart';
 import '/models/metadata.dart';
 import '/router/app_route.dart';
 
@@ -43,9 +44,9 @@ class _RecipientsState extends State<Recipients> {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipientsState>(
-      builder: (_, state, child) {
+      builder: (_, recipients, child) {
         child = Visibility(
-          visible: !state.isLoading,
+          visible: !recipients.isLoading,
           replacement: ListView(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
               children: const [
@@ -60,7 +61,7 @@ class _RecipientsState extends State<Recipients> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
-                  itemCount: state.recipients.length,
+                  itemCount: recipients.all.length,
                   itemBuilder: (BuildContext context, int i) {
                     return Container(
                       margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
@@ -69,13 +70,13 @@ class _RecipientsState extends State<Recipients> {
                         onTap: () => context.pushNamed(
                           AppRoute.recipient,
                           pathParameters: <String, String>{
-                            'recipient': jsonEncode(state.recipients[i]),
+                            'recipient': jsonEncode(recipients.all[i]),
                           },
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                           child: RowSpaceBetween([
-                            RecipientIconDetail(recipient: state.recipients[i]),
+                            RecipientIconDetail(recipient: recipients.all[i]),
                             Button(
                               () {
                                 if (AppMetadata.get.maintenanceMode) {
@@ -87,9 +88,10 @@ class _RecipientsState extends State<Recipients> {
                                   context,
                                   listen: false,
                                 );
+                                calculator.setReceiverCountry(CountryModel());
                                 calculator.agentsVisibility(true);
                                 calculator.recipientSend(
-                                  state.recipients[i],
+                                  recipients.all[i],
                                   navigate: true,
                                 );
                               },

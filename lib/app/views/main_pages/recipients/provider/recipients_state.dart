@@ -14,14 +14,14 @@ class RecipientsState extends ChangeNotifier {
 
   bool _isEditRecipient = false;
 
-  List<RecipientModel> _recipients = <RecipientModel>[];
+  List<RecipientModel> _all = <RecipientModel>[];
   RecipientModel _recipient = RecipientModel();
 
   bool get isLoading => _isLoading;
 
   bool get isEditRecipient => _isEditRecipient;
 
-  List<RecipientModel> get recipients => _recipients;
+  List<RecipientModel> get all => _all;
   RecipientModel get recipient => _recipient;
 
   void isRequestLoading(bool loading) {
@@ -30,8 +30,8 @@ class RecipientsState extends ChangeNotifier {
     if (!loading) notifyListeners();
   }
 
-  void getRecipients(List<RecipientModel> recipients) {
-    _recipients = recipients;
+  void getAll(List<RecipientModel> elements) {
+    _all = elements;
     notifyListeners();
   }
 
@@ -71,7 +71,7 @@ class RecipientsState extends ChangeNotifier {
   void offEditRecipient() => _isEditRecipient = false;
 
   void clearRecipients() {
-    _recipients.clear();
+    _all.clear();
     notifyListeners();
   }
 }

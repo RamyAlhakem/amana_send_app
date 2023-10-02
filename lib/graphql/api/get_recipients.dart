@@ -13,16 +13,16 @@ import '/models/recipient.dart';
 
 class GetRecipients {
   static final BuildContext context = Global.key.currentContext!;
-  static late RecipientsState _p;
+  static late RecipientsState _recipients;
   static late AppLocalizations? _arb;
 
   static Future<void> request() async {
-    _p = Provider.of<RecipientsState>(context, listen: false);
+    _recipients = Provider.of<RecipientsState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);
     });
 
-    if (_p.recipients.isEmpty) _p.isRequestLoading(true);
+    if (_recipients.all.isEmpty) _recipients.isRequestLoading(true);
 
     Helper.debugger('recipients');
     GraphQL.client()
@@ -39,7 +39,7 @@ class GetRecipients {
           return _error(result.exception!.graphqlErrors);
         }
       }
-    }).whenComplete(() => _p.isRequestLoading(false));
+    }).whenComplete(() => _recipients.isRequestLoading(false));
   }
 
   static void _result(Map<String, dynamic> data) async {
@@ -48,9 +48,9 @@ class GetRecipients {
         List<RecipientModel> recipients = List<RecipientModel>.from(
           data['recipients'].map((x) => RecipientModel.fromJson(x)),
         );
-        _p.getRecipients(recipients);
+        _recipients.getAll(recipients);
       } else {
-        _p.getRecipients(<RecipientModel>[]);
+        _recipients.getAll(<RecipientModel>[]);
       }
     }
   }

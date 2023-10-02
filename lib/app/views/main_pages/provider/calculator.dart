@@ -125,7 +125,10 @@ class Calculator with ChangeNotifier {
   }
 
   //**DISPOSE send process.
-  void clearRecipient() => _selectedRecipient = null;
+  void clearRecipient() {
+    _selectedRecipient = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+  }
 
   //**Get sender countries for registration purpose & setting exchange rates.
   void getSendCountries(List<CountryModel> countries) {
@@ -343,13 +346,43 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
+  bool checkRecipientAvailability(RecipientModel recipient) {
+    bool check = true;
+
+    // Check if selected recipient country is available:
+    final recipients = Provider.of<RecipientsState>(context, listen: false);
+    if (recipients.all.any((e) => e.id == recipient.id)) {
+      // Check if selected recipient has been modified or deleted
+      if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
+        selectRecipient(recipient);
+        if (receiver.text.isNotEmpty) {
+          if (double.parse(receiver.text) < recipient.country.minAmount) {
+            Helper.bannerWarning(
+              '${_arb!.minimumReceivingLimitToThisCountryIs} ${recipient.country.minAmount} ${recipient.country.currency.code}',
+            );
+            return check = false;
+          }
+        }
+      } else {
+        Helper.toast(_arb!.recipientCountryUnavailableAtTheMoment);
+      }
+    } else {
+      Helper.bannerWarning(
+        '\n${_arb!.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
+      );
+    }
+    return check;
+  }
+
   Future<bool> recipientSend(
     RecipientModel recipient, {
     bool navigate = false,
     TransferModel? transfer,
   }) async {
     _arb = AppLocalizations.of(context);
-    bool allConditions = true;
+    bool canSend = true;
+
+    canSend = checkRecipientAvailability(recipient);
 
     if (transfer != null) {
       _sender.text = '${transfer.sendAmount}';
@@ -363,41 +396,20 @@ class Calculator with ChangeNotifier {
 
       setAgent(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
+    } else if (receiverCountry.id == 0) {
+      setReceiverCountry(recipient.country);
     }
 
     // Check if user wants to send from recipient/recipients page.
-    if (showAgents) setReceiverCountry(recipient.country);
+    // if (showAgents) setReceiverCountry(recipient.country);
 
-    // Check if selected recipient country is available:
-    if (Provider.of<RecipientsState>(
-      context,
-      listen: false,
-    ).recipients.any((e) => e.id == recipient.id)) {
-      // Check if selected recipient has been modified or deleted
-      if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
-        selectRecipient(recipient);
-        if (receiver.text.isNotEmpty) {
-          if (double.parse(receiver.text) < recipient.country.minAmount) {
-            Helper.bannerWarning(
-              '${_arb!.minimumReceivingLimitToThisCountryIs} ${recipient.country.minAmount} ${recipient.country.currency.code}',
-            );
-            return allConditions = false;
-          }
-        }
-        if (navigate) {
-          context.pushNamed(
-            AppRoute.sendHub,
-            pathParameters: <String, String>{'recipient': 'true'},
-          );
-        }
-      } else {
-        Helper.toast(_arb!.recipientCountryUnavailableAtTheMoment);
-      }
-    } else {
-      Helper.bannerWarning(
-        '\n${_arb!.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
+    if (canSend && navigate) {
+      context.pushNamed(
+        AppRoute.sendHub,
+        pathParameters: <String, String>{'recipient': 'true'},
       );
     }
-    return allConditions;
+
+    return canSend;
   }
 }

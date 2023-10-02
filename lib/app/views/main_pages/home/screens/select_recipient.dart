@@ -154,9 +154,9 @@ class _SelectRecipientState extends State<SelectRecipient>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Consumer<RecipientsState>(builder: (_, state, child) {
+    return Consumer<RecipientsState>(builder: (_, recipients, child) {
       child = Visibility(
-        visible: !state.isLoading,
+        visible: !recipients.isLoading,
         replacement: ListView(
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           children: const [ShimmerLoad(height: 80, verticalCount: 4)],
@@ -164,19 +164,19 @@ class _SelectRecipientState extends State<SelectRecipient>
         child: ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-          itemCount: state.recipients.length,
+          itemCount: recipients.all.length,
           itemBuilder: (BuildContext context, int i) {
             // Fill up select list once empty or when recipients list is changed.
-            selection = Tools.setSelect(state.recipients, selection);
+            selection = Tools.setSelect(recipients.all, selection);
             return InkWell(
               borderRadius: BorderRadius.circular(8),
               onTap: () => setState(() {
                 // give selected recipient values for start send purpose
-                _calc.recipientSend(state.recipients[i]).then((isOK) {
+                _calc.recipientSend(recipients.all[i]).then((isOK) {
                   /// if all conditions met [isOK]:
                   if (isOK) {
                     // reset [selection] list to close all expanded recipients cards.
-                    selection = Tools.setSelect(state.recipients, <bool>[]);
+                    selection = Tools.setSelect(recipients.all, <bool>[]);
 
                     // select recipient by expanding their card.
                     selection[i] = !selection[i];
@@ -184,7 +184,7 @@ class _SelectRecipientState extends State<SelectRecipient>
                 });
               }),
               child: RecipientSelector(
-                recipient: state.recipients[i],
+                recipient: recipients.all[i],
                 select: selection[i],
               ),
             );

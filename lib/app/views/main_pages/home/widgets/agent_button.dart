@@ -29,6 +29,7 @@ class AgentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Calculator state = context.watch<Calculator>();
     final double rate = agent.rate * (1 - (state.percentFee / 100));
+    final bool usd = agent.usdAvailability == 2;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -78,8 +79,10 @@ class AgentButton extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: Helper.priced(rate,
-                                      currencyCode:
-                                          state.receiverCountry.currency.code),
+                                      currencyCode: usd
+                                          ? 'USD'
+                                          : state
+                                              .receiverCountry.currency.code),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
