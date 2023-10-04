@@ -25,7 +25,6 @@ import '/models/metadata.dart';
 import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
-import 'widgets/currencies_bar.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -40,7 +39,7 @@ class _HomeState extends State<Home> {
   late UserModel user;
   String selection = '';
 
-  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 0, 14, 0);
+  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 14, 14, 14);
 
   Future<void> getResources() async {
     GetMetadata.request();
@@ -111,71 +110,69 @@ class _HomeState extends State<Home> {
             child: ListView(
               shrinkWrap: true,
               clipBehavior: Clip.none,
+              padding: padding,
               children: [
                 // Currencies exchange rate price
                 // if (state.currencies.isNotEmpty)
                 //   CurrenciesNews(currencies: state.currencies),
 
                 // "You send", "Receiver gets"
-                Padding(padding: padding, child: const SendFormFields()),
+                const SendFormFields(),
 
-                Padding(
-                  padding: padding,
-                  child: Button(
-                    () {
-                      if (Global.appSettings.token.isEmpty) {
-                        context.pushNamed('/${AppRoute.logIn}');
-                        return;
-                      }
+                Button(
+                  () {
+                    if (Global.appSettings.token.isEmpty) {
+                      context.pushNamed('/${AppRoute.logIn}');
+                      return;
+                    }
 
-                      if (state.sender.text.isEmpty) {
-                        return Helper.snack(_arb!.pleaseEnterSendingAmount);
-                      }
+                    if (state.sender.text.isEmpty) {
+                      return Helper.snack(_arb!.pleaseEnterSendingAmount);
+                    }
 
-                      if (user.level.maxAmount < 0 &&
-                          user.level.maxAmount <
-                              double.parse(state.sender.text)) {
-                        return Helper.snack(
-                          "Your max level sending amount is ${user.level.maxAmount} ${user.country.currency.code}\n To increase your max level amount, Kindly contact our support team",
-                          action: SnackBarAction(
-                            label: _arb!.contactSupportTeam,
-                            onPressed: () => Helper.launchURL(
-                              'https://api.whatsapp.com/send/?phone=+442622&text&app_absent=0',
-                            ),
+                    if (user.level.maxAmount < 0 &&
+                        user.level.maxAmount <
+                            double.parse(state.sender.text)) {
+                      return Helper.snack(
+                        "Your max level sending amount is ${user.level.maxAmount} ${user.country.currency.code}\n To increase your max level amount, Kindly contact our support team",
+                        action: SnackBarAction(
+                          label: _arb!.contactSupportTeam,
+                          onPressed: () => Helper.launchURL(
+                            'https://api.whatsapp.com/send/?phone=+442622&text&app_absent=0',
                           ),
-                        );
-                      }
-
-                      if (double.parse(state.receiver.text) <
-                          state.receiverCountry.minAmount) {
-                        return Helper.snack(
-                          '${_arb!.minimumReceivingLimitToThisCountryIs} ${state.receiverCountry.minAmount} ${state.receiverCountry.currency.code}',
-                        );
-                      }
-                      if (double.parse(state.receiver.text) >
-                          state.receiverCountry.maxAmount) {
-                        return Helper.snack(
-                          '${_arb!.maximumReceivingLimitToThisCountryIs} ${state.receiverCountry.maxAmount} ${state.receiverCountry.currency.code}',
-                        );
-                      }
-
-                      if (state.receiverCity.id == 0) {
-                        return Helper.snack(_arb!.selectCity);
-                      }
-
-                      Global.snackKey.currentState?.hideCurrentSnackBar();
-                      state.roundReceiverAmount();
-
-                      context.pushNamed(
-                        AppRoute.sendHub,
-                        pathParameters: <String, String>{'recipient': 'false'},
+                        ),
                       );
-                    },
-                    height: 50,
-                    TextX(
-                      _arb!.startSendingMoney.toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                    }
+
+                    if (double.parse(state.receiver.text) <
+                        state.receiverCountry.minAmount) {
+                      return Helper.snack(
+                        '${_arb!.minimumReceivingLimitToThisCountryIs} ${state.receiverCountry.minAmount} ${state.receiverCountry.currency.code}',
+                      );
+                    }
+                    if (double.parse(state.receiver.text) >
+                        state.receiverCountry.maxAmount) {
+                      return Helper.snack(
+                        '${_arb!.maximumReceivingLimitToThisCountryIs} ${state.receiverCountry.maxAmount} ${state.receiverCountry.currency.code}',
+                      );
+                    }
+
+                    if (state.receiverCity.id == 0) {
+                      return Helper.snack(_arb!.selectCity);
+                    }
+
+                    Global.snackKey.currentState?.hideCurrentSnackBar();
+                    state.roundReceiverAmount();
+
+                    context.pushNamed(
+                      AppRoute.sendHub,
+                      pathParameters: <String, String>{'recipient': 'false'},
+                    );
+                  },
+                  height: 50,
+                  TextX(
+                    _arb!.startSendingMoney.toUpperCase(),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
