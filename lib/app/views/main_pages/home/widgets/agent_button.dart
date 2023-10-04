@@ -8,6 +8,7 @@ import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/text/text_x.dart';
 import '/helper/helper.dart';
 import '/models/agent.dart';
+import '/services/lang_service.dart';
 
 class AgentButton extends StatelessWidget {
   const AgentButton(
@@ -28,6 +29,7 @@ class AgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Calculator state = context.watch<Calculator>();
+    final bool isAr = LangService.isAR();
     final double rate = agent.rate * (1 - (state.percentFee / 100));
     final bool usd = agent.usdAvailability == 2;
     return Stack(
@@ -71,7 +73,7 @@ class AgentButton extends StatelessWidget {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '1 USDT = ',
+                                  text: '${isAr ? 'USDT 1' : '1 USDT'} = ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall

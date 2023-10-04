@@ -5,6 +5,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
+import '/app/tools/language/lang_picker.dart';
 import '/app/views/notifications/provider/notifications_state.dart';
 import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
@@ -94,24 +95,31 @@ class StructureKit {
                 icon: const HeroIcon(HeroIcons.informationCircle),
               ),
             ]),
-            child: Button(
-              () => context.pushNamed('/${AppRoute.logIn}'),
-              height: 38,
-              color: Colors.transparent,
-              borderColor: button,
-              borderWidth: 2,
-              Row(children: [
-                HeroIcon(
-                  HeroIcons.arrowLeftOnRectangle,
-                  size: 20,
-                  color: button,
+            child: Row(
+              children: [
+                const LangPicker(),
+                const SizedBox(width: 8),
+                Button(
+                  () => context.pushNamed('/${AppRoute.logIn}'),
+                  height: 38,
+                  color: Colors.transparent,
+                  borderColor: button,
+                  borderWidth: 2,
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  Row(children: [
+                    HeroIcon(
+                      HeroIcons.arrowLeftOnRectangle,
+                      size: 20,
+                      color: button,
+                    ),
+                    const SizedBox(width: 6),
+                    TextX(
+                      _arb!.logIn.toUpperCase(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ]),
                 ),
-                const SizedBox(width: 6),
-                TextX(
-                  _arb!.logIn.toUpperCase(),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ]),
+              ],
             ),
           ),
         ]);

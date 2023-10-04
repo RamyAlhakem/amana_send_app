@@ -15,6 +15,7 @@ class TotalFees extends StatelessWidget {
     final AppLocalizations? arb = AppLocalizations.of(context);
     return Consumer<Calculator>(builder: (_, state, child) {
       child = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
@@ -50,30 +51,6 @@ class TotalFees extends StatelessWidget {
                     ),
                   ),
                 ]),
-
-                // RowSpaceBetween([
-                //   TextX(arb.todayExchangeRate),
-                //   Text.rich(
-                //     textScaleFactor: 1.0,
-                //     TextSpan(
-                //       children: <TextSpan>[
-                //         TextSpan(
-                //           text:
-                //               '${state.sendCountry.currency.code} ${isAr ? '' : '1'}${isAr ? '1 ' : ''} = ',
-                //         ),
-                //         TextSpan(
-                //           text: Helper.priced(
-                //             state.exchangeRate,
-                //             currencyCode: state.sendUSD
-                //                 ? 'USD'
-                //                 : state.receiverCountry.currency.code,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //     style: Theme.of(context).textTheme.bodyLarge,
-                //   ),
-                // ]),
               ],
             ),
           ),

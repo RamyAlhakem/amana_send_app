@@ -12,6 +12,8 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
+import '/app/widgets/row.dart';
+import '/app/widgets/text/text_shine.dart';
 import '/app/widgets/text/text_x.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
@@ -25,6 +27,7 @@ import '/models/metadata.dart';
 import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
+import '/services/lang_service.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -35,11 +38,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
   late UserModel user;
   String selection = '';
+  late bool isAr;
 
-  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 14, 14, 14);
+  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 0, 14, 0);
 
   Future<void> getResources() async {
     GetMetadata.request();
@@ -64,14 +68,16 @@ class _HomeState extends State<Home> {
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     user = Database().getUser;
+    isAr = LangService.isAR();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
+      final double send = double.tryParse(state.sender.text) ?? 1;
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
@@ -110,69 +116,101 @@ class _HomeState extends State<Home> {
             child: ListView(
               shrinkWrap: true,
               clipBehavior: Clip.none,
-              padding: padding,
               children: [
                 // Currencies exchange rate price
                 // if (state.currencies.isNotEmpty)
                 //   CurrenciesNews(currencies: state.currencies),
 
-                // "You send", "Receiver gets"
-                const SendFormFields(),
-
-                Button(
-                  () {
-                    if (Global.appSettings.token.isEmpty) {
-                      context.pushNamed('/${AppRoute.logIn}');
-                      return;
-                    }
-
-                    if (state.sender.text.isEmpty) {
-                      return Helper.snack(_arb!.pleaseEnterSendingAmount);
-                    }
-
-                    if (user.level.maxAmount < 0 &&
-                        user.level.maxAmount <
-                            double.parse(state.sender.text)) {
-                      return Helper.snack(
-                        "Your max level sending amount is ${user.level.maxAmount} ${user.country.currency.code}\n To increase your max level amount, Kindly contact our support team",
-                        action: SnackBarAction(
-                          label: _arb!.contactSupportTeam,
-                          onPressed: () => Helper.launchURL(
-                            'https://api.whatsapp.com/send/?phone=+442622&text&app_absent=0',
+                // Today exchange rate
+                Container(
+                  padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                  decoration: Decorations.note(context),
+                  child: RowSpaceBetween([
+                    TextShine(arb.todayExchangeRate),
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: FittedBox(
+                        child: Text.rich(
+                          textScaleFactor: 1.0,
+                          TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(text: '${Helper.priced(send)} = '),
+                              TextSpan(
+                                text: Helper.priced(
+                                  state.sendCountry.currency.rate * send,
+                                  currencyCode: state.sendCountry.currency.code,
+                                ),
+                              ),
+                            ],
                           ),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
+                      ),
+                    ),
+                  ]),
+                ),
+
+                // "You send", "Receiver gets"
+                Padding(padding: padding, child: const SendFormFields()),
+
+                Padding(
+                  padding: padding,
+                  child: Button(
+                    () {
+                      if (Global.appSettings.token.isEmpty) {
+                        context.pushNamed('/${AppRoute.logIn}');
+                        return;
+                      }
+
+                      if (state.sender.text.isEmpty) {
+                        return Helper.snack(arb.pleaseEnterSendingAmount);
+                      }
+
+                      if (user.level.maxAmount < 0 &&
+                          user.level.maxAmount <
+                              double.parse(state.sender.text)) {
+                        return Helper.snack(
+                          "Your max level sending amount is ${user.level.maxAmount} ${user.country.currency.code}\n To increase your max level amount, Kindly contact our support team",
+                          action: SnackBarAction(
+                            label: arb.contactSupportTeam,
+                            onPressed: () => Helper.launchURL(
+                              'https://api.whatsapp.com/send/?phone=+442622&text&app_absent=0',
+                            ),
+                          ),
+                        );
+                      }
+
+                      if (double.parse(state.receiver.text) <
+                          state.receiverCountry.minAmount) {
+                        return Helper.snack(
+                          '${arb.minimumReceivingLimitToThisCountryIs} ${state.receiverCountry.minAmount} ${state.receiverCountry.currency.code}',
+                        );
+                      }
+                      if (double.parse(state.receiver.text) >
+                          state.receiverCountry.maxAmount) {
+                        return Helper.snack(
+                          '${arb.maximumReceivingLimitToThisCountryIs} ${state.receiverCountry.maxAmount} ${state.receiverCountry.currency.code}',
+                        );
+                      }
+
+                      if (state.receiverCity.id == 0) {
+                        return Helper.snack(arb.selectCity);
+                      }
+
+                      Global.snackKey.currentState?.hideCurrentSnackBar();
+                      state.roundReceiverAmount();
+
+                      context.pushNamed(
+                        AppRoute.sendHub,
+                        pathParameters: <String, String>{'recipient': 'false'},
                       );
-                    }
-
-                    if (double.parse(state.receiver.text) <
-                        state.receiverCountry.minAmount) {
-                      return Helper.snack(
-                        '${_arb!.minimumReceivingLimitToThisCountryIs} ${state.receiverCountry.minAmount} ${state.receiverCountry.currency.code}',
-                      );
-                    }
-                    if (double.parse(state.receiver.text) >
-                        state.receiverCountry.maxAmount) {
-                      return Helper.snack(
-                        '${_arb!.maximumReceivingLimitToThisCountryIs} ${state.receiverCountry.maxAmount} ${state.receiverCountry.currency.code}',
-                      );
-                    }
-
-                    if (state.receiverCity.id == 0) {
-                      return Helper.snack(_arb!.selectCity);
-                    }
-
-                    Global.snackKey.currentState?.hideCurrentSnackBar();
-                    state.roundReceiverAmount();
-
-                    context.pushNamed(
-                      AppRoute.sendHub,
-                      pathParameters: <String, String>{'recipient': 'false'},
-                    );
-                  },
-                  height: 50,
-                  TextX(
-                    _arb!.startSendingMoney.toUpperCase(),
-                    style: const TextStyle(color: Colors.white),
+                    },
+                    height: 50,
+                    TextX(
+                      arb.startSendingMoney.toUpperCase(),
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ],
