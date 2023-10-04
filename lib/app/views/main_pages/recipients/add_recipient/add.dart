@@ -123,7 +123,7 @@ class _AddRecipientState extends State<AddRecipient> {
                         child: TextFieldX(
                           controller: _firstName,
                           hint: arb.firstName,
-                          type: TextInputType.name,                      
+                          type: TextInputType.name,
                         ),
                       ),
                       const SizedBox(width: 13),
@@ -131,7 +131,7 @@ class _AddRecipientState extends State<AddRecipient> {
                         child: TextFieldX(
                           controller: _lastName,
                           hint: arb.lastName,
-                          type: TextInputType.name,           
+                          type: TextInputType.name,
                         ),
                       ),
                     ]),
@@ -139,7 +139,6 @@ class _AddRecipientState extends State<AddRecipient> {
                       controller: _fatherName,
                       hint: arb.fatherName,
                       type: TextInputType.name,
-                  
                       onSubmitted: (_) => _submit(),
                     ),
                   ],
