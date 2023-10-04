@@ -113,8 +113,8 @@ class _HomeState extends State<Home> {
               clipBehavior: Clip.none,
               children: [
                 // Currencies exchange rate price
-                if (state.currencies.isNotEmpty)
-                  CurrenciesNews(currencies: state.currencies),
+                // if (state.currencies.isNotEmpty)
+                //   CurrenciesNews(currencies: state.currencies),
 
                 // "You send", "Receiver gets"
                 Padding(padding: padding, child: const SendFormFields()),
