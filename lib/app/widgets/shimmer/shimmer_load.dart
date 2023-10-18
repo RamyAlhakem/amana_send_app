@@ -9,9 +9,10 @@ class ShimmerLoad extends StatelessWidget {
     this.horizontalCount = 1,
     this.height = 40,
     this.width,
-    this.radius = 8,
+    this.radius = 6,
     this.spacingY = 6.0,
     this.spacingX = 4.0,
+    this.opacity,
     this.rowMainAxisAlignment = MainAxisAlignment.start,
     this.circular = false,
     Key? key,
@@ -19,14 +20,16 @@ class ShimmerLoad extends StatelessWidget {
 
   final int verticalCount, horizontalCount;
   final double height, radius, spacingY, spacingX;
-  final double? width;
+  final double? width, opacity;
   final MainAxisAlignment rowMainAxisAlignment;
   final bool circular;
 
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[100]!.withOpacity(context.isDarkMode ? 0.2 : 0.95),
+      baseColor: const Color(0xffeeeeee).withOpacity(
+        opacity ?? (context.isDarkMode ? 0.3 : 1.0),
+      ),
       highlightColor: Colors.grey[300]!.withOpacity(0.5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
