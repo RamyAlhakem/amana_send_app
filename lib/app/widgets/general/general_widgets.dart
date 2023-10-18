@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:provider/provider.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
+import '/app/views/notifications/provider/notifications_state.dart';
 import '/app/widgets/text/text_x.dart';
 import '/configs/configs.dart';
 import '/helper/helper.dart';
+import '/router/app_route.dart';
 import '/services/lang_service.dart';
 
 class GeneralWidgets {
@@ -75,6 +79,27 @@ class GeneralWidgets {
           bottomRight: Radius.circular(LangService.isAR() ? 0 : 11),
         ),
       );
+
+  static Widget notificationBell(BuildContext context) {
+    return IconButton(
+      onPressed: () => context.push('/${AppRoute.notifications}'),
+      icon: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          const HeroIcon(HeroIcons.bell),
+          Positioned(
+            left: LangService.isAR() ? null : -12,
+            right: LangService.isAR() ? -12 : null,
+            top: -10,
+            child: Badge.count(
+              count: context.watch<NotificationsState>().count,
+              isLabelVisible: context.watch<NotificationsState>().count > 0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   static Widget privacyPolicy(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);

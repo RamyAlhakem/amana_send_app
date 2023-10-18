@@ -62,13 +62,16 @@ class _StructureState extends State<Structure> {
           Helper.unFocusCursor(context);
         },
         child: Scaffold(
-          appBar: AutoAppBar(
-            bGColor: Theme.of(context).cardColor,
-            leading: const SizedBox.shrink(),
-            leadingWidth: 0,
-            titleReplacement: StructureKit(pageIndex: _index).title(context),
-            actions: StructureKit(pageIndex: _index).actions(context),
-          ),
+          appBar: _index != 1
+              ? AutoAppBar(
+                  bGColor: Theme.of(context).cardColor,
+                  leading: const SizedBox.shrink(),
+                  leadingWidth: 0,
+                  titleReplacement:
+                      StructureKit(pageIndex: _index).title(context),
+                  actions: StructureKit(pageIndex: _index).actions(context),
+                )
+              : null,
           body: PageView(
             physics: const NeverScrollableScrollPhysics(),
             controller: Global.pageCtrl,

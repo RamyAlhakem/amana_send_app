@@ -142,7 +142,7 @@ class Success extends StatelessWidget {
                 const HDivider(height: 25),
                 RowSpaceBetween([
                   TextX(
-                    arb.fees,
+                    arb.fee,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text.rich(

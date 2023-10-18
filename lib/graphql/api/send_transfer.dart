@@ -88,7 +88,7 @@ class SendTransfer {
       const Duration duration = Duration(milliseconds: 250);
       page.nextPage(duration: duration, curve: Curves.easeIn);
       _pr.getTransfer(transfer);
-      GetTransfers(context).request();
+      GetTransfers().request();
     }
   }
 

@@ -365,6 +365,7 @@ class Calculator with ChangeNotifier {
         }
       } else {
         Helper.toast(_arb!.recipientCountryUnavailableAtTheMoment);
+        return check = false;
       }
     } else {
       Helper.bannerWarning(

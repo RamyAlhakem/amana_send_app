@@ -12,8 +12,6 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
-import '/app/widgets/row.dart';
-import '/app/widgets/text/text_shine.dart';
 import '/app/widgets/text/text_x.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
@@ -77,7 +75,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
-      final double send = double.tryParse(state.sender.text) ?? 1;
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
@@ -120,36 +117,6 @@ class _HomeState extends State<Home> {
                 // Currencies exchange rate price
                 // if (state.currencies.isNotEmpty)
                 //   CurrenciesNews(currencies: state.currencies),
-
-                // Today exchange rate
-                Container(
-                  padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                  decoration: Decorations.note(context),
-                  child: RowSpaceBetween([
-                    TextShine(arb.todayExchangeRate),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: FittedBox(
-                        child: Text.rich(
-                          textScaleFactor: 1.0,
-                          TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(text: '${Helper.priced(send)} = '),
-                              TextSpan(
-                                text: Helper.priced(
-                                  state.sendCountry.currency.rate * send,
-                                  currencyCode: state.sendCountry.currency.code,
-                                ),
-                              ),
-                            ],
-                          ),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
 
                 // "You send", "Receiver gets"
                 Padding(padding: padding, child: const SendFormFields()),

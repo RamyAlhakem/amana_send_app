@@ -93,6 +93,7 @@ class Explorer {
       mobile
       status
       dateAdded
+      whatsappNumber
       $country
       ''';
 

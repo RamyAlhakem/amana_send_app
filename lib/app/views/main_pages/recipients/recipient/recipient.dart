@@ -18,6 +18,7 @@ import '/app/widgets/text/text_x.dart';
 import '/app/widgets/user_avatar.dart';
 import '/graphql/api/delete_recipient.dart';
 import '/helper/helper.dart';
+import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/recipient.dart';
 
@@ -31,20 +32,20 @@ class Recipient extends StatefulWidget {
 }
 
 class _RecipientState extends State<Recipient> {
-  late AppLocalizations? _arb;
-  late RecipientModel _recipient;
-  late RecipientsState _pr;
+  late AppLocalizations? arb;
+  late RecipientModel recipient;
+  late RecipientsState pr;
 
   @override
   void initState() {
     super.initState();
-    _recipient = RecipientModel.fromJson(jsonDecode(widget.recipient));
-    _pr = Provider.of<RecipientsState>(context, listen: false);
+    recipient = RecipientModel.fromJson(jsonDecode(widget.recipient));
+    pr = Provider.of<RecipientsState>(context, listen: false);
   }
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context);
     super.didChangeDependencies();
   }
 
@@ -52,14 +53,14 @@ class _RecipientState extends State<Recipient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AutoAppBar(
-        title: '${_recipient.firstName} ${_recipient.lastName}',
+        title: '${recipient.firstName} ${recipient.lastName}',
         actions: [
           Button(
-            () => _pr.editRecipient(context, _recipient),
+            () => pr.editRecipient(context, recipient),
             color: Colors.transparent,
             borderRadius: 0,
             TextX(
-              _arb!.editRecipient,
+              arb!.editRecipient,
               style: Theme.of(context).textTheme.bodySmall?.underlineDashed(
                     color: MainColors.color1,
                   ),
@@ -77,18 +78,18 @@ class _RecipientState extends State<Recipient> {
             children: [
               Row(
                 children: [
-                  UserAvatar(code: _recipient.country.coCode),
+                  UserAvatar(code: recipient.country.coCode),
                   const SizedBox(width: 10),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextX(
-                          Helper.getRecipientName(_recipient),
+                          Helper.getRecipientName(recipient),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         TextX(
-                          _recipient.dateAdded,
+                          recipient.dateAdded,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -98,15 +99,15 @@ class _RecipientState extends State<Recipient> {
               ),
               const SizedBox(height: 8),
               RowSpaceBetween([
-                TextX(_arb!.mobileNumber),
-                TextX('${_recipient.mobile}'),
+                TextX(arb!.mobileNumber),
+                TextX('${recipient.mobile}'),
               ]),
               const SizedBox(height: 8),
               RowSpaceBetween([
-                TextX(_arb!.countryCity),
-                if (_recipient.country.cities.isNotEmpty)
+                TextX(arb!.countryCity),
+                if (recipient.country.cities.isNotEmpty)
                   TextX(
-                      '${_recipient.country.enName}/${_recipient.country.cities.first.name}'),
+                      '${recipient.country.enName}/${recipient.country.cities.first.name}'),
               ]),
               const SizedBox(height: 8),
             ],
@@ -116,16 +117,16 @@ class _RecipientState extends State<Recipient> {
           margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           child: Button(
             () => SubmitDialog(
-              () => DeleteRecipient(context, id: _recipient.id).request(),
+              () => DeleteRecipient(context, id: recipient.id).request(),
               content:
-                  '${_arb!.areYouSureYouWantToDelete} ${_recipient.firstName}',
+                  '${arb!.areYouSureYouWantToDelete} ${recipient.firstName}',
             ).show(context),
             height: 50,
             color: Colors.transparent,
             borderColor: MainColors.red,
             borderRadius: 4,
             TextX(
-              _arb!.deleteRecipient,
+              arb!.deleteRecipient,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: MainColors.red,
                   ),
@@ -142,14 +143,14 @@ class _RecipientState extends State<Recipient> {
                 '\n${AppMetadata.get.maintenanceMessage}\n',
               );
             }
-            Provider.of<Calculator>(
-              context,
-              listen: false,
-            ).recipientSend(_recipient, navigate: true);
+            final calculator = Provider.of<Calculator>(context, listen: false);
+            calculator.setReceiverCountry(CountryModel());
+            calculator.agentsVisibility(true);
+            calculator.recipientSend(recipient, navigate: true);
           },
           borderRadius: 0,
           TextX(
-            _arb!.sendMoney,
+            arb!.sendMoney,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Colors.white,
                 ),

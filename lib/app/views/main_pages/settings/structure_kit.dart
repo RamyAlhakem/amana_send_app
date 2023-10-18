@@ -10,6 +10,7 @@ import '/app/views/notifications/provider/notifications_state.dart';
 import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
+import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/database/injector.dart';
@@ -191,29 +192,11 @@ class StructureKit {
     _arb = AppLocalizations.of(context);
 
     List<Widget> title = <Widget>[];
-    final Widget notifications = IconButton(
-      onPressed: () => context.push('/${AppRoute.notifications}'),
-      icon: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          const HeroIcon(HeroIcons.bell),
-          Positioned(
-            left: LangService.isAR() ? null : -12,
-            right: LangService.isAR() ? -12 : null,
-            top: -10,
-            child: Badge.count(
-              count: context.watch<NotificationsState>().count,
-              isLabelVisible: context.watch<NotificationsState>().count > 0,
-            ),
-          ),
-        ],
-      ),
-    );
 
     switch (pageIndex) {
       case 1:
         return title = <Widget>[
-          notifications,
+          GeneralWidgets.notificationBell(context),
           IconButton(
             onPressed: () => context.push('/${AppRoute.support}'),
             icon: const HeroIcon(HeroIcons.informationCircle),
@@ -234,9 +217,9 @@ class StructureKit {
           ),
         ];
       case 3:
-        return title = <Widget>[notifications];
+        return title = <Widget>[GeneralWidgets.notificationBell(context)];
       case 4:
-        return title = <Widget>[notifications];
+        return title = <Widget>[GeneralWidgets.notificationBell(context)];
 
       default:
         title;

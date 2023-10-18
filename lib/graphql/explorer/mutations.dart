@@ -72,7 +72,7 @@ class Mutations {
 
   static String recipientAdd(int id) {
     return '''
-    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!) {
+    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$whatsappNumber: NonEmptyString!) {
       recipient${id == 0 ? 'Add' : 'Edit'}(
         ${id != 0 ? 'id: \$id' : ''}
         firstName: \$firstName
@@ -80,6 +80,7 @@ class Mutations {
         fatherName: \$fatherName
         countryCode: \$countryCode
         mobile: \$mobile
+        whatsappNumber: \$whatsappNumber
       ) {
         message
       }

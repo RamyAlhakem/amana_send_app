@@ -32,7 +32,7 @@ class GetTransfer {
     Helper.debugger('transaction');
     await GraphQL.client()
         .query(QueryOptions(
-            document: gql(Queries.transactions(id: id)), variables: _variables))
+            document: gql(Queries.transaction), variables: _variables))
         .then((result) {
       if (result.data != null) {
         Helper.debug('transaction', '${result.data}');

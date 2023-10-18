@@ -6,10 +6,13 @@ import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/registration/components/city_picker.dart';
+import '/app/widgets/row.dart';
+import '/app/widgets/text/text_shine.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/global/variables.dart';
 import '/helper/dart_ui.dart';
+import '/helper/helper.dart';
 import 'agent_button.dart';
 import 'country_roller.dart';
 import 'currency_roller.dart';
@@ -64,9 +67,11 @@ class _SendFormFieldsState extends State<SendFormFields>
   Widget build(BuildContext context) {
     super.build(context);
     return Consumer<Calculator>(builder: (_, state, child) {
+      final double send = double.tryParse(state.sender.text) ?? 1;
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 8),
           if (Global.appSettings.token.isEmpty)
             CountryRoller(
               send: true,
@@ -96,50 +101,14 @@ class _SendFormFieldsState extends State<SendFormFields>
                 ),
               ],
             ),
-          const SizedBox(height: 4),
-          TextFieldX(
-            hint: arb.youSend,
-            controller: state.sender,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: Container(
-              width: 60,
-              alignment: Alignment.center,
-              child: TextX(
-                'USDT',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
-            onChanged: (String value) => state.setPrice(value),
-          ),
-          TextFieldX(
-            hint: arb.receiverGets,
-            controller: state.receiver,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: const CurrencyRoller(),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) => state.setPrice(value),
-            onSubmitted: (_) => state.roundReceiverAmount(),
-          ),
           if (!widget.keepAlive)
             if (state.receiverCity.agents.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
-                child: TextX(arb.selectProvider),
+                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                child: TextX(
+                  arb.selectProvider,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
           if (state.showAgents)
             if (state.receiverCity.agents.isNotEmpty)
@@ -163,6 +132,64 @@ class _SendFormFieldsState extends State<SendFormFields>
                   );
                 },
               ),
+          TextFieldX(
+            hint: arb.youSend,
+            controller: state.sender,
+            type: TextInputType.phone,
+            input: _input,
+            suffixIcon: Container(
+              width: 60,
+              alignment: Alignment.center,
+              child: TextX(
+                'USDT',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+            borderRadius: borderRadius,
+            filled: true,
+            fillColor: Theme.of(context).cardColor,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+            onChanged: (String value) => state.setPrice(value),
+          ),
+          // Today exchange rate
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+            child: RowSpaceBetween([
+              TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
+              const SizedBox(width: 10),
+              Flexible(
+                child: FittedBox(
+                  child: TextX(
+                    Helper.priced(
+                      state.sendCountry.currency.rate * send,
+                      currencyCode: state.sendCountry.currency.code,
+                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+              ),
+            ]),
+          ),
+          TextFieldX(
+            hint: arb.receiverGets,
+            controller: state.receiver,
+            type: TextInputType.phone,
+            input: _input,
+            suffixIcon: const CurrencyRoller(),
+            borderRadius: borderRadius,
+            filled: true,
+            fillColor: Theme.of(context).cardColor,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+            onChanged: (String value) => state.setPrice(value),
+            padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+            onSubmitted: (_) => state.roundReceiverAmount(),
+          ),
           const Padding(
             padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: TotalFees(),

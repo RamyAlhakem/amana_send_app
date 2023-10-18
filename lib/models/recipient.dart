@@ -11,10 +11,12 @@ class RecipientModel extends SafetyModel {
     this.status = 0,
     this.cityId = 0,
     this.dateAdded = '',
+    this.whatsappNumber = '',
   });
 
   int id = 0;
   String firstName = '', fatherName = '', lastName = '', dateAdded = '';
+  String whatsappNumber = '';
   int mobile = 0, cityId = 0, status = 0;
   CountryModel country = CountryModel();
 
@@ -29,6 +31,7 @@ class RecipientModel extends SafetyModel {
     dateAdded = stringFromJson(json, 'dateAdded');
     country = objectFromJson(json, 'country', (x) => CountryModel.fromJson(x),
         defaultValue: CountryModel());
+    whatsappNumber = stringFromJson(json, 'whatsappNumber');
     super.fromJson(json);
   }
 
@@ -43,5 +46,6 @@ class RecipientModel extends SafetyModel {
         'cityId': cityId,
         'dateAdded': dateAdded,
         'country': country,
+        'whatsappNumber': whatsappNumber,
       };
 }

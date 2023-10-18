@@ -14,6 +14,7 @@ import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
+import '/app/widgets/text_form_field/tools/text_form_validator.dart';
 import '/global/variables.dart';
 import '/graphql/api/add_edit_recipient.dart';
 import '/helper/helper.dart';
@@ -46,6 +47,7 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _firstName = TextEditingController();
   TextEditingController _lastName = TextEditingController();
   TextEditingController _fatherName = TextEditingController();
+  TextEditingController _whatsApp = TextEditingController();
 
   bool keepSendProcess = false;
 
@@ -108,7 +110,13 @@ class _AddRecipientState extends State<AddRecipient> {
 
               // Phone country select
               const PhoneCountryPicker(isRegistration: false),
-
+              TextFieldX(
+                controller: _whatsApp,
+                hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
+                type: TextInputType.phone,
+                input: TextFieldValidator.onlyDigits(),
+                onSubmitted: (_) => _submit(),
+              ),
               const SizedBox(height: 8),
               TextX(
                 arb.recipientName,
@@ -214,6 +222,7 @@ class _AddRecipientState extends State<AddRecipient> {
       fatherName: _fatherName.text,
       countryCode: '${_registerState.country?.coCode}',
       mobile: _registerState.mobile.text,
+      whatsApp: _whatsApp.text,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {

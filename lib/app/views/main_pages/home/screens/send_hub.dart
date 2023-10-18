@@ -12,7 +12,7 @@ import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/submit.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
-import 'check_out.dart';
+import 'check_out_details.dart';
 import 'select_recipient.dart';
 
 class SendHub extends StatefulWidget {
@@ -35,7 +35,6 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
 
   // app bar titles
   String appBarTitle = '';
-  String appBarSubTitle = '';
 
   // bottom navigation bar
   Widget buttons = const SizedBox();
@@ -83,7 +82,6 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
       child: Scaffold(
         appBar: AutoAppBar(
           title: appBarTitle,
-          subTitle: appBarSubTitle,
           bGColor: MainColors.color1,
           iconColor: Colors.white,
           titleStyle: const TextStyle(color: Colors.white, fontSize: 15),
@@ -120,7 +118,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
                 child: const SelectRecipient(),
               ),
             ),
-            const CheckOut(),
+            const CheckOutDetails(),
             const WalletAddress(),
           ],
         ),
@@ -135,24 +133,19 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   void _switchState(int index) {
     switch (index) {
       case 0:
-        if (!recipient) {
-          appBarTitle = _arb!.chooseRecipient;
-          appBarSubTitle = _arb!.chooseRecipientToContinue;
-        }
+        if (!recipient) appBarTitle = _arb!.chooseRecipient;
 
         buttons = SelectRecipient.footer(context, _pageCtrl);
         break;
 
       case 1:
-        appBarTitle = _arb!.reviewAndCheckout;
-        appBarSubTitle = _arb!.reviewYourTransferDetailsToContinueCheckout;
+        appBarTitle = _arb!.reviewSendingInfo.toUpperCase();
 
-        buttons = CheckOut.footer(context, _pageCtrl);
+        buttons = CheckOutDetails.footer(context, _pageCtrl);
         break;
 
       case 2:
         appBarTitle = _arb!.payment;
-        appBarSubTitle = _arb!.enterDebitCreditCardToContinue;
 
         buttons = const SizedBox.shrink();
         break;

@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
+import '/global/variables.dart';
 import '/graphql/explorer/queries.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
@@ -11,29 +12,34 @@ import '/helper/helper.dart';
 import '/models/transfer.dart';
 
 class GetTransfers {
-  GetTransfers(this.context);
+  GetTransfers({this.limit = 20, this.page = 1});
+  final int limit, page;
 
-  final BuildContext context;
-
-  static late TransfersState _pr;
+  static late TransfersState _provider;
   static late AppLocalizations? _arb;
+  static Map<String, dynamic> _variables = const <String, dynamic>{};
 
-  Future<void> request() async {
-    _pr = Provider.of<TransfersState>(context, listen: false);
+  Future<bool> request() async {
+    bool isNotEmpty = false;
+    BuildContext context = Global.key.currentContext!;
+    _provider = Provider.of<TransfersState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);
     });
-
-    if (_pr.transfers.isEmpty) _pr.isRequestLoading(true);
-
+    _variables = <String, dynamic>{'limit': limit, 'page': page};
     Helper.debugger('transactions');
+    Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
     await GraphQL.client()
-        .query(QueryOptions(document: gql(Queries.transactions())))
-        .then((result) {
+        .query(QueryOptions(
+            document: gql(Queries.transactions), variables: _variables))
+        .then((result) async {
       if (result.data != null) {
         Helper.debug('transactions', '${result.data}');
 
-        if (result.data!.isNotEmpty) return _result(result.data!);
+        if (result.data!.isNotEmpty) {
+          await _result(result.data!).then((value) => isNotEmpty = value);
+          return;
+        }
       } else {
         if (result.exception != null) {
           Helper.log(result.exception!.graphqlErrors, color: DebugColor.red);
@@ -41,18 +47,32 @@ class GetTransfers {
           return _error(result.exception!.graphqlErrors);
         }
       }
-    }).whenComplete(() => _pr.isRequestLoading(false));
+    }).whenComplete(() => _provider.isRequestLoading(false));
+    return isNotEmpty;
   }
 
-  void _result(Map<String, dynamic> data) async {
-    if (data.containsKey('transactions')) {
-      if (data['transactions'] is List) {
-        List<TransferModel> transactions = List<TransferModel>.from(
-          data['transactions'].map((x) => TransferModel.fromJson(x)),
-        );
-        _pr.getTransfers(transactions);
-      }
+  bool _set(dynamic data, String type) {
+    bool isNotEmpty = false;
+    if (data.containsKey(type) && data[type] is List) {
+      final List<TransferModel> elements = List<TransferModel>.from(
+        data[type].map((x) => TransferModel.fromJson(x)),
+      );
+      _provider.getTransfers(type, elements);
+      isNotEmpty = data[type].isNotEmpty;
     }
+    return isNotEmpty;
+  }
+
+  Future<bool> _result(Map<String, dynamic> data) async {
+    bool isNotEmpty = false;
+
+    isNotEmpty = _set(data, TransferStatus.pending.name);
+    isNotEmpty = _set(data, TransferStatus.nEW.name.toLowerCase()); // new.
+    isNotEmpty = _set(data, TransferStatus.processed.name);
+    isNotEmpty = _set(data, TransferStatus.completed.name);
+    isNotEmpty = _set(data, TransferStatus.canceled.name);
+
+    return isNotEmpty;
   }
 
   void _error(List<GraphQLError> errors) async {

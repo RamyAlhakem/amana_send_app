@@ -7,6 +7,7 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/home/screens/components/recipient_selector.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
+import '/app/views/registration/provider/registration_state.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/dialogs/contact_us.dart';
@@ -109,10 +110,15 @@ class SelectRecipient extends StatefulWidget {
       thirdButton: Visibility(
         visible: calculator.selectedRecipient == null,
         child: Button(
-          () => context.pushNamed(
-            AppRoute.addRecipient,
-            pathParameters: <String, String>{'recipient': 'null'},
-          ),
+          () {
+            context.read<RegistrationState>().setCountry(
+                  calculator.receiverCountry,
+                );
+            context.pushNamed(
+              AppRoute.addRecipient,
+              pathParameters: <String, String>{'recipient': 'null'},
+            );
+          },
           height: 45,
           color: MainColors.color2,
           Row(

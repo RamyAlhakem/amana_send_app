@@ -190,7 +190,7 @@ class _TransferDetailState extends State<TransferDetail> {
             children: [
               RowSpaceBetween([TextX(arb.city), TextX(transfer.city.name)]),
               RowSpaceBetween([
-                TextX(arb.fees),
+                TextX(arb.fee),
                 Text.rich(
                   textScaleFactor: 1.0,
                   TextSpan(

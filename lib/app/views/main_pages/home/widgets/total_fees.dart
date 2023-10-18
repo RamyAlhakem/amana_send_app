@@ -22,7 +22,7 @@ class TotalFees extends StatelessWidget {
             child: Column(
               children: [
                 RowSpaceBetween([
-                  TextX(arb!.fees),
+                  TextX(arb!.fee),
                   Text.rich(
                     textScaleFactor: 1.0,
                     TextSpan(
@@ -38,7 +38,7 @@ class TotalFees extends StatelessWidget {
                 ]),
                 const SizedBox(height: 4),
                 RowSpaceBetween([
-                  TextX(arb.amountWeWillConvert),
+                  TextX(arb.sendingAmount),
                   Text.rich(
                     textScaleFactor: 1.0,
                     TextSpan(
@@ -74,7 +74,7 @@ class TotalFees extends StatelessWidget {
           ]),
           const SizedBox(height: 4),
           RowSpaceBetween([
-            TextX(arb.receiverGets),
+            TextX(arb.recipientGets),
             Text.rich(
               textScaleFactor: 1.0,
               TextSpan(

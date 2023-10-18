@@ -4,7 +4,7 @@ import '/models/recipient.dart';
 import '/models/wallet.dart';
 import 'agent.dart';
 
-enum TransferStatus { pending, isNew, processing, completed, canceled }
+enum TransferStatus { pending, nEW, processed, completed, canceled }
 
 class TransferModel extends SafetyModel {
   TransferModel({
@@ -49,9 +49,9 @@ class TransferModel extends SafetyModel {
       case 'pending':
         return TransferStatus.pending;
       case 'new':
-        return TransferStatus.isNew;
-      case 'processing':
-        return TransferStatus.processing;
+        return TransferStatus.nEW;
+      case 'processed':
+        return TransferStatus.processed;
       case 'completed':
         return TransferStatus.completed;
       case 'cancel':

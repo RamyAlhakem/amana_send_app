@@ -84,13 +84,31 @@ class Queries {
     }
       ''';
 
-  static String transactions({int id = 0}) {
-    return '''
-    query ${id > 0 ? 'transaction(\$id: ID!)' : 'transactions'} {
-      ${id > 0 ? 'transaction(id: \$id)' : 'transactions'} {
+  static String transaction = '''
+    query MyQuery(\$id: ID!) {
+      transaction(id: \$id) {
+         ${Explorer.transfer}
+      }
+    }
+      ''';
+
+  static String transactions = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+      pending: transactions(limit: \$limit, page: \$page, status: pending) {
+        ${Explorer.transfer}
+      }
+      new: transactions(limit: \$limit, page: \$page, status: new) {
+        ${Explorer.transfer}
+      }
+      processed: transactions(limit: \$limit, page: \$page, status: processed) {
+        ${Explorer.transfer}
+      }
+      completed: transactions(limit: \$limit, page: \$page, status: completed) {
+        ${Explorer.transfer}
+      }
+      canceled: transactions(limit: \$limit, page: \$page, status: canceled) {
         ${Explorer.transfer}
       }
     }
       ''';
-  }
 }
