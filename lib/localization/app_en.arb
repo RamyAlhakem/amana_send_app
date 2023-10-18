@@ -15,6 +15,7 @@
   "transferDate": "Transfer date",
   "resendAgain": "Resend again",
   "waitingPayment": "Waiting payment",
+  "noTransfersFoundYet": "No transfers found yet",
   "pending": "Pending",
   "neW": "New",
   "processing": "Processing",

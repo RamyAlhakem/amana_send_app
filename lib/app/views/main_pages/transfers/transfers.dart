@@ -5,6 +5,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/general/general_widgets.dart';
@@ -126,6 +127,7 @@ class _TransfersState extends State<Transfers> {
                 labelStyle: labelStyle?.copyWith(fontWeight: FontWeight.w600),
                 unselectedLabelStyle: labelStyle,
                 isScrollable: true,
+                dividerColor: Theme.of(context).dividerColor,
                 indicatorPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorWeight: 4,
@@ -169,14 +171,25 @@ class _TransfersState extends State<Transfers> {
       children: [
         RefreshIndicator(
           onRefresh: () async => await GetTransfers().request(),
-          child: ListView.builder(
-            shrinkWrap: true,
-            controller: ctrl,
-            itemCount: transfers.length,
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 100),
-            itemBuilder: (BuildContext context, int i) {
-              return TransferRecent(transfers[i]);
-            },
+          child: Visibility(
+            visible: transfers.isNotEmpty,
+            replacement: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                    'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
+                TextX(arb.noTransfersFoundYet),
+              ],
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: ctrl,
+              itemCount: transfers.length,
+              padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
+              itemBuilder: (BuildContext context, int i) {
+                return TransferRecent(transfers[i]);
+              },
+            ),
           ),
         ),
         if (isPaging)

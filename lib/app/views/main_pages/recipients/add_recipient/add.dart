@@ -62,6 +62,7 @@ class _AddRecipientState extends State<AddRecipient> {
       _firstName = TextEditingController(text: _recipient?.firstName);
       _lastName = TextEditingController(text: _recipient?.lastName);
       _fatherName = TextEditingController(text: _recipient?.fatherName);
+      _whatsApp = TextEditingController(text: _recipient?.whatsappNumber);
 
       if (widget.query.isNotEmpty) {
         if (widget.query['keepSendProcess'] == 'true') keepSendProcess = true;
