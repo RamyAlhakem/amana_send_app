@@ -4,13 +4,25 @@ class AppMetadata extends SafetyModel {
   AppMetadata({
     this.address = '',
     this.androidUrl = '',
+    this.apiAndroidVersion = '',
+    this.apiAppleVersion = '',
     this.appGalleryUrl = '',
     this.appStoreUrl = '',
     this.companyHouseNumber = '',
     this.contactEmail = '',
+    this.fca = '',
     this.facebookUrl = '',
+    this.headOffice = '',
+    this.headOfficeLink = '',
+    this.mainCurrency = '',
+    this.mainPic = '',
+    this.metaDesc = '',
+    this.paymentTutorialUrl = '',
+    this.popupMessage = '',
+    this.processedNote = '',
     this.maintenanceMessage = '',
     this.maintenanceMode = false,
+    this.popupStatus = false,
     this.minimumSendFee = 0,
     this.sendsFees = 0,
     this.usdRate = 0,
@@ -19,6 +31,7 @@ class AppMetadata extends SafetyModel {
     this.whatsapp = '',
     this.xUrl = '',
     this.registerAddress = '',
+    this.registerAddressLink = '',
     this.registrationNumber = '',
     this.appSignInCaptcha = false,
     this.appSignUpCaptcha = false,
@@ -26,9 +39,12 @@ class AppMetadata extends SafetyModel {
   });
 
   String address = '', androidUrl = '', appGalleryUrl = '', appStoreUrl = '';
-  String companyHouseNumber = '', contactEmail = '', facebookUrl = '';
-  String maintenanceMessage = '';
-  bool maintenanceMode = false;
+  String companyHouseNumber = '', contactEmail = '', facebookUrl = '', fca = '';
+  String maintenanceMessage = '', apiAndroidVersion = '', apiAppleVersion = '';
+  String headOffice = '', headOfficeLink = '', mainCurrency = '', mainPic = '';
+  String metaDesc = '', paymentTutorialUrl = '', popupMessage = '';
+  String processedNote = '', whoWeAre = '';
+  bool maintenanceMode = false, popupStatus = false;
   double minimumSendFee = 0;
   double sendsFees = 0;
   double usdRate = 0;
@@ -37,7 +53,7 @@ class AppMetadata extends SafetyModel {
   String phoneNumber = '';
   String whatsapp = '';
   String xUrl = '';
-  String registerAddress = '';
+  String registerAddress = '', registerAddressLink = '';
   String registrationNumber = '';
   bool appSignInCaptcha = false, appSignUpCaptcha = false;
   bool appForgetPasswordCaptcha = false;
@@ -46,11 +62,23 @@ class AppMetadata extends SafetyModel {
   AppMetadata.fromJson(Map<String, dynamic> json) {
     address = stringFromJson(json, 'address');
     androidUrl = stringFromJson(json, 'androidUrl');
+    apiAndroidVersion = stringFromJson(json, 'apiAndroidVersion');
+    apiAppleVersion = stringFromJson(json, 'apiAppleVersion');
     appGalleryUrl = stringFromJson(json, 'appGalleryUrl');
     appStoreUrl = stringFromJson(json, 'appStoreUrl');
     companyHouseNumber = stringFromJson(json, 'companyHouseNumber');
     contactEmail = stringFromJson(json, 'contactEmail');
+    fca = stringFromJson(json, 'fca');
     facebookUrl = stringFromJson(json, 'facebookUrl');
+    headOffice = stringFromJson(json, 'headOffice');
+    headOfficeLink = stringFromJson(json, 'headOfficeLink');
+    mainCurrency = stringFromJson(json, 'mainCurrency');
+    mainPic = stringFromJson(json, 'mainPic');
+    metaDesc = stringFromJson(json, 'metaDesc');
+    paymentTutorialUrl = stringFromJson(json, 'paymentTutorialUrl');
+    popupMessage = stringFromJson(json, 'popupMessage');
+    processedNote = stringFromJson(json, 'processedNote');
+    popupStatus = boolFromJson(json, 'maintenanceMode');
     maintenanceMessage = stringFromJson(json, 'maintenanceMessage');
     maintenanceMode = boolFromJson(json, 'maintenanceMode');
     minimumSendFee = doubleFromJson(json, 'minimumSendFee', decimal: 10);
@@ -62,6 +90,7 @@ class AppMetadata extends SafetyModel {
     whatsapp = stringFromJson(json, 'whatsapp');
     xUrl = stringFromJson(json, 'xUrl');
     registerAddress = stringFromJson(json, 'registerAddress');
+    registerAddressLink = stringFromJson(json, 'registerAddressLink');
     registrationNumber = stringFromJson(json, 'registrationNumber');
     appSignInCaptcha = boolFromJson(json, 'appSignInCaptcha');
     appSignUpCaptcha = boolFromJson(json, 'appSignUpCaptcha');
@@ -74,10 +103,22 @@ class AppMetadata extends SafetyModel {
         'address': address,
         'androidUrl': androidUrl,
         'appGalleryUrl': appGalleryUrl,
+        'apiAndroidVersion': apiAndroidVersion,
+        'apiAppleVersion': apiAppleVersion,
         'appStoreUrl': appStoreUrl,
         'companyHouseNumber': companyHouseNumber,
         'contactEmail': contactEmail,
+        'fca': fca,
         'facebookUrl': facebookUrl,
+        'headOffice': headOffice,
+        'headOfficeLink': headOfficeLink,
+        'mainCurrency': mainCurrency,
+        'mainPic': mainPic,
+        'metaDesc': metaDesc,
+        'paymentTutorialUrl': paymentTutorialUrl,
+        'popupMessage': popupMessage,
+        'popupStatus': popupStatus,
+        'processedNote': processedNote,
         'maintenanceMessage': maintenanceMessage,
         'maintenanceMode': maintenanceMode,
         'minimumSendFee': minimumSendFee,
@@ -89,6 +130,7 @@ class AppMetadata extends SafetyModel {
         'whatsapp': whatsapp,
         'xUrl': xUrl,
         'registerAddress': registerAddress,
+        'registerAddressLink': registerAddressLink,
         'registrationNumber': registrationNumber,
         'appSignInCaptcha': appSignInCaptcha,
         'appSignUpCaptcha': appSignUpCaptcha,

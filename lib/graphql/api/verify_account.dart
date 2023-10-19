@@ -18,7 +18,7 @@ class VerifyAccountAPI {
     required this.arFirstName,
     required this.arFatherName,
     required this.arLastName,
-    required this.cityId,
+    required this.city,
     required this.postCode,
     required this.fullAddress,
     this.mainIdPicId,
@@ -26,8 +26,8 @@ class VerifyAccountAPI {
   });
 
   final String arFirstName, arFatherName, arLastName, postCode, fullAddress;
+  final String city;
   final int? mainIdPicId, selfiePicId;
-  final int cityId;
   final LoadingButtonController buttonCtrl;
 
   static late AppLocalizations _arb;
@@ -42,7 +42,7 @@ class VerifyAccountAPI {
     if (arFirstName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
     if (arFatherName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
     if (arLastName.isEmpty) return Helper.bannerWarning(_arb.enterFullName);
-    if (cityId == 0) return Helper.bannerWarning(_arb.enterCity);
+    if (city.isEmpty) return Helper.bannerWarning(_arb.enterCity);
     if (postCode.isEmpty) return Helper.bannerWarning(_arb.enterPostCode);
     if (fullAddress.isEmpty) return Helper.bannerWarning(_arb.enterFullAddress);
 
@@ -65,7 +65,7 @@ class VerifyAccountAPI {
       'arFirstName': arFirstName,
       'arFatherName': arFatherName,
       'arLastName': arLastName,
-      'cityId': cityId,
+      'city': city,
       'postCode': postCode,
       'fullAddress': fullAddress,
       'mainIdPicId': mainIdPicId ?? 0,

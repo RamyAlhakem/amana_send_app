@@ -13,26 +13,41 @@ class Queries {
       metaData {
         address
         androidUrl
-        appGalleryUrl
-        appStoreUrl
-        apiAppleVersion
         apiAndroidVersion
+        apiAppleVersion
+        appForgetPasswordCaptcha
+        appGalleryUrl
+        appSignInCaptcha
+        appSignUpCaptcha
+        appStoreUrl
         companyHouseNumber
         contactEmail
         facebookUrl
+        fca
+        headOffice
+        headOfficeLink
+        mainCurrency
+        mainPic
         maintenanceMessage
         maintenanceMode
+        metaDesc
         minimumSendFee
+        paymentTutorialUrl
+        phoneNumber
+        popupMessage
+        popupStatus
+        processedNote
+        registerAddress
+        registerAddressLink
+        registrationNumber
         sendsFees
+        siteTitle
         usdRate
         usdRatio
-        phoneNumber
         walletAddressValidTime
         whatsapp
-        xUrl
-        registerAddress
-        registrationNumber
         whoWeAre
+        xUrl
       }
     }
       ''';

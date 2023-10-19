@@ -1,5 +1,4 @@
 import '/helper/safety_model.dart';
-import '/models/city.dart';
 import 'country.dart';
 import 'level.dart';
 
@@ -14,6 +13,7 @@ class UserModel extends SafetyModel {
     this.arLastName = '',
     this.mobile = '',
     this.email = '',
+    this.city = '',
     this.verified = -1,
     this.fullAddress = '',
     this.postCode = '',
@@ -39,7 +39,7 @@ class UserModel extends SafetyModel {
   String mainIdPic = '';
   String selfiePic = '';
   String birthday = '1997-01-01';
-  CityModel city = CityModel();
+  String city = '';
   CountryModel country = CountryModel();
   String userNote = '';
   double remainingSendLimit = 10;
@@ -58,8 +58,7 @@ class UserModel extends SafetyModel {
     email = stringFromJson(json, 'email');
     verified = intFromJson(json, 'verified', defaultValue: -1);
     fullAddress = stringFromJson(json, 'fullAddress');
-    city = objectFromJson(json, 'city', (v) => CityModel.fromJson(v),
-        defaultValue: CityModel());
+    city = stringFromJson(json, 'city');
     postCode = stringFromJson(json, 'postCode');
     birthday = dateFromJson(json, 'birthday', defaultValue: '1997-01-01');
     mainIdPic = stringFromJson(json, 'mainIdPic');
@@ -86,7 +85,7 @@ class UserModel extends SafetyModel {
         'email': email,
         'verified': verified,
         'fullAddress': fullAddress,
-        'city': city.toJson(),
+        'city': city,
         'postCode': postCode,
         'birthday': birthday,
         'mainIdPic': mainIdPic,

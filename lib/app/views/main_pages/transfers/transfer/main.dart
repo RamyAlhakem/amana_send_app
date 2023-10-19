@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
+import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/transfers/widgets/detail.dart';
+import '/app/views/main_pages/transfers/widgets/status.dart';
 import '/app/widgets/auto_app_bar.dart';
-import '/app/widgets/buttons/expand_button.dart';
+import '/app/widgets/buttons/button.dart';
+import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
@@ -40,7 +43,7 @@ class TransferMain extends StatefulWidget {
 }
 
 class _TransferMainState extends State<TransferMain> {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
 
   late TransferModel transfer;
 
@@ -49,6 +52,9 @@ class _TransferMainState extends State<TransferMain> {
   bool isAr = false;
   bool selectedStatus = false;
   bool selectedDetail = true;
+
+  int _pageIndex = 0;
+  final PageController _pageCtrl = PageController();
 
   @override
   void initState() {
@@ -64,7 +70,7 @@ class _TransferMainState extends State<TransferMain> {
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     isAr = LangService.isAR();
     super.didChangeDependencies();
   }
@@ -75,71 +81,181 @@ class _TransferMainState extends State<TransferMain> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            'assets/images/splash2${context.isDarkMode ? '' : '_light'}.png',
+            'assets/images/splash${context.isDarkMode ? '' : '_light'}.png',
           ),
           fit: BoxFit.cover,
         ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const AutoAppBar(),
-        body: ListView(
+        appBar: AutoAppBar(title: 'ID: ${transfer.id}'),
+        body: Column(
           children: [
+            const SizedBox(height: 12),
+            Center(child: TextX(arb.sent)),
+            const SizedBox(height: 6),
             Center(
               child: TextX(
-                'ID: ${transfer.id}',
+                '$recipientAmount ${transfer.isReceiveInUsd ? 'USD' : transfer.recipient.country.currency.code}',
                 style: TransferMain.boldStyle.copyWith(fontSize: 22),
               ),
             ),
             const SizedBox(height: 4),
             Center(
               child: TextX(
-                transfer.status.name.toUpperCase(),
+                '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(10, 24, 10, 50),
-              width: MediaQuery.of(context).size.width,
-              child: TransferDetail(transfer),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.fromLTRB(14, 12, 14, 50),
+                decoration: Decorations.main(context, radius: 16),
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    Row(children: [
+                      _button(
+                        onTap: () => setState(() {
+                          selectedDetail = true;
+                          selectedStatus = false;
+                          _pageCtrl.previousPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeIn,
+                          );
+                        }),
+                        selected: selectedDetail,
+                        title: arb.transferDetails,
+                        icon: HeroIcons.receiptPercent,
+                        right: isAr,
+                      ),
+                      _button(
+                        onTap: () => setState(() {
+                          selectedStatus = true;
+                          selectedDetail = false;
+                          _pageCtrl.nextPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeIn,
+                          );
+                        }),
+                        right: !isAr,
+                        selected: selectedStatus,
+                        title: arb.transferStatus,
+                        icon: HeroIcons.presentationChartLine,
+                      ),
+                    ]),
+                    Expanded(
+                      child: PageView(
+                        scrollDirection: Axis.horizontal,
+                        controller: _pageCtrl,
+                        physics: const BouncingScrollPhysics(),
+                        onPageChanged: (index) => setState(() {
+                          _pageIndex = index;
+                          if (_pageIndex == 0) {
+                            selectedStatus = false;
+                            selectedDetail = true;
+                          } else {
+                            selectedDetail = false;
+                            selectedStatus = true;
+                          }
+                        }),
+                        children: [
+                          TransferDetail(transfer),
+                          TransferState(transfer),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: Decorations.main(
+                        context,
+                        radius: 16,
+                        color: MainColors.color1,
+                      ),
+                      child: Button(
+                        () {
+                          if (AppMetadata.get.maintenanceMode) {
+                            return Helper.bannerWarning(
+                              '\n${AppMetadata.get.maintenanceMessage}\n',
+                            );
+                          }
+                          Provider.of<Calculator>(
+                            context,
+                            listen: false,
+                          ).recipientSend(
+                            transfer.recipient,
+                            transfer: transfer,
+                            navigate: true,
+                          );
+                        },
+                        height: 55,
+                        width: MediaQuery.of(context).size.width,
+                        customShape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                        ),
+                        TextX(arb.resendAgain.toUpperCase()),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
-          child: Row(children: [
-            ExpandButton(
-              () => Share.share(transfer.wallet.address),
-              height: 45,
-              color: Colors.transparent,
-              foreground: MainColors.color2,
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                const Icon(Icons.share),
-                const SizedBox(width: 10),
-                TextX(_arb!.share.toUpperCase()),
-              ]),
+      ),
+    );
+  }
+
+  Widget _button({
+    required void Function()? onTap,
+    required String title,
+    required HeroIcons icon,
+    bool right = false,
+    bool selected = false,
+  }) {
+    return Expanded(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 55,
+            width: MediaQuery.of(context).size.width,
+            child: Button(
+              onTap,
+              color: selected
+                  ? MainColors.color1.withOpacity(0.05)
+                  : Theme.of(context).canvasColor.withOpacity(0.4),
+              customShape: TransferMain.topRadius(right: right),
+              FittedBox(
+                child: Row(children: [
+                  HeroIcon(
+                    icon,
+                    color: TransferMain.iconColor(context),
+                  ),
+                  const SizedBox(width: 4),
+                  TextX(
+                    title.toUpperCase(),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ]),
+              ),
             ),
-            const SizedBox(width: 10),
-            ExpandButton(
-              () {
-                if (AppMetadata.get.maintenanceMode) {
-                  return Helper.bannerWarning(
-                    '\n${AppMetadata.get.maintenanceMessage}\n',
-                  );
-                }
-                Provider.of<Calculator>(
-                  context,
-                  listen: false,
-                ).recipientSend(
-                  transfer.recipient,
-                  transfer: transfer,
-                  navigate: true,
-                );
-              },
-              height: 45,
-              TextX(_arb!.resendAgain.toUpperCase()),
+          ),
+          Visibility(
+            visible: selected,
+            replacement: HDivider(
+              height: 3,
+              thickness: 3,
+              color: Theme.of(context).canvasColor.withOpacity(0.4),
             ),
-          ]),
-        ),
+            child: const HDivider(
+              height: 3,
+              thickness: 3,
+              color: MainColors.color1,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -9,8 +9,6 @@ class CountryModel extends SafetyModel {
     this.phoneCode = '0',
     this.enName = '',
     this.arName = '',
-    this.minAmount = 0,
-    this.maxAmount = 0,
     this.sendFees = 0,
     this.minimumSendsFees = 0,
     this.cities = const <CityModel>[],
@@ -18,7 +16,7 @@ class CountryModel extends SafetyModel {
 
   int id = 0;
   String coCode = '', enName = '', arName = '', phoneCode = '0';
-  double minAmount = 0, maxAmount = 0, sendFees = 0, minimumSendsFees = 0;
+  double sendFees = 0, minimumSendsFees = 0;
   CurrencyModel currency = CurrencyModel();
   List<CityModel> cities = const <CityModel>[];
 
@@ -28,8 +26,6 @@ class CountryModel extends SafetyModel {
     enName = stringFromJson(json, 'enName');
     arName = stringFromJson(json, 'arName');
     phoneCode = stringFromJson(json, 'phoneCode', defaultValue: '0');
-    minAmount = doubleFromJson(json, 'minAmount');
-    maxAmount = doubleFromJson(json, 'maxAmount');
     sendFees = doubleFromJson(json, 'sendsFees');
     minimumSendsFees = doubleFromJson(json, 'minimumSendsFees');
     currency = objectFromJson(
@@ -46,8 +42,6 @@ class CountryModel extends SafetyModel {
         'enName': enName,
         'arName': arName,
         'phoneCode': phoneCode,
-        'minAmount': minAmount,
-        'maxAmount': maxAmount,
         'sendsFees': sendFees,
         'minimumSendsFees': minimumSendsFees,
         'currency': currency,

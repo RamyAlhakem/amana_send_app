@@ -149,15 +149,15 @@ class _HomeState extends State<Home> {
                       }
 
                       if (double.parse(state.receiver.text) <
-                          state.receiverCountry.minAmount) {
+                          state.receiverAgent.minAmount) {
                         return Helper.snack(
-                          '${arb.minimumReceivingLimitToThisCountryIs} ${state.receiverCountry.minAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.minimumReceivingLimitToThisCountryIs} ${state.receiverAgent.minAmount} ${state.receiverCountry.currency.code}',
                         );
                       }
                       if (double.parse(state.receiver.text) >
-                          state.receiverCountry.maxAmount) {
+                          state.receiverAgent.maxAmount) {
                         return Helper.snack(
-                          '${arb.maximumReceivingLimitToThisCountryIs} ${state.receiverCountry.maxAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.maximumReceivingLimitToThisCountryIs} ${state.receiverAgent.maxAmount} ${state.receiverCountry.currency.code}',
                         );
                       }
 

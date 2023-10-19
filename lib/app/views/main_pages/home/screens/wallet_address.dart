@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '/app/theme/colors/main_colors.dart';
@@ -14,8 +13,6 @@ import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/views/registration/components/count_down.dart';
 import '/app/widgets/buttons/button.dart';
-import '/app/widgets/divider.dart';
-import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_transfer.dart';
@@ -32,7 +29,7 @@ class WalletAddress extends StatefulWidget {
 
 class _WalletAddressState extends State<WalletAddress>
     with TickerProviderStateMixin {
-  late AppLocalizations? arb;
+  late AppLocalizations arb;
   late TransfersState provider;
 
   int duration = 120;
@@ -82,7 +79,7 @@ class _WalletAddressState extends State<WalletAddress>
 
   @override
   void didChangeDependencies() {
-    arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -102,90 +99,71 @@ class _WalletAddressState extends State<WalletAddress>
         shrinkWrap: true,
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () => Helper.launchURL(AppMetadata.get.paymentTutorialUrl),
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextX(arb!.howToPay),
+                TextX(arb.howToPay),
                 const SizedBox(width: 8),
                 const Icon(Icons.info_outlined),
               ],
             ),
           ),
-          const SizedBox(height: 15),
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: QrImageView(
-                data: state.transfer.wallet.address,
-                size: 200,
-                embeddedImage: const AssetImage('assets/images/icon.png'),
-                errorStateBuilder: (cxt, err) {
-                  return const Center(
-                    child: Text(
-                      'Uh oh! Something went wrong...',
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
-              ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+            decoration: Decorations.note(context, radius: 10),
+            child: TextC(
+              '${arb.yourOrderHasBeenReceivedSuccessfully.toUpperCase()} #${state.transfer.id}',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: MainColors.color2,
+                  ),
+              textAlign: TextAlign.center,
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             decoration: Decorations.main(context, radius: 10),
             child: Column(
               children: [
-                TextX(
-                  arb!.walletAddressWillExpireWithin,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                Visibility(
-                  visible: duration == 0,
-                  replacement: Countdown(
-                    animation: StepTween(begin: duration, end: 0).animate(ctrl),
-                    size: 60,
-                    color: null,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(top: duration != 0 ? 2 : 15),
-                    child: TextX(
-                      arb!.oopsWalletAddressIsExpired,
-                      style: const TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                Text.rich(
+                  textScaleFactor: 1.0,
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text:
+                            '${arb.toCompleteTheTransferPleasePayTheDueAmount}: \n',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                    ),
+                      TextSpan(
+                        text: Helper.priced(state.transfer.totalAmount),
+                        style: const TextStyle(
+                          fontSize: 26,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-            decoration: Decorations.main(context, radius: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                const SizedBox(height: 4),
                 TextX(
-                  arb!.walletAddress,
+                  '${arb.toThisWalletAddress}:',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 6),
                 TextC(
                   state.transfer.wallet.address,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: MainColors.color1,
                     letterSpacing: 1,
                   ),
                 ),
@@ -199,7 +177,7 @@ class _WalletAddressState extends State<WalletAddress>
                       Row(children: [
                         const Icon(Icons.share, size: 16),
                         const SizedBox(width: 8),
-                        TextX(arb!.share),
+                        TextX(arb.share),
                       ]),
                     ),
                     const SizedBox(width: 8),
@@ -208,13 +186,13 @@ class _WalletAddressState extends State<WalletAddress>
                         ClipboardData(text: state.transfer.wallet.address),
                       ).whenComplete(() {
                         Helper.snack(
-                          '${arb!.copiedSuccessfully}\n${state.transfer.wallet.address}',
+                          '${arb.copiedSuccessfully}\n${state.transfer.wallet.address}',
                         );
                       }),
                       Row(children: [
                         const Icon(Icons.copy, size: 16),
                         const SizedBox(width: 8),
-                        TextX(arb!.copy),
+                        TextX(arb.copy),
                       ]),
                     ),
                   ],
@@ -222,27 +200,65 @@ class _WalletAddressState extends State<WalletAddress>
               ],
             ),
           ),
-          TextX(arb!.paymentDetails),
-          const HDivider(),
-          RowSpaceBetween([
-            TextX(arb!.totalToPay),
-            TextX(
-              Helper.priced(state.transfer.totalAmount),
-              style: Theme.of(context).textTheme.titleMedium,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+            decoration: Decorations.main(context, radius: 10),
+            child: Column(
+              children: [
+                TextX(
+                  arb.walletAddressWillExpireWithin,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Visibility(
+                  visible: duration == 0,
+                  replacement: Countdown(
+                    animation: StepTween(begin: duration, end: 0).animate(ctrl),
+                    size: 60,
+                    color: null,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: duration != 0 ? 2 : 15),
+                    child: TextX(
+                      arb.oopsWalletAddressIsExpired,
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ]),
-          const SizedBox(height: kTextTabBarHeight / 2),
-          TextX(
-            arb!.pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers
-                .toUpperCase(),
-            style: Theme.of(context).textTheme.bodySmall,
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 15),
-          TextX(
-            arb!.oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours,
-            style: Theme.of(context).textTheme.bodySmall,
-            textAlign: TextAlign.center,
+          Container(
+            decoration: Decorations.note(context),
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            padding: const EdgeInsets.all(15),
+            child: TextX(
+              arb.pleaseMakeSureToPayTheExactAmountToTheWalletAddressInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnTheSameExchangeRate
+                  .toUpperCase(),
+              style: const TextStyle(
+                fontSize: 12,
+                color: MainColors.red,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Container(
+            decoration: Decorations.note(context),
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            padding: const EdgeInsets.all(15),
+            child: TextX(
+              arb.onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       );

@@ -10,9 +10,7 @@ class Explorer {
       mobile
       email
       verified
-      city {
-        $city
-      }
+      city
       postCode
       mainIdPic
       selfiePic
@@ -46,6 +44,10 @@ class Explorer {
       rate
       receiveFees
       usdAvailability
+      minAmount
+      maxAmount
+      defaultMessage
+      description
       ''';
 
   static const String city = '''
@@ -65,11 +67,8 @@ class Explorer {
       arName
       coCode
       phoneCode
-      minAmount
-      maxAmount
       sendsFees
       minimumSendsFees
-      defaultMessage
       currency {
         id
         ceil

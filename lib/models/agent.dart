@@ -9,12 +9,16 @@ class AgentModel extends SafetyModel {
     this.rate = 0,
     this.receiveFees = 0,
     this.usdAvailability = 0,
+    this.minAmount = 0,
+    this.maxAmount = 0,
+    this.defaultMessage = '',
+    this.description = '',
     this.selected = false,
   });
 
   int id = 0, status = 0, usdAvailability = 0;
-  String name = '', iconUrl = '';
-  double receiveFees = 0, rate = 0;
+  String name = '', iconUrl = '', defaultMessage = '', description = '';
+  double receiveFees = 0, rate = 0, minAmount = 0, maxAmount = 0;
   bool selected = false;
 
   AgentModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,10 @@ class AgentModel extends SafetyModel {
     rate = doubleFromJson(json, 'rate', decimal: 10);
     receiveFees = doubleFromJson(json, 'receiveFees');
     usdAvailability = intFromJson(json, 'usdAvailability');
+    minAmount = doubleFromJson(json, 'minAmount');
+    maxAmount = doubleFromJson(json, 'maxAmount');
+    defaultMessage = stringFromJson(json, 'defaultmessage');
+    description = stringFromJson(json, 'description');
     selected = boolFromJson(json, 'x');
     super.fromJson(json);
   }
@@ -38,6 +46,10 @@ class AgentModel extends SafetyModel {
         'rate': rate,
         'receiveFees': receiveFees,
         'usdAvailability': usdAvailability,
+        'minAmount': minAmount,
+        'maxAmount': maxAmount,
+        'defaultmessage': defaultMessage,
+        'description': description,
         'x': selected,
       };
 }

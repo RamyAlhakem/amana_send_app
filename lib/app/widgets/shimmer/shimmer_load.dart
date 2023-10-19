@@ -27,10 +27,10 @@ class ShimmerLoad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: const Color(0xffeeeeee).withOpacity(
-        opacity ?? (context.isDarkMode ? 0.3 : 1.0),
+      baseColor: const Color.fromARGB(255, 223, 223, 223).withOpacity(
+        opacity ?? (context.isDarkMode ? 0.3 : 0.7),
       ),
-      highlightColor: Colors.grey[300]!.withOpacity(0.5),
+      highlightColor: Colors.grey[200]!.withOpacity(0.5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

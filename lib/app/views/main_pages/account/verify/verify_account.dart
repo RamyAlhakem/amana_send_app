@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '/app/views/registration/components/city_picker.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/loading_button.dart';
@@ -26,9 +25,8 @@ class VerifyAccountState extends State<VerifyAccount> {
   late AppLocalizations arb;
   late final UserModel user;
   late final TextEditingController _arFirstName, _arFatherName, _arLastName;
-  late final TextEditingController _fullAddress, _postCode;
+  late final TextEditingController _fullAddress, _city, _postCode;
 
-  int cityId = 0;
   int? mainIdPicId, selfiePicId;
 
   // Previously submitted attachments is stored below, from server on [initState].
@@ -40,15 +38,12 @@ class VerifyAccountState extends State<VerifyAccount> {
   void initState() {
     super.initState();
     user = Database().getUser;
-    if (user.city.id != 0) cityId = user.city.id;
-    if (user.city.id == 0) {
-      if (user.country.cities.isNotEmpty) cityId = user.country.cities.first.id;
-    }
 
     _arFirstName = TextEditingController(text: user.arFirstName);
     _arFatherName = TextEditingController(text: user.arFatherName);
     _arLastName = TextEditingController(text: user.arLastName);
     _fullAddress = TextEditingController(text: user.fullAddress);
+    _city = TextEditingController(text: user.city);
     _postCode = TextEditingController(text: user.postCode);
 
     if (user.mainIdPic.isNotEmpty) mainIdPic = user.mainIdPic;
@@ -124,14 +119,14 @@ class VerifyAccountState extends State<VerifyAccount> {
             const SizedBox(height: 8),
             Row(
               children: [
-                // Pick a city
                 Flexible(
-                  child: CityPicker(
-                    country: user.country,
-                    onChange: (city) => cityId = city.id,
+                  child: TextFieldX(
+                    controller: _city,
+                    hint: arb.city,
+                    type: TextInputType.streetAddress,
+                    filled: true,
                   ),
                 ),
-
                 const SizedBox(width: 14),
                 Flexible(
                   child: TextFieldX(
@@ -139,8 +134,6 @@ class VerifyAccountState extends State<VerifyAccount> {
                     hint: arb.postCode,
                     type: TextInputType.streetAddress,
                     filled: true,
-                    onChanged: (v) =>
-                        TextFieldValidator.latin(context, _postCode),
                   ),
                 ),
               ],
@@ -150,7 +143,6 @@ class VerifyAccountState extends State<VerifyAccount> {
               hint: arb.fullAddress,
               type: TextInputType.name,
               filled: true,
-              onChanged: (v) => TextFieldValidator.latin(context, _fullAddress),
             ),
             const HDivider(height: 20),
 
@@ -205,9 +197,11 @@ class VerifyAccountState extends State<VerifyAccount> {
                   arFirstName: _arFirstName.text,
                   arFatherName: _arFatherName.text,
                   arLastName: _arLastName.text,
-                  cityId: cityId,
+                  city: _city.text,
                   postCode: _postCode.text,
                   fullAddress: _fullAddress.text,
+                  mainIdPicId: mainIdPicId,
+                  selfiePicId: selfiePicId,
                 ).request(),
                 child: TextX(
                   arb.submit,

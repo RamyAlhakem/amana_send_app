@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
+import '/app/extensions/text_underline.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
@@ -13,6 +15,7 @@ import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/graphql/api/send_transfer.dart';
 import '/helper/helper.dart';
+import '/models/metadata.dart';
 import '/services/lang_service.dart';
 import 'components/bottom_buttons.dart';
 
@@ -82,11 +85,11 @@ class CheckOutDetails extends StatefulWidget {
 }
 
 class _CheckOutDetailsState extends State<CheckOutDetails> {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -109,7 +112,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),
                 child: TextX(
-                  _arb!.transferDetails,
+                  arb.transferDetails,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -122,7 +125,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RowSpaceBetween([
-                      TextX(_arb!.recipient),
+                      TextX(arb.recipient),
                       TextX(
                         '${state.selectedRecipient?.firstName} ${state.selectedRecipient?.lastName}'
                             .toUpperCase(),
@@ -131,7 +134,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     ]),
                     const SizedBox(height: 8),
                     RowSpaceBetween([
-                      TextX(_arb!.recipientGets),
+                      TextX(arb.recipientGets),
                       Text.rich(
                         textScaleFactor: 1.0,
                         TextSpan(
@@ -154,12 +157,12 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     ]),
                     const SizedBox(height: 8),
                     RowSpaceBetween([
-                      TextX(_arb!.pickUpPoint),
+                      TextX(arb.pickUpPoint),
                       TextX(state.receiverAgent.name),
                     ]),
                     const SizedBox(height: 8),
                     RowSpaceBetween([
-                      TextX(_arb!.sendingRate),
+                      TextX(arb.sendingRate),
                       Text.rich(
                         textScaleFactor: 1.0,
                         TextSpan(
@@ -187,7 +190,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                 child: Column(
                   children: [
                     RowSpaceBetween([
-                      TextX(_arb!.sendingAmount),
+                      TextX(arb.sendingAmount),
                       Text.rich(
                         textScaleFactor: 1.0,
                         TextSpan(
@@ -209,7 +212,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     ]),
                     const SizedBox(height: 8),
                     RowSpaceBetween([
-                      TextX(_arb!.fee),
+                      TextX(arb.fee),
                       Text.rich(
                         textScaleFactor: 1.0,
                         TextSpan(
@@ -225,7 +228,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     ]),
                     const SizedBox(height: 8),
                     RowSpaceBetween([
-                      TextX(_arb!.totalToPay),
+                      TextX(arb.totalToPay),
                       Text.rich(
                         textScaleFactor: 1.0,
                         TextSpan(
@@ -248,19 +251,52 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 decoration: Decorations.note(context),
                 child: TextX(
-                  _arb!.weOnlyAcceptInUSDT,
+                  arb.weOnlyAcceptInUSDT,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: MainColors.red,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-              )
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                decoration: Decorations.note(context),
+                child: Text.rich(
+                  textScaleFactor: 1.0,
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text:
+                            '${arb.beforeConfirmingYourOrderYouShouldHaveADigitalWallet}, ',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: MainColors.red,
+                                ),
+                      ),
+                      TextSpan(
+                        text: arb.clickHereToLearnHowToPay,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.underline(
+                                  color: MainColors.red,
+                                  distance: 1,
+                                ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Helper.launchURL(
+                                AppMetadata.get.paymentTutorialUrl,
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

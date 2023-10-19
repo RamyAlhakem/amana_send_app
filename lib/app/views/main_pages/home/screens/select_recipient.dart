@@ -82,9 +82,9 @@ class SelectRecipient extends StatefulWidget {
             ).show();
           }
           if (double.parse(calculator.receiver.text) <
-              calculator.selectedRecipient!.country.minAmount) {
+              calculator.receiverAgent.minAmount) {
             return Helper.bannerWarning(
-              '${arb.minimumReceivingLimitToThisCountryIs} ${calculator.selectedRecipient!.country.minAmount} ${calculator.selectedRecipient!.country.currency.code}',
+              '${arb.minimumReceivingLimitToThisCountryIs} ${calculator.receiverAgent.minAmount} ${calculator.selectedRecipient!.country.currency.code}',
             );
           }
           if (calculator.receiverAgent.id == 0) {

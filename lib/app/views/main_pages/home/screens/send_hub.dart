@@ -8,6 +8,7 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/home/screens/wallet_address.dart';
 import '/app/views/main_pages/home/widgets/send_form.dart';
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/submit.dart';
 import '/global/variables.dart';
@@ -25,7 +26,7 @@ class SendHub extends StatefulWidget {
 }
 
 class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
-  late AppLocalizations? _arb;
+  late AppLocalizations arb;
   late Calculator _calculator;
 
   bool recipient = false;
@@ -50,7 +51,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
 
   @override
   void didChangeDependencies() {
-    _arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
 
     if (appBarTitle.isEmpty) _switchState(_index);
     super.didChangeDependencies();
@@ -69,12 +70,13 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final transfer = context.watch<TransfersState>().transfer;
     return WillPopScope(
       onWillPop: () async {
         if (_index != 2) {
           SubmitDialog(
             () => context.pop(),
-            content: _arb!.areYouSureYouWantToCancelThisTransfer,
+            content: arb.areYouSureYouWantToCancelThisTransfer,
           ).show(context);
         }
         return _index != 2 ? false : true;
@@ -82,6 +84,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
       child: Scaffold(
         appBar: AutoAppBar(
           title: appBarTitle,
+          subTitle: _index == 2 ? '${arb.transferId} #${transfer.id}' : '',
           bGColor: MainColors.color1,
           iconColor: Colors.white,
           titleStyle: const TextStyle(color: Colors.white, fontSize: 15),
@@ -95,7 +98,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
           onPressed: _index != 2
               ? () => SubmitDialog(
                     () => context.pop(),
-                    content: _arb!.areYouSureYouWantToCancelThisTransfer,
+                    content: arb.areYouSureYouWantToCancelThisTransfer,
                   ).show(context)
               : null,
         ),
@@ -133,19 +136,19 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   void _switchState(int index) {
     switch (index) {
       case 0:
-        if (!recipient) appBarTitle = _arb!.chooseRecipient;
+        if (!recipient) appBarTitle = arb.chooseRecipient;
 
         buttons = SelectRecipient.footer(context, _pageCtrl);
         break;
 
       case 1:
-        appBarTitle = _arb!.reviewSendingInfo.toUpperCase();
+        appBarTitle = arb.reviewSendingInfo.toUpperCase();
 
         buttons = CheckOutDetails.footer(context, _pageCtrl);
         break;
 
       case 2:
-        appBarTitle = _arb!.payment;
+        appBarTitle = arb.payment;
 
         buttons = const SizedBox.shrink();
         break;

@@ -105,12 +105,12 @@ class Mutations {
       ''';
 
   static const String userVerifyAccount = '''
-    mutation userVerifyAccount(\$arFirstName: String!, \$arFatherName: String!, \$arLastName: String!, \$cityId: Int!, \$postCode: NonEmptyString!, \$fullAddress: NonEmptyString!, \$mainIdPicId: Int!, \$selfPicId: Int!) {
+    mutation userVerifyAccount(\$arFirstName: String!, \$arFatherName: String!, \$arLastName: String!, \$city: String!, \$postCode: NonEmptyString!, \$fullAddress: NonEmptyString!, \$mainIdPicId: Int!, \$selfPicId: Int!) {
       userVerifyAccount(
         arFirstName: \$arFirstName
         arFatherName: \$arFatherName
         arLastName: \$arLastName
-        cityId: \$cityId
+        city: \$city
         postCode: \$postCode
         fullAddress: \$fullAddress
         mainIdPicId: \$mainIdPicId

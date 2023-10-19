@@ -275,8 +275,8 @@ class Calculator with ChangeNotifier {
     }
 
     if (sendUSD) {
-      _minUSD = receiverCountry.minAmount / receiverAgent.rate;
-      _maxUSD = receiverCountry.maxAmount / receiverAgent.rate;
+      _minUSD = receiverAgent.minAmount / receiverAgent.rate;
+      _maxUSD = receiverAgent.maxAmount / receiverAgent.rate;
     }
 
     if (value.isNotEmpty) {
@@ -356,9 +356,9 @@ class Calculator with ChangeNotifier {
       if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
         selectRecipient(recipient);
         if (receiver.text.isNotEmpty) {
-          if (double.parse(receiver.text) < recipient.country.minAmount) {
+          if (double.parse(receiver.text) < receiverAgent.minAmount) {
             Helper.bannerWarning(
-              '${_arb!.minimumReceivingLimitToThisCountryIs} ${recipient.country.minAmount} ${recipient.country.currency.code}',
+              '${_arb!.minimumReceivingLimitToThisCountryIs} ${receiverAgent.minAmount} ${recipient.country.currency.code}',
             );
             return check = false;
           }

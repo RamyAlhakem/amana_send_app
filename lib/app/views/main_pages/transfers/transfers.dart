@@ -65,6 +65,7 @@ class _TransfersState extends State<Transfers> {
   void initState() {
     super.initState();
     provider = Provider.of<TransfersState>(context, listen: false);
+    provider.clearTransfers();
     GetTransfers().request();
     scrollListener(scrollCtrl1);
     scrollListener(scrollCtrl2);
@@ -83,7 +84,6 @@ class _TransfersState extends State<Transfers> {
   void dispose() {
     super.dispose();
     provider.isRequestLoading(true);
-    provider.clearTransfers();
     scrollCtrl1.dispose();
     scrollCtrl2.dispose();
     scrollCtrl3.dispose();
@@ -189,9 +189,7 @@ class _TransfersState extends State<Transfers> {
               controller: ctrl,
               itemCount: transfers.length,
               padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
-              itemBuilder: (BuildContext context, int i) {
-                return TransferRecent(transfers[i]);
-              },
+              itemBuilder: (_, i) => TransferRecent(transfers[i]),
             ),
           ),
         ),
