@@ -54,10 +54,7 @@ class _VerticalFadeState extends State<VerticalFade>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _animController,
-      child: SlideTransition(
-        position: _animOffset,
-        child: widget.child,
-      ),
+      child: SlideTransition(position: _animOffset, child: widget.child),
     );
   }
 }

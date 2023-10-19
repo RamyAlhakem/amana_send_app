@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
+import '/app/widgets/fade_switcher.dart';
 import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/shimmer/shimmer_load.dart';
 import '/app/widgets/text/text_x.dart';
@@ -170,16 +171,18 @@ class _TransfersState extends State<Transfers> {
     return Stack(
       children: [
         RefreshIndicator(
-          onRefresh: () async => await GetTransfers().request(),
+          onRefresh: () async => await GetTransfers(page: page).request(),
           child: Visibility(
             visible: transfers.isNotEmpty,
-            replacement: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(
-                    'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
-                TextX(arb.noTransfersFoundYet),
-              ],
+            replacement: FadeSwitcher(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                      'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
+                  TextX(arb.noTransfersFoundYet),
+                ],
+              ),
             ),
             child: ListView.builder(
               shrinkWrap: true,
