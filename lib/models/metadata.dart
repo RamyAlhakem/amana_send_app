@@ -78,7 +78,7 @@ class AppMetadata extends SafetyModel {
     paymentTutorialUrl = stringFromJson(json, 'paymentTutorialUrl');
     popupMessage = stringFromJson(json, 'popupMessage');
     processedNote = stringFromJson(json, 'processedNote');
-    popupStatus = boolFromJson(json, 'maintenanceMode');
+    popupStatus = boolFromJson(json, 'popupStatus');
     maintenanceMessage = stringFromJson(json, 'maintenanceMessage');
     maintenanceMode = boolFromJson(json, 'maintenanceMode');
     minimumSendFee = doubleFromJson(json, 'minimumSendFee', decimal: 10);

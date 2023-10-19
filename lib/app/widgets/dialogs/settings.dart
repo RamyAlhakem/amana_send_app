@@ -30,10 +30,10 @@ class SettingsDialog {
   final double horizontalPadding;
   final void Function()? onSubmit;
 
-  void show() {
+  Future<void> show() async {
     final BuildContext context = Global.key.currentContext!;
     final AppLocalizations? arb = AppLocalizations.of(context);
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black26,

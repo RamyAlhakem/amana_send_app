@@ -135,7 +135,7 @@ class _WebViewState extends State<WebView> {
                     context.pop(); // close webview page.
                     context.pop(); // close send hub page.
                     Global.pageCtrl.jumpToPage(1); // transfers.
-                    MessageDialog(_arb!.oops).show(context);
+                    MessageDialog(_arb!.oops).show( );
                   }
                 }
               },

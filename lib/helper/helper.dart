@@ -391,7 +391,7 @@ class Helper {
             UserModel.get.userNote,
             action: () => context.push('/${AppRoute.verifyAccount}'),
             actionTitle: _arb!.verifyAccount,
-          ).show(context);
+          ).show();
         }
         break;
     }

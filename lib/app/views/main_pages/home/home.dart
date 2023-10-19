@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/widgets/loader.dart';
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/pop_up/popup.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
@@ -44,6 +45,9 @@ class _HomeState extends State<Home> {
   final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 0, 14, 0);
 
   Future<void> getResources() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
+
+    // call data:---------------------------------------------------------------
     GetMetadata.request();
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
@@ -53,15 +57,20 @@ class _HomeState extends State<Home> {
     await GetCountriesAPI.request().whenComplete(
       () => ServerAppVersion.isUpdate(),
     );
+    // -------------------------------------------------------------------------
+
+    if (context.mounted && Global.isAnyDialogOpen(context)) {
+      LoadingDialog.dismiss();
+    }
+    PopupService.show();
   }
 
   @override
   void initState() {
     super.initState();
     user = Database().getUser;
-    WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
     Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
-    getResources().whenComplete(() => LoadingDialog.dismiss());
+    getResources();
   }
 
   @override

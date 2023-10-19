@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';
 
 import '/app/widgets/loading_button.dart';
+import '/database/injector.dart';
 import '/global/variables.dart';
 import '/graphql/explorer/mutations.dart';
 import '/graphql/graphql.dart';
@@ -43,6 +44,7 @@ class RegisterAPI {
       'email': email,
       'password': pass,
       'passwordConfirm': coPass,
+      'firebaseToken': Database().getUserBase.firebase.token,
       'captchaResponse': captcha,
     };
 

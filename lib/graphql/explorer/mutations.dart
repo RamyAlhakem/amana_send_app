@@ -11,7 +11,7 @@ class Mutations {
       ''';
 
   static String userSignUp(String captcha) => '''
-    mutation userSignUp(\$firstName: NonEmptyString!, \$fatherName: String!, \$lastName: NonEmptyString!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$email: NonEmptyString!, \$password: NonEmptyString!, \$passwordConfirm: NonEmptyString!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
+    mutation userSignUp(\$firstName: NonEmptyString!, \$fatherName: String!, \$lastName: NonEmptyString!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$email: NonEmptyString!, \$password: NonEmptyString!, \$passwordConfirm: NonEmptyString!, \$firebaseToken: String!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
       userSignUp(
         firstName: \$firstName
         fatherName: \$fatherName
@@ -21,6 +21,7 @@ class Mutations {
         email: \$email
         password: \$password
         passwordConfirm: \$passwordConfirm
+        firebaseToken: \$firebaseToken
         ${captcha.isNotEmpty ? 'captchaResponse: \$captchaResponse' : ''}  
       ) {
         message
