@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import '/app/extensions/text_underline.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
@@ -54,19 +53,6 @@ class _RecipientState extends State<Recipient> {
     return Scaffold(
       appBar: AutoAppBar(
         title: '${recipient.firstName} ${recipient.lastName}',
-        actions: [
-          Button(
-            () => pr.editRecipient(context, recipient),
-            color: Colors.transparent,
-            borderRadius: 0,
-            TextX(
-              arb!.editRecipient,
-              style: Theme.of(context).textTheme.bodySmall?.underlineDashed(
-                    color: MainColors.color1,
-                  ),
-            ),
-          ),
-        ],
       ),
       body: ListView(children: [
         Container(
@@ -113,8 +99,25 @@ class _RecipientState extends State<Recipient> {
             ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+          child: Button(
+            () => pr.editRecipient(context, recipient),
+            color: Colors.transparent,
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            borderRadius: 4,
+            borderColor: MainColors.color2,
+            TextX(
+              arb!.editRecipient,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: MainColors.color2,
+                  ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           child: Button(
             () => SubmitDialog(
               () => DeleteRecipient(context, id: recipient.id).request(),

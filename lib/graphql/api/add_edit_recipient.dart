@@ -40,7 +40,7 @@ class AddEditRecipientAPI {
       'fatherName': fatherName,
       'countryCode': countryCode,
       'mobile': mobile,
-      'whatsApp': whatsApp,
+      'whatsappNumber': whatsApp,
     };
 
     Helper.debugger(json);
