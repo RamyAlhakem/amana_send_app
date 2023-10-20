@@ -25,7 +25,7 @@ class GetRecipients {
     if (_recipients.all.isEmpty) _recipients.isRequestLoading(true);
 
     Helper.debugger('recipients');
-    GraphQL.client()
+    await GraphQL.client()
         .query(QueryOptions(document: gql(Queries.recipients)))
         .then((result) {
       if (result.data != null) {

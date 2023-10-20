@@ -371,6 +371,7 @@ class Calculator with ChangeNotifier {
       Helper.bannerWarning(
         '\n${_arb!.cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer}\n',
       );
+      return check = false;
     }
     return check;
   }

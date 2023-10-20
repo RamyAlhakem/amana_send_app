@@ -40,7 +40,7 @@ class TransfersState extends ChangeNotifier {
       case 'new':
         _newTransfers.addAll(elements);
         break;
-      case 'processing':
+      case 'processed':
         _processingTransfers.addAll(elements);
         break;
       case 'completed':

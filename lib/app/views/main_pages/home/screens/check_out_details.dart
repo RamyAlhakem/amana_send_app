@@ -40,6 +40,7 @@ class CheckOutDetails extends StatefulWidget {
             receivingCityId: calculator.receiverCity.id,
             providerId: calculator.receiverAgent.id,
             paymentMethodId: 1,
+            receiverCurrency: calculator.receiverCountry.currency.code,
           ).request();
         },
         height: 45,

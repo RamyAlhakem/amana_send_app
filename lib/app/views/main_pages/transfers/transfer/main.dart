@@ -15,7 +15,9 @@ import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';
+import '/graphql/api/get_recipients.dart';
 import '/helper/helper.dart';
+import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
@@ -66,6 +68,7 @@ class _TransferMainState extends State<TransferMain> {
     } else {
       recipientAmount = transfer.recipientAmount.toStringAsFixed(2);
     }
+    GetRecipients.request();
   }
 
   @override
@@ -178,10 +181,11 @@ class _TransferMainState extends State<TransferMain> {
                               '\n${AppMetadata.get.maintenanceMessage}\n',
                             );
                           }
-                          Provider.of<Calculator>(
-                            context,
-                            listen: false,
-                          ).recipientSend(
+                          final calculator =
+                              Provider.of<Calculator>(context, listen: false);
+                          calculator.setReceiverCountry(CountryModel());
+                          // calculator.agentsVisibility(true);
+                          calculator.recipientSend(
                             transfer.recipient,
                             transfer: transfer,
                             navigate: true,

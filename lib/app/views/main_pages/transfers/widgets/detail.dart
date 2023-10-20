@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/app/theme/decoration/decorations.dart';
@@ -7,6 +8,7 @@ import '/app/widgets/divider.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
 import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/row.dart';
+import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
@@ -49,7 +51,8 @@ class _TransferDetailState extends State<TransferDetail> {
   @override
   Widget build(BuildContext context) {
     final bool isAr = LangService.isAR();
-    return Column(
+    return ListView(
+      shrinkWrap: true,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 15, 16, 0),
@@ -65,7 +68,7 @@ class _TransferDetailState extends State<TransferDetail> {
                 arb.transferInformationDetails,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              SizedBox(height: transfer.receiptPic.isNotEmpty ? 15 : 25),
+              SizedBox(height: transfer.receiptPic.isNotEmpty ? 10 : 20),
               RowSpaceBetween([
                 Expanded(
                   child: RecipientIconDetail(recipient: transfer.recipient),
@@ -105,7 +108,42 @@ class _TransferDetailState extends State<TransferDetail> {
                   ),
                 ),
               ]),
-              SizedBox(height: transfer.receiptPic.isNotEmpty ? 0 : 25),
+              SizedBox(height: transfer.receiptPic.isNotEmpty ? 0 : 20),
+              Visibility(
+                visible: transfer.status.index < 3,
+                child: InkWell(
+                  onTap: () => Clipboard.setData(
+                    ClipboardData(text: transfer.wallet.address),
+                  ).whenComplete(() {
+                    Helper.snack(
+                      '${arb.copiedSuccessfully}\n${transfer.wallet.address}',
+                    );
+                  }),
+                  borderRadius: BorderRadius.circular(6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextX(
+                        arb.walletAddress,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 4),
+                      DottedBorder(
+                        borderType: BorderType.rRect,
+                        radius: const Radius.circular(6),
+                        padding: const EdgeInsets.all(4),
+                        dashPattern: const [5, 5],
+                        color: Theme.of(context).dividerColor,
+                        child: TextC(
+                          transfer.wallet.address,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
               Visibility(
                 visible: transfer.completedMessage.isNotEmpty,
                 child: Container(

@@ -4,7 +4,16 @@ import '/models/recipient.dart';
 import '/models/wallet.dart';
 import 'agent.dart';
 
-enum TransferStatus { pending, nEW, processed, completed, canceled }
+enum TransferStatus {
+  pending,
+  nEW,
+  processed,
+  completed,
+  canceled;
+
+  String toJson() => name;
+  static TransferStatus fromJson(String json) => values.byName(json);
+}
 
 class TransferModel extends SafetyModel {
   TransferModel({
@@ -45,16 +54,21 @@ class TransferModel extends SafetyModel {
   TransferStatus status = TransferStatus.pending;
 
   TransferStatus parseStatus(String status) {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'pending':
+      case 'transferstatus.pending':
         return TransferStatus.pending;
       case 'new':
+      case 'transferstatus.new':
         return TransferStatus.nEW;
       case 'processed':
+      case 'transferstatus.processed':
         return TransferStatus.processed;
       case 'completed':
+      case 'transferstatus.completed':
         return TransferStatus.completed;
-      case 'cancel':
+      case 'canceled':
+      case 'transferstatus.canceled':
         return TransferStatus.canceled;
       default:
         return TransferStatus.pending;

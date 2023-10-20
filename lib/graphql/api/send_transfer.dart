@@ -13,6 +13,8 @@ import '/helper/debug_colors.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/router/app_route.dart';
+import '/tools/tools.dart';
+import 'get_countries.dart';
 
 class SendTransfer {
   SendTransfer(
@@ -25,6 +27,7 @@ class SendTransfer {
     required this.providerId,
     required this.paymentMethodId,
     required this.isReceiveInUSD,
+    required this.receiverCurrency,
   });
 
   final BuildContext context;
@@ -32,13 +35,14 @@ class SendTransfer {
   final double recipientAmount, sendAmount;
   final int receivingCityId, providerId, paymentMethodId, recipientId;
   final bool isReceiveInUSD;
+  final String receiverCurrency;
 
   static late AppLocalizations _arb;
-  static late TransfersState _pr;
+  static late TransfersState _provider;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
-    _pr = Provider.of<TransfersState>(context, listen: false);
+    _provider = Provider.of<TransfersState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context)!;
     });
@@ -87,7 +91,8 @@ class SendTransfer {
       final TransferModel transfer = TransferModel.fromJson(data['transfer']);
       const Duration duration = Duration(milliseconds: 250);
       page.nextPage(duration: duration, curve: Curves.easeIn);
-      _pr.getTransfer(transfer);
+      _provider.getTransfer(transfer);
+      _provider.clearTransfers();
       GetTransfers().request();
     }
   }
@@ -113,6 +118,20 @@ class SendTransfer {
           Helper.bannerWarning(
             _arb.youHaveExceededTheMaximumSendingAmountThisMonth,
           );
+          break;
+
+        case 468:
+          String amount = '';
+          String message = error.graphqlErrors.first.extensions?['message'];
+          List<num> numbers = Tools.extractNumbers(message);
+          for (num number in numbers) {
+            amount = '$number';
+          }
+
+          Helper.bannerWarning(
+            '${_arb.minimumReceivingLimitToThisCountryIs} $amount $receiverCurrency',
+          );
+          GetCountriesAPI.request();
           break;
 
         case 492:

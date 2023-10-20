@@ -65,7 +65,6 @@ class _TransfersState extends State<Transfers> {
   void initState() {
     super.initState();
     provider = Provider.of<TransfersState>(context, listen: false);
-    provider.clearTransfers();
     GetTransfers().request();
     scrollListener(scrollCtrl1);
     scrollListener(scrollCtrl2);
@@ -84,6 +83,7 @@ class _TransfersState extends State<Transfers> {
   void dispose() {
     super.dispose();
     provider.isRequestLoading(true);
+    provider.clearTransfers();
     scrollCtrl1.dispose();
     scrollCtrl2.dispose();
     scrollCtrl3.dispose();
