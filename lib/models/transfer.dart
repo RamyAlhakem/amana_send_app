@@ -56,19 +56,14 @@ class TransferModel extends SafetyModel {
   TransferStatus parseStatus(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-      case 'transferstatus.pending':
         return TransferStatus.pending;
       case 'new':
-      case 'transferstatus.new':
         return TransferStatus.nEW;
       case 'processed':
-      case 'transferstatus.processed':
         return TransferStatus.processed;
       case 'completed':
-      case 'transferstatus.completed':
         return TransferStatus.completed;
       case 'canceled':
-      case 'transferstatus.canceled':
         return TransferStatus.canceled;
       default:
         return TransferStatus.pending;
@@ -120,7 +115,7 @@ class TransferModel extends SafetyModel {
         'fees': fees,
         'isReceiveInUsd': isReceiveInUsd,
         'cashToPay': cashToPay,
-        'status': status.toString(),
+        'status': status.toJson(),
         'convertedTotalAmount': convertedTotalAmount,
         'branchId': branchId,
         'completedMessage': completedMessage,
