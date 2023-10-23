@@ -143,16 +143,16 @@ class _HomeState extends State<Home> {
                         return Helper.snack(arb.pleaseEnterSendingAmount);
                       }
 
-                      if (user.level.maxAmount < 0 &&
-                          user.level.maxAmount <
-                              double.parse(state.sender.text)) {
+                      if (user.level.maxAmount <
+                          double.parse(state.sender.text)) {
                         return Helper.snack(
-                          "Your max level sending amount is ${user.level.maxAmount} ${user.country.currency.code}\n To increase your max level amount, Kindly contact our support team",
-                          action: SnackBarAction(
-                            label: arb.contactSupportTeam,
-                            onPressed: () => Helper.launchURL(
-                              'https://api.whatsapp.com/send/?phone=+442622&text&app_absent=0',
+                          '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} ${user.country.currency.code}\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                          action: Button(
+                            () => Helper.launchURL(
+                              'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0',
                             ),
+                            width: MediaQuery.of(context).size.width,
+                            TextX(arb.contactSupportTeam),
                           ),
                         );
                       }
@@ -160,13 +160,13 @@ class _HomeState extends State<Home> {
                       if (double.parse(state.receiver.text) <
                           state.receiverAgent.minAmount) {
                         return Helper.snack(
-                          '${arb.minimumReceivingLimitToThisCountryIs} ${state.receiverAgent.minAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.minimumReceivingLimitToThisPickUpPointIs} ${state.receiverAgent.minAmount} ${state.receiverCountry.currency.code}',
                         );
                       }
                       if (double.parse(state.receiver.text) >
                           state.receiverAgent.maxAmount) {
                         return Helper.snack(
-                          '${arb.maximumReceivingLimitToThisCountryIs} ${state.receiverAgent.maxAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.maximumReceivingLimitToThisPickUpPointIs} ${state.receiverAgent.maxAmount} ${state.receiverCountry.currency.code}',
                         );
                       }
 

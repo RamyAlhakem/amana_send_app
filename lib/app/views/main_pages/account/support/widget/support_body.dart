@@ -15,6 +15,7 @@ import '/app/widgets/text/text_x.dart';
 import '/app/widgets/user_avatar.dart';
 import '/configs/configs.dart';
 import '/helper/helper.dart';
+import '/models/metadata.dart';
 
 class SupportBody extends StatelessWidget {
   const SupportBody({super.key});
@@ -216,7 +217,7 @@ class SupportBody extends StatelessWidget {
             break;
           case 'assets/svg/whatsapp.svg':
             Helper.launchURL(
-                'https://api.whatsapp.com/send/?phone=+44711222&text&app_absent=0');
+                'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0');
             break;
           case 'assets/svg/location.svg':
             Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');

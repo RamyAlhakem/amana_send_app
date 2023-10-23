@@ -11,16 +11,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/dark_colors.dart';
+import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/dialogs/message.dart';
 import '/app/widgets/text/text_x.dart';
 import '/configs/configs.dart';
 import '/global/variables.dart';
-import '/helper/dart_ui.dart';
 import '/models/recipient.dart';
 import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
-import '../app/theme/colors/main_colors.dart';
 import 'debug_colors.dart';
 
 class Helper {
@@ -116,7 +115,7 @@ class Helper {
     int seconds = 15,
     EdgeInsets? margin,
     double? elevation,
-    SnackBarAction? action,
+    Widget? action,
   }) {
     final BuildContext _ = Global.key.currentContext!;
     Global.snackKey.currentState?.removeCurrentSnackBar();
@@ -128,7 +127,7 @@ class Helper {
             // Status border.
             Container(
               height: 12,
-              width: DartUI.screenWidth,
+              width: MediaQuery.of(_).size.width,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -165,6 +164,11 @@ class Helper {
                 style: textStyle ?? Theme.of(_).textTheme.bodyMedium,
               ),
             ),
+            if (action != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                child: action,
+              )
           ],
         ),
         padding: EdgeInsets.zero,
@@ -172,7 +176,6 @@ class Helper {
         elevation: elevation,
         backgroundColor: background,
         duration: Duration(seconds: seconds),
-        action: action,
       ),
     );
   }

@@ -11,8 +11,10 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/submit.dart';
+import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
+import '/models/metadata.dart';
 import 'check_out_details.dart';
 import 'select_recipient.dart';
 
@@ -84,7 +86,6 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
       child: Scaffold(
         appBar: AutoAppBar(
           title: appBarTitle,
-          subTitle: _index == 2 ? '${arb.transferId} #${transfer.id}' : '',
           bGColor: MainColors.color1,
           iconColor: Colors.white,
           titleStyle: const TextStyle(color: Colors.white, fontSize: 15),
@@ -101,6 +102,27 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
                     content: arb.areYouSureYouWantToCancelThisTransfer,
                   ).show(context)
               : null,
+          actions: [
+            InkWell(
+              onTap: () => Helper.launchURL(AppMetadata.get.paymentTutorialUrl),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: _index == 2
+                    ? [
+                        TextX(
+                          arb.howToPay,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.info_outlined, color: Colors.white),
+                        const SizedBox(width: 15),
+                      ]
+                    : <Widget>[],
+              ),
+            ),
+          ],
         ),
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),

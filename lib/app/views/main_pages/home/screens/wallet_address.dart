@@ -98,29 +98,16 @@ class _WalletAddressState extends State<WalletAddress>
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         shrinkWrap: true,
         children: [
-          InkWell(
-            onTap: () => Helper.launchURL(AppMetadata.get.paymentTutorialUrl),
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextX(arb.howToPay),
-                const SizedBox(width: 8),
-                const Icon(Icons.info_outlined),
-              ],
-            ),
-          ),
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             decoration: Decorations.note(context, radius: 10),
             child: TextC(
-              '${arb.yourOrderHasBeenReceivedSuccessfully.toUpperCase()} #${state.transfer.id}',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: MainColors.color2,
-                  ),
+              '${arb.yourOrderHasBeenReceivedSuccessfully.toUpperCase()} \n${arb.transactionNo} #${state.transfer.id}',
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: MainColors.color2,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -129,6 +116,7 @@ class _WalletAddressState extends State<WalletAddress>
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             decoration: Decorations.main(context, radius: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text.rich(
                   textScaleFactor: 1.0,
@@ -155,8 +143,26 @@ class _WalletAddressState extends State<WalletAddress>
                 ),
                 const SizedBox(height: 4),
                 TextX(
+                  arb.pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate,
+                  style:
+                      const TextStyle(color: MainColors.lightRed, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+            decoration: Decorations.main(context, radius: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextX(
                   '${arb.toThisWalletAddress}:',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 6),
                 TextC(
@@ -167,7 +173,7 @@ class _WalletAddressState extends State<WalletAddress>
                     letterSpacing: 1,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -197,6 +203,23 @@ class _WalletAddressState extends State<WalletAddress>
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
+                Text.rich(
+                  textScaleFactor: 1.0,
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(text: '${arb.walletNetwork}: '),
+                      const TextSpan(
+                        text: 'Polygon',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                TextX(
+                  arb.useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly,
+                ),
               ],
             ),
           ),
@@ -208,8 +231,7 @@ class _WalletAddressState extends State<WalletAddress>
             child: Column(
               children: [
                 TextX(
-                  arb.walletAddressWillExpireWithin,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  '${arb.timeLimitToPay}:',
                 ),
                 Visibility(
                   visible: duration == 0,
@@ -230,22 +252,12 @@ class _WalletAddressState extends State<WalletAddress>
                     ),
                   ),
                 ),
+                TextX(
+                  arb.ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled,
+                  style:
+                      const TextStyle(color: MainColors.lightRed, fontSize: 12),
+                ),
               ],
-            ),
-          ),
-          Container(
-            decoration: Decorations.note(context),
-            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-            padding: const EdgeInsets.all(15),
-            child: TextX(
-              arb.pleaseMakeSureToPayTheExactAmountToTheWalletAddressInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnTheSameExchangeRate
-                  .toUpperCase(),
-              style: const TextStyle(
-                fontSize: 12,
-                color: MainColors.red,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
             ),
           ),
           Container(

@@ -7,7 +7,7 @@ import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';
 import '/configs/configs.dart';
 import '/global/variables.dart';
-import '/helper/dart_ui.dart';
+import '/helper/screen_size.dart';
 
 class CaptchaDialog {
   CaptchaDialog({required this.onSubmit});
@@ -42,8 +42,8 @@ class CaptchaDialog {
               insetPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               contentPadding: const EdgeInsets.fromLTRB(8, 5, 8, 10),
               content: SizedBox(
-                height: DartUI.screenHeight * 0.65,
-                width: DartUI.screenWidth,
+                height: ScreenSize.height * 0.65,
+                width: ScreenSize.width,
                 child: Stack(
                   children: [
                     InAppWebView(

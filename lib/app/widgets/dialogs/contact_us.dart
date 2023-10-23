@@ -6,8 +6,8 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
-import '/helper/dart_ui.dart';
 import '/helper/helper.dart';
+import '/helper/screen_size.dart';
 import '/models/metadata.dart';
 import 'settings.dart';
 
@@ -30,7 +30,7 @@ class ContactUs {
         padding: const EdgeInsets.fromLTRB(6, 20, 6, 0),
         child: Button(
           height: 45,
-          width: DartUI.screenWidth,
+          width: ScreenSize.width,
           borderRadius: 100,
           () => Helper.launchURL(
               'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0'),

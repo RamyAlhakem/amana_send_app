@@ -285,6 +285,16 @@ class _TransferDetailState extends State<TransferDetail> {
                   ),
                 ),
               ]),
+              Visibility(
+                visible: transfer.provider.defaultMessage.isNotEmpty,
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: Decorations.note(context),
+                  child: TextX(transfer.provider.defaultMessage),
+                ),
+              ),
             ],
           ),
         ),

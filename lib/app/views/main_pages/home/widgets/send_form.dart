@@ -11,8 +11,8 @@ import '/app/widgets/text/text_shine.dart';
 import '/app/widgets/text/text_x.dart';
 import '/app/widgets/text_form_field/text_form.dart';
 import '/global/variables.dart';
-import '/helper/dart_ui.dart';
 import '/helper/helper.dart';
+import '/helper/screen_size.dart';
 import 'agent_button.dart';
 import 'country_roller.dart';
 import 'currency_roller.dart';
@@ -106,7 +106,7 @@ class _SendFormFieldsState extends State<SendFormFields>
               Padding(
                 padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                 child: TextX(
-                  arb.selectProvider,
+                  arb.selectPickUpPoint,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
@@ -116,7 +116,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: DartUI.isTablet ? 4 : 2,
+                crossAxisCount: ScreenSize.isTablet ? 4 : 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
                 itemCount: state.receiverCity.agents.length,

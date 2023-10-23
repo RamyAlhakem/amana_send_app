@@ -129,7 +129,7 @@ class SendTransfer {
           }
 
           Helper.bannerWarning(
-            '${_arb.minimumReceivingLimitToThisCountryIs} $amount $receiverCurrency',
+            '${_arb.minimumReceivingLimitToThisPickUpPointIs} $amount $receiverCurrency',
           );
           GetCountriesAPI.request();
           break;

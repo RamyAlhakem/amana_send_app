@@ -99,6 +99,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
     final bool isAr = LangService.isAR();
     return Consumer<Calculator>(builder: (_, state, child) {
       final rate = state.receiverAgent.rate * (1 - (state.percentFee / 100));
+      final bool usd = state.receiverAgent.usdAvailability == 2;
       child = Align(
         alignment: Alignment.topCenter,
         child: Container(
@@ -173,9 +174,12 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   '${isAr ? '' : '1'} USDT ${isAr ? '1 ' : ''}= ',
                             ),
                             TextSpan(
-                              text: Helper.priced(rate,
-                                  currencyCode:
-                                      state.receiverCountry.currency.code),
+                              text: Helper.priced(
+                                rate,
+                                currencyCode: usd
+                                    ? 'USD'
+                                    : state.receiverCountry.currency.code,
+                              ),
                             ),
                           ],
                         ),
@@ -200,9 +204,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               text:
                                   '${num.tryParse(state.sender.text)?.toStringAsFixed(2)} ',
                             ),
-                            TextSpan(
-                              text: state.sendCountry.currency.code,
-                            ),
+                            const TextSpan(text: 'USDT'),
                           ],
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -238,9 +240,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               text:
                                   '${state.amountPlusFee.toStringAsFixed(2)} ',
                             ),
-                            TextSpan(
-                              text: state.sendCountry.currency.code,
-                            ),
+                            const TextSpan(text: 'USDT'),
                           ],
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
