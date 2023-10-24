@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/widgets/loader.dart';
 import '/app/views/main_pages/provider/calculator.dart';
-import '/app/views/pop_up/popup.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
@@ -27,6 +26,8 @@ import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 import '/services/lang_service.dart';
+import '/services/popup_services.dart';
+import '/services/tutorial_service.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -68,9 +69,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    user = Database().getUser;
     Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
-    getResources();
+    getResources().whenComplete(() => user = Database().getUser);
   }
 
   @override
@@ -131,6 +131,7 @@ class _HomeState extends State<Home> {
                 Padding(padding: padding, child: const SendFormFields()),
 
                 Padding(
+                  key: Tutorial.key7,
                   padding: padding,
                   child: Button(
                     () {

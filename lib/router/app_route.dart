@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/app/errors/error_screen.dart';
+import '/app/views/camera/camera.dart';
 import '/app/views/main_pages/account/edit/edit_account.dart';
 import '/app/views/main_pages/account/support/support.dart';
 import '/app/views/main_pages/account/verify/verify_account.dart';
@@ -25,6 +26,7 @@ import 'guard/auth_guard.dart';
 class AppRoute {
   static const String home = 'home';
   static const String webView = 'web_view';
+  static const String camera = 'camera';
   static const String addRecipient = 'add_recipient';
   static const String notifications = 'notifications';
   static const String editAccount = 'edit_account';
@@ -60,6 +62,13 @@ class AppRoute {
           );
         },
         routes: <GoRoute>[
+          GoRoute(
+            name: '/$camera',
+            path: '$camera/:direction',
+            builder: (BuildContext context, GoRouterState state) {
+              return Camera(direction: state.pathParameters['direction']!);
+            },
+          ),
           GoRoute(
             name: '/$webView',
             path: '$webView/:url',

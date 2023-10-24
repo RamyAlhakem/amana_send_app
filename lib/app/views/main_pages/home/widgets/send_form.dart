@@ -13,6 +13,7 @@ import '/app/widgets/text_form_field/text_form.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/helper/screen_size.dart';
+import '/services/tutorial_service.dart';
 import 'agent_button.dart';
 import 'country_roller.dart';
 import 'currency_roller.dart';
@@ -45,6 +46,10 @@ class _SendFormFieldsState extends State<SendFormFields>
   void initState() {
     super.initState();
     _calculator = Provider.of<Calculator>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Tutorial(context).showTutorial(Tutorial(context).targetSendForm());
+    });
   }
 
   @override
@@ -69,6 +74,7 @@ class _SendFormFieldsState extends State<SendFormFields>
     return Consumer<Calculator>(builder: (_, state, child) {
       final double send = double.tryParse(state.sender.text) ?? 1;
       child = Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
@@ -85,6 +91,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 if (state.selectedRecipient == null)
                   Expanded(
                     child: CountryRoller(
+                      key: Tutorial.key1,
                       title: arb.receiverCountries,
                       borderRadius: 11,
                     ),
@@ -94,6 +101,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 // Select city.
                 Expanded(
                   child: CityPicker(
+                    key: Tutorial.key2,
                     country: state.receiverCountry,
                     onChange: (city) => state.setReceiveCity(city),
                     fieldColor: Theme.of(context).cardColor,
@@ -113,6 +121,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           if (state.showAgents)
             if (state.receiverCity.agents.isNotEmpty)
               MasonryGridView.count(
+                key: Tutorial.key3,
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -133,6 +142,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 },
               ),
           TextFieldX(
+            key: Tutorial.key4,
             hint: arb.youSend,
             controller: state.sender,
             type: TextInputType.phone,
@@ -154,8 +164,10 @@ class _SendFormFieldsState extends State<SendFormFields>
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
             onChanged: (String value) => state.setPrice(value),
           ),
+
           // Today exchange rate
           Padding(
+            key: Tutorial.key5,
             padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: RowSpaceBetween([
               TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
@@ -173,7 +185,9 @@ class _SendFormFieldsState extends State<SendFormFields>
               ),
             ]),
           ),
+
           TextFieldX(
+            key: Tutorial.key6,
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,

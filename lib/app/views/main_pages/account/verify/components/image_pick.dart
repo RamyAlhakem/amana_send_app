@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,6 +13,7 @@ import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/text/text_x.dart';
 import '/helper/helper.dart';
 import '/https/api/upload_photo.dart';
+import '/router/app_route.dart';
 import '/tools/attachment_tools.dart';
 import 'image_pick_source.dart';
 
@@ -23,8 +25,7 @@ class ImagePick extends StatefulWidget {
     this.title,
     this.height,
     this.asset,
-    this.source,
-    this.preferredCamera = CameraDevice.rear,
+    this.direction = 'back',
   });
 
   final String url;
@@ -33,8 +34,7 @@ class ImagePick extends StatefulWidget {
   final String? title;
   final double? height;
   final String? asset;
-  final ImageSource? source;
-  final CameraDevice preferredCamera;
+  final String direction;
 
   @override
   State<ImagePick> createState() => _ImagePickState();
@@ -42,16 +42,20 @@ class ImagePick extends StatefulWidget {
 
 class _ImagePickState extends State<ImagePick>
     with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
   late AppLocalizations? _arb;
+  late String direction;
 
   final ImagePicker _picker = ImagePicker();
   File? file;
 
   final double imageRadius = 15;
   String imageTitle = '';
+
+  @override
+  void initState() {
+    super.initState();
+    direction = widget.direction;
+  }
 
   @override
   void didChangeDependencies() {
@@ -65,6 +69,8 @@ class _ImagePickState extends State<ImagePick>
   }
 
   @override
+  bool get wantKeepAlive => true;
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Column(
@@ -77,22 +83,24 @@ class _ImagePickState extends State<ImagePick>
             ),
             Button(
               () {
-                if (widget.source != null) {
-                  _imagePicker(widget.source!);
+                if (widget.direction == 'front') {
+                  context.pushNamed(
+                    '/${AppRoute.camera}',
+                    pathParameters: <String, String>{'direction': direction},
+                  );
                 } else {
                   ImagePickSource.select(
-                    camera: () => _imagePicker(ImageSource.camera),
+                    camera: () => context.pushNamed(
+                      '/${AppRoute.camera}',
+                      pathParameters: <String, String>{'direction': direction},
+                    ),
                     gallery: () => _imagePicker(ImageSource.gallery),
                   );
                 }
               },
               borderRadius: 100,
               Row(children: [
-                const HeroIcon(
-                  HeroIcons.camera,
-                  size: 20,
-                  color: Colors.white,
-                ),
+                const HeroIcon(HeroIcons.camera, size: 20, color: Colors.white),
                 const SizedBox(width: 6),
                 TextX(
                   imageTitle.toUpperCase(),
@@ -107,11 +115,17 @@ class _ImagePickState extends State<ImagePick>
           onTap: () {
             if (widget.url.isNotEmpty || file != null) {
               AttachmentTools.openImage(context, fil: file, url: widget.url);
-            } else if (widget.source != null) {
-              _imagePicker(widget.source!);
+            } else if (widget.direction == 'front') {
+              context.pushNamed(
+                '/${AppRoute.camera}',
+                pathParameters: <String, String>{'direction': direction},
+              );
             } else {
               ImagePickSource.select(
-                camera: () => _imagePicker(ImageSource.camera),
+                camera: () => context.pushNamed(
+                  '/${AppRoute.camera}',
+                  pathParameters: <String, String>{'direction': direction},
+                ),
                 gallery: () => _imagePicker(ImageSource.gallery),
               );
             }
@@ -152,11 +166,8 @@ class _ImagePickState extends State<ImagePick>
   Future<void> _imagePicker(ImageSource source) async {
     LoadingDialog().show();
 
-    final XFile? image = await _picker.pickImage(
-      source: source,
-      imageQuality: 30,
-      preferredCameraDevice: widget.preferredCamera,
-    );
+    final XFile? image =
+        await _picker.pickImage(source: source, imageQuality: 30);
 
     if (image == null) return LoadingDialog.dismiss();
 

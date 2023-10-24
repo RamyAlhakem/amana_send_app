@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/divider.dart';
@@ -180,9 +179,8 @@ class VerifyAccountState extends State<VerifyAccount> {
             ImagePick(
               url: selfiePic,
               title: arb.takeSelfie,
-              source: ImageSource.camera,
               asset: 'assets/images/selfie_icon.png',
-              preferredCamera: CameraDevice.front,
+              direction: 'front',
               onChange: (id) => selfiePicId = id,
             ),
 

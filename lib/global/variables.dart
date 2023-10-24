@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/app/extensions/dark_mode.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/settings/app_settings.dart';
 
 class Global {
@@ -13,7 +13,6 @@ class Global {
       GlobalKey<ScaffoldMessengerState>();
 
   static final AppSettings appSettings = AppSettings();
-
   static PageController pageCtrl = PageController();
 
   static bool isAnyDialogOpen(BuildContext context) {
