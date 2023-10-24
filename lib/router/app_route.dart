@@ -66,7 +66,10 @@ class AppRoute {
             name: '/$camera',
             path: '$camera/:direction',
             builder: (BuildContext context, GoRouterState state) {
-              return Camera(direction: state.pathParameters['direction']!);
+              return Camera(
+                direction: state.pathParameters['direction']!,
+                query: state.queryParameters,
+              );
             },
           ),
           GoRoute(

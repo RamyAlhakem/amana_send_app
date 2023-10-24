@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,6 +14,8 @@ import '/models/metadata.dart';
 
 class RegistrationState extends ChangeNotifier {
   bool _isRegister = false;
+
+  File? _file;
 
   final FocusNode _confirmPasswordNode = FocusNode();
 
@@ -39,6 +43,8 @@ class RegistrationState extends ChangeNotifier {
 
   bool get isRegister => _isRegister;
 
+  File? get file => _file;
+
   FocusNode get confirmPasswordNode => _confirmPasswordNode;
 
   AnimationController get expander => _expander;
@@ -58,6 +64,11 @@ class RegistrationState extends ChangeNotifier {
   TextEditingController get email => _email;
   TextEditingController get password => _password;
   TextEditingController get confirmPassword => _confirmPassword;
+
+  void setFile(File? element) {
+    _file = element;
+    if (element != null) notifyListeners();
+  }
 
   //
   //

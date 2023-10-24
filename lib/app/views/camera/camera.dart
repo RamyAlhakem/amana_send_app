@@ -1,17 +1,23 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
+import '/app/widgets/dialogs/loading.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 
 class Camera extends StatefulWidget {
-  const Camera({super.key, required this.direction});
+  const Camera({super.key, required this.direction, this.query = const {}});
 
   final String direction;
+  final Map<String, String> query;
 
   @override
   State<Camera> createState() => _CameraState();
@@ -20,10 +26,13 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> with WidgetsBindingObserver {
   late AppLocalizations arb;
   late PermissionStatus permissionStatus;
+  late String imageOverlay;
   CameraLensDirection direction = CameraLensDirection.back;
+
   late List<CameraDescription> cameras;
   late CameraDescription selectedCamera;
   CameraController? cameraCtrl;
+  FlashMode currentFlashMode = FlashMode.auto;
 
   Future<void> _setCameraCtrl(CameraDescription description) async {
     cameraCtrl = CameraController(
@@ -32,11 +41,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
+    if (direction == CameraLensDirection.back) {
+      cameraCtrl?.setFlashMode(currentFlashMode);
+    }
     await cameraCtrl?.initialize().catchError((e) {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-            Helper.bannerWarning('Please allow app to access camera');
+            Helper.bannerWarning(arb.pleaseAllowAppToAccessCamera);
             break;
           default:
             debugPrint('error while initializing camera: $e');
@@ -59,6 +71,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    imageOverlay = widget.query['overlay'] ?? '';
     if (widget.direction == 'front') direction = CameraLensDirection.front;
     initCamera();
   }
@@ -88,7 +101,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    if (cameraCtrl == null || !cameraCtrl!.value.isInitialized) {
+    if (cameraCtrl == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return Scaffold(
@@ -104,19 +117,99 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         children: <Widget>[
           Positioned.fill(
             child: AspectRatio(
-              aspectRatio: cameraCtrl!.value.aspectRatio,
+              aspectRatio: 1 / cameraCtrl!.value.aspectRatio,
               child: CameraPreview(cameraCtrl!),
             ),
           ),
           Positioned.fill(
             child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.3,
-                child: Image.network(
-                  'https://picsum.photos/3000/4000',
-                  fit: BoxFit.fill,
-                ),
+              child: Image.asset(
+                'assets/images/$imageOverlay.png',
+                fit: BoxFit.fill,
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 25,
+            child: Column(
+              children: [
+                Button(
+                  () async {
+                    LoadingDialog().show();
+                    XFile? rawImage = await takePicture();
+                    File imageFile = File(rawImage!.path);
+
+                    int currentUnix = DateTime.now().millisecondsSinceEpoch;
+                    final directory = await getApplicationDocumentsDirectory();
+                    String fileFormat = imageFile.path.split('.').last;
+
+                    await imageFile.copy(
+                      '${directory.path}/$currentUnix.$fileFormat',
+                    );
+                    LoadingDialog.dismiss();
+                    if (context.mounted) context.pop(rawImage);
+                  },
+                  height: 80,
+                  width: 80,
+                  borderRadius: 100,
+                  color: Colors.white38,
+                  borderColor: Colors.white,
+                  borderWidth: 6,
+                  const SizedBox.shrink(),
+                ),
+                const SizedBox(height: 30),
+                // if (direction == CameraLensDirection.back)
+                //   SizedBox(
+                //     width: MediaQuery.of(context).size.width,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //       children: [
+                //         InkWell(
+                //           onTap: () async {
+                //             setState(() => currentFlashMode = FlashMode.off);
+                //             await cameraCtrl!.setFlashMode(
+                //               FlashMode.off,
+                //             );
+                //           },
+                //           child: Icon(
+                //             Icons.flash_off,
+                //             color: currentFlashMode == FlashMode.off
+                //                 ? MainColors.color4
+                //                 : Colors.white,
+                //           ),
+                //         ),
+                //         InkWell(
+                //           onTap: () async {
+                //             setState(() => currentFlashMode = FlashMode.auto);
+                //             await cameraCtrl!.setFlashMode(FlashMode.auto);
+                //           },
+                //           child: Icon(
+                //             Icons.flash_auto,
+                //             color: currentFlashMode == FlashMode.auto
+                //                 ? MainColors.color4
+                //                 : Colors.white,
+                //           ),
+                //         ),
+                //         InkWell(
+                //           onTap: () async {
+                //             setState(() {
+                //               currentFlashMode = FlashMode.torch;
+                //             });
+                //             await cameraCtrl!.setFlashMode(
+                //               FlashMode.torch,
+                //             );
+                //           },
+                //           child: Icon(
+                //             Icons.highlight,
+                //             color: currentFlashMode == FlashMode.torch
+                //                 ? MainColors.color4
+                //                 : Colors.white,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+              ],
             ),
           ),
         ],
@@ -131,6 +224,21 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
           ),
         ),
       );
+    }
+  }
+
+  Future<XFile?> takePicture() async {
+    final CameraController? cameraController = cameraCtrl;
+    if (cameraController!.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      return null;
+    }
+    try {
+      XFile file = await cameraController.takePicture();
+      return file;
+    } on CameraException catch (e) {
+      debugPrint('Error occurred while taking picture: $e');
+      return null;
     }
   }
 }

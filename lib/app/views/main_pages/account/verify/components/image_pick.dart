@@ -82,22 +82,7 @@ class _ImagePickState extends State<ImagePick>
               child: TextX(widget.title ?? _arb!.uploadDocumentImage),
             ),
             Button(
-              () {
-                if (widget.direction == 'front') {
-                  context.pushNamed(
-                    '/${AppRoute.camera}',
-                    pathParameters: <String, String>{'direction': direction},
-                  );
-                } else {
-                  ImagePickSource.select(
-                    camera: () => context.pushNamed(
-                      '/${AppRoute.camera}',
-                      pathParameters: <String, String>{'direction': direction},
-                    ),
-                    gallery: () => _imagePicker(ImageSource.gallery),
-                  );
-                }
-              },
+              () => _pickSource(),
               borderRadius: 100,
               Row(children: [
                 const HeroIcon(HeroIcons.camera, size: 20, color: Colors.white),
@@ -115,19 +100,8 @@ class _ImagePickState extends State<ImagePick>
           onTap: () {
             if (widget.url.isNotEmpty || file != null) {
               AttachmentTools.openImage(context, fil: file, url: widget.url);
-            } else if (widget.direction == 'front') {
-              context.pushNamed(
-                '/${AppRoute.camera}',
-                pathParameters: <String, String>{'direction': direction},
-              );
             } else {
-              ImagePickSource.select(
-                camera: () => context.pushNamed(
-                  '/${AppRoute.camera}',
-                  pathParameters: <String, String>{'direction': direction},
-                ),
-                gallery: () => _imagePicker(ImageSource.gallery),
-              );
+              _pickSource();
             }
           },
           borderRadius: BorderRadius.circular(20),
@@ -163,15 +137,17 @@ class _ImagePickState extends State<ImagePick>
     );
   }
 
-  Future<void> _imagePicker(ImageSource source) async {
+  Future<void> _imagePicker(XFile? image) async {
     LoadingDialog().show();
 
-    final XFile? image =
-        await _picker.pickImage(source: source, imageQuality: 30);
+    image ??= await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 30,
+    );
 
     if (image == null) return LoadingDialog.dismiss();
 
-    setState(() => file = File(image.path));
+    setState(() => file = File(image!.path));
 
     UploadPhoto(
       files: <String, String>{'photo': image.path},
@@ -186,5 +162,24 @@ class _ImagePickState extends State<ImagePick>
         }
       });
     }).whenComplete(() => LoadingDialog.dismiss());
+  }
+
+  void _pickSource() {
+    if (widget.direction == 'front') {
+      context.pushNamed(
+        '/${AppRoute.camera}',
+        pathParameters: <String, String>{'direction': direction},
+        queryParameters: <String, String>{'overlay': 'oval'},
+      ).then((value) => _imagePicker(value as XFile?));
+    } else {
+      ImagePickSource.select(
+        camera: () => context.pushNamed(
+          '/${AppRoute.camera}',
+          pathParameters: <String, String>{'direction': direction},
+          queryParameters: <String, String>{'overlay': 'rectangle'},
+        ).then((value) => _imagePicker(value as XFile?)),
+        gallery: () => _imagePicker(null),
+      );
+    }
   }
 }

@@ -8,7 +8,6 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/home/screens/wallet_address.dart';
 import '/app/views/main_pages/home/widgets/send_form.dart';
 import '/app/views/main_pages/provider/calculator.dart';
-import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/submit.dart';
 import '/app/widgets/text/text_x.dart';
@@ -72,7 +71,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final transfer = context.watch<TransfersState>().transfer;
+    // final transfer = context.watch<TransfersState>().transfer;
     return WillPopScope(
       onWillPop: () async {
         if (_index != 2) {

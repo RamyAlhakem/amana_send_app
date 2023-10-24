@@ -223,6 +223,7 @@
   "theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent": "The amount the recipient will receive depends on the exchange rate of the selected agent",
   "afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount": "After completing the transfer information, click here to specify the name of the recipient and pay the amount",
   "cameraPermission": "Camera permission",
+  "pleaseAllowAppToAccessCamera": "Please allow app to access camera",
   "skip": "Skip",
   "minute": "Minute",
   "area": "Area",

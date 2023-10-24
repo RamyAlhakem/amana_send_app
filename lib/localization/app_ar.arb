@@ -224,6 +224,7 @@
   "theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent": "المبلغ الذي سيحصل عليه المستلم حسب سعر الصرف للوكيل المحدد",
   "afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount": "بعد إتمام معلومات التحويل اضغط هنا لتحديد اسم المستلم و سداد المبلغ",
   "cameraPermission": "إذن الكاميرا",
+  "pleaseAllowAppToAccessCamera": "يرجى السماح للتطبيق بالوصول إلى الكاميرا",
   "skip": "تخطي",
   "minute": "دقيقة",
   "area": "المنطقة",
