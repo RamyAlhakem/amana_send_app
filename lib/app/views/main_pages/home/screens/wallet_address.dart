@@ -89,7 +89,7 @@ class _WalletAddressState extends State<WalletAddress>
     super.dispose();
     timer?.cancel();
     reTimer?.cancel();
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -116,30 +116,34 @@ class _WalletAddressState extends State<WalletAddress>
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             decoration: Decorations.main(context, radius: 10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text.rich(
-                  textScaleFactor: 1.0,
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text:
-                            '${arb.toCompleteTheTransferPleasePayTheDueAmount}: \n',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                TextX(
+                  '${arb.toCompleteTheTransferPleasePayTheDueAmount}:',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpan(
-                        text: Helper.priced(state.transfer.totalAmount),
-                        style: const TextStyle(
-                          fontSize: 26,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                   textAlign: TextAlign.center,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/logo_coin.png',
+                      height: 30,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(width: 10),
+                    TextX(
+                      Helper.priced(state.transfer.totalAmount),
+                      style: const TextStyle(
+                        fontSize: 26,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(width: 30),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 TextX(
@@ -175,11 +179,11 @@ class _WalletAddressState extends State<WalletAddress>
                 ),
                 const SizedBox(height: 10),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Button(
                       () => Share.share(state.transfer.wallet.address),
-                      color: MainColors.color1.withOpacity(0.3),
+                      color: MainColors.color2,
                       Row(children: [
                         const Icon(Icons.share, size: 16),
                         const SizedBox(width: 8),
@@ -219,6 +223,7 @@ class _WalletAddressState extends State<WalletAddress>
                 ),
                 TextX(
                   arb.useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly,
+                  style: const TextStyle(color: MainColors.lightRed),
                 ),
               ],
             ),

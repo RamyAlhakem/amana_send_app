@@ -8,6 +8,7 @@ import '/app/extensions/text_underline.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/provider/calculator.dart';
+import '/app/views/main_pages/transfers/widgets/agent_description.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/row.dart';
@@ -298,6 +299,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                   ),
                 ),
               ),
+              AgentDescription(html: state.receiverAgent.description),
             ],
           ),
         ),

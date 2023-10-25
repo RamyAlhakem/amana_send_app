@@ -177,7 +177,7 @@ class _HomeState extends State<Home> {
 
                       Global.snackKey.currentState?.hideCurrentSnackBar();
                       state.roundReceiverAmount();
-
+                      Helper.unFocusCursor(context);
                       context.pushNamed(
                         AppRoute.sendHub,
                         pathParameters: <String, String>{'recipient': 'false'},

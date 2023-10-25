@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '/app/widgets/auto_app_bar.dart';
@@ -41,9 +38,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
-    if (direction == CameraLensDirection.back) {
-      cameraCtrl?.setFlashMode(currentFlashMode);
-    }
+
     await cameraCtrl?.initialize().catchError((e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -55,6 +50,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         }
       }
     }).whenComplete(() {
+      if (direction == CameraLensDirection.back) {
+        if (cameraCtrl != null && cameraCtrl!.value.isInitialized) {
+          cameraCtrl?.setFlashMode(currentFlashMode);
+        }
+      }
       if (mounted) setState(() {}); // refresh UI.
     });
   }
@@ -137,15 +137,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                   () async {
                     LoadingDialog().show();
                     XFile? rawImage = await takePicture();
-                    File imageFile = File(rawImage!.path);
+                    // File imageFile = File(rawImage!.path);
 
-                    int currentUnix = DateTime.now().millisecondsSinceEpoch;
-                    final directory = await getApplicationDocumentsDirectory();
-                    String fileFormat = imageFile.path.split('.').last;
+                    // int currentUnix = DateTime.now().millisecondsSinceEpoch;
+                    // final directory = await getApplicationDocumentsDirectory();
+                    // String fileFormat = imageFile.path.split('.').last;
 
-                    await imageFile.copy(
-                      '${directory.path}/$currentUnix.$fileFormat',
-                    );
+                    // await imageFile.copy(
+                    //   '${directory.path}/$currentUnix.$fileFormat',
+                    // );
                     LoadingDialog.dismiss();
                     if (context.mounted) context.pop(rawImage);
                   },

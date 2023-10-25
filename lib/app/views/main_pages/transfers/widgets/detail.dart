@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
+import '/app/views/main_pages/transfers/widgets/agent_description.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
 import '/app/widgets/image/image_widget.dart';
@@ -285,16 +286,7 @@ class _TransferDetailState extends State<TransferDetail> {
                   ),
                 ),
               ]),
-              Visibility(
-                visible: transfer.provider.defaultMessage.isNotEmpty,
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: Decorations.note(context),
-                  child: TextX(transfer.provider.defaultMessage),
-                ),
-              ),
+              AgentDescription(html: transfer.provider.description),
             ],
           ),
         ),

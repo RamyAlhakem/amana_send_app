@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
 
+import '/app/views/main_pages/structure.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/dialogs/loading.dart';
-import '/graphql/api/get_transfers.dart';
+import '/global/variables.dart';
 import '/graphql/explorer/mutations.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';
@@ -91,9 +92,8 @@ class SendTransfer {
       final TransferModel transfer = TransferModel.fromJson(data['transfer']);
       const Duration duration = Duration(milliseconds: 250);
       page.nextPage(duration: duration, curve: Curves.easeIn);
+      Global.pageCtrl.jumpToPage(Pages.transfers.index);
       _provider.getTransfer(transfer);
-      _provider.clearTransfers();
-      GetTransfers().request();
     }
   }
 
