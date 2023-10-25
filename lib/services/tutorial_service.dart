@@ -21,15 +21,15 @@ class Tutorial {
     fontSize: 20.0,
   );
 
-  Widget _lorem() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 10.0),
-      child: Text(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar tortor eget maximus iaculis.',
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-  }
+  // Widget _lorem() {
+  //   return const Padding(
+  //     padding: EdgeInsets.only(top: 10.0),
+  //     child: Text(
+  //       'Lorem ipsum dolor sit.',
+  //       style: TextStyle(color: Colors.white),
+  //     ),
+  //   );
+  // }
 
   List<TargetFocus> targetSendForm() {
     if (!alwaysShow) {
