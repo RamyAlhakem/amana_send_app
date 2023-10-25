@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '/app/extensions/dark_mode.dart';
 import '/global/variables.dart';
 import '/services/lang_service.dart';
 
 class Tutorial {
-  const Tutorial(this.context);
+  const Tutorial(this.context, {this.alwaysShow = false});
   final BuildContext context;
+  final bool alwaysShow;
 
   static late AppLocalizations arb;
   static GlobalKey key1 = GlobalKey(), key2 = GlobalKey(), key3 = GlobalKey();
@@ -30,7 +32,9 @@ class Tutorial {
   }
 
   List<TargetFocus> targetSendForm() {
-    if (!Global.appSettings.isFreshUser) return <TargetFocus>[];
+    if (!alwaysShow) {
+      if (!Global.appSettings.isFreshUser) return <TargetFocus>[];
+    }
     arb = AppLocalizations.of(context)!;
     final bool isAR = LangService.isAR();
     final List<TargetFocus> targets = <TargetFocus>[];
@@ -43,14 +47,7 @@ class Tutorial {
         contents: [
           TargetContent(
             align: isAR ? ContentAlign.left : ContentAlign.right,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(arb.selectTheCountryYouWantToTransferTo, style: _style),
-                _lorem(),
-              ],
-            ),
+            child: Text(arb.selectTheCountryYouWantToTransferTo, style: _style),
           )
         ],
       ),
@@ -65,31 +62,10 @@ class Tutorial {
         contents: [
           TargetContent(
             align: isAR ? ContentAlign.right : ContentAlign.left,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(arb.selectTheReceivingCity, style: _style),
-                _lorem(),
-              ],
-            ),
-          ),
-          TargetContent(
-            align: ContentAlign.top,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Text(
-                  'Multiples content',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.selectTheReceivingCity,
+              style: _style,
+              textAlign: TextAlign.end,
             ),
           ),
         ],
@@ -105,16 +81,9 @@ class Tutorial {
         paddingFocus: 30,
         contents: [
           TargetContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  arb.knowTheCurrentExchangeRateAndChooseYourPreferredAgent,
-                  style: _style,
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.knowTheCurrentExchangeRateAndChooseYourPreferredAgent,
+              style: _style,
             ),
           ),
         ],
@@ -126,19 +95,11 @@ class Tutorial {
         keyTarget: key4,
         shape: ShapeLightFocus.RRect,
         radius: 4,
-        paddingFocus: 0,
         contents: [
           TargetContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  arb.enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar,
-                  style: _style,
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar,
+              style: _style,
             ),
           ),
         ],
@@ -153,16 +114,9 @@ class Tutorial {
         paddingFocus: 0,
         contents: [
           TargetContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  arb.theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate,
-                  style: _style,
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate,
+              style: _style,
             ),
           ),
         ],
@@ -174,19 +128,11 @@ class Tutorial {
         keyTarget: key6,
         shape: ShapeLightFocus.RRect,
         radius: 4,
-        paddingFocus: 0,
         contents: [
           TargetContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  arb.theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent,
-                  style: _style,
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent,
+              style: _style,
             ),
           ),
         ],
@@ -198,19 +144,11 @@ class Tutorial {
         keyTarget: key7,
         shape: ShapeLightFocus.RRect,
         radius: 4,
-        paddingFocus: 0,
         contents: [
           TargetContent(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  arb.afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount,
-                  style: _style,
-                ),
-                _lorem(),
-              ],
+            child: Text(
+              arb.afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount,
+              style: _style,
             ),
           ),
         ],
@@ -220,16 +158,17 @@ class Tutorial {
   }
 
   void showTutorial(List<TargetFocus> targets) {
-    if (!Global.appSettings.isFreshUser) return;
+    if (!alwaysShow) {
+      if (!Global.appSettings.isFreshUser) return;
+    }
     arb = AppLocalizations.of(context)!;
     TutorialCoachMark(
-      targets: targets, // List<TargetFocus>
-      // alignSkip: Alignment.bottomRight,
-      // textSkip: 'SKIP',
+      targets: targets,
       paddingFocus: 10,
       textSkip: arb.skip,
       textStyleSkip: _style,
-      // opacityShadow: 0.8,
+      opacityShadow: context.isDarkMode ? 0.6 : 0.5,
+      pulseEnable: false,
       onClickTarget: (target) {
         debugPrint('$target');
       },

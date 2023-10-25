@@ -29,7 +29,7 @@ class AgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Calculator state = context.watch<Calculator>();
-    final bool isAr = LangService.isAR();
+    final bool isAR = LangService.isAR();
     final double rate = agent.rate * (1 - (state.percentFee / 100));
     final bool usd = agent.usdAvailability == 2;
     return Stack(
@@ -73,7 +73,7 @@ class AgentButton extends StatelessWidget {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${isAr ? 'USDT 1' : '1 USDT'} = ',
+                                  text: '${isAR ? 'USDT 1' : '1 USDT'} = ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -105,7 +105,8 @@ class AgentButton extends StatelessWidget {
         if (selected)
           Positioned(
             top: -8,
-            right: -4,
+            right: isAR ? null : -4,
+            left: isAR ? -4 : null,
             child: Container(
               padding: const EdgeInsets.all(1),
               decoration: BoxDecoration(

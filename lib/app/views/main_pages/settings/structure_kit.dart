@@ -11,13 +11,13 @@ import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/general/general_widgets.dart';
-import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/database/injector.dart';
 import '/global/variables.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 import '/services/lang_service.dart';
+import '/services/tutorial_service.dart';
 
 class StructureKit {
   StructureKit({required this.pageIndex});
@@ -33,97 +33,37 @@ class StructureKit {
     Widget title = const SizedBox.shrink();
     switch (pageIndex) {
       case 0:
-        final button = Theme.of(context).iconTheme.color ?? Colors.transparent;
-        return RowSpaceBetween([
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset('assets/images/icon.png', height: 35),
-                const SizedBox(
-                  height: kTextTabBarHeight - 10,
-                  width: 20,
-                  child: VDivider(),
-                ),
-                TextX(
-                  Global.appSettings.token.isEmpty
-                      ? _arb!.welcome
-                      : _arb!.hello,
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset('assets/images/icon.png', height: 35),
+            const SizedBox(
+              height: kTextTabBarHeight - 10,
+              width: 20,
+              child: VDivider(),
+            ),
+            TextX(
+              Global.appSettings.token.isEmpty ? _arb!.welcome : _arb!.hello,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 4),
+            if (user.firstName.isNotEmpty)
+              Flexible(
+                child: TextX(
+                  '${user.firstName} ${user.lastName}',
                   style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 4),
-                if (user.firstName.isNotEmpty)
-                  Flexible(
-                    child: TextX(
-                      '${user.firstName} ${user.lastName}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Visibility(
-            visible: Global.appSettings.token.isEmpty,
-            replacement: Row(children: [
-              IconButton(
-                onPressed: () => context.push('/${AppRoute.notifications}'),
-                icon: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const HeroIcon(HeroIcons.bell),
-                    Positioned(
-                      left: LangService.isAR() ? null : -12,
-                      right: LangService.isAR() ? -12 : null,
-                      top: -10,
-                      child: Badge.count(
-                        count: context.watch<NotificationsState>().count,
-                        isLabelVisible:
-                            context.watch<NotificationsState>().count > 0,
-                      ),
-                    ),
-                  ],
-                ),
               ),
-              IconButton(
-                onPressed: () => context.push('/${AppRoute.support}'),
-                icon: const HeroIcon(HeroIcons.informationCircle),
-              ),
-            ]),
-            child: Row(
-              children: [
-                const LangPicker(),
-                const SizedBox(width: 8),
-                Button(
-                  () => context.pushNamed('/${AppRoute.logIn}'),
-                  height: 38,
-                  color: Colors.transparent,
-                  borderColor: button,
-                  borderWidth: 2,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  Row(children: [
-                    HeroIcon(
-                      HeroIcons.arrowLeftOnRectangle,
-                      size: 20,
-                      color: button,
-                    ),
-                    const SizedBox(width: 6),
-                    TextX(
-                      _arb!.logIn.toUpperCase(),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ]),
-                ),
-              ],
-            ),
-          ),
-        ]);
+          ],
+        );
+
       case 1:
         return title = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,11 +131,56 @@ class StructureKit {
   List<Widget> actions(BuildContext context) {
     _arb = AppLocalizations.of(context);
 
-    List<Widget> title = <Widget>[];
-
+    List<Widget> actions = <Widget>[];
     switch (pageIndex) {
+      case 0:
+        return actions = <Widget>[
+          Visibility(
+            visible: Global.appSettings.token.isEmpty,
+            replacement: Row(children: [
+              IconButton(
+                onPressed: () =>
+                    Tutorial(context, alwaysShow: true).showTutorial(
+                  Tutorial(context, alwaysShow: true).targetSendForm(),
+                ),
+                icon: const HeroIcon(HeroIcons.questionMarkCircle),
+              ),
+              IconButton(
+                onPressed: () => context.push('/${AppRoute.notifications}'),
+                icon: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    const HeroIcon(HeroIcons.bell),
+                    Positioned(
+                      left: LangService.isAR() ? null : -12,
+                      right: LangService.isAR() ? -12 : null,
+                      top: -10,
+                      child: Badge.count(
+                        count: context.watch<NotificationsState>().count,
+                        isLabelVisible:
+                            context.watch<NotificationsState>().count > 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () =>
+                      Tutorial(context, alwaysShow: true).showTutorial(
+                    Tutorial(context, alwaysShow: true).targetSendForm(),
+                  ),
+                  icon: const HeroIcon(HeroIcons.questionMarkCircle),
+                ),
+                const LangPicker(),
+              ],
+            ),
+          ),
+        ];
       case 1:
-        return title = <Widget>[
+        return actions = <Widget>[
           GeneralWidgets.notificationBell(context),
           IconButton(
             onPressed: () => context.push('/${AppRoute.support}'),
@@ -203,7 +188,7 @@ class StructureKit {
           ),
         ];
       case 2:
-        return title = <Widget>[
+        return actions = <Widget>[
           Button(
             () => context.pushNamed(
               AppRoute.addRecipient,
@@ -217,14 +202,14 @@ class StructureKit {
           ),
         ];
       case 3:
-        return title = <Widget>[GeneralWidgets.notificationBell(context)];
+        return actions = <Widget>[GeneralWidgets.notificationBell(context)];
       case 4:
-        return title = <Widget>[GeneralWidgets.notificationBell(context)];
+        return actions = <Widget>[GeneralWidgets.notificationBell(context)];
 
       default:
-        title;
+        actions;
     }
-    return title;
+    return actions;
   }
 
   Widget floatingBottom(BuildContext context) {

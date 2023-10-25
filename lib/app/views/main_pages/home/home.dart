@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
   String selection = '';
   late bool isAr;
 
-  final EdgeInsets padding = const EdgeInsets.fromLTRB(14, 0, 14, 0);
+  final EdgeInsets padding = const EdgeInsets.fromLTRB(8, 0, 8, 0);
 
   Future<void> getResources() async {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
@@ -122,6 +122,7 @@ class _HomeState extends State<Home> {
             child: ListView(
               shrinkWrap: true,
               clipBehavior: Clip.none,
+              padding: EdgeInsets.zero,
               children: [
                 // Currencies exchange rate price
                 // if (state.currencies.isNotEmpty)
