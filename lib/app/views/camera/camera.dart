@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '/app/views/camera/crop_image.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
@@ -137,17 +138,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                   () async {
                     LoadingDialog().show();
                     XFile? rawImage = await takePicture();
-                    // File imageFile = File(rawImage!.path);
-
-                    // int currentUnix = DateTime.now().millisecondsSinceEpoch;
-                    // final directory = await getApplicationDocumentsDirectory();
-                    // String fileFormat = imageFile.path.split('.').last;
-
-                    // await imageFile.copy(
-                    //   '${directory.path}/$currentUnix.$fileFormat',
-                    // );
+                    XFile? croppedImage;
+                    if (rawImage != null) {
+                      croppedImage = await CropImage.crop(rawImage);
+                    }
+                    final Map<String, dynamic> image = {
+                      'raw_image': rawImage,
+                      'cropped': croppedImage,
+                    };
                     LoadingDialog.dismiss();
-                    if (context.mounted) context.pop(rawImage);
+                    if (context.mounted) context.pop(image);
                   },
                   height: 80,
                   width: 80,

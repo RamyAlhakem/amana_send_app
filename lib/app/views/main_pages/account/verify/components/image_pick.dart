@@ -50,11 +50,14 @@ class _ImagePickState extends State<ImagePick>
 
   final double imageRadius = 15;
   String imageTitle = '';
+  String overlay = 'rectangle';
+  String? overlayView;
 
   @override
   void initState() {
     super.initState();
     direction = widget.direction;
+    overlay = direction == 'front' ? 'oval' : 'rectangle';
   }
 
   @override
@@ -99,7 +102,12 @@ class _ImagePickState extends State<ImagePick>
         InkWell(
           onTap: () {
             if (widget.url.isNotEmpty || file != null) {
-              AttachmentTools.openImage(context, fil: file, url: widget.url);
+              AttachmentTools.openImage(
+                context,
+                fil: file,
+                url: widget.url,
+                overlay: overlayView,
+              );
             } else {
               _pickSource();
             }
@@ -137,19 +145,37 @@ class _ImagePickState extends State<ImagePick>
     );
   }
 
-  Future<void> _imagePicker(XFile? image) async {
+  Future<void> openCamera() async {
+    await context.pushNamed(
+      '/${AppRoute.camera}',
+      pathParameters: <String, String>{'direction': direction},
+      queryParameters: <String, String>{'overlay': overlay},
+    ).then((map) {
+      if (map is Map && map['raw_image'] != null && map['cropped'] != null) {
+        uploadImage(map['cropped'], map['raw_image']);
+      }
+    }).whenComplete(() => setState(() => overlayView = overlay));
+  }
+
+  Future<void> imagePicker() async {
     LoadingDialog().show();
 
-    image ??= await _picker.pickImage(
+    final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 30,
     );
 
     if (image == null) return LoadingDialog.dismiss();
 
-    setState(() => file = File(image!.path));
+    setState(() => overlayView = null);
+    uploadImage(image, image).whenComplete(() => LoadingDialog.dismiss());
+  }
 
-    UploadPhoto(
+  Future<void> uploadImage(XFile? image, XFile fileView) async {
+    if (image == null) return;
+
+    setState(() => file = File(fileView.path));
+    await UploadPhoto(
       files: <String, String>{'photo': image.path},
     ).request().then((id) {
       setState(() {
@@ -158,27 +184,19 @@ class _ImagePickState extends State<ImagePick>
           imageTitle = _arb!.changeImage;
         } else {
           Helper.toast(_arb!.oops);
-          file = null;
+          setState(() => file = null);
         }
       });
-    }).whenComplete(() => LoadingDialog.dismiss());
+    });
   }
 
   void _pickSource() {
     if (widget.direction == 'front') {
-      context.pushNamed(
-        '/${AppRoute.camera}',
-        pathParameters: <String, String>{'direction': direction},
-        queryParameters: <String, String>{'overlay': 'oval'},
-      ).then((value) => _imagePicker(value as XFile?));
+      openCamera(); // selfie
     } else {
       ImagePickSource.select(
-        camera: () => context.pushNamed(
-          '/${AppRoute.camera}',
-          pathParameters: <String, String>{'direction': direction},
-          queryParameters: <String, String>{'overlay': 'rectangle'},
-        ).then((value) => _imagePicker(value as XFile?)),
-        gallery: () => _imagePicker(null),
+        camera: () => openCamera(),
+        gallery: () => imagePicker(),
       );
     }
   }

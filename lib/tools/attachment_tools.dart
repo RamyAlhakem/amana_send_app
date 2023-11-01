@@ -13,11 +13,16 @@ class AttachmentTools {
   static ImageProvider image(String url) => CachedNetworkImageProvider(url);
   static ImageProvider file(String path) => FileImage(File(path));
 
-  static void openImage(BuildContext co, {File? fil, required String url}) {
+  static void openImage(
+    BuildContext context, {
+    File? fil,
+    required String url,
+    String? overlay,
+  }) {
     showModalBottomSheet(
-      context: co,
+      context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      backgroundColor: Theme.of(co).cardColor.withOpacity(0.1),
+      backgroundColor: Theme.of(context).cardColor.withOpacity(0.1),
       elevation: 0,
       isScrollControlled: true,
       builder: (BuildContext _) => BlurryContainer(
@@ -27,31 +32,45 @@ class AttachmentTools {
         radius: 30,
         child: FractionallySizedBox(
           heightFactor: 0.85,
-          child: PhotoViewGallery(
-            pageOptions: [
-              PhotoViewGalleryPageOptions(
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.covered,
-                imageProvider: fil == null
-                    ? image('${Configs.apiUrl}$url')
-                    : file(fil.path),
-              )
-            ],
-            loadingBuilder: (BuildContext __, ImageChunkEvent? p) {
-              return Center(
-                child: SizedBox(
-                  width: 20.0,
-                  height: 20.0,
-                  child: CircularProgressIndicator(
-                    value: p == null
-                        ? 0
-                        : p.cumulativeBytesLoaded / (p.expectedTotalBytes ?? 0),
-                    color: MainColors.color1,
+          child: Stack(
+            children: [
+              PhotoViewGallery(
+                pageOptions: [
+                  PhotoViewGalleryPageOptions(
+                    minScale: PhotoViewComputedScale.contained,
+                    maxScale: PhotoViewComputedScale.covered,
+                    imageProvider: fil == null
+                        ? image('${Configs.apiUrl}$url')
+                        : file(fil.path),
+                  )
+                ],
+                loadingBuilder: (BuildContext __, ImageChunkEvent? p) {
+                  return Center(
+                    child: SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                      child: CircularProgressIndicator(
+                        value: p == null
+                            ? 0
+                            : p.cumulativeBytesLoaded /
+                                (p.expectedTotalBytes ?? 0),
+                        color: MainColors.color1,
+                      ),
+                    ),
+                  );
+                },
+                backgroundDecoration: const BoxDecoration(),
+              ),
+              if (overlay != null)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: Image.asset(
+                      'assets/images/$overlay.png',
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              );
-            },
-            backgroundDecoration: const BoxDecoration(),
+            ],
           ),
         ),
       ),
