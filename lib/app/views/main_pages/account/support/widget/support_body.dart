@@ -14,7 +14,6 @@ import '/app/widgets/text/text_x.dart';
 import '/app/widgets/user_avatar.dart';
 import '/configs/configs.dart';
 import '/helper/helper.dart';
-import '/models/metadata.dart';
 
 class SupportBody extends StatelessWidget {
   const SupportBody({super.key});
@@ -78,9 +77,9 @@ class SupportBody extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   _social(
-                    const Color(0xff25D366),
-                    'assets/svg/whatsapp.svg',
-                    arb.whatsApp,
+                    const Color(0xff039be5),
+                    'assets/svg/telegram.svg',
+                    arb.telegram,
                   ),
                 ]),
                 const HDivider(height: 20),
@@ -182,9 +181,8 @@ class SupportBody extends StatelessWidget {
           // case 'assets/svg/instagram.svg':
           //   Helper.launchURL('https://www.instagram.com/');
           //   break;
-          case 'assets/svg/whatsapp.svg':
-            Helper.launchURL(
-                'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0');
+          case 'assets/svg/telegram.svg':
+            Helper.launchURL('https://t.me/AMANA_CS');
             break;
           // case 'assets/svg/location.svg':
           //   Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');
