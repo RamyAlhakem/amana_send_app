@@ -8,7 +8,6 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/divider.dart';
-import '/app/widgets/general/general_widgets.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
@@ -79,41 +78,9 @@ class SupportBody extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   _social(
-                    MainColors.color1,
-                    'assets/svg/phone.svg',
-                    '+442088111222',
-                    iColor: Colors.white,
-                    textDirection: TextDirection.ltr,
-                  ),
-                ]),
-                const SizedBox(height: 12),
-                Row(children: [
-                  _social(
-                    const Color(0xff1877f2),
-                    'assets/svg/facebook.svg',
-                    arb.facebook,
-                    iColor: Colors.white,
-                  ),
-                  const SizedBox(width: 12),
-                  _social(
-                    const Color(0xff3B5998),
-                    'assets/svg/instagram.svg',
-                    arb.instagram,
-                    iColor: Colors.white,
-                  ),
-                ]),
-                const SizedBox(height: 12),
-                Row(children: [
-                  _social(
                     const Color(0xff25D366),
                     'assets/svg/whatsapp.svg',
                     arb.whatsApp,
-                  ),
-                  const SizedBox(width: 12),
-                  _social(
-                    const Color(0xff9cc0f9),
-                    'assets/svg/location.svg',
-                    arb.map,
                   ),
                 ]),
                 const HDivider(height: 20),
@@ -124,22 +91,22 @@ class SupportBody extends StatelessWidget {
                 const SizedBox(height: 12),
                 RowSpaceBetween([
                   TextX(
-                    arb.mondayToFriday,
+                    arb.mondayToSaturday,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   TextX(
-                    '09:00 - 18:00',
+                    '09:00 - 17:00',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ]),
                 const SizedBox(height: 6),
                 RowSpaceBetween([
                   TextX(
-                    arb.saturdayAndSunday,
+                    arb.sunday,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   TextX(
-                    '09:00 - 17:00',
+                    arb.closed,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ]),
@@ -158,33 +125,33 @@ class SupportBody extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                Center(child: GeneralWidgets.privacyPolicy(context)),
+                // Center(child: GeneralWidgets.privacyPolicy(context)),
                 TextC(
                   'Version ${Configs.version}',
                   style: Theme.of(context).textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 10),
-                TextC(
-                  '${DateTime.now().year} © ${'All rights reserved AmanaSend'}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-                TextC(
-                  'Companies house number 1234230',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-                TextC(
-                  'HMRC AML Registration Number XVML00000151047',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-                TextC(
-                  'FCA Number 939430',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
+                // const SizedBox(height: 10),
+                // TextC(
+                //   '${DateTime.now().year} © ${'All rights reserved AmanaSend'}',
+                //   style: Theme.of(context).textTheme.bodySmall,
+                //   textAlign: TextAlign.center,
+                // ),
+                // TextC(
+                //   'Companies house number 1234230',
+                //   style: Theme.of(context).textTheme.bodySmall,
+                //   textAlign: TextAlign.center,
+                // ),
+                // TextC(
+                //   'HMRC AML Registration Number XVML00000151047',
+                //   style: Theme.of(context).textTheme.bodySmall,
+                //   textAlign: TextAlign.center,
+                // ),
+                // TextC(
+                //   'FCA Number 939430',
+                //   style: Theme.of(context).textTheme.bodySmall,
+                //   textAlign: TextAlign.center,
+                // ),
               ],
             ),
           ),
@@ -206,22 +173,22 @@ class SupportBody extends StatelessWidget {
           case 'assets/svg/web.svg':
             Helper.launchURL(Configs.baseUrl);
             break;
-          case 'assets/svg/phone.svg':
-            Helper.launchURL('tel:00442088111222');
-            break;
-          case 'assets/svg/facebook.svg':
-            Helper.launchURL('https://www.facebook.com/profile.php?id=00045/');
-            break;
-          case 'assets/svg/instagram.svg':
-            Helper.launchURL('https://www.instagram.com/');
-            break;
+          // case 'assets/svg/phone.svg':
+          //   Helper.launchURL('tel:00442088111222');
+          //   break;
+          // case 'assets/svg/facebook.svg':
+          //   Helper.launchURL('https://www.facebook.com/profile.php?id=00045/');
+          //   break;
+          // case 'assets/svg/instagram.svg':
+          //   Helper.launchURL('https://www.instagram.com/');
+          //   break;
           case 'assets/svg/whatsapp.svg':
             Helper.launchURL(
                 'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0');
             break;
-          case 'assets/svg/location.svg':
-            Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');
-            break;
+          // case 'assets/svg/location.svg':
+          //   Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');
+          //   break;
         }
       },
       height: 45,

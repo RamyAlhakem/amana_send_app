@@ -9,8 +9,8 @@ class Configs {
   static String version = ''; // initialized in Metadata API request.
   static String buildNumber = ''; // initialized in Metadata API request.
 
-  static const String stagingUrl = 'https://api.amanasend.pages.dev/';
-  static const String productionUrl = 'https://api.amanasend.pages.dev/';
+  static const String stagingUrl = 'https://amanasend.com/';
+  static const String productionUrl = 'https://amanasend.com/';
 
   static const String graphqlStaging =
       'https://api.amanasend.com/staging/graphql';

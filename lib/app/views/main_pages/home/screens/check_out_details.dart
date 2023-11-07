@@ -253,6 +253,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                   ],
                 ),
               ),
+              AgentDescription(html: state.receiverAgent.description),
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(15),
@@ -299,7 +300,6 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                   ),
                 ),
               ),
-              AgentDescription(html: state.receiverAgent.description),
             ],
           ),
         ),

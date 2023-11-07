@@ -13,6 +13,7 @@ class SettingsDialog {
     required this.title,
     required this.subTitle,
     required this.content,
+    this.barrierDismissible = false,
     this.onSubmitTitle,
     this.subTitleStyle,
     this.onSubmitTitleStyle,
@@ -24,6 +25,7 @@ class SettingsDialog {
   final String title;
   final String subTitle;
   final Widget Function(void Function(VoidCallback)) content;
+  final bool barrierDismissible;
   final String? onSubmitTitle;
   final TextStyle? subTitleStyle, onSubmitTitleStyle;
   final Color? onSubmitColor, backgroundColor;
@@ -35,7 +37,7 @@ class SettingsDialog {
     final AppLocalizations? arb = AppLocalizations.of(context);
     await showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       barrierColor: Colors.black26,
       useSafeArea: false,
       builder: (BuildContext _) {

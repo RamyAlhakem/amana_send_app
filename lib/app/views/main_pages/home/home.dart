@@ -63,7 +63,15 @@ class _HomeState extends State<Home> {
     if (context.mounted && Global.isAnyDialogOpen(context)) {
       LoadingDialog.dismiss();
     }
+
     PopupService.show();
+
+    // Check user verification status
+    Helper.userVerify(
+      UserModel.get.verified,
+      showDialog: true,
+      returnSnack: UserModel.get.verified == 0,
+    );
   }
 
   @override

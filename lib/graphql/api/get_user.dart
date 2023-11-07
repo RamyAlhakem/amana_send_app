@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 
-import '/database/injector.dart';
 import '/global/variables.dart';
 import '/graphql/explorer/queries.dart';
 import '/graphql/graphql.dart';
@@ -34,14 +33,7 @@ class GetUserMeta {
   static void _result(Map<String, dynamic> data) {
     if (data.isNotEmpty && data.containsKey('user')) {
       UserModel.get = UserModel.fromJson(data['user']);
-      Global.appSettings.loadSettings(rebuild: false).whenComplete(() {
-        final UserModel user = Database().getUser;
-        Helper.userVerify(
-          user.verified,
-          showDialog: true,
-          returnSnack: user.verified == 0,
-        );
-      });
+      Global.appSettings.loadSettings(rebuild: false);
     }
   }
 

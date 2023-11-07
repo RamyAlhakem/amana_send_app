@@ -14,9 +14,9 @@ class AgentDescription extends StatelessWidget {
       visible: html.isNotEmpty,
       child: Container(
         margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
         width: MediaQuery.of(context).size.width,
-        decoration: Decorations.note(context),
+        decoration: Decorations.border(context),
         child: Html(
           data: html,
           style: <String, Style>{

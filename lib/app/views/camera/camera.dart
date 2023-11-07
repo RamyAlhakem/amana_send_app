@@ -8,6 +8,7 @@ import '/app/views/camera/crop_image.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/dialogs/loading.dart';
+import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 
@@ -131,7 +132,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             ),
           ),
           Positioned(
-            bottom: 25,
+            bottom: 20,
             child: Column(
               children: [
                 Button(
@@ -157,7 +158,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                   borderWidth: 6,
                   const SizedBox.shrink(),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 // if (direction == CameraLensDirection.back)
                 //   SizedBox(
                 //     width: MediaQuery.of(context).size.width,
@@ -210,6 +211,17 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                 //     ),
                 //   ),
               ],
+            ),
+          ),
+          Positioned(
+            top: 20,
+            child: TextX(
+              arb.takeThePhotoWithinTheFrame,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
             ),
           ),
         ],

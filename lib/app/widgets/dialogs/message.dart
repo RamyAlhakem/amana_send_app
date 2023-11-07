@@ -71,6 +71,7 @@ class MessageDialog {
                   dismiss();
                   action!();
                 },
+                borderRadius: 100.0,
                 TextX(
                   actionTitle ?? arb.ok,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -78,7 +79,6 @@ class MessageDialog {
                       ),
                 ),
                 color: Theme.of(context).buttonTheme.colorScheme?.primary,
-                borderRadius: 3.0,
               ),
           ],
         );
