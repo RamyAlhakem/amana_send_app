@@ -36,6 +36,9 @@ class TransferRecent extends StatefulWidget {
       case 4:
         status = arb!.canceled;
         break;
+      case 5:
+        status = arb!.dispute;
+        break;
     }
     return status;
   }

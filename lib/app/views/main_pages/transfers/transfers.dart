@@ -34,6 +34,7 @@ class _TransfersState extends State<Transfers> {
   final ScrollController scrollCtrl3 = ScrollController();
   final ScrollController scrollCtrl4 = ScrollController();
   final ScrollController scrollCtrl5 = ScrollController();
+  final ScrollController scrollCtrl6 = ScrollController();
   bool isPaging = false;
   int page = 1;
 
@@ -71,6 +72,7 @@ class _TransfersState extends State<Transfers> {
     scrollListener(scrollCtrl3);
     scrollListener(scrollCtrl4);
     scrollListener(scrollCtrl5);
+    scrollListener(scrollCtrl6);
   }
 
   @override
@@ -89,6 +91,7 @@ class _TransfersState extends State<Transfers> {
     scrollCtrl3.dispose();
     scrollCtrl4.dispose();
     scrollCtrl5.dispose();
+    scrollCtrl6.dispose();
   }
 
   @override
@@ -139,6 +142,7 @@ class _TransfersState extends State<Transfers> {
                   TextX(arb.processed),
                   TextX(arb.completed),
                   TextX(arb.canceled),
+                  TextX(arb.dispute),
                 ],
               ),
             ),
@@ -156,7 +160,8 @@ class _TransfersState extends State<Transfers> {
                   _transfers(state.newTransfers, scrollCtrl2),
                   _transfers(state.processingTransfers, scrollCtrl3),
                   _transfers(state.completedTransfers, scrollCtrl4),
-                  _transfers(state.canceledTransfers, scrollCtrl4),
+                  _transfers(state.canceledTransfers, scrollCtrl5),
+                  _transfers(state.disputeTransfers, scrollCtrl6),
                 ],
               ),
             ),

@@ -71,6 +71,7 @@ class GetTransfers {
     isNotEmpty = _set(data, TransferStatus.processed.name);
     isNotEmpty = _set(data, TransferStatus.completed.name);
     isNotEmpty = _set(data, TransferStatus.canceled.name);
+    isNotEmpty = _set(data, TransferStatus.dispute.name);
 
     return isNotEmpty;
   }

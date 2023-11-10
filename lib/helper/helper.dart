@@ -9,8 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '/app/extensions/dark_mode.dart';
-import '/app/theme/colors/dark_colors.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/dialogs/message.dart';
 import '/app/widgets/text/text_x.dart';
@@ -110,7 +108,6 @@ class Helper {
   static void snack(
     String text, {
     Color? background,
-    Color? statusColor,
     TextStyle? textStyle,
     int seconds = 15,
     EdgeInsets? margin,
@@ -121,28 +118,13 @@ class Helper {
     Global.snackKey.currentState?.removeCurrentSnackBar();
     Global.snackKey.currentState?.showSnackBar(
       SnackBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(color: Theme.of(_).highlightColor),
+        ),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Status border.
-            Container(
-              height: 12,
-              width: MediaQuery.of(_).size.width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    _.isDarkMode ? DarkColors.third : MainColors.color2,
-                    statusColor ??
-                        (_.isDarkMode ? DarkColors.sec : MainColors.color6),
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: const [0.0, 1.0],
-                  tileMode: TileMode.clamp,
-                ),
-              ),
-            ),
-
             // Draggable divider.
             Center(
               child: Container(
@@ -171,9 +153,10 @@ class Helper {
               )
           ],
         ),
+        behavior: SnackBarBehavior.floating,
         padding: EdgeInsets.zero,
-        margin: margin,
-        elevation: elevation,
+        margin: margin ?? const EdgeInsets.fromLTRB(8, 8, 8, 10),
+        elevation: elevation ?? 0,
         backgroundColor: background,
         duration: Duration(seconds: seconds),
       ),
@@ -366,7 +349,8 @@ class Helper {
             _arb!
                 .accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide,
             seconds: 99,
-            statusColor: Colors.orange,
+            background: Colors.orange,
+            textStyle: const TextStyle(color: Colors.white),
           );
         }
         break;
@@ -378,7 +362,8 @@ class Helper {
         if (returnSnack) {
           snack(
             '✅  ${_arb!.verifiedAccount}  🎉',
-            statusColor: MainColors.color1,
+            background: MainColors.color1,
+            textStyle: const TextStyle(color: Colors.white),
           );
         }
         break;

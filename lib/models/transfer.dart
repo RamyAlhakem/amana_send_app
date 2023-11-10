@@ -9,7 +9,8 @@ enum TransferStatus {
   nEW,
   processed,
   completed,
-  canceled;
+  canceled,
+  dispute;
 
   String toJson() => name;
   static TransferStatus fromJson(String json) => values.byName(json);
@@ -65,6 +66,8 @@ class TransferModel extends SafetyModel {
         return TransferStatus.completed;
       case 'canceled':
         return TransferStatus.canceled;
+      case 'dispute':
+        return TransferStatus.dispute;
       default:
         return TransferStatus.pending;
     }

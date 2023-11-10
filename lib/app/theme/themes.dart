@@ -25,6 +25,7 @@ class Themes {
       cardColor: DarkColors.main,
       canvasColor: DarkColors.third,
       primaryColor: DarkColors.main,
+ 
       bannerTheme:
           const MaterialBannerThemeData(dividerColor: Colors.transparent),
       badgeTheme: BadgeThemeData(

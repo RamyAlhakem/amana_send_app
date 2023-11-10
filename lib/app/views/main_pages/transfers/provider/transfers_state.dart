@@ -10,6 +10,7 @@ class TransfersState extends ChangeNotifier {
   final List<TransferModel> _processingTransfers = <TransferModel>[];
   final List<TransferModel> _completedTransfers = <TransferModel>[];
   final List<TransferModel> _canceledTransfers = <TransferModel>[];
+  final List<TransferModel> _disputeTransfers = <TransferModel>[];
 
   // List<TransferModel> _filteredTransfers = <TransferModel>[];
   TransferModel _transfer = TransferModel();
@@ -21,6 +22,7 @@ class TransfersState extends ChangeNotifier {
   List<TransferModel> get processingTransfers => _processingTransfers;
   List<TransferModel> get completedTransfers => _completedTransfers;
   List<TransferModel> get canceledTransfers => _canceledTransfers;
+  List<TransferModel> get disputeTransfers => _disputeTransfers;
 
   // List<TransferModel> get filteredTransfers => _filteredTransfers;
 
@@ -48,6 +50,8 @@ class TransfersState extends ChangeNotifier {
         break;
       case 'canceled':
         _canceledTransfers.addAll(elements);
+      case 'dispute':
+        _disputeTransfers.addAll(elements);
         break;
     }
 
@@ -65,5 +69,6 @@ class TransfersState extends ChangeNotifier {
     _processingTransfers.clear();
     _completedTransfers.clear();
     _canceledTransfers.clear();
+    _disputeTransfers.clear();
   }
 }
