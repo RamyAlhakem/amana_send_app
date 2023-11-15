@@ -26,6 +26,14 @@ class UserService {
     return isFreshUser;
   }
 
+  static int countTransfers({int count = 0}) {
+    final UserBase user = Database().getUserBase;
+    user.transfersSent = user.transfersSent + count;
+
+    Database().setUserBase = user;
+    return user.transfersSent;
+  }
+
   // Saves user's information by loaded data from server
   static Future<String> saveUser() async {
     UserModel data = UserModel.get; // user data on server side.
@@ -48,7 +56,7 @@ class UserService {
     await Database.clearUser();
 
     // refresh app settings to fresh user
-   await Global.appSettings.loadSettings().whenComplete(() {
+    await Global.appSettings.loadSettings().whenComplete(() {
       // take user back to main page (home)
       if (Global.pageCtrl.hasClients) Global.pageCtrl.jumpToPage(page);
     });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
@@ -35,6 +36,8 @@ class _SendFormFieldsState extends State<SendFormFields>
 
   String selection = '';
 
+  bool isHome = true;
+
   final List<TextInputFormatter> _input = [
     LengthLimitingTextInputFormatter(9),
     FilteringTextInputFormatter.digitsOnly,
@@ -55,6 +58,9 @@ class _SendFormFieldsState extends State<SendFormFields>
   @override
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
+    isHome = GoRouter.of(context).location == '/';
+    Helper.log('location: ${GoRouter.of(context).location}');
+    Helper.log('isHome: $isHome');
     super.didChangeDependencies();
   }
 
@@ -91,7 +97,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 if (state.selectedRecipient == null)
                   Expanded(
                     child: CountryRoller(
-                      key: Tutorial.key1,
+                      key: isHome ? Tutorial.key1 : null,
                       title: arb.receiverCountries,
                       borderRadius: 11,
                     ),
@@ -101,7 +107,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 // Select city.
                 Expanded(
                   child: CityPicker(
-                    key: Tutorial.key2,
+                    key: isHome ? Tutorial.key2 : null,
                     country: state.receiverCountry,
                     onChange: (city) => state.setReceiveCity(city),
                     fieldColor: Theme.of(context).cardColor,
@@ -121,7 +127,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           if (state.showAgents)
             if (state.receiverCity.agents.isNotEmpty)
               MasonryGridView.count(
-                key: Tutorial.key3,
+                key: isHome ? Tutorial.key3 : null,
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -142,7 +148,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 },
               ),
           TextFieldX(
-            key: Tutorial.key4,
+            key: isHome ? Tutorial.key4 : null,
             hint: arb.youSend,
             controller: state.sender,
             type: TextInputType.phone,
@@ -167,7 +173,7 @@ class _SendFormFieldsState extends State<SendFormFields>
 
           // Today exchange rate
           Padding(
-            key: Tutorial.key5,
+            key: isHome ? Tutorial.key5 : null,
             padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: RowSpaceBetween([
               TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
@@ -187,7 +193,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           ),
 
           TextFieldX(
-            key: Tutorial.key6,
+            key: isHome ? Tutorial.key6 : null,
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,

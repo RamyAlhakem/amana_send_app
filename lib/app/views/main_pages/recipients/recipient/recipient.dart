@@ -123,7 +123,7 @@ class _RecipientState extends State<Recipient> {
               () => DeleteRecipient(context, id: recipient.id).request(),
               content:
                   '${arb!.areYouSureYouWantToDelete} ${recipient.firstName}',
-            ).show(context),
+            ).show(),
             height: 50,
             color: Colors.transparent,
             borderColor: MainColors.red,

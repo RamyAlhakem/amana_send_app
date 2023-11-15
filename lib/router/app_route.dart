@@ -55,12 +55,8 @@ class AppRoute {
       GoRoute(
         name: home,
         path: '/',
-        pageBuilder: (BuildContext context, GoRouterState state) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: Structure(query: state.queryParameters),
-          );
-        },
+        builder: (BuildContext context, GoRouterState state) =>
+            const Structure(),
         routes: <GoRoute>[
           GoRoute(
             name: '/$camera',

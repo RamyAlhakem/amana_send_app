@@ -126,7 +126,7 @@ class _AccountState extends State<Account> {
                   onTap: () => SubmitDialog(
                     () => UserService.clearUser(context),
                     content: _arb!.proceedWithLoggingOut,
-                  ).show(context),
+                  ).show(),
                   icon: HeroIcons.arrowRightOnRectangle,
                   title: _arb!.logout,
                   trailing: const SizedBox(),

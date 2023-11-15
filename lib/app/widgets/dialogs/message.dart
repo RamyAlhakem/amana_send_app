@@ -7,34 +7,36 @@ import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 
 class MessageDialog {
-  MessageDialog(this.message, {this.action, this.actionTitle});
+  MessageDialog(this.message, {this.action, this.actionTitle, this.title});
 
   final String message;
   final void Function()? action;
   final String? actionTitle;
+  final Widget? title;
 
   Future<void> show() async {
     final BuildContext context = Global.key.currentContext!;
-    final AppLocalizations? arb = AppLocalizations.of(context);
+    final AppLocalizations arb = AppLocalizations.of(context)!;
     await showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.2),
       builder: (_) {
         return AlertDialog(
-          title: Row(
-            children: [
-              Icon(
-                Icons.report_gmailerrorred,
-                size: 28,
-                color: Colors.grey[400],
+          title: title ??
+              Row(
+                children: [
+                  Icon(
+                    Icons.report_gmailerrorred,
+                    size: 28,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(width: 6),
+                  TextX(
+                    arb.attention,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
               ),
-              const SizedBox(width: 6),
-              TextX(
-                arb!.attention,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
-          ),
           titlePadding: const EdgeInsets.fromLTRB(20, 18, 20, 15),
           contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           actionsPadding: const EdgeInsets.fromLTRB(15, 20, 15, 15),

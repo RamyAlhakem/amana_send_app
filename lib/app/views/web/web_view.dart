@@ -57,7 +57,7 @@ class _WebViewState extends State<WebView> {
             context.pop();
           },
           content: _arb!.areYouSureYouWantToCancelThisTransfer,
-        ).show(context);
+        ).show();
         return false;
       },
       child: Scaffold(
@@ -68,7 +68,7 @@ class _WebViewState extends State<WebView> {
               context.pop();
             },
             content: _arb!.areYouSureYouWantToCancelThisTransfer,
-          ).show(context),
+          ).show(),
         ),
         body: Stack(
           children: [
@@ -135,7 +135,7 @@ class _WebViewState extends State<WebView> {
                     context.pop(); // close webview page.
                     context.pop(); // close send hub page.
                     Global.pageCtrl.jumpToPage(1); // transfers.
-                    MessageDialog(_arb!.oops).show( );
+                    MessageDialog(_arb!.oops).show();
                   }
                 }
               },

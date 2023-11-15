@@ -19,6 +19,7 @@ import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
 import '/router/app_route.dart';
+import '/services/user_service.dart';
 
 class WalletAddress extends StatefulWidget {
   const WalletAddress({super.key});
@@ -50,7 +51,8 @@ class _WalletAddressState extends State<WalletAddress>
   void checkTransaction(int id) {
     reTimer = Timer.periodic(Duration(seconds: reDuration), (_) {
       GetTransfer(context, id).request().whenComplete(() {
-        if (provider.transfer.status.name == 'isNew') {
+        if (provider.transfer.status.name.toLowerCase() == 'new') {
+          UserService.countTransfers(count: 1); // add +1
           context.pushReplacementNamed(
             AppRoute.success,
             pathParameters: <String, String>{
@@ -89,7 +91,7 @@ class _WalletAddressState extends State<WalletAddress>
     super.dispose();
     timer?.cancel();
     reTimer?.cancel();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {

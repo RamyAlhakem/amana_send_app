@@ -78,7 +78,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
           SubmitDialog(
             () => context.pop(),
             content: arb.areYouSureYouWantToCancelThisTransfer,
-          ).show(context);
+          ).show();
         }
         return _index != 2 ? false : true;
       },
@@ -99,7 +99,7 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
               ? () => SubmitDialog(
                     () => context.pop(),
                     content: arb.areYouSureYouWantToCancelThisTransfer,
-                  ).show(context)
+                  ).show()
               : null,
           actions: [
             InkWell(

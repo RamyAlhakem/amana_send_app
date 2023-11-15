@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/app/theme/colors/main_colors.dart';
+import '/global/variables.dart';
 
 class SubmitDialog {
   SubmitDialog(this.onSubmit, {required this.content});
@@ -10,16 +11,12 @@ class SubmitDialog {
   final void Function() onSubmit;
   final String content;
 
-  static BuildContext? _dialogContext;
-
-  void show(BuildContext context) {
+  void show() {
+    final BuildContext context = Global.key.currentContext!;
     final AppLocalizations? arb = AppLocalizations.of(context);
-
     showCupertinoDialog<void>(
       context: context,
       builder: (BuildContext _) {
-        _dialogContext = _;
-
         return CupertinoAlertDialog(
           title: Text(arb!.attention,
               style: Theme.of(context).textTheme.titleLarge),
@@ -55,7 +52,5 @@ class SubmitDialog {
     );
   }
 
-  static void dismiss() {
-    if (_dialogContext != null) Navigator.pop(_dialogContext!);
-  }
+  static void dismiss() => Navigator.pop(Global.key.currentContext!);
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,41 +10,83 @@ import 'package:lottie/lottie.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/screens/components/bottom_buttons.dart';
+import '/app/views/main_pages/structure.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/buttons/expand_button.dart';
+import '/app/widgets/dialogs/message.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
+import '/configs/configs.dart';
+import '/global/variables.dart';
+import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/router/app_route.dart';
+import '/services/user_service.dart';
 
-class Success extends StatelessWidget {
+class Success extends StatefulWidget {
   const Success({super.key, required this.transferData});
 
   final String transferData;
 
   @override
+  State<Success> createState() => _SuccessState();
+}
+
+class _SuccessState extends State<Success> {
+  late AppLocalizations arb;
+
+  TransferModel transfer = TransferModel();
+  int count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    transfer = TransferModel.fromJson(jsonDecode(widget.transferData));
+    count = UserService.countTransfers();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (count == 2) {
+        MessageDialog(
+          arb.wouldYouLikeToRateOurApp,
+          title: TextX(
+            arb.thankYouForUsingAmanaSend,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          action: () {
+            String url =
+                Platform.isIOS ? Configs.appleStore : Configs.googleStore;
+            Helper.launchURL(url);
+          },
+          actionTitle: arb.rate,
+        ).show();
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    arb = AppLocalizations.of(context)!;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final AppLocalizations? arb = AppLocalizations.of(context);
-    final transfer = TransferModel.fromJson(jsonDecode(transferData));
     return WillPopScope(
       onWillPop: () async {
-        context.goNamed(
-          AppRoute.home,
-          queryParameters: <String, String>{'i': '1'},
-        );
+        Global.pageCtrl.jumpToPage(Pages.transfers.index);
+        context.goNamed(AppRoute.home);
         return false;
       },
       child: Scaffold(
         appBar: AutoAppBar(
-          title: arb!.paymentSuccessful,
+          title: arb.paymentSuccessful,
           subTitle: arb.yourPaymentHasBeenSubmittedSuccessfully,
-          onPressed: () => context.goNamed(
-            AppRoute.home,
-            queryParameters: <String, String>{'i': '1'},
-          ),
+          onPressed: () {
+            Global.pageCtrl.jumpToPage(Pages.transfers.index);
+            context.goNamed(AppRoute.home);
+          },
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -207,10 +250,10 @@ class Success extends StatelessWidget {
         ),
         bottomNavigationBar: BottomButtons(
           firstButton: Button(
-            () => context.goNamed(
-              AppRoute.home,
-              queryParameters: <String, String>{'i': '0'},
-            ),
+            () {
+              Global.pageCtrl.jumpToPage(Pages.home.index);
+              context.goNamed(AppRoute.home);
+            },
             color: MainColors.color2,
             FittedBox(
               child: Row(
@@ -228,10 +271,8 @@ class Success extends StatelessWidget {
           ),
           secondButton: ExpandButton(
             () {
-              context.goNamed(
-                AppRoute.home,
-                queryParameters: <String, String>{'i': '1'},
-              );
+              Global.pageCtrl.jumpToPage(Pages.transfers.index);
+              context.goNamed(AppRoute.home);
               context.pushNamed(
                 AppRoute.transfer,
                 pathParameters: <String, String>{

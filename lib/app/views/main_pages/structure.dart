@@ -23,9 +23,7 @@ import 'transfers/transfers.dart';
 enum Pages { home, transfers, recipients, settings, support }
 
 class Structure extends StatefulWidget {
-  const Structure({this.query = const <String, String>{}, super.key});
-
-  final Map<String, String> query;
+  const Structure({super.key});
 
   @override
   State<Structure> createState() => _StructureState();
@@ -39,7 +37,7 @@ class _StructureState extends State<Structure> {
   void initState() {
     super.initState();
 
-    _index = int.parse(widget.query['i'] ?? '0');
+    _index = Pages.home.index;
     Global.pageCtrl = PageController(initialPage: _index);
   }
 
