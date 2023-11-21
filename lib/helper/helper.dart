@@ -75,8 +75,9 @@ class Helper {
   }
 
   static Future<void> launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    final String link = url.replaceAll(RegExp(r'\s+'), '');
+    if (await canLaunchUrl(Uri.parse(link))) {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }

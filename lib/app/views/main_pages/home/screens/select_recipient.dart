@@ -47,7 +47,6 @@ class SelectRecipient extends StatefulWidget {
               arb!.previous.toUpperCase(),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(width: 8),
           ],
         ),
       ),

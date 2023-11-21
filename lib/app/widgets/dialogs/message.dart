@@ -61,12 +61,6 @@ class MessageDialog {
             ],
           ),
           actions: [
-            Button(
-              () => dismiss(),
-              TextX(arb.close, style: Theme.of(context).textTheme.bodyMedium),
-              color: Theme.of(context).buttonTheme.colorScheme?.secondary,
-              borderRadius: 100.0,
-            ),
             if (action != null)
               Button(
                 () {
@@ -82,6 +76,13 @@ class MessageDialog {
                 ),
                 color: Theme.of(context).buttonTheme.colorScheme?.primary,
               ),
+            if (action != null) const SizedBox(height: 10),
+            Button(
+              () => dismiss(),
+              TextX(arb.close, style: Theme.of(context).textTheme.bodyMedium),
+              color: Theme.of(context).buttonTheme.colorScheme?.secondary,
+              borderRadius: 100.0,
+            ),
           ],
         );
       },

@@ -115,7 +115,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 controller: _whatsApp,
                 hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
                 type: TextInputType.phone,
-                input: TextFieldValidator.onlyDigits(),
+                input: TextFieldValidator.onlyDigits(length: 15),
                 onSubmitted: (_) => _submit(),
               ),
               const SizedBox(height: 8),

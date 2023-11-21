@@ -67,9 +67,9 @@ class _TransferRecentState extends State<TransferRecent> {
           },
         ),
         color: Theme.of(context).cardColor,
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         RowSpaceBetween([
-          Expanded(
+          Flexible(
             child: RecipientIconDetail(
               recipient: widget.transfer.recipient,
               date: widget.transfer.addedAt,

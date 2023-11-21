@@ -105,12 +105,11 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
         alignment: Alignment.topCenter,
         child: Container(
           margin: const EdgeInsets.fromLTRB(10, 14, 10, 10),
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           decoration: Decorations.main(context),
           width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),

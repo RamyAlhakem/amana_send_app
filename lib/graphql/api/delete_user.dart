@@ -50,7 +50,7 @@ class DeleteUser {
     _arb = AppLocalizations.of(context);
 
     if (data.isNotEmpty && data.containsKey('userDelete')) {
-      Helper.banner(_arb!.accountHasBeenDeletedSuccessfully);
+      Helper.toast(_arb!.accountHasBeenDeletedSuccessfully);
 
       UserService.clearUser(context);
     }

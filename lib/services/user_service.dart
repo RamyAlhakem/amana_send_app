@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
@@ -51,9 +52,9 @@ class UserService {
     context.read<RecipientsState>().clearRecipients();
     context.read<TransfersState>().clearTransfers();
 
-    // clear user cached loaded data from server and device local storage.
+    // clear user from device local storage
     UserModel.get = UserModel();
-    await Database.clearUser();
+    await Database.clearUser().whenComplete(() => context.go('/'));
 
     // refresh app settings to fresh user
     await Global.appSettings.loadSettings().whenComplete(() {

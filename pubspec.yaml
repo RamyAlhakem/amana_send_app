@@ -1,7 +1,7 @@
 name: amana_send
 description: amana_send.
 publish_to: "none"
-version: 1.1.11+11
+version: 1.1.12+12
 
 environment:
   sdk: ">=3.1.4 <4.0.0"
