@@ -124,6 +124,9 @@ class Queries {
       canceled: transactions(limit: \$limit, page: \$page, status: canceled) {
         ${Explorer.transfer}
       }
+      dispute: transactions(limit: \$limit, page: \$page, status: dispute) {
+        ${Explorer.transfer}
+      }
     }
       ''';
 }

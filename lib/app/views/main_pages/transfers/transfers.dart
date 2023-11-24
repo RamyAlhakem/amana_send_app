@@ -47,7 +47,7 @@ class _TransfersState extends State<Transfers> {
         GetTransfers(page: page).request().then((isNotEmpty) {
           setState(() => isPaging = false);
 
-          if (isNotEmpty && ctrl.hasClients) {
+          if (isNotEmpty && page > 1 && ctrl.hasClients) {
             ctrl.animateTo(
               ctrl.position.pixels + kTextTabBarHeight * 6,
               duration: const Duration(milliseconds: 600),
