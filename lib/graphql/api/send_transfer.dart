@@ -114,6 +114,10 @@ class SendTransfer {
           );
           break;
 
+        case 456:
+          Helper.bannerWarning(_arb.yourSendingCountryIsCurrentlyDeactivated);
+          break;
+
         case 463:
           Helper.bannerWarning(
             _arb.youHaveExceededTheMaximumSendingAmountThisMonth,
