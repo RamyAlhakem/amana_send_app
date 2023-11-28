@@ -39,13 +39,12 @@ class _SuccessState extends State<Success> {
   late AppLocalizations arb;
 
   TransferModel transfer = TransferModel();
-  int count = 0;
 
   @override
   void initState() {
     super.initState();
     transfer = TransferModel.fromJson(jsonDecode(widget.transferData));
-    count = UserService.countTransfers();
+    final int count = UserService.countTransfers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (count == 2) {
         MessageDialog(

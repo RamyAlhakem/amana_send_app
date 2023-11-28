@@ -385,18 +385,18 @@ packages:
     dependency: transitive
     description:
       name: gql
-      sha256: "58f36a75c30e0d68b367cbf47024e7f08f15a1ab349b57bda1b23586e5d70a90"
+      sha256: aa3e0be4548353007b6e6fd24fcad0ce8c1179f9cb2ae5239d392fddb84a5ce5
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1700349941413"
+    version: "1.0.1-alpha+1700868214564"
   gql_dedupe_link:
     dependency: transitive
     description:
       name: gql_dedupe_link
-      sha256: "810fc7f9f64edbcc96f592129ce22cfb088aebd336abde0b14d4bc898390baf1"
+      sha256: e97e3f9490add43ba96cf5cc02d9d10a3723965c0bcc7bb1e04ef4f2e7a31a00
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4-alpha+1700349941497"
+    version: "2.0.4-alpha+1700868214643"
   gql_error_link:
     dependency: transitive
     description:
@@ -425,10 +425,10 @@ packages:
     dependency: transitive
     description:
       name: gql_link
-      sha256: af3555f29db00000e732d687d4a1664beb47c4133e851457e4d5e1b0ad5ac948
+      sha256: "48dbf63b4831d800a2ce9675c9fecea3c9f2801de92072c7644a4bc52aa26c13"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1700349941428"
+    version: "1.0.1-alpha+1700868214578"
   gql_transform_link:
     dependency: transitive
     description:

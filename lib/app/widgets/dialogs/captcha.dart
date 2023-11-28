@@ -48,7 +48,7 @@ class CaptchaDialog {
                   children: [
                     InAppWebView(
                       initialUrlRequest: URLRequest(
-                        url: Uri.parse('${Configs.apiUrl}/captcha'),
+                        url: Uri.parse('${Configs.apiUrl}captcha'),
                       ),
                       onProgressChanged: (InAppWebViewController _, int p) {
                         setState(() => progress = p / 100);

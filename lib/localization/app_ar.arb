@@ -24,6 +24,7 @@
   "onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately": "بمجرد إتمامك التسديد سوف نعلمك بإستلامنا المبلغ, و نقوم بتنفيذ الحوالة مباشرة حسب شروط التسليم",
   "pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate": "يرجى مراعاة تسديد المبلغ بالكامل إلى المحفظة وفي حال وصول مبلغ أقل أو أكثر سيتم تحويل قيمة المبلغ المستلم من قبلكم فقط و بنفس سعر الصرف الحوالة المحدد",
   "yourSendingCountryIsCurrentlyDeactivated": "بلد الإرسال الخاص بك معطل حالياً",
+  "didNotReceiveCode": "لم تتلق الرمز؟",
   "pending": "قيد الانتظار",
   "neW": "حديثاً",
   "processing": "يتم المعالجة",

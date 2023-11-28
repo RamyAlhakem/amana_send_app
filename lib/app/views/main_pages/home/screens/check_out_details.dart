@@ -35,7 +35,8 @@ class CheckOutDetails extends StatefulWidget {
             context,
             page,
             recipientAmount: double.parse(calculator.receiver.text),
-            sendAmount: calculator.amountPlusFee,
+            sendAmount:
+                double.parse(calculator.amountPlusFee.toStringAsFixed(2)),
             recipientId: calculator.selectedRecipient!.id,
             isReceiveInUSD: calculator.sendUSD,
             receivingCityId: calculator.receiverCity.id,

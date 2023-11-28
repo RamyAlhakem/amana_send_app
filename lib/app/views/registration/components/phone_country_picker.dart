@@ -67,6 +67,11 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
     return Directionality(
       textDirection: TextDirection.ltr,
       child: TextFieldX(
+        onSubmitted: (_) {
+          if (!_pr.isRegister) {
+            FocusScope.of(context).requestFocus(_pr.passwordNode);
+          }
+        },
         controller: _pr.mobile,
         hint: _arb!.mobileNumber,
         type: TextInputType.phone,

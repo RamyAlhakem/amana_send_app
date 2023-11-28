@@ -24,6 +24,7 @@
   "onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately": "Once the payment is being confirmed, we will notify you and process the transfer immediately",
   "pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate": "Please Make sure to pay the exact amount to the WALLET in one go, otherwise if the amount paid in more or less we will pay out exactly what we received on same exchange rate",
   "yourSendingCountryIsCurrentlyDeactivated": "Your sending country is currently deactivated",
+  "didNotReceiveCode": "Didn't receive code?",
   "pending": "Pending",
   "neW": "New",
   "processing": "Processing",

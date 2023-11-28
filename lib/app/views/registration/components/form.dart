@@ -103,6 +103,7 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
             ),
           ),
           _password(
+            node: p.passwordNode,
             onSubmitted: (String? v) {
               if (p.isRegister) {
                 FocusScope.of(context).requestFocus(p.confirmPasswordNode);

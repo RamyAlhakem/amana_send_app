@@ -33,7 +33,7 @@ class AccountActivation extends StatefulWidget {
 
 class _AccountActivationState extends State<AccountActivation>
     with TickerProviderStateMixin {
-  late AppLocalizations? arb;
+  late AppLocalizations arb;
 
   final TextEditingController pin = TextEditingController();
 
@@ -54,7 +54,7 @@ class _AccountActivationState extends State<AccountActivation>
     }
   }
 
-  void message() => Helper.banner(arb!.codeSuccessfullySentKindlyPatience);
+  void message() => Helper.banner(arb.codeSuccessfullySentKindlyPatience);
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class _AccountActivationState extends State<AccountActivation>
 
   @override
   void didChangeDependencies() {
-    arb = AppLocalizations.of(context);
+    arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
   }
 
@@ -104,7 +104,7 @@ class _AccountActivationState extends State<AccountActivation>
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AutoAppBar(title: arb!.verifyMobileNumber),
+          appBar: AutoAppBar(title: arb.verifyMobileNumber),
           body: Form(
             key: formKey,
             child: Container(
@@ -126,14 +126,14 @@ class _AccountActivationState extends State<AccountActivation>
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                       child: TextX(
-                        arb!.verification,
+                        arb.verification,
                         style: const TextStyle(fontSize: 24),
                       ),
                     ),
                   ),
                   Center(
                     child: TextX(
-                      arb!.enterOTPcodeSentToTheNumber,
+                      arb.enterOTPcodeSentToTheNumber,
                       style: const TextStyle(fontSize: 12),
                     ),
                   ),
@@ -141,9 +141,8 @@ class _AccountActivationState extends State<AccountActivation>
                   Center(
                     child: TextC(
                       widget.mobile,
-                      style: const TextStyle(
-                        fontSize: 22,
-                      ),
+                      style: const TextStyle(fontSize: 22),
+                      textDirection: TextDirection.ltr,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -164,17 +163,17 @@ class _AccountActivationState extends State<AccountActivation>
                       elevation: 0,
                       child: VerticalFade(
                         child: TextX(
-                          arb!.validate,
+                          arb.validate,
                           style: const TextStyle(color: MainColors.color1),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 40),
-                  const Center(
+                  Center(
                     child: TextX(
-                      "Didn't receive code?",
-                      style: TextStyle(
+                      arb.didNotReceiveCode,
+                      style: const TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -187,7 +186,7 @@ class _AccountActivationState extends State<AccountActivation>
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
                         child: TextX(
-                          arb!.youCanRequestAnotherOTPagainWithin,
+                          arb.youCanRequestAnotherOTPagainWithin,
                           style: const TextStyle(
                             color: Colors.blueGrey,
                             fontSize: 11,
@@ -209,7 +208,7 @@ class _AccountActivationState extends State<AccountActivation>
                         child: Padding(
                           padding: EdgeInsets.only(top: duration != 0 ? 2 : 15),
                           child: TextX(
-                            arb!.resendCode,
+                            arb.resendCode,
                             style: const TextStyle(
                               color: Colors.blueGrey,
                               fontSize: 15,
@@ -245,7 +244,7 @@ class _AccountActivationState extends State<AccountActivation>
       ctrl.forward();
       isTimeOut();
 
-      Helper.toast(arb!.codeSuccessfullySentKindlyPatience);
+      Helper.toast(arb.codeSuccessfullySentKindlyPatience);
       await ResendOTP(mobile: widget.mobile).request().then((status) {
         if (status == 200) message();
       });

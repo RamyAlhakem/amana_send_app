@@ -17,6 +17,7 @@ class RegistrationState extends ChangeNotifier {
 
   File? _file;
 
+  final FocusNode _passwordNode = FocusNode();
   final FocusNode _confirmPasswordNode = FocusNode();
 
   late AnimationController _expander;
@@ -45,6 +46,7 @@ class RegistrationState extends ChangeNotifier {
 
   File? get file => _file;
 
+  FocusNode get passwordNode => _passwordNode;
   FocusNode get confirmPasswordNode => _confirmPasswordNode;
 
   AnimationController get expander => _expander;
