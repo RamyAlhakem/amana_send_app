@@ -192,7 +192,7 @@ class _SuccessState extends State<Success> {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${transfer.fees.toStringAsFixed(2)} ',
+                          text: '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
                         ),
                         const TextSpan(text: 'USDT'),
                       ],
