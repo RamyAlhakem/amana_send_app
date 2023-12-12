@@ -41,7 +41,6 @@ class PinForm extends StatelessWidget {
           controller: pin,
           focusNode: focusNode,
           androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-          listenForMultipleSmsOnAndroid: true,
           defaultPinTheme: defaultPinTheme,
           validator: (value) => TextFieldValidator.validateField(
             context,
