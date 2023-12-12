@@ -1,7 +1,7 @@
 name: amana_send
 description: amana_send.
 publish_to: "none"
-version: 1.1.14+14
+version: 1.1.15+15
 
 environment:
   sdk: ">=3.1.4 <4.0.0"
@@ -42,7 +42,7 @@ dependencies:
 
   flutter_svg: ^1.1.6
   lottie: ^2.2.0
-  pinput: ^2.2.16
+  pinput: ^3.0.1
   photo_view: ^0.14.0
   rxdart: ^0.27.5
   universal_io: ^2.0.4

@@ -57,7 +57,7 @@ class PinForm extends StatelessWidget {
           onClipboardFound: (value) => pin.setText(value),
           hapticFeedbackType: HapticFeedbackType.heavyImpact,
           cursor: GeneralWidgets.cursor,
-          separator: const SizedBox(width: 16),
+          separatorBuilder: (_) => const SizedBox(width: 16),
           focusedPinTheme: defaultPinTheme.copyWith(
             decoration: BoxDecoration(
               color: Theme.of(context).inputDecorationTheme.fillColor,

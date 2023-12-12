@@ -241,7 +241,7 @@
   "enterOTPcodeSentToTheNumber": "Enter OTP code sent to the number",
   "enterOTPcodeSentToTheEmail": "Enter OTP code sent to the email",
   "enterOTPVerificationCodeToResetYourPassword": "Enter OTP verification code to reset your password",
-  "codeSuccessfullySentKindlyPatience": "Code successfully sent, Kindly patience",
+  "codeSuccessfullySentKindlyWait": "Code successfully sent, Kindly wait",
   "youCanRequestAnotherOTPagainWithin": "You can request another OTP again within",
   "resendCode": "Resend code",
   "validate": "Validate",
