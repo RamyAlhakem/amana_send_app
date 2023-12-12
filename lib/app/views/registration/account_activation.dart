@@ -54,7 +54,7 @@ class _AccountActivationState extends State<AccountActivation>
     }
   }
 
-  void message() => Helper.banner(arb.codeSuccessfullySentKindlyPatience);
+  void message() => Helper.banner(arb.codeSuccessfullySentKindlyWait);
 
   @override
   void initState() {
@@ -244,7 +244,7 @@ class _AccountActivationState extends State<AccountActivation>
       ctrl.forward();
       isTimeOut();
 
-      Helper.toast(arb.codeSuccessfullySentKindlyPatience);
+      Helper.toast(arb.codeSuccessfullySentKindlyWait);
       await ResendOTP(mobile: widget.mobile).request().then((status) {
         if (status == 200) message();
       });

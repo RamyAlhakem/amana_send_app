@@ -35,7 +35,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   final LoadingButtonController buttonCtrl = LoadingButtonController();
 
-  void message() => Helper.banner(arb!.codeSuccessfullySentKindlyPatience);
+  void message() => Helper.banner(arb!.codeSuccessfullySentKindlyWait);
 
   @override
   void initState() {
