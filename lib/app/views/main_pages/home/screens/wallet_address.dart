@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:amana_send/app/widgets/scroll_button.dart';
-import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,12 +13,14 @@ import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/views/registration/components/count_down.dart';
 import '/app/widgets/buttons/button.dart';
+import '/app/widgets/scroll_button.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
 import '/router/app_route.dart';
+import '/services/lang_service.dart';
 import '/services/user_service.dart';
 
 class WalletAddress extends StatefulWidget {

@@ -19,43 +19,45 @@ class _ScrollButtonState extends State<ScrollButton> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.scrollCtrl.position.maxScrollExtent > 0) {
-        setState(() => _isVisible = true);
-      }
-    });
-
-    widget.scrollCtrl.addListener(() {
-      if (widget.scrollCtrl.position.pixels ==
-          widget.scrollCtrl.position.maxScrollExtent) {
-        if (_isVisible == true) {
-          // only set when the previous state is true
-          // Less widget rebuilds
-
-          if (mounted) setState(() => _isVisible = false);
+    if (widget.scrollCtrl.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.scrollCtrl.position.maxScrollExtent > 0) {
+          setState(() => _isVisible = true);
         }
-      }
+      });
 
-      if (widget.scrollCtrl.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (_isVisible == true) {
-          // only set when the previous state is true
-          // Less widget rebuilds
-
-          if (mounted) setState(() => _isVisible = false);
-        }
-      } else {
-        if (widget.scrollCtrl.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          if (_isVisible == false) {
-            // only set when the previous state is false
+      widget.scrollCtrl.addListener(() {
+        if (widget.scrollCtrl.position.pixels ==
+            widget.scrollCtrl.position.maxScrollExtent) {
+          if (_isVisible == true) {
+            // only set when the previous state is true
             // Less widget rebuilds
 
-            if (mounted) setState(() => _isVisible = true);
+            if (mounted) setState(() => _isVisible = false);
           }
         }
-      }
-    });
+
+        if (widget.scrollCtrl.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (_isVisible == true) {
+            // only set when the previous state is true
+            // Less widget rebuilds
+
+            if (mounted) setState(() => _isVisible = false);
+          }
+        } else {
+          if (widget.scrollCtrl.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            if (_isVisible == false) {
+              // only set when the previous state is false
+              // Less widget rebuilds
+
+              if (mounted) setState(() => _isVisible = true);
+            }
+          }
+        }
+      });
+    }
   }
 
   @override
