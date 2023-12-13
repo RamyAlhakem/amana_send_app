@@ -32,7 +32,7 @@ class ExpandButton extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            padding: padding,
+            padding: padding ?? const EdgeInsets.fromLTRB(8, 2, 8, 2),
             foregroundColor: foreground,
             backgroundColor: color,
             side: BorderSide(color: borderColor),

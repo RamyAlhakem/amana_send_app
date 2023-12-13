@@ -10,6 +10,7 @@ import '/app/views/main_pages/home/widgets/send_form.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/dialogs/submit.dart';
+import '/app/widgets/expander.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
@@ -26,7 +27,8 @@ class SendHub extends StatefulWidget {
   State<SendHub> createState() => _SendHubState();
 }
 
-class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
+class _SendHubState extends State<SendHub>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   late AppLocalizations arb;
   late Calculator _calculator;
 
@@ -40,11 +42,14 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
 
   // bottom navigation bar
   Widget buttons = const SizedBox();
+  bool expand = true;
+  final Duration expandDuration = const Duration(milliseconds: 70);
 
   @override
   void initState() {
     super.initState();
     _calculator = Provider.of<Calculator>(context, listen: false);
+
     _pageCtrl = PageController(initialPage: _index);
 
     if (widget.recipient != 'false') recipient = true;
@@ -148,31 +153,41 @@ class _SendHubState extends State<SendHub> with AutomaticKeepAliveClientMixin {
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 6),
-          child: buttons,
+          child: AnimatedSwitcher(
+            duration: expandDuration,
+            reverseDuration: expandDuration,
+            child: Expander(expand: expand, child: buttons),
+          ),
         ),
       ),
     );
   }
 
-  void _switchState(int index) {
-    switch (index) {
-      case 0:
-        if (!recipient) appBarTitle = arb.chooseRecipient;
+  Future<void> _switchState(int index) async {
+    setState(() => expand = false);
+    await Future.delayed(expandDuration);
+    if (context.mounted) {
+      switch (index) {
+        case 0:
+          if (!recipient) appBarTitle = arb.chooseRecipient;
 
-        buttons = SelectRecipient.footer(context, _pageCtrl);
-        break;
+          buttons = SelectRecipient.footer(context, _pageCtrl);
+          break;
 
-      case 1:
-        appBarTitle = arb.reviewSendingInfo.toUpperCase();
+        case 1:
+          appBarTitle = arb.reviewSendingInfo.toUpperCase();
 
-        buttons = CheckOutDetails.footer(context, _pageCtrl);
-        break;
+          buttons = CheckOutDetails.footer(context, _pageCtrl);
+          break;
 
-      case 2:
-        appBarTitle = arb.payment;
+        case 2:
+          appBarTitle = arb.payment;
 
-        buttons = const SizedBox.shrink();
-        break;
+          buttons = const SizedBox.shrink();
+          break;
+      }
+      await Future.delayed(expandDuration);
+      setState(() => expand = true);
     }
   }
 }

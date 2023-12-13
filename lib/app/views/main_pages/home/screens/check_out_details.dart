@@ -12,6 +12,7 @@ import '/app/views/main_pages/transfers/widgets/agent_description.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/buttons/expand_button.dart';
 import '/app/widgets/row.dart';
+import '/app/widgets/scroll_button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/graphql/api/send_transfer.dart';
@@ -27,6 +28,7 @@ class CheckOutDetails extends StatefulWidget {
   static Widget footer(BuildContext context, PageController page) {
     final AppLocalizations arb = AppLocalizations.of(context)!;
     return BottomButtons(
+      key: UniqueKey(),
       firstButton: ExpandButton(
         () {
           Global.snackKey.currentState?.hideCurrentMaterialBanner();
@@ -89,220 +91,250 @@ class CheckOutDetails extends StatefulWidget {
 
 class _CheckOutDetailsState extends State<CheckOutDetails> {
   late AppLocalizations arb;
+  late bool isAR;
+  final ScrollController scrollCtrl = ScrollController();
 
   @override
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
+    isAR = LangService.isAR();
     super.didChangeDependencies();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollCtrl.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bool isAr = LangService.isAR();
     return Consumer<Calculator>(builder: (_, state, child) {
       final rate = state.receiverAgent.rate * (1 - (state.percentFee / 100));
       final bool usd = state.receiverAgent.usdAvailability == 2;
-      child = Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(10, 14, 10, 10),
-          decoration: Decorations.main(context),
-          width: MediaQuery.of(context).size.width,
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),
-                child: TextX(
-                  arb.transferDetails,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ),
-              Container(
+      child = Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(10, 14, 10, 10),
+              decoration: Decorations.main(context),
+              width: MediaQuery.of(context).size.width,
+              child: ListView(
+                shrinkWrap: true,
+                controller: scrollCtrl,
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                decoration: Decorations.border(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RowSpaceBetween([
-                      TextX(arb.recipient),
-                      TextX(
-                        '${state.selectedRecipient?.firstName} ${state.selectedRecipient?.lastName}'
-                            .toUpperCase(),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ]),
-                    const SizedBox(height: 8),
-                    RowSpaceBetween([
-                      TextX(arb.recipientGets),
-                      Text.rich(
-                        textScaleFactor: 1.0,
-                        TextSpan(
-                          children: <TextSpan>[
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),
+                    child: TextX(
+                      arb.transferDetails,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                    decoration: Decorations.border(context),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RowSpaceBetween([
+                          TextX(arb.recipient),
+                          TextX(
+                            '${state.selectedRecipient?.firstName} ${state.selectedRecipient?.lastName}'
+                                .toUpperCase(),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
+                          TextX(arb.recipientGets),
+                          Text.rich(
+                            textScaleFactor: 1.0,
                             TextSpan(
-                              text: '${state.receiver.text} ',
-                            ),
-                            TextSpan(
-                              text: state.sendUSD
-                                  ? 'USD'
-                                  : state.receiverCountry.currency.code,
-                            ),
-                          ],
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '${state.receiver.text} ',
+                                ),
+                                TextSpan(
+                                  text: state.sendUSD
+                                      ? 'USD'
+                                      : state.receiverCountry.currency.code,
+                                ),
+                              ],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
-                        ),
-                      ),
-                    ]),
-                    const SizedBox(height: 8),
-                    RowSpaceBetween([
-                      TextX(arb.pickUpPoint),
-                      TextX(state.receiverAgent.name),
-                    ]),
-                    const SizedBox(height: 8),
-                    RowSpaceBetween([
-                      TextX(arb.sendingRate),
-                      Text.rich(
-                        textScaleFactor: 1.0,
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text:
-                                  '${isAr ? '' : '1'} USDT ${isAr ? '1 ' : ''}= ',
                             ),
+                          ),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
+                          TextX(arb.pickUpPoint),
+                          TextX(state.receiverAgent.name),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
+                          TextX(arb.sendingRate),
+                          Text.rich(
+                            textScaleFactor: 1.0,
                             TextSpan(
-                              text: Helper.priced(
-                                rate,
-                                currencyCode: usd
-                                    ? 'USD'
-                                    : state.receiverCountry.currency.code,
-                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      '${isAR ? '' : '1'} USDT ${isAR ? '1 ' : ''}= ',
+                                ),
+                                TextSpan(
+                                  text: Helper.priced(
+                                    rate,
+                                    currencyCode: usd
+                                        ? 'USD'
+                                        : state.receiverCountry.currency.code,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                decoration: Decorations.border(context),
-                child: Column(
-                  children: [
-                    RowSpaceBetween([
-                      TextX(arb.sendingAmount),
-                      Text.rich(
-                        textScaleFactor: 1.0,
-                        TextSpan(
-                          children: <TextSpan>[
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                    decoration: Decorations.border(context),
+                    child: Column(
+                      children: [
+                        RowSpaceBetween([
+                          TextX(arb.sendingAmount),
+                          Text.rich(
+                            textScaleFactor: 1.0,
                             TextSpan(
-                              text:
-                                  '${num.tryParse(state.sender.text)?.toStringAsFixed(2)} ',
-                            ),
-                            const TextSpan(text: 'USDT'),
-                          ],
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      '${num.tryParse(state.sender.text)?.toStringAsFixed(2)} ',
+                                ),
+                                const TextSpan(text: 'USDT'),
+                              ],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
-                      ),
-                    ]),
-                    const SizedBox(height: 8),
-                    RowSpaceBetween([
-                      TextX(arb.fee),
-                      Text.rich(
-                        textScaleFactor: 1.0,
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text:
-                                  '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
                             ),
-                            const TextSpan(text: 'USDT'),
-                          ],
-                        ),
-                      ),
-                    ]),
-                    const SizedBox(height: 8),
-                    RowSpaceBetween([
-                      TextX(arb.totalToPay),
-                      Text.rich(
-                        textScaleFactor: 1.0,
-                        TextSpan(
-                          children: <TextSpan>[
+                          ),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
+                          TextX(arb.fee),
+                          Text.rich(
+                            textScaleFactor: 1.0,
                             TextSpan(
-                              text:
-                                  '${state.amountPlusFee.toStringAsFixed(2)} ',
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
+                                ),
+                                const TextSpan(text: 'USDT'),
+                              ],
                             ),
-                            const TextSpan(text: 'USDT'),
-                          ],
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                          ),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
+                          TextX(arb.totalToPay),
+                          Text.rich(
+                            textScaleFactor: 1.0,
+                            TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      '${state.amountPlusFee.toStringAsFixed(2)} ',
+                                ),
+                                const TextSpan(text: 'USDT'),
+                              ],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
-                      ),
-                    ]),
-                  ],
-                ),
-              ),
-              AgentDescription(html: state.receiverAgent.description),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(15),
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                decoration: Decorations.note(context),
-                child: TextX(
-                  arb.weOnlyAcceptInUSDT,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: MainColors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(15),
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                decoration: Decorations.note(context),
-                child: Text.rich(
-                  textScaleFactor: 1.0,
-                  TextSpan(
-                    children: <TextSpan>[
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                  AgentDescription(html: state.receiverAgent.description),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: Decorations.note(context),
+                    child: TextX(
+                      arb.weOnlyAcceptInUSDT,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: MainColors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: Decorations.note(context),
+                    child: Text.rich(
+                      textScaleFactor: 1.0,
                       TextSpan(
-                        text:
-                            '${arb.beforeConfirmingYourOrderYouShouldHaveADigitalWallet}, ',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text:
+                                '${arb.beforeConfirmingYourOrderYouShouldHaveADigitalWallet}, ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
                                   color: MainColors.red,
                                 ),
-                      ),
-                      TextSpan(
-                        text: arb.clickHereToLearnHowToPay,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.underline(
+                          ),
+                          TextSpan(
+                            text: arb.clickHereToLearnHowToPay,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.underline(
                                   color: MainColors.red,
                                   distance: 1,
                                 ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => Helper.launchURL(
-                                AppMetadata.get.paymentTutorialUrl,
-                              ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Helper.launchURL(
+                                    AppMetadata.get.paymentTutorialUrl,
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 6,
+            left: isAR ? null : 6,
+            right: isAR ? 6 : null,
+            child: ScrollButton(scrollCtrl: scrollCtrl),
+          ),
+        ],
       );
       return child;
     });
