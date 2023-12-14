@@ -50,20 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyArRCrDUGeIgrVGA7LLMD9elUGobP1HYKw',
-    appId: '1:1091889875578:android:d326f4ac8ba1457aafc9c3',
-    messagingSenderId: '1091889875578',
-    projectId: 'modx-32aef',
-    storageBucket: 'modx-32aef.appspot.com',
+    apiKey: 'AIzaSyBPks5U1NjF7qC8gxz09DF-aFVgA3DRAI8',
+    appId: '1:456472455625:android:9baeab9552cec72c9a2018',
+    messagingSenderId: '456472455625',
+    projectId: 'amana-send',
+    storageBucket: 'amana-send.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCDPxh1Qh5uiLRdKykpfLis72lUdS-c3V0',
-    appId: '1:1091889875578:ios:18c327d0868ef183afc9c3',
-    messagingSenderId: '1091889875578',
-    projectId: 'modx-32aef',
-    storageBucket: 'modx-32aef.appspot.com',
-    iosClientId: '1091889875578-mbnt284mbi3otn5s3g3fqvnop0858ivr.apps.googleusercontent.com',
-    iosBundleId: 'com.modx',
+    apiKey: 'AIzaSyBOXoh0s2_psTWgzgfSE9YWnjy1rdLkBvQ',
+    appId: '1:456472455625:ios:3ab64f9193bdab059a2018',
+    messagingSenderId: '456472455625',
+    projectId: 'amana-send',
+    storageBucket: 'amana-send.appspot.com',
+    iosBundleId: 'com.amanaSend',
   );
 }
