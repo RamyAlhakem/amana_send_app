@@ -139,10 +139,7 @@ class StructureKit {
             visible: Global.appSettings.token.isEmpty,
             replacement: Row(children: [
               IconButton(
-                onPressed: () =>
-                    Tutorial(context, alwaysShow: true).showTutorial(
-                  Tutorial(context, alwaysShow: true).targetSendForm(),
-                ),
+                onPressed: () => Tutorial(context, show: true).showTutorial(),
                 icon: const HeroIcon(HeroIcons.questionMarkCircle),
               ),
               IconButton(
@@ -168,10 +165,7 @@ class StructureKit {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () =>
-                      Tutorial(context, alwaysShow: true).showTutorial(
-                    Tutorial(context, alwaysShow: true).targetSendForm(),
-                  ),
+                  onPressed: () => Tutorial(context, show: true).showTutorial(),
                   icon: const HeroIcon(HeroIcons.questionMarkCircle),
                 ),
                 const LangPicker(),

@@ -3,13 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '/app/extensions/dark_mode.dart';
-import '/global/variables.dart';
 import '/services/lang_service.dart';
+import 'user_service.dart';
 
 class Tutorial {
-  const Tutorial(this.context, {this.alwaysShow = false});
+  const Tutorial(this.context, {this.show = false});
   final BuildContext context;
-  final bool alwaysShow;
+  final bool show;
 
   static late AppLocalizations arb;
   static GlobalKey key1 = GlobalKey(), key2 = GlobalKey(), key3 = GlobalKey();
@@ -21,21 +21,7 @@ class Tutorial {
     fontSize: 20.0,
   );
 
-  // Widget _lorem() {
-  //   return const Padding(
-  //     padding: EdgeInsets.only(top: 10.0),
-  //     child: Text(
-  //       'Lorem ipsum dolor sit.',
-  //       style: TextStyle(color: Colors.white),
-  //     ),
-  //   );
-  // }
-
-  List<TargetFocus> targetSendForm() {
-    if (!alwaysShow) {
-      if (!Global.appSettings.isFreshUser) return <TargetFocus>[];
-    }
-    arb = AppLocalizations.of(context)!;
+  static List<TargetFocus> targets() {
     final bool isAR = LangService.isAR();
     final List<TargetFocus> targets = <TargetFocus>[];
     targets.add(
@@ -157,13 +143,11 @@ class Tutorial {
     return targets;
   }
 
-  void showTutorial(List<TargetFocus> targets) {
-    if (!alwaysShow) {
-      if (!Global.appSettings.isFreshUser) return;
-    }
+  void showTutorial() {
+    if (!show && !UserService.isFresh()) return;
     arb = AppLocalizations.of(context)!;
     TutorialCoachMark(
-      targets: targets,
+      targets: targets(),
       paddingFocus: 10,
       textSkip: arb.skip,
       textStyleSkip: _style,

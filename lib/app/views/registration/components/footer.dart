@@ -35,7 +35,7 @@ class LogInFooter extends StatelessWidget {
             ],
           ),
           maxLines: 1,
-          textScaleFactor: 1.0,
+          textScaler: TextScaler.noScaling,
         ),
       ),
     );

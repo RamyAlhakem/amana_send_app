@@ -19,11 +19,7 @@ class AppSettings with ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
-  late bool _isFreshUser;
-
   static String _token = '';
-
-  bool get isFreshUser => _isFreshUser;
 
   String get token => _token;
   bool get loggedIn => _token.isNotEmpty;
@@ -34,7 +30,6 @@ class AppSettings with ChangeNotifier {
   Future<void> loadSettings({bool rebuild = true}) async {
     _themeMode = await ThemeService.themeMode();
     _locale = await LangService.loadLang();
-    _isFreshUser = await UserService.isFresh();
     _token = await UserService.saveUser();
 
     if (rebuild) notifyListeners();

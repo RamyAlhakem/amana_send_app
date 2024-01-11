@@ -84,7 +84,7 @@ class _CurrenciesNewsState extends State<CurrenciesNews> {
                     style: const TextStyle(fontSize: 9),
                   ),
                   Text.rich(
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         const TextSpan(text: '1 USDT = '),

@@ -188,11 +188,12 @@ class _SuccessState extends State<Success> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text.rich(
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
+                          text:
+                              '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
                         ),
                         const TextSpan(text: 'USDT'),
                       ],
@@ -208,7 +209,7 @@ class _SuccessState extends State<Success> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text.rich(
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(

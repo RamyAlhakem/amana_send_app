@@ -221,7 +221,7 @@ class _WalletAddressState extends State<WalletAddress>
                     ),
                     const SizedBox(height: 10),
                     Text.rich(
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       TextSpan(
                         children: <TextSpan>[
                           TextSpan(text: '${arb.walletNetwork}: '),

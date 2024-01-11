@@ -24,7 +24,7 @@ class TotalFees extends StatelessWidget {
                 RowSpaceBetween([
                   TextX(arb!.fee),
                   Text.rich(
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
@@ -40,7 +40,7 @@ class TotalFees extends StatelessWidget {
                 RowSpaceBetween([
                   TextX(arb.sendingAmount),
                   Text.rich(
-                    textScaleFactor: 1.0,
+                    textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
@@ -58,7 +58,7 @@ class TotalFees extends StatelessWidget {
           RowSpaceBetween([
             TextX(arb.total),
             Text.rich(
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(
@@ -76,7 +76,7 @@ class TotalFees extends StatelessWidget {
           RowSpaceBetween([
             TextX(arb.recipientGets),
             Text.rich(
-              textScaleFactor: 1.0,
+              textScaler: TextScaler.noScaling,
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(

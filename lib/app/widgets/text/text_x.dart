@@ -41,7 +41,7 @@ class TextX extends StatelessWidget {
       locale: locale,
       softWrap: softWrap,
       overflow: overflow,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: maxLines,
       semanticsLabel: semanticsLabel,
       textWidthBasis: textWidthBasis,
