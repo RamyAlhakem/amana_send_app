@@ -23,7 +23,7 @@ class AgentModel extends SafetyModel {
 
   AgentModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
-    name = stringFromJson(json, 'name');
+    name = stringFromJson(json, 'displayName');
     iconUrl = stringFromJson(json, 'iconUrl');
     status = intFromJson(json, 'status');
     rate = doubleFromJson(json, 'rate', decimal: 10);
@@ -40,7 +40,7 @@ class AgentModel extends SafetyModel {
   @override
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
+        'displayName': name,
         'iconUrl': iconUrl,
         'status': status,
         'rate': rate,
