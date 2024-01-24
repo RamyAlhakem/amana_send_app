@@ -158,9 +158,7 @@ class _HomeState extends State<Home> {
                         return Helper.snack(
                           '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
                           action: Button(
-                            () => Helper.launchURL(
-                              'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0',
-                            ),
+                            () => Helper.launchURL('https://t.me/AMANA_CS'),
                             width: MediaQuery.of(context).size.width,
                             TextX(arb.contactSupportTeam),
                           ),

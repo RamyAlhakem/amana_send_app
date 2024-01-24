@@ -8,7 +8,6 @@ import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/helper/screen_size.dart';
-import '/models/metadata.dart';
 import 'settings.dart';
 
 class ContactUs {
@@ -32,8 +31,7 @@ class ContactUs {
           height: 45,
           width: ScreenSize.width,
           borderRadius: 100,
-          () => Helper.launchURL(
-              'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0'),
+          () => Helper.launchURL('https://t.me/AMANA_CS'),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
