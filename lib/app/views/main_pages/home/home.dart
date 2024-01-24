@@ -28,6 +28,7 @@ import '/router/app_route.dart';
 import '/services/lang_service.dart';
 import '/services/popup_services.dart';
 import '/services/tutorial_service.dart';
+import '/tools/tools.dart';
 import 'widgets/send_form.dart';
 
 class Home extends StatefulWidget {
@@ -156,7 +157,7 @@ class _HomeState extends State<Home> {
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
                         return Helper.snack(
-                          '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
                           action: Button(
                             () => Helper.launchURL('https://t.me/AMANA_CS'),
                             width: MediaQuery.of(context).size.width,
@@ -168,13 +169,13 @@ class _HomeState extends State<Home> {
                       if (double.parse(state.receiver.text) <
                           state.receiverAgent.minAmount) {
                         return Helper.snack(
-                          '${arb.minimumReceivingLimitToThisPickUpPointIs} ${state.receiverAgent.minAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.minimumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.minAmount)} ${state.receiverCountry.currency.code}',
                         );
                       }
                       if (double.parse(state.receiver.text) >
                           state.receiverAgent.maxAmount) {
                         return Helper.snack(
-                          '${arb.maximumReceivingLimitToThisPickUpPointIs} ${state.receiverAgent.maxAmount} ${state.receiverCountry.currency.code}',
+                          '${arb.maximumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.maxAmount)} ${state.receiverCountry.currency.code}',
                         );
                       }
 

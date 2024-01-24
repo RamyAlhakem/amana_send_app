@@ -6,6 +6,7 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
+import '/tools/tools.dart';
 
 class TotalFees extends StatelessWidget {
   const TotalFees({super.key});
@@ -29,7 +30,7 @@ class TotalFees extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
+                              '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
                         ),
                         const TextSpan(text: 'USDT'),
                       ],
@@ -44,7 +45,8 @@ class TotalFees extends StatelessWidget {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${state.sender.text} ',
+                          text:
+                              '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
                         ),
                         const TextSpan(text: 'USDT'),
                       ],
@@ -62,7 +64,7 @@ class TotalFees extends StatelessWidget {
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${state.amountPlusFee.toStringAsFixed(2)} ',
+                    text: '${Tools.nicePrice(state.amountPlusFee)} ',
                   ),
                   const TextSpan(text: 'USDT'),
                 ],
@@ -80,7 +82,8 @@ class TotalFees extends StatelessWidget {
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${state.receiver.text} ',
+                    text:
+                        '${Tools.nicePrice(double.tryParse(state.receiver.text) ?? 0)} ',
                   ),
                   TextSpan(
                     text: state.sendUSD

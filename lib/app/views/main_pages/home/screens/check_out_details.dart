@@ -19,6 +19,7 @@ import '/graphql/api/send_transfer.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
 import '/services/lang_service.dart';
+import '/tools/tools.dart';
 import 'components/bottom_buttons.dart';
 
 class CheckOutDetails extends StatefulWidget {
@@ -157,7 +158,8 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${state.receiver.text} ',
+                                  text:
+                                      '${Tools.nicePrice(double.tryParse(state.receiver.text) ?? 0)} ',
                                 ),
                                 TextSpan(
                                   text: state.sendUSD
@@ -191,12 +193,8 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                       '${isAR ? '' : '1'} USDT ${isAR ? '1 ' : ''}= ',
                                 ),
                                 TextSpan(
-                                  text: Helper.priced(
-                                    rate,
-                                    currencyCode: usd
-                                        ? 'USD'
-                                        : state.receiverCountry.currency.code,
-                                  ),
+                                  text:
+                                      '${usd ? 'USD' : state.receiverCountry.currency.code}${Tools.nicePrice(rate)}',
                                 ),
                               ],
                             ),
@@ -219,7 +217,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${num.tryParse(state.sender.text)?.toStringAsFixed(2)} ',
+                                      '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
                                 ),
                                 const TextSpan(text: 'USDT'),
                               ],
@@ -241,7 +239,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${state.receiverAgent.receiveFees.toStringAsFixed(2)} ',
+                                      '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
                                 ),
                                 const TextSpan(text: 'USDT'),
                               ],
@@ -257,7 +255,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${state.amountPlusFee.toStringAsFixed(2)} ',
+                                      '${Tools.nicePrice(state.amountPlusFee)} ',
                                 ),
                                 const TextSpan(text: 'USDT'),
                               ],

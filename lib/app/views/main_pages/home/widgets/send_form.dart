@@ -15,6 +15,7 @@ import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/helper/screen_size.dart';
 import '/services/tutorial_service.dart';
+import '/tools/tools.dart';
 import 'agent_button.dart';
 import 'country_roller.dart';
 import 'currency_roller.dart';
@@ -181,10 +182,7 @@ class _SendFormFieldsState extends State<SendFormFields>
               Flexible(
                 child: FittedBox(
                   child: TextX(
-                    Helper.priced(
-                      state.sendCountry.currency.rate * send,
-                      currencyCode: state.sendCountry.currency.code,
-                    ),
+                    '${state.sendCountry.currency.code} ${Tools.nicePrice(state.sendCountry.currency.rate * send)}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),

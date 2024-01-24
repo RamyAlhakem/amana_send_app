@@ -21,6 +21,7 @@ import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
+import '/tools/tools.dart';
 
 class TransferMain extends StatefulWidget {
   const TransferMain(this.transfer, {super.key});
@@ -49,8 +50,6 @@ class _TransferMainState extends State<TransferMain> {
 
   late TransferModel transfer;
 
-  String recipientAmount = '';
-
   bool isAr = false;
   bool selectedStatus = false;
   bool selectedDetail = true;
@@ -63,11 +62,6 @@ class _TransferMainState extends State<TransferMain> {
     super.initState();
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
 
-    if (transfer.recipient.country.coCode == 'sy') {
-      recipientAmount = transfer.recipientAmount.toStringAsFixed(0);
-    } else {
-      recipientAmount = transfer.recipientAmount.toStringAsFixed(2);
-    }
     GetRecipients.request();
   }
 
@@ -99,7 +93,7 @@ class _TransferMainState extends State<TransferMain> {
             const SizedBox(height: 6),
             Center(
               child: TextX(
-                '$recipientAmount ${transfer.isReceiveInUsd ? 'USD' : transfer.recipient.country.currency.code}',
+                '${Tools.nicePrice(transfer.recipientAmount)} ${transfer.isReceiveInUsd ? 'USD' : transfer.recipient.country.currency.code}',
                 style: TransferMain.boldStyle.copyWith(fontSize: 22),
               ),
             ),

@@ -15,6 +15,7 @@ import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
 import '/tools/attachment_tools.dart';
+import '/tools/tools.dart';
 
 class TransferDetail extends StatefulWidget {
   const TransferDetail(this.transfer, {super.key});
@@ -162,7 +163,7 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: '${transfer.sendAmount.toStringAsFixed(2)} ',
+                        text: '${Tools.nicePrice(transfer.sendAmount)} ',
                       ),
                       const TextSpan(text: 'USDT'),
                     ],
@@ -207,7 +208,7 @@ class _TransferDetailState extends State<TransferDetail> {
                         text: '${isAr ? '' : '1'} USDT ${isAr ? '1 ' : ''}= ',
                       ),
                       TextSpan(
-                        text: exchangeRate.toStringAsFixed(2),
+                        text: Tools.nicePrice(exchangeRate),
                       ),
                       TextSpan(
                         text:
@@ -236,7 +237,7 @@ class _TransferDetailState extends State<TransferDetail> {
                     children: <TextSpan>[
                       TextSpan(
                         text:
-                            '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
+                            '${Tools.nicePrice(transfer.provider.receiveFees)} ',
                       ),
                       const TextSpan(text: 'USDT'),
                     ],
@@ -257,7 +258,7 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: '${transfer.totalAmount.toStringAsFixed(2)} ',
+                        text: '${Tools.nicePrice(transfer.totalAmount)} ',
                       ),
                       const TextSpan(text: 'USDT'),
                     ],
@@ -273,7 +274,7 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: '${transfer.recipientAmount.toStringAsFixed(2)} ',
+                        text: '${Tools.nicePrice(transfer.recipientAmount)} ',
                       ),
                       TextSpan(
                         text: transfer.isReceiveInUsd

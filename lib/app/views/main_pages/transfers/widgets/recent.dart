@@ -10,6 +10,7 @@ import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/models/transfer.dart';
 import '/router/app_route.dart';
+import '/tools/tools.dart';
 
 class TransferRecent extends StatefulWidget {
   const TransferRecent(this.transfer, {super.key});
@@ -101,7 +102,8 @@ class _TransferRecentState extends State<TransferRecent> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: '${widget.transfer.recipientAmount} ',
+                        text:
+                            '${Tools.nicePrice(widget.transfer.recipientAmount)} ',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       TextSpan(
