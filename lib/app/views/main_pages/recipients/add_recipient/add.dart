@@ -133,6 +133,9 @@ class _AddRecipientState extends State<AddRecipient> {
                           controller: _firstName,
                           hint: arb.firstName,
                           type: TextInputType.name,
+                          onChanged: (_) {
+                            TextFieldValidator.arabic(context, _firstName);
+                          },
                         ),
                       ),
                       const SizedBox(width: 13),
@@ -141,6 +144,9 @@ class _AddRecipientState extends State<AddRecipient> {
                           controller: _lastName,
                           hint: arb.lastName,
                           type: TextInputType.name,
+                          onChanged: (_) {
+                            TextFieldValidator.arabic(context, _lastName);
+                          },
                         ),
                       ),
                     ]),
@@ -148,6 +154,9 @@ class _AddRecipientState extends State<AddRecipient> {
                       controller: _fatherName,
                       hint: arb.fatherName,
                       type: TextInputType.name,
+                      onChanged: (_) {
+                        TextFieldValidator.arabic(context, _fatherName);
+                      },
                       onSubmitted: (_) => _submit(),
                     ),
                   ],
