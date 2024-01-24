@@ -19,15 +19,14 @@ class CaptchaDialog {
     double progress = 0;
     showDialog(
       context: context,
-      barrierDismissible: false,
       useSafeArea: false,
       barrierColor: Colors.black26,
       builder: (BuildContext _) {
         return StatefulBuilder(builder: (__, setState) {
           return BlurryContainer(
             child: AlertDialog(
-              scrollable: true,
               title: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextX(
                     'Captcha verification',
@@ -39,31 +38,34 @@ class CaptchaDialog {
                 ],
               ),
               titlePadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              insetPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              contentPadding: const EdgeInsets.fromLTRB(8, 5, 8, 10),
+              insetPadding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              contentPadding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
               content: SizedBox(
-                height: ScreenSize.height * 0.65,
+                height: ScreenSize.height * 0.7,
                 width: ScreenSize.width,
                 child: Stack(
                   children: [
-                    InAppWebView(
-                      initialUrlRequest: URLRequest(
-                        url: Uri.parse('${Configs.apiUrl}captcha'),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: InAppWebView(
+                        initialUrlRequest: URLRequest(
+                          url: Uri.parse('${Configs.apiUrl}captcha'),
+                        ),
+                        onProgressChanged: (InAppWebViewController _, int p) {
+                          setState(() => progress = p / 100);
+                        },
+                        onLoadStart: (InAppWebViewController ctrl, Uri? _) {
+                          ctrl.addJavaScriptHandler(
+                            handlerName: 'callHandler',
+                            callback: (List<dynamic> args) async {
+                              if (args.first.toString().isNotEmpty) {
+                                dismiss();
+                                await onSubmit(args.first);
+                              }
+                            },
+                          );
+                        },
                       ),
-                      onProgressChanged: (InAppWebViewController _, int p) {
-                        setState(() => progress = p / 100);
-                      },
-                      onLoadStart: (InAppWebViewController ctrl, Uri? _) {
-                        ctrl.addJavaScriptHandler(
-                          handlerName: 'callHandler',
-                          callback: (List<dynamic> args) async {
-                            if (args.first.toString().isNotEmpty) {
-                              dismiss();
-                              await onSubmit(args.first);
-                            }
-                          },
-                        );
-                      },
                     ),
                     Visibility(
                       visible: progress < 1,
