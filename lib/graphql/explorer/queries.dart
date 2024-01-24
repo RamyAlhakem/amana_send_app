@@ -83,7 +83,7 @@ class Queries {
     }
       ''';
 
-  static String paymentMethods = '''
+  static const String paymentMethods = '''
     query paymentMethods {
       paymentMethods {
         ${Explorer.paymentMethod}
@@ -91,7 +91,7 @@ class Queries {
     }
       ''';
 
-  static String providers = '''
+  static const String providers = '''
     query providers {
       providers {
         ${Explorer.provider}
@@ -99,7 +99,7 @@ class Queries {
     }
       ''';
 
-  static String transaction = '''
+  static const String transaction = '''
     query MyQuery(\$id: ID!) {
       transaction(id: \$id) {
          ${Explorer.transfer}
@@ -107,7 +107,7 @@ class Queries {
     }
       ''';
 
-  static String transactions = '''
+  static const String transactions = '''
     query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
       pending: transactions(limit: \$limit, page: \$page, status: pending) {
         ${Explorer.transfer}
