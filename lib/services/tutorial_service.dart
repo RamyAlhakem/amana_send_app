@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '/app/extensions/dark_mode.dart';
+import '/app/widgets/text/text_x.dart';
 import '/services/lang_service.dart';
 import 'user_service.dart';
 
@@ -151,6 +152,18 @@ class Tutorial {
       paddingFocus: 10,
       textSkip: arb.skip,
       textStyleSkip: _style,
+      skipWidget: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextX(arb.skip, style: _style.copyWith(fontSize: 30)),
+          const SizedBox(width: 8),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: Colors.white,
+            size: 40,
+          )
+        ],
+      ),
       opacityShadow: context.isDarkMode ? 0.6 : 0.5,
       pulseEnable: false,
       onClickTarget: (target) {
