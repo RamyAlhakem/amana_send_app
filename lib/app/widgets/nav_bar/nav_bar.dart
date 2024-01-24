@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/text/text_x.dart';
@@ -11,7 +13,7 @@ class NavBar extends StatelessWidget {
     this.backgroundColor,
     this.shadowColor = Colors.black12,
     this.itemCornerRadius = 50,
-    this.containerHeight = 75,
+    this.containerHeight,
     this.blurRadius = 2,
     this.spreadRadius = 0,
     this.borderRadius,
@@ -59,7 +61,7 @@ class NavBar extends StatelessWidget {
   final double itemCornerRadius;
 
   /// Defines the bottom navigation bar height. Defaults to 56.
-  final double containerHeight;
+  final double? containerHeight;
 
   /// Used to configure the blurRadius of the [BoxShadow]. Defaults to 2.
   final double blurRadius;
@@ -96,31 +98,28 @@ class NavBar extends StatelessWidget {
         ],
         borderRadius: borderRadius,
       ),
-      child: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: containerHeight,
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-          child: Row(
-            mainAxisAlignment: mainAxisAlignment,
-            children: items.map((item) {
-              int index = items.indexOf(item);
-              return GestureDetector(
-                onTap: () => onItemSelected(index),
-                child: _ItemWidget(
-                  item: item,
-                  iconSize: iconSize,
-                  isSelected: index == selectedIndex,
-                  backgroundColor:
-                      backgroundColor ?? Theme.of(context).cardColor,
-                  itemCornerRadius: itemCornerRadius,
-                  animationDuration: animationDuration,
-                  titlePadding: titlePadding,
-                  curve: curve,
-                ),
-              );
-            }).toList(),
-          ),
+      child: Container(
+        width: double.infinity,
+        height: containerHeight ?? (Platform.isIOS ? 85 : 75),
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        child: Row(
+          mainAxisAlignment: mainAxisAlignment,
+          children: items.map((item) {
+            int index = items.indexOf(item);
+            return GestureDetector(
+              onTap: () => onItemSelected(index),
+              child: _ItemWidget(
+                item: item,
+                iconSize: iconSize,
+                isSelected: index == selectedIndex,
+                backgroundColor: backgroundColor ?? Theme.of(context).cardColor,
+                itemCornerRadius: itemCornerRadius,
+                animationDuration: animationDuration,
+                titlePadding: titlePadding,
+                curve: curve,
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
