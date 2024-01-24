@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
+import '/graphql/api/get_countries.dart';
 
 class LanguageDialog {
   static void change() {
@@ -53,7 +54,11 @@ class LanguageDialog {
           ),
         );
       },
-    );
+    ).whenComplete(() {
+      // Refresh UI
+
+      GetCountriesAPI.request();
+    });
   }
 
   static void dismiss() => Navigator.pop(Global.key.currentContext!);
