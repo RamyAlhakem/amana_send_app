@@ -158,7 +158,7 @@ class _TransferDetailState extends State<TransferDetail> {
               RowSpaceBetween([
                 TextX(arb.youSent),
                 Text.rich(
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
@@ -200,7 +200,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       ),
                 ),
                 Text.rich(
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
@@ -231,7 +231,7 @@ class _TransferDetailState extends State<TransferDetail> {
               RowSpaceBetween([
                 TextX(arb.fee),
                 Text.rich(
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
@@ -253,7 +253,7 @@ class _TransferDetailState extends State<TransferDetail> {
               RowSpaceBetween([
                 TextX(arb.totalPaid),
                 Text.rich(
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
@@ -269,7 +269,7 @@ class _TransferDetailState extends State<TransferDetail> {
               RowSpaceBetween([
                 TextX(arb.recipientGets),
                 Text.rich(
-                  textScaleFactor: 1.0,
+                  textScaler: TextScaler.noScaling,
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(

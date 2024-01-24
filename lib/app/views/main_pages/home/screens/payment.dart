@@ -192,7 +192,7 @@
 //                     style: Theme.of(context).textTheme.bodyLarge,
 //                   ),
 //                   Text.rich(
-//                     textScaleFactor: 1.0,
+//                     textScaler: TextScaler.noScaling,
 //                     TextSpan(
 //                       children: <TextSpan>[
 //                         TextSpan(

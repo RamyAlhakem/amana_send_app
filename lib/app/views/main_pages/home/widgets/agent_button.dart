@@ -69,7 +69,7 @@ class AgentButton extends StatelessWidget {
                       Flexible(
                         child: FittedBox(
                           child: Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(

@@ -71,13 +71,13 @@ class SelectRecipient extends StatefulWidget {
           if (user.level.maxAmount < senderAmount) {
             return ContactUs(
               message:
-                  '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} ${user.country.currency.code}.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                  '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
             ).show();
           }
           if (user.remainingSendLimit < senderAmount) {
             return ContactUs(
               message:
-                  '${arb.yourMaxSendingAmountWithin} ${user.level.duration.toStringAsFixed(0)} ${arb.day} ${arb.iS} ${user.remainingSendLimit} ${user.country.currency.code}.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                  '${arb.yourMaxSendingAmountWithin} ${user.level.duration.toStringAsFixed(0)} ${arb.day} ${arb.iS} ${user.remainingSendLimit} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
             ).show();
           }
           if (double.parse(calculator.receiver.text) <

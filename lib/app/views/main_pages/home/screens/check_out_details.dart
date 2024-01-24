@@ -153,7 +153,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         RowSpaceBetween([
                           TextX(arb.recipientGets),
                           Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
@@ -183,7 +183,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         RowSpaceBetween([
                           TextX(arb.sendingRate),
                           Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
@@ -214,7 +214,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         RowSpaceBetween([
                           TextX(arb.sendingAmount),
                           Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
@@ -236,7 +236,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         RowSpaceBetween([
                           TextX(arb.fee),
                           Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
@@ -252,7 +252,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         RowSpaceBetween([
                           TextX(arb.totalToPay),
                           Text.rich(
-                            textScaleFactor: 1.0,
+                            textScaler: TextScaler.noScaling,
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
@@ -293,7 +293,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: Decorations.note(context),
                     child: Text.rich(
-                      textScaleFactor: 1.0,
+                      textScaler: TextScaler.noScaling,
                       TextSpan(
                         children: <TextSpan>[
                           TextSpan(

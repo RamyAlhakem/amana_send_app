@@ -30,7 +30,7 @@ class TextC extends StatelessWidget {
       strutStyle: strutStyle,
       textAlign: textAlign,
       textDirection: textDirection,
-      textScaleFactor: 1.0,
+      textScaler: TextScaler.noScaling,
       maxLines: maxLines,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,

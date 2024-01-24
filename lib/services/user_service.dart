@@ -14,7 +14,7 @@ import '/models/user_base.dart';
 class UserService {
   //
   // Check user's freshness from local storage.
-  static Future<bool> isFresh() async {
+  static bool isFresh() {
     final UserBase user = Database().getUserBase;
 
     final bool isFreshUser = user.isFreshUser == null;

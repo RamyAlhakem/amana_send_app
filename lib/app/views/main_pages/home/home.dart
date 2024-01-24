@@ -156,7 +156,7 @@ class _HomeState extends State<Home> {
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
                         return Helper.snack(
-                          '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} ${user.country.currency.code}\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                          '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
                           action: Button(
                             () => Helper.launchURL(
                               'https://api.whatsapp.com/send/?phone=${AppMetadata.get.whatsapp}&text&app_absent=0',
