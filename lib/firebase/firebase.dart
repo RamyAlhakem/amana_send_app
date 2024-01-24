@@ -6,7 +6,8 @@ import '/firebase_options.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/firebase.dart';
-import '../models/user_base.dart';
+import '/models/user_base.dart';
+import '/router/app_route.dart';
 
 class FirebaseTool {
   static Future<void> getFirebaseToken() async {
@@ -67,18 +68,42 @@ class FirebaseTool {
 
     Helper.log('firebaseTopics: ${firebase.topics}');
 
-    notificationListener();
+    _notificationListener();
   }
 
-  static void notificationListener() {
+  static void _notificationListener() {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) _handleMessage(message);
+      if (message != null) _backgroundMessage(message);
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      _handleMessage(message);
-    });
+    // FirebaseMessaging.onBackgroundMessage(_backgroundMessage);
+    // FirebaseMessaging.onMessage.listen((m) => _backgroundMessage(m));
+    FirebaseMessaging.onMessageOpenedApp.listen((m) => _backgroundMessage(m));
   }
 
-  static void _handleMessage(RemoteMessage message) {}
+  static Future<void> _backgroundMessage(RemoteMessage message) async {
+    final String route = message.data['route'].toString();
+    final String routeName = route.split('/').first;
+    int id = 0;
+
+    Helper.log('route name: $route');
+    Helper.log('message body: ${message.notification?.body}');
+
+    try {
+      final String routeId = route.split('/')[1];
+      id = int.parse(routeId);
+    } catch (e) {
+      Helper.log('_backgroundMessage error: routeId $e');
+    }
+
+    AppRoute.get().then((router) {
+      switch (routeName.toLowerCase()) {
+        case 'transfer':
+          return router.goNamed(
+            '/${AppRoute.transfer}',
+            pathParameters: <String, String>{'id': '$id'},
+          );
+      }
+    });
+  }
 }
