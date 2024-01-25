@@ -136,14 +136,14 @@ class TransferModel extends SafetyModel {
         'walletAddress': wallet.toJson(),
       };
 
-  bool isNull() {
-    bool isNull = false;
+  bool isEmpty() {
+    bool empty = false;
 
-    if (id == 0) isNull = true;
-    if (sendAmount == 0) isNull = true;
-    if (recipientAmount == 0) isNull = true;
-    if (totalAmount == 0) isNull = true;
+    empty = id == 0;
+    empty = sendAmount == 0;
+    empty = recipientAmount == 0;
+    empty = totalAmount == 0;
 
-    return isNull;
+    return empty;
   }
 }

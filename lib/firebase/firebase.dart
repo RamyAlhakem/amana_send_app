@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -6,6 +8,7 @@ import '/firebase_options.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/firebase.dart';
+import '/models/transfer.dart';
 import '/models/user_base.dart';
 import '/router/app_route.dart';
 
@@ -99,9 +102,10 @@ class FirebaseTool {
     AppRoute.get().then((router) {
       switch (routeName.toLowerCase()) {
         case 'transfer':
+          final TransferModel transfer = TransferModel(id: id);
           return router.goNamed(
             '/${AppRoute.transfer}',
-            pathParameters: <String, String>{'id': '$id'},
+            pathParameters: <String, String>{'transfer': jsonEncode(transfer)},
           );
       }
     });

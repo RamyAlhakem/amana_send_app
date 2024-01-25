@@ -123,7 +123,7 @@ class _WebViewState extends State<WebView> {
                     LoadingDialog().show();
                     GetTransfer(context, transferId).request().whenComplete(() {
                       LoadingDialog.dismiss();
-                      if (!_pr.transfer.isNull()) {
+                      if (!_pr.transfer.isEmpty()) {
                         context.pushReplacementNamed(
                           AppRoute.success,
                           pathParameters: <String, String>{

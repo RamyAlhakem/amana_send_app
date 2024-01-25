@@ -20,7 +20,8 @@ class GetTransfer {
   static late AppLocalizations? _arb;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
-  Future<void> request() async {
+  Future<TransferModel> request() async {
+    TransferModel transfer = TransferModel();
     _pr = Provider.of<TransfersState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);
@@ -37,7 +38,8 @@ class GetTransfer {
       if (result.data != null) {
         Helper.debug('transaction', '${result.data}');
 
-        if (result.data!.isNotEmpty) return _result(result.data!);
+        if (result.data!.isNotEmpty) transfer = _result(result.data!);
+        return;
       } else {
         if (result.exception != null) {
           Helper.log(result.exception!.graphqlErrors, color: DebugColor.red);
@@ -46,14 +48,17 @@ class GetTransfer {
         }
       }
     });
+    return transfer;
   }
 
-  void _result(Map<String, dynamic> data) async {
+  TransferModel _result(Map<String, dynamic> data) {
+    TransferModel transfer = TransferModel();
     if (data.isNotEmpty && data.containsKey('transaction')) {
-      TransferModel transfer = TransferModel.fromJson(data['transaction']);
+      transfer = TransferModel.fromJson(data['transaction']);
 
       _pr.getTransfer(transfer);
     }
+    return transfer;
   }
 
   void _error(List<GraphQLError> errors) async {

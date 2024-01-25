@@ -178,6 +178,11 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         ]),
                         const SizedBox(height: 8),
                         RowSpaceBetween([
+                          TextX(arb.city),
+                          TextX(state.receiverCity.name),
+                        ]),
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
                           TextX(arb.pickUpPoint),
                           TextX(state.receiverAgent.name),
                         ]),

@@ -16,6 +16,7 @@ import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
+import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
 import '/models/country.dart';
 import '/models/metadata.dart';
@@ -50,9 +51,8 @@ class _TransferMainState extends State<TransferMain> {
 
   late TransferModel transfer;
 
-  bool isAr = false;
-  bool selectedStatus = false;
-  bool selectedDetail = true;
+  bool isAr = false, isLoading = true;
+  bool selectedStatus = false, selectedDetail = true;
 
   int _pageIndex = 0;
   final PageController _pageCtrl = PageController();
@@ -61,6 +61,16 @@ class _TransferMainState extends State<TransferMain> {
   void initState() {
     super.initState();
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
+    if (transfer.isEmpty()) {
+      GetTransfer(
+        context,
+        transfer.id,
+      ).request().then((value) => transfer = value).whenComplete(() {
+        setState(() => isLoading = false);
+      });
+    } else {
+      isLoading = false;
+    }
 
     GetRecipients.request();
   }
@@ -86,121 +96,125 @@ class _TransferMainState extends State<TransferMain> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AutoAppBar(title: 'ID: ${transfer.id}'),
-        body: Column(
-          children: [
-            const SizedBox(height: 12),
-            Center(child: TextX(arb.sent)),
-            const SizedBox(height: 6),
-            Center(
-              child: TextX(
-                '${Tools.nicePrice(transfer.recipientAmount)} ${transfer.isReceiveInUsd ? 'USD' : transfer.recipient.country.currency.code}',
-                style: TransferMain.boldStyle.copyWith(fontSize: 22),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Center(
-              child: TextX(
-                '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
-              ),
-            ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.fromLTRB(14, 12, 14, 50),
-                decoration: Decorations.main(context, radius: 16),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    Row(children: [
-                      _button(
-                        onTap: () => setState(() {
-                          selectedDetail = true;
-                          selectedStatus = false;
-                          _pageCtrl.previousPage(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeIn,
-                          );
-                        }),
-                        selected: selectedDetail,
-                        title: arb.transferDetails,
-                        icon: HeroIcons.receiptPercent,
-                        right: isAr,
-                      ),
-                      _button(
-                        onTap: () => setState(() {
-                          selectedStatus = true;
-                          selectedDetail = false;
-                          _pageCtrl.nextPage(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeIn,
-                          );
-                        }),
-                        right: !isAr,
-                        selected: selectedStatus,
-                        title: arb.transferStatus,
-                        icon: HeroIcons.presentationChartLine,
-                      ),
-                    ]),
-                    Expanded(
-                      child: PageView(
-                        scrollDirection: Axis.horizontal,
-                        controller: _pageCtrl,
-                        physics: const BouncingScrollPhysics(),
-                        onPageChanged: (index) => setState(() {
-                          _pageIndex = index;
-                          if (_pageIndex == 0) {
-                            selectedStatus = false;
-                            selectedDetail = true;
-                          } else {
-                            selectedDetail = false;
-                            selectedStatus = true;
-                          }
-                        }),
-                        children: [
-                          TransferDetail(transfer),
-                          TransferState(transfer),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: Decorations.main(
-                        context,
-                        radius: 16,
-                        color: MainColors.color1,
-                      ),
-                      child: Button(
-                        () {
-                          if (AppMetadata.get.maintenanceMode) {
-                            return Helper.bannerWarning(
-                              '\n${AppMetadata.get.maintenanceMessage}\n',
-                            );
-                          }
-                          final calculator =
-                              Provider.of<Calculator>(context, listen: false);
-                          calculator.setReceiverCountry(CountryModel());
-                          // calculator.agentsVisibility(true);
-                          calculator.recipientSend(
-                            transfer.recipient,
-                            transfer: transfer,
-                            navigate: true,
-                          );
-                        },
-                        height: 55,
-                        width: MediaQuery.of(context).size.width,
-                        customShape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
-                          ),
-                        ),
-                        TextX(arb.resendAgain.toUpperCase()),
-                      ),
-                    )
-                  ],
+        body: Visibility(
+          visible: !isLoading,
+          replacement: const Center(child: CircularProgressIndicator()),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Center(child: TextX(arb.sent)),
+              const SizedBox(height: 6),
+              Center(
+                child: TextX(
+                  '${Tools.nicePrice(transfer.recipientAmount)} ${transfer.isReceiveInUsd ? 'USD' : transfer.recipient.country.currency.code}',
+                  style: TransferMain.boldStyle.copyWith(fontSize: 22),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Center(
+                child: TextX(
+                  '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.fromLTRB(14, 12, 14, 50),
+                  decoration: Decorations.main(context, radius: 16),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Row(children: [
+                        _button(
+                          onTap: () => setState(() {
+                            selectedDetail = true;
+                            selectedStatus = false;
+                            _pageCtrl.previousPage(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeIn,
+                            );
+                          }),
+                          selected: selectedDetail,
+                          title: arb.transferDetails,
+                          icon: HeroIcons.receiptPercent,
+                          right: isAr,
+                        ),
+                        _button(
+                          onTap: () => setState(() {
+                            selectedStatus = true;
+                            selectedDetail = false;
+                            _pageCtrl.nextPage(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeIn,
+                            );
+                          }),
+                          right: !isAr,
+                          selected: selectedStatus,
+                          title: arb.transferStatus,
+                          icon: HeroIcons.presentationChartLine,
+                        ),
+                      ]),
+                      Expanded(
+                        child: PageView(
+                          scrollDirection: Axis.horizontal,
+                          controller: _pageCtrl,
+                          physics: const BouncingScrollPhysics(),
+                          onPageChanged: (index) => setState(() {
+                            _pageIndex = index;
+                            if (_pageIndex == 0) {
+                              selectedStatus = false;
+                              selectedDetail = true;
+                            } else {
+                              selectedDetail = false;
+                              selectedStatus = true;
+                            }
+                          }),
+                          children: [
+                            TransferDetail(transfer),
+                            TransferState(transfer),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: Decorations.main(
+                          context,
+                          radius: 16,
+                          color: MainColors.color1,
+                        ),
+                        child: Button(
+                          () {
+                            if (AppMetadata.get.maintenanceMode) {
+                              return Helper.bannerWarning(
+                                '\n${AppMetadata.get.maintenanceMessage}\n',
+                              );
+                            }
+                            final calculator =
+                                Provider.of<Calculator>(context, listen: false);
+                            calculator.setReceiverCountry(CountryModel());
+                            // calculator.agentsVisibility(true);
+                            calculator.recipientSend(
+                              transfer.recipient,
+                              transfer: transfer,
+                              navigate: true,
+                            );
+                          },
+                          height: 55,
+                          width: MediaQuery.of(context).size.width,
+                          customShape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                          ),
+                          TextX(arb.resendAgain.toUpperCase()),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

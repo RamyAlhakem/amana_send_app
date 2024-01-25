@@ -181,6 +181,7 @@ class Calculator with ChangeNotifier {
       _receiver.clear();
       // _fees = 0;
       _amountPlusFee = 0;
+      notifyListeners();
     });
   }
 

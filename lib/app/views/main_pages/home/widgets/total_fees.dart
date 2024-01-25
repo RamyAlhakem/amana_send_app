@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/divider.dart';
+import '/app/widgets/expander.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
 import '/tools/tools.dart';
@@ -15,11 +16,12 @@ class TotalFees extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
     return Consumer<Calculator>(builder: (_, state, child) {
+      final double receiverAmount = double.tryParse(state.receiver.text) ?? 0;
       child = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+            padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
             child: Column(
               children: [
                 RowSpaceBetween([
@@ -57,46 +59,52 @@ class TotalFees extends StatelessWidget {
             ),
           ),
           const HDivider(height: 20),
-          RowSpaceBetween([
-            TextX(arb.total),
-            Text.rich(
-              textScaler: TextScaler.noScaling,
-              TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '${Tools.nicePrice(state.amountPlusFee)} ',
-                  ),
-                  const TextSpan(text: 'USDT'),
-                ],
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+          Expander(
+            expand: receiverAmount > 0,
+            child: Column(
+              children: [
+                RowSpaceBetween([
+                  TextX(arb.total),
+                  Text.rich(
+                    textScaler: TextScaler.noScaling,
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${Tools.nicePrice(state.amountPlusFee)} ',
+                        ),
+                        const TextSpan(text: 'USDT'),
+                      ],
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-              ),
-            ),
-          ]),
-          const SizedBox(height: 4),
-          RowSpaceBetween([
-            TextX(arb.recipientGets),
-            Text.rich(
-              textScaler: TextScaler.noScaling,
-              TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text:
-                        '${Tools.nicePrice(double.tryParse(state.receiver.text) ?? 0)} ',
                   ),
-                  TextSpan(
-                    text: state.sendUSD
-                        ? 'USD'
-                        : state.receiverCountry.currency.code,
-                  ),
-                ],
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
+                ]),
+                const SizedBox(height: 4),
+                RowSpaceBetween([
+                  TextX(arb.recipientGets),
+                  Text.rich(
+                    textScaler: TextScaler.noScaling,
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${Tools.nicePrice(receiverAmount)} ',
+                        ),
+                        TextSpan(
+                          text: state.sendUSD
+                              ? 'USD'
+                              : state.receiverCountry.currency.code,
+                        ),
+                      ],
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
-              ),
+                  ),
+                ]),
+              ],
             ),
-          ]),
+          ),
         ],
       );
       return child;
