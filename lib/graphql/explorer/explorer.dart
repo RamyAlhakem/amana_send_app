@@ -39,7 +39,7 @@ class Explorer {
 
   static const String provider = '''
       id
-      name
+      displayName
       iconUrl
       rate
       receiveFees
