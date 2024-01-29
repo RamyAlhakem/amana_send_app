@@ -311,11 +311,11 @@ class Calculator with ChangeNotifier {
     final double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
 
-    if (controller == sender.text) {
-      double userCountryFees = (percentFee * amount) / 100;
-      double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
+    final double userCountryFees = (percentFee * amount) / 100;
+    final double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
+    final double amountWithoutCountryFees = amount - sendFees;
 
-      double amountWithoutCountryFees = amount - sendFees;
+    if (controller == sender.text) {
       converted = sendUSD
           ? amountWithoutCountryFees
           : amountWithoutCountryFees * receiverRate;
@@ -330,7 +330,9 @@ class Calculator with ChangeNotifier {
         converted = converted.ceilToDouble();
       }
     } else {
-      double newAmountInUsd = sendUSD ? amount : amount / receiverAgent.rate;
+      double newAmountInUsd = sendUSD
+          ? amountWithoutCountryFees
+          : amountWithoutCountryFees / receiverAgent.rate;
       double newAmount =
           sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
 
