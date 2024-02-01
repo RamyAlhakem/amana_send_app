@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '/app/extensions/dark_mode.dart';
@@ -175,31 +174,19 @@ class Tutorial {
       ),
       opacityShadow: context.isDarkMode ? 0.6 : 0.5,
       pulseEnable: false,
-      onClickTarget: (target) {
-        Helper.toast(
-          arb.clickOnTheFocusedRectangleToContinue,
-          bgColor: Colors.white,
-          textColor: Colors.black,
-          toastLength: Toast.LENGTH_SHORT,
-        );
-        debugPrint('$target');
-      },
+      onClickTarget: (target) => debugPrint('$target'),
       onClickTargetWithTapPosition: (target, tapDetails) {
         debugPrint('target: $target');
         debugPrint(
           'clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}',
         );
       },
-      onClickOverlay: (target) {
-        debugPrint('$target');
-      },
+      onClickOverlay: (target) => debugPrint('$target'),
       onSkip: () {
         debugPrint('skip');
         return true;
       },
-      onFinish: () {
-        debugPrint('finish');
-      },
+      onFinish: () => debugPrint('finish'),
     ).show(context: context);
   }
 }
