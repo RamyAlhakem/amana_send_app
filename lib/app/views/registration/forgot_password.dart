@@ -102,7 +102,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_pr.country == null) return Helper.bannerWarning(arb!.selectCountry);
 
     if (!formKey.currentState!.validate()) return;
@@ -113,12 +113,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     buttonCtrl.start();
     if (AppMetadata.get.appForgetPasswordCaptcha) {
-      return CaptchaDialog(
+      await CaptchaDialog(
         onSubmit: (value) => ResendOTP(
           mobile: '+${_pr.country?.phoneCode}${_pr.mobile.text}',
           buttonCtrl: buttonCtrl,
-        ).request(),
+        ).request().whenComplete(() => buttonCtrl.reset()),
       ).show();
+      return;
     } else {
       ResendOTP(
         mobile: '+${_pr.country?.phoneCode}${_pr.mobile.text}',
