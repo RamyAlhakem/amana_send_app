@@ -169,8 +169,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                   fontWeight: FontWeight.bold,
                 ),
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-            onChanged: (String value) =>
-                state.setPrice(value, usd: state.sendUSD),
+            onChanged: (String value) => state.setPrice(value),
           ),
 
           // Today exchange rate
@@ -205,8 +204,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 .textTheme
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) =>
-                state.setPrice(value, usd: state.sendUSD),
+            onChanged: (String value) => state.setPrice(value),
             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
             onSubmitted: (_) => state.roundReceiverAmount(),
           ),

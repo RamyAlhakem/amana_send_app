@@ -45,7 +45,7 @@ class CurrencyRoller extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(100),
                       onTap: () {
-                        state.setPrice(state.sender.text, usd: false);
+                        state.setPrice(state.sender.text);
                         SettingsDialog.dismiss();
                       },
                       child: Container(

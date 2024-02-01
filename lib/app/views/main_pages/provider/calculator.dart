@@ -110,11 +110,8 @@ class Calculator with ChangeNotifier {
 
   void initializeData() {
     _percentFee = AppMetadata.get.sendsFees;
-    _minFee = AppMetadata.get.minimumSendFee;
     _usdRate = AppMetadata.get.usdRate;
     _usdRatio = AppMetadata.get.usdRatio;
-
-    // _fees = _minFee;
   }
 
   //**Select a recipient.
@@ -209,6 +206,7 @@ class Calculator with ChangeNotifier {
 
   CountryModel setSendCountry(country) {
     _sendCountry = country;
+    _minFee = country.minimumSendsFees;
 
     setExchangeRate();
     notifyListeners();
@@ -243,6 +241,7 @@ class Calculator with ChangeNotifier {
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
+
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
@@ -317,24 +316,14 @@ class Calculator with ChangeNotifier {
     if (controller == sender.text) {
       // Writing from sender.text filed:
 
-      // Documentation:
-      // - userFees represents the fees calculated based on the provided
-      //   percentage of the original amount.
-      // - sendFees ensures that the fees charged are not below the specified
-      //   minimum fee.
-      // - amountWithoutUserFees is the remaining amount after deducting the
-      //   user fees.
-      // - The 'converted' variable stores the final amount, considering whether
-      //   it is in USD or requires currency conversion.
-
       // Calculate user fees based on the percentage
       double userFees = (percentFee * amount) / 100;
 
       // Ensure that the calculated user fees do not fall below the minimum fee
-      // double sendFees = userFees > minFee ? userFees : minFee;
+      double sendFees = userFees > minFee ? userFees : minFee;
 
       // Calculate the amount after deducting the user fees
-      double amountWithoutUserFees = amount - userFees;
+      double amountWithoutUserFees = amount - sendFees;
 
       // Calculate the converted amount based on currency conversion rate
       converted = sendUSD
@@ -350,16 +339,6 @@ class Calculator with ChangeNotifier {
       _amountPlusFee = amount + receiverRatio;
     } else {
       // Writing from receiver.text filed:
-
-      // Documentation:
-      // - The conversionFee represents the fee calculated based on the
-      //   provided percentage.
-      // - The convertedAmount represents the amount adjusted for the conversion
-      //   fee and exchange rate.
-      // - The totalAmount is the sum of the original amount and the converted
-      //   amount.
-      // - The toConvert variable stores the final result after applying the
-      //   conversion.
 
       // Calculate the conversion fee based on the percentage and original amount
       final double to = (amount / receiverRate) / (1 - (percentFee / 100));
@@ -377,7 +356,6 @@ class Calculator with ChangeNotifier {
       converted = sendUSD ? toConvert : toConvert / receiverRate;
       _amountPlusFee = converted + receiverRatio;
     }
-    Helper.log('_amountPlusFee: $_amountPlusFee');
     //--------------------------------------------------------------------------
 
     setExchangeRate();
