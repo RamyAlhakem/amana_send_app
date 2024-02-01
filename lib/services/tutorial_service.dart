@@ -149,7 +149,7 @@ class Tutorial {
     if (!show && !UserService.isFresh()) return;
     Future.delayed(const Duration(milliseconds: 1500), () {
       Helper.toast(
-        arb.clickOnTheFocusedRectangleToContinue,
+        arb.clickOnTheFocusedBoxToContinue,
         bgColor: Colors.white,
         textColor: Colors.black,
       );

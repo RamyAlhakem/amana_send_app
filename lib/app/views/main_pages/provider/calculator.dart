@@ -244,7 +244,7 @@ class Calculator with ChangeNotifier {
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
     Global.snackKey.currentState?.hideCurrentSnackBar();
-    setPrice(sender.text, usd: sendUSD);
+    setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
@@ -267,10 +267,13 @@ class Calculator with ChangeNotifier {
     }
   }
 
-  void setPrice(String value, {required bool usd}) {
-    _sendUSD = usd;
-    // if [usdAvailability] is mandatory which is equal 2.
-    if (!usd) _sendUSD = receiverAgent.usdAvailability == 2;
+  void setPrice(String value, {bool? usd}) {
+    if (usd == null) {
+      // if [usdAvailability] is mandatory which is equal 2.
+      _sendUSD = receiverAgent.usdAvailability == 2;
+    } else {
+      _sendUSD = usd;
+    }
 
     if (sendUSD) {
       _minUSD = receiverAgent.minAmount / receiverAgent.rate;
@@ -328,10 +331,10 @@ class Calculator with ChangeNotifier {
       double userFees = (percentFee * amount) / 100;
 
       // Ensure that the calculated user fees do not fall below the minimum fee
-      double sendFees = userFees > minFee ? userFees : minFee;
+      // double sendFees = userFees > minFee ? userFees : minFee;
 
       // Calculate the amount after deducting the user fees
-      double amountWithoutUserFees = amount - sendFees;
+      double amountWithoutUserFees = amount - userFees;
 
       // Calculate the converted amount based on currency conversion rate
       converted = sendUSD

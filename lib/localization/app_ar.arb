@@ -226,7 +226,7 @@
   "takeThePhotoWithinTheFrame": "قم بالتصوير داخل الإطار",
   "minute": "دقيقة",
   "area": "المنطقة",
-  "clickOnTheFocusedRectangleToContinue": "انقر على المستطيل المحدد للمتابعة",
+  "clickOnTheFocusedBoxToContinue": "انقر على المستطيل المحدد للمتابعة",
   "noNewChangesInTheFieldsToSave": "لا توجد تغييرات جديدة في الحقول للحفظ",
   "selectCurrency": "اختر العملة",
   "usdIsNotAvailableForThisCountry": "الدولار الأمريكي غير متوفر لهذا البلد",
