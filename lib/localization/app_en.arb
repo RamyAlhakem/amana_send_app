@@ -225,6 +225,7 @@
   "takeThePhotoWithinTheFrame": "Take the photo within the frame",
   "minute": "Minute",
   "area": "Area",
+  "clickOnTheFocusedRectangleToContinue": "Click on the focused rectangle to continue",
   "noNewChangesInTheFieldsToSave": "There are no new changes in the fields to save",
   "selectCurrency": "Select currency",
   "selectReceiveCurrencyForThisCountry": "Select receive currency for this country",

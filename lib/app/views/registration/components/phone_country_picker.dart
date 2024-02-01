@@ -116,7 +116,8 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                               }
                               _pr.setCities(_countries[i].cities);
 
-                              _calculator.setPrice(_calculator.sender.text);
+                              _calculator.setPrice(_calculator.sender.text,
+                                  usd: _calculator.sendUSD);
                             });
 
                             SettingsDialog.dismiss();

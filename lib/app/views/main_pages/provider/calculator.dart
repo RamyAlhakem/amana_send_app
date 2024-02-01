@@ -244,7 +244,7 @@ class Calculator with ChangeNotifier {
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
     Global.snackKey.currentState?.hideCurrentSnackBar();
-    setPrice(sender.text);
+    setPrice(sender.text, usd: sendUSD);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
@@ -267,13 +267,10 @@ class Calculator with ChangeNotifier {
     }
   }
 
-  void setPrice(String value, {bool? usd}) {
-    if (usd == null) {
-      // if [usdAvailability] is mandatory which is equal 2.
-      _sendUSD = receiverAgent.usdAvailability == 2;
-    } else {
-      _sendUSD = usd;
-    }
+  void setPrice(String value, {required bool usd}) {
+    _sendUSD = usd;
+    // if [usdAvailability] is mandatory which is equal 2.
+    if (!usd) _sendUSD = receiverAgent.usdAvailability == 2;
 
     if (sendUSD) {
       _minUSD = receiverAgent.minAmount / receiverAgent.rate;
@@ -311,17 +308,35 @@ class Calculator with ChangeNotifier {
     final double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
 
-    final double userCountryFees = (percentFee * amount) / 100;
-    final double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
-    final double amountWithoutCountryFees = amount - sendFees;
+    final double ceil = receiverCountry.currency.ceil;
 
+    // Text fields calculation:-------------------------------------------------
     if (controller == sender.text) {
-      converted = sendUSD
-          ? amountWithoutCountryFees
-          : amountWithoutCountryFees * receiverRate;
+      // Writing from sender.text filed:
 
-      double ceil = receiverCountry.currency.ceil;
-      _amountPlusFee = amount + receiverRatio;
+      // Documentation:
+      // - userFees represents the fees calculated based on the provided
+      //   percentage of the original amount.
+      // - sendFees ensures that the fees charged are not below the specified
+      //   minimum fee.
+      // - amountWithoutUserFees is the remaining amount after deducting the
+      //   user fees.
+      // - The 'converted' variable stores the final amount, considering whether
+      //   it is in USD or requires currency conversion.
+
+      // Calculate user fees based on the percentage
+      double userFees = (percentFee * amount) / 100;
+
+      // Ensure that the calculated user fees do not fall below the minimum fee
+      double sendFees = userFees > minFee ? userFees : minFee;
+
+      // Calculate the amount after deducting the user fees
+      double amountWithoutUserFees = amount - sendFees;
+
+      // Calculate the converted amount based on currency conversion rate
+      converted = sendUSD
+          ? amountWithoutUserFees
+          : amountWithoutUserFees * receiverRate;
 
       if (!sendUSD) {
         converted =
@@ -329,16 +344,38 @@ class Calculator with ChangeNotifier {
       } else {
         converted = converted.ceilToDouble();
       }
+      _amountPlusFee = amount + receiverRatio;
     } else {
-      double newAmountInUsd = sendUSD
-          ? amountWithoutCountryFees
-          : amountWithoutCountryFees / receiverAgent.rate;
-      double newAmount =
-          sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
+      // Writing from receiver.text filed:
 
-      converted = newAmount;
-      _amountPlusFee = newAmount + receiverRatio;
+      // Documentation:
+      // - The conversionFee represents the fee calculated based on the
+      //   provided percentage.
+      // - The convertedAmount represents the amount adjusted for the conversion
+      //   fee and exchange rate.
+      // - The totalAmount is the sum of the original amount and the converted
+      //   amount.
+      // - The toConvert variable stores the final result after applying the
+      //   conversion.
+
+      // Calculate the conversion fee based on the percentage and original amount
+      final double to = (amount / receiverRate) / (1 - (percentFee / 100));
+      final double conversionFee = percentFee * to;
+
+      // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
+      final double convertedAmount = (conversionFee / 100) * receiverRate;
+
+      // Calculate the total amount after applying the conversion fee
+      final double totalAmount = amount + convertedAmount;
+
+      // Finally, store the result in the 'toConvert' variable
+      final double toConvert = totalAmount;
+
+      converted = sendUSD ? toConvert : toConvert / receiverRate;
+      _amountPlusFee = converted + receiverRatio;
     }
+    Helper.log('_amountPlusFee: $_amountPlusFee');
+    //--------------------------------------------------------------------------
 
     setExchangeRate();
     return converted;
