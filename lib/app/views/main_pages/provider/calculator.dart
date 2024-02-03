@@ -343,9 +343,11 @@ class Calculator with ChangeNotifier {
       // Calculate the conversion fee based on the percentage and original amount
       final double to = (amount / receiverRate) / (1 - (percentFee / 100));
       final double conversionFee = percentFee * to;
-
       // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
-      final double convertedAmount = (conversionFee / 100) * receiverRate;
+
+      final double toFee = minFee > conversionFee ? minFee : conversionFee;
+
+      final double convertedAmount = (toFee / 100) * receiverRate;
 
       // Calculate the total amount after applying the conversion fee
       final double totalAmount = amount + convertedAmount;
@@ -353,7 +355,7 @@ class Calculator with ChangeNotifier {
       // Finally, store the result in the 'toConvert' variable
       final double toConvert = totalAmount;
 
-      converted = sendUSD ? toConvert : toConvert / receiverRate;
+      converted = (sendUSD ? toConvert : toConvert / receiverRate) + toFee;
       _amountPlusFee = converted + receiverRatio;
     }
     //--------------------------------------------------------------------------
