@@ -323,7 +323,7 @@ class Calculator with ChangeNotifier {
       double sendFees = userFees > minFee ? userFees : minFee;
 
       // Calculate the amount after deducting the user fees
-      double amountWithoutUserFees = amount - sendFees;
+      double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
 
       // Calculate the converted amount based on currency conversion rate
       converted = sendUSD
@@ -341,11 +341,15 @@ class Calculator with ChangeNotifier {
       // Writing from receiver.text filed:
 
       // Calculate the conversion fee based on the percentage and original amount
-      final double to = (amount / receiverRate) / (1 - (percentFee / 100));
-      final double conversionFee = percentFee * to;
+      // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
+      // final double conversionFee = percentFee * to;
+      double foo = (amount / receiverRate) * (percentFee / 100);
+      double userFees = ((percentFee / 100) *
+              (amount + (minFee > foo ? minFee : foo) * receiverRate)) /
+          receiverRate;
       // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
 
-      final double toFee = minFee > conversionFee ? minFee : conversionFee;
+      final double toFee = minFee > userFees ? minFee : userFees;
 
       final double convertedAmount = (toFee / 100) * receiverRate;
 
