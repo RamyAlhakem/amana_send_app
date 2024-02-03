@@ -28,6 +28,7 @@ class Calculator with ChangeNotifier {
   double _usdRatio = 0;
   double _maxUSD = 0;
   double _minUSD = 0;
+  double _dynamicAgentRate = 0;
 
   bool _isLoading = true;
 
@@ -67,6 +68,7 @@ class Calculator with ChangeNotifier {
   double get usdRatio => _usdRatio;
   double get maxUSD => _maxUSD;
   double get minUSD => _minUSD;
+  double get dynamicAgentRate => _dynamicAgentRate;
 
   bool get isLoading => _isLoading;
 
@@ -135,14 +137,13 @@ class Calculator with ChangeNotifier {
 
     _sendCountries = countries;
 
-    if (Global.appSettings.token.isEmpty) {
-      _sendCountry = countries.first;
-    } else {
-      _sendCountry = user.country;
+    if (countries.isNotEmpty) {
+      Global.appSettings.token.isEmpty
+          ? setSendCountry(countries.first)
+          : setSendCountry(user.country);
     }
 
     setExchangeRate();
-    notifyListeners();
     getCurrencies();
   }
 
@@ -209,8 +210,7 @@ class Calculator with ChangeNotifier {
     _minFee = country.minimumSendsFees;
 
     setExchangeRate();
-    notifyListeners();
-
+    Helper.log('minFee: $minFee');
     return country;
   }
 
@@ -226,8 +226,6 @@ class Calculator with ChangeNotifier {
     }
 
     setExchangeRate();
-    notifyListeners();
-
     return country;
   }
 
@@ -235,16 +233,30 @@ class Calculator with ChangeNotifier {
     final rate = receiverAgent.rate / 1;
     sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
     _percentFee = sendCountry.sendFees;
-
     notifyListeners();
+    setDynamicAgentRate();
   }
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
+    _dynamicAgentRate = receiverAgent.rate;
 
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+  }
+
+  void setDynamicAgentRate() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      final double thisSender = double.tryParse(sender.text) ?? 0;
+      final double thisReceiver = double.tryParse(receiver.text) ?? 0;
+      _dynamicAgentRate = thisReceiver / thisSender;
+
+      // Helper.log('thisSender: $thisSender');
+      // Helper.log('thisReceiver: $thisReceiver');
+      // Helper.log('dynamicAgentRate:  $_dynamicAgentRate ');
+      notifyListeners();
+    });
   }
 
   void roundReceiverAmount() {
@@ -260,9 +272,10 @@ class Calculator with ChangeNotifier {
 
       Helper.log('round: $round');
       _receiver.text = '$round';
-      _receiver.text =
-          Helper.priced(double.parse(_receiver.text), currency: false);
-      sender.text = Helper.priced(calculate(receiver.text), currency: false);
+      _receiver.text = Helper.priced(calculate(sender.text), currency: false);
+      _sender.text = Helper.priced(calculate(receiver.text), currency: false);
+      notifyListeners();
+      setExchangeRate();
     }
   }
 
@@ -282,6 +295,7 @@ class Calculator with ChangeNotifier {
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);
       convertedAmount = calculate(value);
+      setExchangeRate();
 
       if (value == sender.text) {
         _receiver = TextEditingController(
