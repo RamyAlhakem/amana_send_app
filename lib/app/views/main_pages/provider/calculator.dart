@@ -262,7 +262,7 @@ class Calculator with ChangeNotifier {
       _receiver.text = '$round';
       _receiver.text =
           Helper.priced(double.parse(_receiver.text), currency: false);
-      notifyListeners();
+      sender.text = Helper.priced(calculate(receiver.text), currency: false);
     }
   }
 
@@ -343,23 +343,19 @@ class Calculator with ChangeNotifier {
       // Calculate the conversion fee based on the percentage and original amount
       // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
       // final double conversionFee = percentFee * to;
-      double foo = (amount / receiverRate) * (percentFee / 100);
-      double userFees = ((percentFee / 100) *
-              (amount + (minFee > foo ? minFee : foo) * receiverRate)) /
-          receiverRate;
+
       // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
 
-      final double toFee = minFee > userFees ? minFee : userFees;
-
-      final double convertedAmount = (toFee / 100) * receiverRate;
-
+      final double finalReceiverRate =
+          receiverRate - (receiverRate * (percentFee / 100));
       // Calculate the total amount after applying the conversion fee
-      final double totalAmount = amount + convertedAmount;
-
+      final double totalAmount = amount / finalReceiverRate;
+      final double transferCost = amount / receiverRate;
+      final double finalProfit = totalAmount - transferCost;
       // Finally, store the result in the 'toConvert' variable
-      final double toConvert = totalAmount;
+      converted =
+          totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
 
-      converted = (sendUSD ? toConvert : toConvert / receiverRate) + toFee;
       _amountPlusFee = converted + receiverRatio;
     }
     //--------------------------------------------------------------------------
