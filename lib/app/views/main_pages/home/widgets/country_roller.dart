@@ -71,7 +71,7 @@ class CountryRoller extends StatelessWidget {
                                 );
                               }
 
-                              state.setPrice(state.sender.text, usd: false);
+                              state.setPrice(state.sender.text);
                               SettingsDialog.dismiss();
                             }),
                             child: Country(

@@ -112,6 +112,12 @@ class RegistrationState extends ChangeNotifier {
     BuildContext context,
     LoadingButtonController buttonCtrl,
   ) async {
+    void closeButton() {
+      Future.delayed(const Duration(milliseconds: 2200), () {
+        buttonCtrl.reset();
+      });
+    }
+
     final AppLocalizations? arb = AppLocalizations.of(context);
 
     if (!loginForm.currentState!.validate()) return;
@@ -160,12 +166,16 @@ class RegistrationState extends ChangeNotifier {
 
     if (isRegister) {
       if (AppMetadata.get.appSignUpCaptcha) {
-        return CaptchaDialog(onSubmit: (value) => registerAPI(value)).show();
+        return CaptchaDialog(
+          onSubmit: (value) => registerAPI(value),
+        ).show().whenComplete(() => closeButton());
       }
       registerAPI('');
     } else {
       if (AppMetadata.get.appSignInCaptcha) {
-        return CaptchaDialog(onSubmit: (value) => logInAPI(value)).show();
+        return CaptchaDialog(
+          onSubmit: (value) => logInAPI(value),
+        ).show().whenComplete(() => closeButton());
       }
       logInAPI('');
     }
