@@ -250,7 +250,9 @@ class Calculator with ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 100), () {
       final double thisSender = double.tryParse(sender.text) ?? 0;
       final double thisReceiver = double.tryParse(receiver.text) ?? 0;
-      _dynamicAgentRate = thisReceiver / thisSender;
+      if (thisSender > 0 && thisReceiver > 0) {
+        _dynamicAgentRate = thisReceiver / thisSender;
+      }
 
       // Helper.log('thisSender: $thisSender');
       // Helper.log('thisReceiver: $thisReceiver');
