@@ -239,7 +239,7 @@ class Calculator with ChangeNotifier {
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
-    _dynamicAgentRate = receiverAgent.rate;
+    _dynamicAgentRate = receiverAgent.rate * (1 - (percentFee / 100));
 
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
