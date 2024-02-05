@@ -228,7 +228,6 @@ class _TransferDetailState extends State<TransferDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RowSpaceBetween([TextX(arb.city), TextX(transfer.city.name)]),
               RowSpaceBetween([
                 TextX(arb.fee),
                 Text.rich(
@@ -245,6 +244,7 @@ class _TransferDetailState extends State<TransferDetail> {
                 ),
               ]),
               const SizedBox(height: 4),
+              RowSpaceBetween([TextX(arb.city), TextX(transfer.city.name)]),
               if (transfer.provider.name.isNotEmpty)
                 RowSpaceBetween([
                   TextX(arb.provider),
