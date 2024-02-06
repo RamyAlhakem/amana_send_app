@@ -59,8 +59,8 @@ class _SendFormFieldsState extends State<SendFormFields>
   @override
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
-    isHome = GoRouter.of(context).location == '/';
-    Helper.log('location: ${GoRouter.of(context).location}');
+    isHome = '${GoRouterState.of(context).uri}' == '/';
+    Helper.log('location: ${GoRouterState.of(context).uri}');
     Helper.log('isHome: $isHome');
     super.didChangeDependencies();
   }

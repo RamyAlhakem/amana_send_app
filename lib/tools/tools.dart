@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '/global/variables.dart';
+import '/helper/helper.dart';
 
 class Tools {
+  static DateTime? _currentBackPressTime;
+
+  static bool onWillPop() {
+    DateTime now = DateTime.now();
+    final BuildContext context = Global.key.currentContext!;
+    final AppLocalizations arb = AppLocalizations.of(context)!;
+
+    if (_currentBackPressTime == null ||
+        now.difference(_currentBackPressTime!) > const Duration(seconds: 2)) {
+      _currentBackPressTime = now;
+      Helper.toast(arb.pressBackAgainToExit);
+
+      return false;
+    }
+    return true;
+  }
+
   static List<bool> setSelect(List<dynamic> elements, List<bool> selection) {
     /// To unselect [selection], pass empty boolean list value.
     final set = List<bool>.generate(elements.length, (i) => false);

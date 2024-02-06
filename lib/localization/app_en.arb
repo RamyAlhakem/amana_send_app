@@ -265,6 +265,7 @@
   "mobileWallet": "Mobile wallet",
   "bankTransfer": "Bank transfer",
   "startSendingMoney": "Start sending money",
+  "pressBackAgainToExit": "Press back again to exit",
   "sent": "Sent",
   "youSent": "You sent",
   "exchangeRate": "Exchange rate",
