@@ -275,7 +275,7 @@ class Calculator with ChangeNotifier {
       Helper.log('round: $round');
       _receiver.text = '$round';
       _receiver.text = Helper.priced(calculate(sender.text), currency: false);
-      _sender.text = Helper.priced(calculate(receiver.text), currency: false);
+      // _sender.text = Helper.priced(calculate(receiver.text), currency: false);
       notifyListeners();
       setExchangeRate();
     }
