@@ -2,7 +2,7 @@ import 'dart:io';
 
 class Configs {
   static const bool debug = false;
-  static const double apiVersion = 1.1;
+  static const double apiVersion = 1.2;
 
   static String appName = 'AmanaSend';
   static String packageName = 'com.amana_send';
