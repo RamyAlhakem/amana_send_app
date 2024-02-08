@@ -1,3 +1,4 @@
+import 'package:amana_send/models/server_app_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,6 +12,8 @@ class Tools {
     DateTime now = DateTime.now();
     final BuildContext context = Global.key.currentContext!;
     final AppLocalizations arb = AppLocalizations.of(context)!;
+
+    ServerAppVersion.isUpdate();
 
     if (_currentBackPressTime == null ||
         now.difference(_currentBackPressTime!) > const Duration(seconds: 2)) {

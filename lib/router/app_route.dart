@@ -223,5 +223,6 @@ class AppRoute {
     ],
   );
 
-  static Future<GoRouter> get() async => routes;
+  static Future<GoRouter> get() async =>
+      await Future.delayed(const Duration(milliseconds: 100), () => routes);
 }
