@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBOXoh0s2_psTWgzgfSE9YWnjy1rdLkBvQ',
-    appId: '1:456472455625:ios:3ab64f9193bdab059a2018',
+    appId: '1:456472455625:ios:5b7cfbfb9f6076449a2018',
     messagingSenderId: '456472455625',
     projectId: 'amana-send',
     storageBucket: 'amana-send.appspot.com',
-    iosBundleId: 'com.amanaSend',
+    iosBundleId: 'com.amanasend',
   );
 }
