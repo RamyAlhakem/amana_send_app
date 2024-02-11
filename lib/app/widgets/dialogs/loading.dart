@@ -18,8 +18,8 @@ class LoadingDialog {
       useRootNavigator: false,
       barrierColor: barrierColor ?? Colors.black.withOpacity(0.15),
       builder: (BuildContext _) {
-        return WillPopScope(
-          onWillPop: () async => false,
+        return PopScope(
+          canPop: false,
           child: Dialog(
             backgroundColor: Colors.transparent,
             elevation: 0,

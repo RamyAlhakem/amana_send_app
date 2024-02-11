@@ -40,6 +40,7 @@ class AutoAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
+      centerTitle: false,
       leading: leading ??
           IconButton(
             onPressed: onPressed ?? () => context.pop(),

@@ -111,7 +111,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
-      final rate = state.receiverAgent.rate * (1 - (state.percentFee / 100));
+      final rate = state.dynamicAgentRate;
       final bool usd = state.receiverAgent.usdAvailability == 2;
       child = Stack(
         clipBehavior: Clip.none,

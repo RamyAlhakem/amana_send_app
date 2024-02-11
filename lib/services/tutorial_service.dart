@@ -4,6 +4,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/widgets/text/text_x.dart';
+import '/helper/helper.dart';
 import '/services/lang_service.dart';
 import 'user_service.dart';
 
@@ -146,6 +147,13 @@ class Tutorial {
 
   void showTutorial() {
     if (!show && !UserService.isFresh()) return;
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      Helper.toast(
+        arb.clickOnTheFocusedBoxToContinue,
+        bgColor: Colors.white,
+        textColor: Colors.black,
+      );
+    });
     arb = AppLocalizations.of(context)!;
     TutorialCoachMark(
       targets: targets(),
@@ -155,36 +163,30 @@ class Tutorial {
       skipWidget: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextX(arb.skip, style: _style.copyWith(fontSize: 30)),
+          TextX(arb.skip, style: _style.copyWith(fontSize: 40)),
           const SizedBox(width: 8),
           const Icon(
             Icons.arrow_forward_ios_rounded,
             color: Colors.white,
-            size: 40,
+            size: 50,
           )
         ],
       ),
       opacityShadow: context.isDarkMode ? 0.6 : 0.5,
       pulseEnable: false,
-      onClickTarget: (target) {
-        debugPrint('$target');
-      },
+      onClickTarget: (target) => debugPrint('$target'),
       onClickTargetWithTapPosition: (target, tapDetails) {
         debugPrint('target: $target');
         debugPrint(
           'clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}',
         );
       },
-      onClickOverlay: (target) {
-        debugPrint('$target');
-      },
+      onClickOverlay: (target) => debugPrint('$target'),
       onSkip: () {
         debugPrint('skip');
         return true;
       },
-      onFinish: () {
-        debugPrint('finish');
-      },
+      onFinish: () => debugPrint('finish'),
     ).show(context: context);
   }
 }

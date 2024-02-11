@@ -32,6 +32,8 @@ class AgentButton extends StatelessWidget {
     final bool isAR = LangService.isAR();
     final double rate = agent.rate * (1 - (state.percentFee / 100));
     final bool usd = agent.usdAvailability == 2;
+    final double thisRate =
+        selected && state.dynamicAgentRate > 0 ? state.dynamicAgentRate : rate;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -80,7 +82,7 @@ class AgentButton extends StatelessWidget {
                                       ?.copyWith(fontSize: 11),
                                 ),
                                 TextSpan(
-                                  text: Helper.priced(rate,
+                                  text: Helper.priced(thisRate,
                                       currencyCode: usd
                                           ? 'USD'
                                           : state

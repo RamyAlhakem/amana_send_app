@@ -28,6 +28,7 @@ class Calculator with ChangeNotifier {
   double _usdRatio = 0;
   double _maxUSD = 0;
   double _minUSD = 0;
+  double _dynamicAgentRate = 0;
 
   bool _isLoading = true;
 
@@ -67,6 +68,7 @@ class Calculator with ChangeNotifier {
   double get usdRatio => _usdRatio;
   double get maxUSD => _maxUSD;
   double get minUSD => _minUSD;
+  double get dynamicAgentRate => _dynamicAgentRate;
 
   bool get isLoading => _isLoading;
 
@@ -110,11 +112,8 @@ class Calculator with ChangeNotifier {
 
   void initializeData() {
     _percentFee = AppMetadata.get.sendsFees;
-    _minFee = AppMetadata.get.minimumSendFee;
     _usdRate = AppMetadata.get.usdRate;
     _usdRatio = AppMetadata.get.usdRatio;
-
-    // _fees = _minFee;
   }
 
   //**Select a recipient.
@@ -138,14 +137,13 @@ class Calculator with ChangeNotifier {
 
     _sendCountries = countries;
 
-    if (Global.appSettings.token.isEmpty) {
-      _sendCountry = countries.first;
-    } else {
-      _sendCountry = user.country;
+    if (countries.isNotEmpty) {
+      Global.appSettings.token.isEmpty
+          ? setSendCountry(countries.first)
+          : setSendCountry(user.country);
     }
 
     setExchangeRate();
-    notifyListeners();
     getCurrencies();
   }
 
@@ -209,10 +207,10 @@ class Calculator with ChangeNotifier {
 
   CountryModel setSendCountry(country) {
     _sendCountry = country;
+    _minFee = country.minimumSendsFees;
 
     setExchangeRate();
-    notifyListeners();
-
+    Helper.log('minFee: $minFee');
     return country;
   }
 
@@ -228,8 +226,6 @@ class Calculator with ChangeNotifier {
     }
 
     setExchangeRate();
-    notifyListeners();
-
     return country;
   }
 
@@ -237,15 +233,32 @@ class Calculator with ChangeNotifier {
     final rate = receiverAgent.rate / 1;
     sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
     _percentFee = sendCountry.sendFees;
-
     notifyListeners();
+    setDynamicAgentRate();
   }
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
+    _dynamicAgentRate = receiverAgent.rate * (1 - (percentFee / 100));
+
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+  }
+
+  void setDynamicAgentRate() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      final double thisSender = double.tryParse(sender.text) ?? 0;
+      final double thisReceiver = double.tryParse(receiver.text) ?? 0;
+      if (thisSender > 0 && thisReceiver > 0) {
+        _dynamicAgentRate = thisReceiver / thisSender;
+      }
+
+      // Helper.log('thisSender: $thisSender');
+      // Helper.log('thisReceiver: $thisReceiver');
+      // Helper.log('dynamicAgentRate:  $_dynamicAgentRate ');
+      notifyListeners();
+    });
   }
 
   void roundReceiverAmount() {
@@ -261,9 +274,10 @@ class Calculator with ChangeNotifier {
 
       Helper.log('round: $round');
       _receiver.text = '$round';
-      _receiver.text =
-          Helper.priced(double.parse(_receiver.text), currency: false);
+      _receiver.text = Helper.priced(calculate(sender.text), currency: false);
+      // _sender.text = Helper.priced(calculate(receiver.text), currency: false);
       notifyListeners();
+      setExchangeRate();
     }
   }
 
@@ -283,6 +297,7 @@ class Calculator with ChangeNotifier {
     if (value.isNotEmpty) {
       double convertedAmount = double.parse(value);
       convertedAmount = calculate(value);
+      setExchangeRate();
 
       if (value == sender.text) {
         _receiver = TextEditingController(
@@ -311,17 +326,25 @@ class Calculator with ChangeNotifier {
     final double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
 
+    final double ceil = receiverCountry.currency.ceil;
+
+    // Text fields calculation:-------------------------------------------------
     if (controller == sender.text) {
-      double userCountryFees = (percentFee * amount) / 100;
-      double sendFees = userCountryFees > minFee ? userCountryFees : minFee;
+      // Writing from sender.text filed:
 
-      double amountWithoutCountryFees = amount - sendFees;
+      // Calculate user fees based on the percentage
+      double userFees = (percentFee * amount) / 100;
+
+      // Ensure that the calculated user fees do not fall below the minimum fee
+      double sendFees = userFees > minFee ? userFees : minFee;
+
+      // Calculate the amount after deducting the user fees
+      double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
+
+      // Calculate the converted amount based on currency conversion rate
       converted = sendUSD
-          ? amountWithoutCountryFees
-          : amountWithoutCountryFees * receiverRate;
-
-      double ceil = receiverCountry.currency.ceil;
-      _amountPlusFee = amount + receiverRatio;
+          ? amountWithoutUserFees
+          : amountWithoutUserFees * receiverRate;
 
       if (!sendUSD) {
         converted =
@@ -329,14 +352,29 @@ class Calculator with ChangeNotifier {
       } else {
         converted = converted.ceilToDouble();
       }
+      _amountPlusFee = amount + receiverRatio;
     } else {
-      double newAmountInUsd = sendUSD ? amount : amount / receiverAgent.rate;
-      double newAmount =
-          sendUSD ? newAmountInUsd : newAmountInUsd / (1 - (percentFee / 100));
+      // Writing from receiver.text filed:
 
-      converted = newAmount;
-      _amountPlusFee = newAmount + receiverRatio;
+      // Calculate the conversion fee based on the percentage and original amount
+      // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
+      // final double conversionFee = percentFee * to;
+
+      // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
+
+      final double finalReceiverRate =
+          receiverRate - (receiverRate * (percentFee / 100));
+      // Calculate the total amount after applying the conversion fee
+      final double totalAmount = amount / finalReceiverRate;
+      final double transferCost = amount / receiverRate;
+      final double finalProfit = totalAmount - transferCost;
+      // Finally, store the result in the 'toConvert' variable
+      converted =
+          totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
+
+      _amountPlusFee = converted + receiverRatio;
     }
+    //--------------------------------------------------------------------------
 
     setExchangeRate();
     return converted;

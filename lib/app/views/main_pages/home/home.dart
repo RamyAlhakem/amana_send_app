@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
           child: RefreshIndicator(
             onRefresh: () async {
               await getResources();
-              state.setPrice(state.sender.text);
+              state.setPrice(state.sender.text, usd: state.sendUSD);
             },
             child: ListView(
               shrinkWrap: true,

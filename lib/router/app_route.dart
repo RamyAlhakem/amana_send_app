@@ -21,6 +21,7 @@ import '/app/views/registration/reset_password.dart';
 import '/app/views/update_app.dart';
 import '/app/views/web/web_view.dart';
 import '/global/variables.dart';
+import '/tools/tools.dart';
 import 'guard/auth_guard.dart';
 
 class AppRoute {
@@ -55,6 +56,7 @@ class AppRoute {
       GoRoute(
         name: home,
         path: '/',
+        onExit: (BuildContext context) => Tools.onWillPop(),
         builder: (BuildContext context, GoRouterState state) =>
             const Structure(),
         routes: <GoRoute>[
@@ -64,7 +66,7 @@ class AppRoute {
             builder: (BuildContext context, GoRouterState state) {
               return Camera(
                 direction: state.pathParameters['direction']!,
-                query: state.queryParameters,
+                query: state.uri.queryParameters,
               );
             },
           ),
@@ -131,7 +133,7 @@ class AppRoute {
             builder: (BuildContext context, GoRouterState state) {
               return AddRecipient(
                 recipient: state.pathParameters['recipient']!,
-                query: state.queryParameters,
+                query: state.uri.queryParameters,
               );
             },
           ),
@@ -185,7 +187,7 @@ class AppRoute {
             key: state.pageKey,
             child: AccountActivation(
               state.pathParameters['mobile']!,
-              q: state.queryParameters,
+              q: state.uri.queryParameters,
             ),
           );
         },
@@ -221,5 +223,6 @@ class AppRoute {
     ],
   );
 
-  static Future<GoRouter> get() async => routes;
+  static Future<GoRouter> get() async =>
+      await Future.delayed(const Duration(milliseconds: 100), () => routes);
 }
