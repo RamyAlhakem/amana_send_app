@@ -268,15 +268,12 @@ class Calculator with ChangeNotifier {
 
       if (!sendUSD) {
         round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
-      } else {
-        round = round.ceilToDouble();
       }
 
       Helper.log('round: $round');
       _receiver.text = '$round';
       _receiver.text = Helper.priced(calculate(sender.text), currency: false);
       // _sender.text = Helper.priced(calculate(receiver.text), currency: false);
-      notifyListeners();
       setExchangeRate();
     }
   }
@@ -349,8 +346,6 @@ class Calculator with ChangeNotifier {
       if (!sendUSD) {
         converted =
             ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
-      } else {
-        converted = converted.ceilToDouble();
       }
       _amountPlusFee = amount + receiverRatio;
     } else {
