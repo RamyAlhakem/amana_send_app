@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
@@ -10,7 +11,8 @@ class ImagePickSource {
     required VoidCallback gallery,
   }) {
     final BuildContext context = Global.key.currentContext!;
-    final button = Theme.of(context).buttonTheme.colorScheme?.secondary;
+    final AppLocalizations arb = AppLocalizations.of(context)!;
+    final Color? button = Theme.of(context).buttonTheme.colorScheme?.secondary;
     showDialog(
       context: context,
       builder: (BuildContext _) {
@@ -32,7 +34,7 @@ class ImagePickSource {
                       camera();
                     },
                     TextX(
-                      'Camera',
+                      arb.camera,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     color: button,
@@ -49,7 +51,7 @@ class ImagePickSource {
                   width: MediaQuery.of(context).size.width,
                   FittedBox(
                     child: TextX(
-                      'Gallery',
+                      arb.gallery,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
