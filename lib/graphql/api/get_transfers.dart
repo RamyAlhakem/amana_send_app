@@ -64,6 +64,8 @@ class GetTransfers {
   }
 
   Future<bool> _result(Map<String, dynamic> data) async {
+    if (page == 1) _provider.clearTransfers();
+
     bool isNotEmpty = false;
 
     isNotEmpty = _set(data, TransferStatus.pending.name);

@@ -10,6 +10,7 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/fade_switcher.dart';
 import '/app/widgets/general/general_widgets.dart';
+import '/app/widgets/refresh_button.dart';
 import '/app/widgets/shimmer/shimmer_load.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
@@ -26,9 +27,13 @@ class Transfers extends StatefulWidget {
   State<Transfers> createState() => _TransfersState();
 }
 
-class _TransfersState extends State<Transfers> {
+class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
   late AppLocalizations arb;
   late TransfersState provider;
+
+  late AnimationController animationCtrl;
+  late Animation<double> animationRotate;
+
   final ScrollController scrollCtrl1 = ScrollController();
   final ScrollController scrollCtrl2 = ScrollController();
   final ScrollController scrollCtrl3 = ScrollController();
@@ -66,6 +71,13 @@ class _TransfersState extends State<Transfers> {
   void initState() {
     super.initState();
     provider = Provider.of<TransfersState>(context, listen: false);
+    animationCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 100),
+    );
+    animationRotate =
+        Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
+
     GetTransfers().request();
     scrollListener(scrollCtrl1);
     scrollListener(scrollCtrl2);
@@ -122,6 +134,15 @@ class _TransfersState extends State<Transfers> {
                   onPressed: () => context.push('/${AppRoute.support}'),
                   icon: const HeroIcon(HeroIcons.informationCircle),
                 ),
+                if (!state.isLoading)
+                  RefreshButton(
+                    animation: animationRotate,
+                    callback: () async {
+                      animationCtrl.forward();
+                      await GetTransfers().request();
+                      animationCtrl.reset();
+                    },
+                  ),
               ],
               systemOverlayStyle: Global.systemOverlayStyle(context),
               backgroundColor: Theme.of(context).cardColor,

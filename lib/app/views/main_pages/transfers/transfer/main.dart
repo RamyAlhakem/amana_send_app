@@ -14,6 +14,7 @@ import '/app/views/main_pages/transfers/widgets/status.dart';
 import '/app/widgets/auto_app_bar.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
+import '/app/widgets/refresh_button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/graphql/api/get_transfer.dart';
@@ -46,10 +47,14 @@ class TransferMain extends StatefulWidget {
   State<TransferMain> createState() => _TransferMainState();
 }
 
-class _TransferMainState extends State<TransferMain> {
+class _TransferMainState extends State<TransferMain>
+    with TickerProviderStateMixin {
   late AppLocalizations arb;
 
   late TransferModel transfer;
+
+  late AnimationController animationCtrl;
+  late Animation<double> animationRotate;
 
   bool isAr = false, isLoading = true;
   bool selectedStatus = false, selectedDetail = true;
@@ -60,6 +65,13 @@ class _TransferMainState extends State<TransferMain> {
   @override
   void initState() {
     super.initState();
+    animationCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 100),
+    );
+    animationRotate =
+        Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
+
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
     if (transfer.isEmpty()) {
       GetTransfer(
@@ -95,10 +107,38 @@ class _TransferMainState extends State<TransferMain> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AutoAppBar(title: 'ID: ${transfer.id}'),
+        appBar: AutoAppBar(
+          title: 'ID: ${transfer.id}',
+          actions: [
+            RefreshButton(
+              animation: animationRotate,
+              callback: () async {
+                animationCtrl.forward();
+                setState(() => isLoading = true);
+                await GetTransfer(
+                  context,
+                  transfer.id,
+                ).request().then((value) => transfer = value).whenComplete(() {
+                  setState(() => isLoading = false);
+                });
+                animationCtrl.reset();
+              },
+            ),
+          ],
+        ),
         body: Visibility(
           visible: !isLoading,
-          replacement: const Center(child: CircularProgressIndicator()),
+          replacement: Opacity(
+            opacity: 0.65,
+            child: Container(
+              alignment: Alignment.center,
+              margin:
+                  const EdgeInsets.fromLTRB(14, kToolbarHeight * 1.9, 14, 50),
+              decoration: Decorations.main(context, radius: 16),
+              width: MediaQuery.of(context).size.width,
+              child: const CircularProgressIndicator(),
+            ),
+          ),
           child: Column(
             children: [
               const SizedBox(height: 12),
