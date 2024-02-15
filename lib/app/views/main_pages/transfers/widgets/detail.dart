@@ -11,6 +11,7 @@ import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
+import '/app/widgets/wallet_timer.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
@@ -141,7 +142,9 @@ class _TransferDetailState extends State<TransferDetail> {
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
-                      const SizedBox(height: 20),
+
+                      // Timer:
+                      WalletTimer(transfer: transfer, hideDecorations: true),
                     ],
                   ),
                 ),
