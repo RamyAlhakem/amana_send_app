@@ -52,7 +52,7 @@ class SettingsDialog {
                   TextX(
                     title,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: MainColors.color2,
+                          color: Colors.white,
                           fontWeight: FontWeight.w600,
                         ),
                   ),

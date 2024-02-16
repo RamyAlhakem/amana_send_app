@@ -268,6 +268,8 @@ class Calculator with ChangeNotifier {
 
       if (!sendUSD) {
         round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
+      } else {
+        round = round.ceilToDouble();
       }
 
       Helper.log('round: $round');
@@ -366,6 +368,9 @@ class Calculator with ChangeNotifier {
       // Finally, store the result in the 'toConvert' variable
       converted =
           totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
+
+      // Floor to sender amount only
+      converted = (converted * 100).floor() / 100;
 
       _amountPlusFee = converted + receiverRatio;
     }
