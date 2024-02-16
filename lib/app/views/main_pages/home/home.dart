@@ -129,7 +129,6 @@ class _HomeState extends State<Home> {
               state.setPrice(state.sender.text, usd: state.sendUSD);
             },
             child: ListView(
-              shrinkWrap: true,
               clipBehavior: Clip.none,
               padding: EdgeInsets.zero,
               children: [

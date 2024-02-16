@@ -348,6 +348,8 @@ class Calculator with ChangeNotifier {
       if (!sendUSD) {
         converted =
             ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
+      } else {
+        converted = converted.ceilToDouble();
       }
       _amountPlusFee = amount + receiverRatio;
     } else {
