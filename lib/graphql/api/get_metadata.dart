@@ -45,6 +45,14 @@ class GetMetadata {
     if (data.isNotEmpty && data.containsKey('metaData')) {
       AppMetadata.get = AppMetadata.fromJson(data['metaData']);
       Helper.serverAppVersion = ServerAppVersion.fromJson(data['metaData']);
+      if (AppMetadata.get.androidUrl.isNotEmpty) {
+        Configs.googleStore = AppMetadata.get.androidUrl;
+      }
+      if (AppMetadata.get.appStoreUrl.isNotEmpty) {
+        Configs.appleStore = AppMetadata.get.appStoreUrl;
+      }
+      // Helper.log('google play: ====>>${Configs.googleStore}');
+      // Helper.log('appleStore: ====>>${Configs.appleStore}');
     }
   }
 

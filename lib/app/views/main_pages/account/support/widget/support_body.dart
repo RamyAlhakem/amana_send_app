@@ -182,7 +182,7 @@ class SupportBody extends StatelessWidget {
           //   Helper.launchURL('https://www.instagram.com/');
           //   break;
           case 'assets/svg/telegram.svg':
-            Helper.launchURL('https://t.me/AMANA_CS');
+            Helper.launchURL('https://t.me/AMANA_SEND');
             break;
           // case 'assets/svg/location.svg':
           //   Helper.launchURL('https://goo.gl/maps/dRf6y5PdR89');

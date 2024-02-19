@@ -238,7 +238,7 @@ class _SuccessState extends State<Success> {
                   padding: const EdgeInsets.all(15),
                   decoration: Decorations.note(context),
                   child: TextX(
-                    arb.noteAmanaSendRegisterSmallPaymentToCarryOutMoneyTransferServicesUnderPaymentServices,
+                    arb.thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: MainColors.red,
                         ),

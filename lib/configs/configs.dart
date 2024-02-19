@@ -28,7 +28,7 @@ class Configs {
   static const String apiUrl = debug ? apiStaging : apiProduction;
 
   static String storeUrl = Platform.isIOS ? appleStore : googleStore;
-  static const String appleStore = 'https://apps.apple.com/app/id64433';
-  static const String googleStore =
+  static String appleStore = 'https://apps.apple.com/app/id6474017595';
+  static String googleStore =
       'https://play.google.com/store/apps/details?id=com.amana_send';
 }

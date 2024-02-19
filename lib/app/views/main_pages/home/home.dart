@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                         return Helper.snack(
                           '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
                           action: Button(
-                            () => Helper.launchURL('https://t.me/AMANA_CS'),
+                            () => Helper.launchURL('https://t.me/AMANA_SEND'),
                             width: MediaQuery.of(context).size.width,
                             TextX(arb.contactSupportTeam),
                           ),

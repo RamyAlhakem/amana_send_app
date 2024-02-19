@@ -31,7 +31,7 @@ class ContactUs {
           height: 45,
           width: ScreenSize.width,
           borderRadius: 100,
-          () => Helper.launchURL('https://t.me/AMANA_CS'),
+          () => Helper.launchURL('https://t.me/AMANA_SEND'),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

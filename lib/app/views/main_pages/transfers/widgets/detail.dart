@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/app/theme/decoration/decorations.dart';
+import '/app/views/main_pages/home/screens/components/wallet_timer.dart';
 import '/app/views/main_pages/recipients/recipient/widget/icon_detail.dart';
 import '/app/views/main_pages/transfers/widgets/agent_description.dart';
 import '/app/widgets/divider.dart';
@@ -11,7 +12,6 @@ import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
-import '/app/widgets/wallet_timer.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
@@ -144,7 +144,8 @@ class _TransferDetailState extends State<TransferDetail> {
                       ),
 
                       // Timer:
-                      WalletTimer(transfer: transfer, hideDecorations: true),
+                      if (transfer.status.name == TransferStatus.pending.name)
+                        WalletTimer(transfer: transfer, hideDecorations: true),
                     ],
                   ),
                 ),
@@ -159,6 +160,21 @@ class _TransferDetailState extends State<TransferDetail> {
                   child: TextX(transfer.completedMessage),
                 ),
               ),
+              // RowSpaceBetween([
+              //   TextX(arb.youAskedToSend),
+              //   Text.rich(
+              //     textScaler: TextScaler.noScaling,
+              //     TextSpan(
+              //       children: <TextSpan>[
+              //         TextSpan(
+              //           text: '${Tools.nicePrice(transfer.sendAmount)} ',
+              //         ),
+              //         const TextSpan(text: 'USDT'),
+              //       ],
+              //     ),
+              //   ),
+              // ]),
+              // const SizedBox(height: 8),
               RowSpaceBetween([
                 TextX(arb.youSent),
                 Text.rich(

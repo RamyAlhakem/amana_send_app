@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/registration/components/count_down.dart';
 import '/app/widgets/text/text_x.dart';
-import '/graphql/api/get_transfer.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
-import '/router/app_route.dart';
-import '/services/user_service.dart';
 
 class WalletTimer extends StatefulWidget {
   const WalletTimer({
@@ -60,21 +55,6 @@ class _WalletTimerState extends State<WalletTimer>
     return seconds > 0 ? seconds : 0;
   }
 
-  void checkTransaction(int id) {
-    timer = Timer.periodic(Duration(seconds: reDuration), (_) async {
-      transfer = await GetTransfer(context, id).request().then((transfer) {
-        if (transfer.status.name.toLowerCase() == 'new') {
-          UserService.countTransfers(count: 1); // add +1
-          context.pushReplacementNamed(
-            AppRoute.success,
-            pathParameters: <String, String>{'transfer': jsonEncode(transfer)},
-          );
-        }
-        return transfer;
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -87,7 +67,12 @@ class _WalletTimerState extends State<WalletTimer>
 
     ctrl.forward();
     isTimeOut();
-    checkTransaction(transfer.id);
+  }
+
+  @override
+  void didUpdateWidget(covariant WalletTimer oldWidget) {
+    transfer = widget.transfer;
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
