@@ -97,6 +97,7 @@ class Explorer {
       ''';
 
   static const String transfer = '''
+      askedAmount
       id
       totalAmount
       addedAt

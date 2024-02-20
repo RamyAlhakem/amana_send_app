@@ -160,21 +160,21 @@ class _TransferDetailState extends State<TransferDetail> {
                   child: TextX(transfer.completedMessage),
                 ),
               ),
-              // RowSpaceBetween([
-              //   TextX(arb.youAskedToSend),
-              //   Text.rich(
-              //     textScaler: TextScaler.noScaling,
-              //     TextSpan(
-              //       children: <TextSpan>[
-              //         TextSpan(
-              //           text: '${Tools.nicePrice(transfer.sendAmount)} ',
-              //         ),
-              //         const TextSpan(text: 'USDT'),
-              //       ],
-              //     ),
-              //   ),
-              // ]),
-              // const SizedBox(height: 8),
+              RowSpaceBetween([
+                TextX(arb.youAskedToSend),
+                Text.rich(
+                  textScaler: TextScaler.noScaling,
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '${Tools.nicePrice(transfer.askedAmount)} ',
+                      ),
+                      const TextSpan(text: 'USDT'),
+                    ],
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 8),
               RowSpaceBetween([
                 TextX(arb.youSent),
                 Text.rich(

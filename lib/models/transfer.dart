@@ -35,6 +35,7 @@ class TransferModel extends SafetyModel {
     this.receiptPic = '',
     this.receiveType = 0,
     this.source = 0,
+    this.askedAmount = 0,
     this.paymentReference = '',
     this.paymentData = '',
     this.addedAt = '0000-00-00',
@@ -43,7 +44,7 @@ class TransferModel extends SafetyModel {
   int id = 0, reason = 0, branchId = 0;
   bool isReceiveInUsd = false, cashToPay = false;
   double sendAmount = 0, recipientAmount = 0, totalAmount = 0, fees = 0;
-  double convertedTotalAmount = 0;
+  double convertedTotalAmount = 0, askedAmount = 0;
   String completedMessage = '', adminCancelReason = '', receiptPic = '';
   String completedAt = '';
   int receiveType = 0, source = 0;
@@ -84,6 +85,7 @@ class TransferModel extends SafetyModel {
     cashToPay = boolFromJson(json, 'cashToPay');
     status = parseStatus('${json['status']}');
     convertedTotalAmount = doubleFromJson(json, 'convertedTotalAmount');
+    askedAmount = doubleFromJson(json, 'askedAmount');
     branchId = intFromJson(json, 'branchId');
     completedMessage = stringFromJson(json, 'completedMessage');
     completedAt =
@@ -120,6 +122,7 @@ class TransferModel extends SafetyModel {
         'cashToPay': cashToPay,
         'status': status.toJson(),
         'convertedTotalAmount': convertedTotalAmount,
+        'askedAmount': askedAmount,
         'branchId': branchId,
         'completedMessage': completedMessage,
         'completedAt': completedAt,
