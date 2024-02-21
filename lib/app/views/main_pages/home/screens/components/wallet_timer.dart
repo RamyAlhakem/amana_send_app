@@ -46,10 +46,12 @@ class _WalletTimerState extends State<WalletTimer>
   int calculateRemainingTime() {
     final int initial = AppMetadata.get.walletAddressValidTime * 60;
     final DateTime now = DateTime.now();
-    final DateTime transactionDate = DateTime.tryParse(transfer.addedAt) ?? now;
+
+    // Get transactionDate + additional timezone hours:
+    final date = DateTime.parse(transfer.addedAt).add(now.timeZoneOffset);
 
     // Calculate the remaining time
-    final Duration difference = now.difference(transactionDate);
+    final Duration difference = now.difference(date);
     final int seconds = initial - difference.inSeconds;
 
     return seconds > 0 ? seconds : 0;
