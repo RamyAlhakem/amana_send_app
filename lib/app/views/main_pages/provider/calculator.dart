@@ -399,7 +399,7 @@ class Calculator with ChangeNotifier {
         if (receiver.text.isNotEmpty) {
           if (double.parse(receiver.text) < receiverAgent.minAmount) {
             Helper.bannerWarning(
-              '${_arb!.minimumReceivingLimitToThisPickUpPointIs} ${receiverAgent.minAmount} ${recipient.country.currency.code}',
+              '${_arb!.minimumReceivingLimitToThisPickUpPointIs} ${receiverAgent.minAmount} ${sendUSD ? 'USD' : recipient.country.currency.code}',
             );
             return check = false;
           }

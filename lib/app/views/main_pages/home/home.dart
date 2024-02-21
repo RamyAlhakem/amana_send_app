@@ -168,7 +168,7 @@ class _HomeState extends State<Home> {
                       if (double.parse(state.receiver.text) <
                           state.receiverAgent.minAmount) {
                         return Helper.snack(
-                          '${arb.minimumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.minAmount)} ${state.receiverCountry.currency.code}',
+                          '${arb.minimumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.minAmount)} ${state.sendUSD ? 'USD' : state.receiverCountry.currency.code}',
                         );
                       }
                       if (double.parse(state.receiver.text) >
