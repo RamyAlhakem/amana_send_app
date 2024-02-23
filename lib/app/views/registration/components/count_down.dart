@@ -18,12 +18,14 @@ class Countdown extends AnimatedWidget {
     Duration clockTimer = Duration(seconds: animation.value);
 
     String timerText =
-        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+        '${clockTimer.inHours > 0 ? '${clockTimer.inHours.remainder(24)}:' : ''}${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
 
-    // print('animation.value  ${animation!.value} ');
-    // print('inMinutes ${clockTimer.inMinutes.toString()}');
-    // print('inSeconds ${clockTimer.inSeconds.toString()}');
-    // print('inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+    // debugPrint('animation.value  ${animation.value}');
+    // debugPrint('inHours ${clockTimer.inHours.toString()}');
+    // debugPrint('inMinutes ${clockTimer.inMinutes.toString()}');
+    // debugPrint('inSeconds ${clockTimer.inSeconds.toString()}');
+    // debugPrint(
+    //     'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
 
     return TextX(
       timerText,
