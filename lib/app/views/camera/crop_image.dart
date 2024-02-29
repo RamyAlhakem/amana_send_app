@@ -13,14 +13,14 @@ class CropImage {
     img.Image? image = img.decodeImage(File(rawImage.path).readAsBytesSync());
     if (image != null) {
       // Calculate the starting coordinates for cropping
-      int startX = (image.width - image.width * .8) ~/ 2;
-      int startY = (image.height - image.height * .6) ~/ 2;
+      int startX = (image.width - image.width * .9) ~/ 2;
+      int startY = (image.height - image.height * .7) ~/ 2;
       img.Image resizedImage = img.copyCrop(
         image,
         x: startX,
         y: startY,
-        width: (image.width * .8).toInt(),
-        height: (image.height * .6).toInt(),
+        width: (image.width * .9).toInt(),
+        height: (image.height * .7).toInt(),
       );
 
       // Get the app's writable directory
