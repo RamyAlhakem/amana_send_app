@@ -44,7 +44,8 @@ class GetMetadata {
   static void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('metaData')) {
       AppMetadata.get = AppMetadata.fromJson(data['metaData']);
-      Helper.serverAppVersion = ServerAppVersion.fromJson(data['metaData']);
+      ServerAppVersion.get = ServerAppVersion.fromJson(data['metaData']);
+      ServerAppVersion.isUpdate();
       if (AppMetadata.get.androidUrl.isNotEmpty) {
         Configs.googleStore = AppMetadata.get.androidUrl;
       }

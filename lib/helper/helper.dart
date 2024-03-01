@@ -15,14 +15,12 @@ import '/app/widgets/text/text_x.dart';
 import '/configs/configs.dart';
 import '/global/variables.dart';
 import '/models/recipient.dart';
-import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 import 'debug_colors.dart';
 
 class Helper {
   static AppLocalizations? _arb;
-  static ServerAppVersion serverAppVersion = ServerAppVersion();
 
   static void log(dynamic text, {DebugColor color = DebugColor.white}) {
     if (kDebugMode) {

@@ -25,6 +25,30 @@ class Tools {
     return true;
   }
 
+  static int compareVersion(String appVersion, String apiVersion) {
+    List<int> parseVersion(String version) {
+      return version.split('.').map((v) => int.parse(v)).toList();
+    }
+
+    final List<int> app = parseVersion(appVersion);
+    final List<int> api = parseVersion(apiVersion);
+
+    final int length = app.length > api.length ? app.length : api.length;
+
+    for (int i = 0; i < length; i++) {
+      int num1 = i < app.length ? app[i] : 0;
+      int num2 = i < api.length ? api[i] : 0;
+
+      if (num1 < num2) {
+        return -1; // appVersion is less than apiVersion
+      } else if (num1 > num2) {
+        return 1; // appVersion is greater than apiVersion
+      }
+    }
+
+    return 0; // versions are equal
+  }
+
   static List<bool> setSelect(List<dynamic> elements, List<bool> selection) {
     /// To unselect [selection], pass empty boolean list value.
     final set = List<bool>.generate(elements.length, (i) => false);

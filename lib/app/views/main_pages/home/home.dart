@@ -22,7 +22,6 @@ import '/graphql/api/get_recipients.dart';
 import '/graphql/api/get_user.dart';
 import '/helper/helper.dart';
 import '/models/metadata.dart';
-import '/models/server_app_version.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 import '/services/lang_service.dart';
@@ -56,9 +55,7 @@ class _HomeState extends State<Home> {
       GetRecipients.request();
       await GetUserMeta.request();
     }
-    await GetCountriesAPI.request().whenComplete(
-      () => ServerAppVersion.isUpdate(),
-    );
+    await GetCountriesAPI.request();
     // -------------------------------------------------------------------------
 
     if (context.mounted && Global.isAnyDialogOpen(context)) {

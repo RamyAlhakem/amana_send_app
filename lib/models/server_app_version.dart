@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import '/configs/configs.dart';
-import '/helper/helper.dart';
 import '/helper/safety_model.dart';
 import '/router/app_route.dart';
+import '/tools/tools.dart';
 
 class ServerAppVersion extends SafetyModel {
-  ServerAppVersion({this.apple = 1.0, this.android = 1.0});
+  ServerAppVersion({this.apple = '1.0', this.android = '1.0'});
 
-  double apple = 1.0;
-  double android = 1.0;
+  String apple = '1.0', android = '1.0';
 
-  static double appVersion = 1.0;
+  static ServerAppVersion get = ServerAppVersion();
+  String api = '1.0';
 
   ServerAppVersion.fromJson(Map<String, dynamic> json) {
-    apple = doubleFromJson(json, 'apiAppleVersion', defaultValue: 1.0);
-    android = doubleFromJson(json, 'apiAndroidVersion', defaultValue: 1.0);
+    apple = stringFromJson(json, 'apiAppleVersion', defaultValue: '1.0');
+    android = stringFromJson(json, 'apiAndroidVersion', defaultValue: '1.0');
     super.fromJson(json);
   }
 
@@ -27,12 +27,13 @@ class ServerAppVersion extends SafetyModel {
 
   ServerAppVersion.isUpdate() {
     if (Platform.isIOS) {
-      appVersion = Helper.serverAppVersion.apple;
+      api = ServerAppVersion.get.apple;
     } else {
-      appVersion = Helper.serverAppVersion.android;
+      api = ServerAppVersion.get.android;
     }
 
-    if (appVersion > Configs.apiVersion) {
+    final bool update = Tools.compareVersion(Configs.version, api) == -1;
+    if (update) {
       AppRoute.get().then((router) => router.go('/${AppRoute.updateApp}'));
     }
   }
