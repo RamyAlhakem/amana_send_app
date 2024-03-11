@@ -10,5 +10,5 @@ class MainColors {
   static const Color color4 = Color(0xffF2F7A1);
   static const Color color5 = Color(0xffE5E5E5);
   static const Color color6 = Color(0xffE5E5E5);
-  static const Color whatsApp = Color(0xff3bbd4d);
+  static const Color telegram = Color(0xff039be5);
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/buttons/button.dart';
@@ -16,10 +16,10 @@ class ContactUs {
 
   void show() {
     final BuildContext context = Global.key.currentContext!;
-    final AppLocalizations? arb = AppLocalizations.of(context);
+    final AppLocalizations arb = AppLocalizations.of(context)!;
     SettingsDialog(
       onSubmit: null,
-      title: arb!.contactUs,
+      title: arb.contactUs,
       subTitle: message,
       subTitleStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w500,
@@ -31,23 +31,20 @@ class ContactUs {
           height: 45,
           width: ScreenSize.width,
           borderRadius: 100,
-          () => Helper.launchURL('https://t.me/AMANA_SEND'),
-          const Row(
+          () => Helper.launchURL('https://t.me/AMANA_CS'),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextX(
-                'WhatsApp',
-                style: TextStyle(color: MainColors.whatsApp),
+                arb.telegram,
+                style: const TextStyle(color: MainColors.telegram),
               ),
-              SizedBox(width: 5),
-              Icon(
-                LineIcons.whatSApp,
-                color: MainColors.whatsApp,
-              ),
+              const SizedBox(width: 5),
+              SvgPicture.asset('assets/svg/telegram.svg', height: 25),
             ],
           ),
           color: Theme.of(Global.key.currentContext!).cardColor,
-          borderColor: MainColors.whatsApp,
+          borderColor: MainColors.telegram,
         ),
       ),
     ).show();

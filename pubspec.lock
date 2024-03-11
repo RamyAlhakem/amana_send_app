@@ -93,10 +93,10 @@ packages:
     dependency: transitive
     description:
       name: camera_avfoundation
-      sha256: "7d0763dfcbf060f56aa254a68c103210280bee9e97bbe4fdef23e257a4f70ab9"
+      sha256: "8b113e43ee4434c9244c03c905432a0d5956cedaded3cd7381abaab89ce50297"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.14"
+    version: "0.9.14+1"
   camera_platform_interface:
     dependency: transitive
     description:
@@ -401,18 +401,18 @@ packages:
     dependency: transitive
     description:
       name: gql
-      sha256: b54669d671e55d22fe0b5364ca4c4b2ea7c9563fd76f1b87a9527e14ff0865d6
+      sha256: afe032332ddfa69b79f1dea2ad7d95923d4993c1b269b224fc7bb3d17e32d33c
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1708718049275"
+    version: "1.0.1-alpha+1709845491443"
   gql_dedupe_link:
     dependency: transitive
     description:
       name: gql_dedupe_link
-      sha256: d2f953708fbed3e3db64a9d1a675d45f63ff8211383f7234b4469a31ddca4ef7
+      sha256: "2971173c68623d5c43f5327ea899bd2ee64ce3461c1263f240b4bb6211f667be"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4-alpha+1708718049359"
+    version: "2.0.4-alpha+1709845491527"
   gql_error_link:
     dependency: transitive
     description:
@@ -441,10 +441,10 @@ packages:
     dependency: transitive
     description:
       name: gql_link
-      sha256: bafe346bae79bdabf8a0f1dd966cfafeca9ccbc2d660c8fa08e32f2ca7028a7a
+      sha256: "177500e250b3742d6d2673d57961e8413b6593dc6bd6a512c51865b6cf096f7e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-alpha+1708718049290"
+    version: "1.0.1-alpha+1709845491457"
   gql_transform_link:
     dependency: transitive
     description:
@@ -1230,10 +1230,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: "1d9158c616048c38f712a6646e317a3426da10e884447626167240d45209cbad"
+      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.5.1"
   web_socket_channel:
     dependency: transitive
     description:
@@ -1246,10 +1246,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "464f5674532865248444b4c3daca12bd9bf2d7c47f759ce2617986e7229494a8"
+      sha256: "8cb58b45c47dcb42ab3651533626161d6b67a2921917d8d429791f76972b3480"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.0"
+    version: "5.3.0"
   xdg_directories:
     dependency: transitive
     description:

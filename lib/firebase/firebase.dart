@@ -25,6 +25,7 @@ class FirebaseTool {
       await firebaseMessaging.requestPermission();
       firebaseMessaging.setForegroundNotificationPresentationOptions(
         alert: true,
+        badge: true,
         sound: true,
       );
 

@@ -111,6 +111,7 @@ class Helper {
     int seconds = 15,
     EdgeInsets? margin,
     double? elevation,
+    Widget? icon,
     Widget? action,
   }) {
     final BuildContext _ = Global.key.currentContext!;
@@ -140,16 +141,26 @@ class Helper {
             // Content message.
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 14, 24, 20),
-              child: TextX(
-                text,
-                style: textStyle ?? Theme.of(_).textTheme.bodyMedium,
+              child: Row(
+                children: [
+                  icon ?? const SizedBox.shrink(),
+                  if (icon != null) const SizedBox(width: 8),
+                  Flexible(
+                    child: TextX(
+                      text,
+                      style: (textStyle ?? Theme.of(_).textTheme.bodyMedium)
+                          ?.copyWith(fontFamily: 'almarai'),
+                    ),
+                  ),
+                ],
               ),
             ),
+
             if (action != null)
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                padding: const EdgeInsets.all(8.0),
                 child: action,
-              )
+              ),
           ],
         ),
         behavior: SnackBarBehavior.floating,
