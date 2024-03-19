@@ -33,7 +33,7 @@ dependencies:
   package_info_plus: ^4.0.0
 
   # local storage
-  camera: ^0.10.5+5
+  camera: ^0.10.5+9
   shared_preferences: ^2.2.0
   cached_network_image: ^3.2.3
   image_picker: ^0.8.6

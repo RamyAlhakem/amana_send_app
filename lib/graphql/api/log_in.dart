@@ -82,6 +82,11 @@ class LogInAPI {
           GetNotifications.request();
           GetCountriesAPI.request();
         });
+        Helper.userVerify(
+          UserModel.get.verified,
+          showDialog: true,
+          returnSnack: UserModel.get.verified == 0,
+        );
       });
 
       FirebaseTool.getFirebaseToken().whenComplete(

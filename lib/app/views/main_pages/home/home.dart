@@ -62,14 +62,14 @@ class _HomeState extends State<Home> {
       LoadingDialog.dismiss();
     }
 
-    PopupService.show();
-
     // Check user verification status
     Helper.userVerify(
       UserModel.get.verified,
       showDialog: true,
       returnSnack: UserModel.get.verified == 0,
     );
+
+    PopupService.show();
   }
 
   @override
