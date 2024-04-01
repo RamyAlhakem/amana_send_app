@@ -45,7 +45,6 @@ class CheckOutDetails extends StatefulWidget {
             receivingCityId: calculator.receiverCity.id,
             providerId: calculator.receiverAgent.id,
             paymentMethodId: 1,
-            receiverCurrency: calculator.receiverCountry.currency.code,
           ).request();
         },
         height: 45,
@@ -144,10 +143,13 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                       children: [
                         RowSpaceBetween([
                           TextX(arb.recipient),
-                          TextX(
-                            '${state.selectedRecipient?.firstName} ${state.selectedRecipient?.lastName}'
-                                .toUpperCase(),
-                            style: Theme.of(context).textTheme.bodyLarge,
+                          const SizedBox(width: 15),
+                          Flexible(
+                            child: TextX(
+                              '${state.selectedRecipient?.firstName} ${state.selectedRecipient?.fatherName} ${state.selectedRecipient?.lastName}'
+                                  .toUpperCase(),
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
                           ),
                         ]),
                         const SizedBox(height: 8),

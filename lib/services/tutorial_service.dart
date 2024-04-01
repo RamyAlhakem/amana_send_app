@@ -4,7 +4,6 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/widgets/text/text_x.dart';
-import '/helper/helper.dart';
 import '/services/lang_service.dart';
 import 'user_service.dart';
 
@@ -26,12 +25,16 @@ class Tutorial {
   static List<TargetFocus> targets() {
     final bool isAR = LangService.isAR();
     final List<TargetFocus> targets = <TargetFocus>[];
+    const Duration focusDuration = Duration(milliseconds: 250);
     targets.add(
       TargetFocus(
         identify: 'Target 1',
         keyTarget: key1,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         contents: [
           TargetContent(
             align: isAR ? ContentAlign.left : ContentAlign.right,
@@ -47,6 +50,9 @@ class Tutorial {
         keyTarget: key2,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         contents: [
           TargetContent(
             align: isAR ? ContentAlign.right : ContentAlign.left,
@@ -66,6 +72,9 @@ class Tutorial {
         keyTarget: key3,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         paddingFocus: 30,
         contents: [
           TargetContent(
@@ -83,6 +92,9 @@ class Tutorial {
         keyTarget: key4,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         contents: [
           TargetContent(
             child: Text(
@@ -99,6 +111,9 @@ class Tutorial {
         keyTarget: key5,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         paddingFocus: 0,
         contents: [
           TargetContent(
@@ -116,6 +131,9 @@ class Tutorial {
         keyTarget: key6,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         contents: [
           TargetContent(
             child: Text(
@@ -132,6 +150,9 @@ class Tutorial {
         keyTarget: key7,
         shape: ShapeLightFocus.RRect,
         radius: 4,
+        enableOverlayTab: true,
+        focusAnimationDuration: focusDuration,
+        unFocusAnimationDuration: focusDuration,
         contents: [
           TargetContent(
             child: Text(
@@ -147,13 +168,6 @@ class Tutorial {
 
   void showTutorial() {
     if (!show && !UserService.isFresh()) return;
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      Helper.toast(
-        arb.clickOnTheFocusedBoxToContinue,
-        bgColor: Colors.white,
-        textColor: Colors.black,
-      );
-    });
     arb = AppLocalizations.of(context)!;
     TutorialCoachMark(
       targets: targets(),

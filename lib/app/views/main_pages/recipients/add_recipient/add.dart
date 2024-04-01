@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
+import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/app/views/registration/components/phone_country_picker.dart';
 import '/app/views/registration/provider/registration_state.dart';
@@ -20,6 +21,7 @@ import '/graphql/api/add_edit_recipient.dart';
 import '/helper/helper.dart';
 import '/models/city.dart';
 import '/models/recipient.dart';
+import '/services/lang_service.dart';
 
 class AddRecipient extends StatefulWidget {
   const AddRecipient({
@@ -49,7 +51,7 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _fatherName = TextEditingController();
   TextEditingController _whatsApp = TextEditingController();
 
-  bool keepSendProcess = false;
+  bool keepSendProcess = false, isAR = false;
 
   @override
   void initState() {
@@ -73,6 +75,7 @@ class _AddRecipientState extends State<AddRecipient> {
   @override
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
+    isAR = LangService.isAR();
     super.didChangeDependencies();
   }
 
@@ -115,7 +118,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 controller: _whatsApp,
                 hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
                 type: TextInputType.phone,
-                input: TextFieldValidator.onlyDigits(length: 15),
+                input: TextFieldValidator.onlyDigits(length: 20),
                 onSubmitted: (_) => _submit(),
               ),
               const SizedBox(height: 8),
@@ -123,45 +126,41 @@ class _AddRecipientState extends State<AddRecipient> {
                 arb.recipientName,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: Column(
-                  children: [
-                    Row(children: [
-                      Expanded(
-                        child: TextFieldX(
-                          controller: _firstName,
-                          hint: arb.firstName,
-                          type: TextInputType.name,
-                          onChanged: (_) {
-                            TextFieldValidator.arabic(context, _firstName);
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 13),
-                      Expanded(
-                        child: TextFieldX(
-                          controller: _lastName,
-                          hint: arb.lastName,
-                          type: TextInputType.name,
-                          onChanged: (_) {
-                            TextFieldValidator.arabic(context, _lastName);
-                          },
-                        ),
-                      ),
-                    ]),
-                    TextFieldX(
-                      controller: _fatherName,
-                      hint: arb.fatherName,
-                      type: TextInputType.name,
-                      onChanged: (_) {
-                        TextFieldValidator.arabic(context, _fatherName);
-                      },
-                      onSubmitted: (_) => _submit(),
-                    ),
-                  ],
+
+              // Name
+              Row(children: [
+                Expanded(
+                  child: TextFieldX(
+                    controller: _firstName,
+                    hint: arb.firstName,
+                    type: TextInputType.name,
+                    onChanged: (_) {
+                      TextFieldValidator.arabic(context, _firstName);
+                    },
+                  ),
                 ),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: TextFieldX(
+                    controller: _lastName,
+                    hint: arb.lastName,
+                    type: TextInputType.name,
+                    onChanged: (_) {
+                      TextFieldValidator.arabic(context, _lastName);
+                    },
+                  ),
+                ),
+              ]),
+              TextFieldX(
+                controller: _fatherName,
+                hint: arb.fatherName,
+                type: TextInputType.name,
+                onChanged: (_) {
+                  TextFieldValidator.arabic(context, _fatherName);
+                },
+                onSubmitted: (_) => _submit(),
               ),
+              // ---
 
               const SizedBox(height: 18),
 
@@ -200,6 +199,16 @@ class _AddRecipientState extends State<AddRecipient> {
                   ),
                 ),
               ]),
+              Container(
+                decoration: Decorations.note(context),
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                width: MediaQuery.of(context).size.width,
+                child: TextX(
+                  arb.pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery,
+                  style: const TextStyle(color: MainColors.lightRed),
+                ),
+              ),
             ],
           ),
         ),

@@ -12,48 +12,10 @@ import '/models/transfer.dart';
 import '/router/app_route.dart';
 import '/tools/tools.dart';
 
-class TransferRecent extends StatefulWidget {
+class TransferRecent extends StatelessWidget {
   const TransferRecent(this.transfer, {super.key});
 
   final TransferModel transfer;
-
-  static String status(BuildContext context, int i) {
-    final AppLocalizations? arb = AppLocalizations.of(context);
-
-    String status = '';
-    switch (i) {
-      case 0:
-        status = arb!.waitingPayment;
-        break;
-      case 1:
-        status = arb!.processing;
-        break;
-      case 2:
-        status = arb!.processed;
-        break;
-      case 3:
-        status = arb!.completed;
-        break;
-      case 4:
-        status = arb!.canceled;
-        break;
-      case 5:
-        status = arb!.dispute;
-        break;
-    }
-    return status;
-  }
-
-  @override
-  State<TransferRecent> createState() => _TransferRecentState();
-}
-
-class _TransferRecentState extends State<TransferRecent> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    TransferRecent.status(context, widget.transfer.status.index);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +25,15 @@ class _TransferRecentState extends State<TransferRecent> {
       child: Button(
         () => context.pushNamed(
           AppRoute.transfer,
-          pathParameters: <String, String>{
-            'transfer': jsonEncode(widget.transfer),
-          },
+          pathParameters: <String, String>{'transfer': jsonEncode(transfer)},
         ),
         color: Theme.of(context).cardColor,
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         RowSpaceBetween([
           Flexible(
             child: RecipientIconDetail(
-              recipient: widget.transfer.recipient,
-              date: widget.transfer.addedAt,
+              recipient: transfer.recipient,
+              date: transfer.addedAt,
               isTransfer: true,
             ),
           ),
@@ -83,14 +43,14 @@ class _TransferRecentState extends State<TransferRecent> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 TextX(
-                  '${arb!.transferId} #${widget.transfer.id}',
+                  '${arb!.transferId} #${transfer.id}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                       ),
                 ),
                 const SizedBox(height: 2),
                 TextX(
-                  TransferRecent.status(context, widget.transfer.status.index),
+                  Tools.transferStatus(transfer.status.index),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
@@ -102,14 +62,13 @@ class _TransferRecentState extends State<TransferRecent> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text:
-                            '${Tools.nicePrice(widget.transfer.recipientAmount)} ',
+                        text: '${Tools.nicePrice(transfer.recipientAmount)} ',
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       TextSpan(
-                        text: widget.transfer.isReceiveInUsd
+                        text: transfer.isReceiveInUsd
                             ? 'USD'
-                            : widget.transfer.recipient.country.currency.code,
+                            : transfer.recipient.country.currency.code,
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ],

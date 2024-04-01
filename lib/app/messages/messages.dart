@@ -15,6 +15,7 @@ class Messages {
       arb.copiedSuccessfully,
       textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       seconds: 99,
+      margin: const EdgeInsets.fromLTRB(6, 8, 6, 40),
       action: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +67,7 @@ class Messages {
           Button(
             () => Global.snackKey.currentState?.hideCurrentSnackBar(),
             width: MediaQuery.of(context).size.width,
-            TextX(arb.done),
+            TextX(arb.continueX),
           ),
         ],
       ),

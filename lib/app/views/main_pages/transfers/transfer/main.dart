@@ -108,7 +108,8 @@ class _TransferMainState extends State<TransferMain>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AutoAppBar(
-          title: 'ID: ${transfer.id}',
+          title:
+              'ID: ${transfer.id} | ${Tools.transferStatus(transfer.status.index)}',
           actions: [
             RefreshButton(
               animation: animationRotate,
@@ -153,7 +154,8 @@ class _TransferMainState extends State<TransferMain>
               const SizedBox(height: 4),
               Center(
                 child: TextX(
-                  '${transfer.recipient.firstName} ${transfer.recipient.lastName}',
+                  '${transfer.recipient.firstName} ${transfer.recipient.fatherName} ${transfer.recipient.lastName}',
+                  textAlign: TextAlign.center,
                 ),
               ),
               Expanded(

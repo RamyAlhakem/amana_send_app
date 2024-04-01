@@ -3,11 +3,11 @@ import '/app/widgets/text/text_x.dart';
 
 class Countdown extends AnimatedWidget {
   const Countdown({
-    Key? key,
+    super.key,
     required this.animation,
     this.size = 35,
     this.color = Colors.blueGrey,
-  }) : super(key: key, listenable: animation);
+  }) : super(listenable: animation);
 
   final Animation<int> animation;
   final double size;
@@ -18,14 +18,7 @@ class Countdown extends AnimatedWidget {
     Duration clockTimer = Duration(seconds: animation.value);
 
     String timerText =
-        '${clockTimer.inHours > 0 ? '${clockTimer.inHours.remainder(24)}:' : ''}${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
-
-    // debugPrint('animation.value  ${animation.value}');
-    // debugPrint('inHours ${clockTimer.inHours.toString()}');
-    // debugPrint('inMinutes ${clockTimer.inMinutes.toString()}');
-    // debugPrint('inSeconds ${clockTimer.inSeconds.toString()}');
-    // debugPrint(
-    //     'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+        '${clockTimer.inHours > 0 ? '${clockTimer.inHours.remainder(24).toString().padLeft(2, '0')}:' : ''}${clockTimer.inMinutes.remainder(60).toString().padLeft(2, '0')}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
 
     return TextX(
       timerText,

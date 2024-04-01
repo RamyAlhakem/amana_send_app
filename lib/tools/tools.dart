@@ -49,6 +49,34 @@ class Tools {
     return 0; // versions are equal
   }
 
+  static String transferStatus(int i) {
+    final BuildContext context = Global.key.currentContext!;
+    final AppLocalizations arb = AppLocalizations.of(context)!;
+
+    String status = '';
+    switch (i) {
+      case 0:
+        status = arb.waitingPayment;
+        break;
+      case 1:
+        status = arb.awaitingProcess;
+        break;
+      case 2:
+        status = arb.processing;
+        break;
+      case 3:
+        status = arb.completed;
+        break;
+      case 4:
+        status = arb.canceled;
+        break;
+      case 5:
+        status = arb.dispute;
+        break;
+    }
+    return status;
+  }
+
   static List<bool> setSelect(List<dynamic> elements, List<bool> selection) {
     /// To unselect [selection], pass empty boolean list value.
     final set = List<bool>.generate(elements.length, (i) => false);

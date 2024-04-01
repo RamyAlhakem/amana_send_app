@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
 
+import '/app/views/main_pages/provider/calculator.dart';
 import '/app/views/main_pages/structure.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/dialogs/loading.dart';
@@ -28,7 +29,6 @@ class SendTransfer {
     required this.providerId,
     required this.paymentMethodId,
     required this.isReceiveInUSD,
-    required this.receiverCurrency,
   });
 
   final BuildContext context;
@@ -36,14 +36,15 @@ class SendTransfer {
   final double recipientAmount, sendAmount;
   final int receivingCityId, providerId, paymentMethodId, recipientId;
   final bool isReceiveInUSD;
-  final String receiverCurrency;
 
   static late AppLocalizations _arb;
   static late TransfersState _provider;
+  static late Calculator _calculator;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
     _provider = Provider.of<TransfersState>(context, listen: false);
+    _calculator = Provider.of<Calculator>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context)!;
     });
@@ -133,9 +134,21 @@ class SendTransfer {
           }
 
           Helper.bannerWarning(
-            '${_arb.minimumReceivingLimitToThisPickUpPointIs} $amount $receiverCurrency',
+            '${_arb.minimumReceivingLimitToThisPickUpPointIs} $amount ${_calculator.receiverCountry.currency.code}',
           );
           GetCountriesAPI.request();
+          break;
+
+        case 479:
+          String amount = '';
+          String message = error.graphqlErrors.first.extensions?['message'];
+          List<num> numbers = Tools.extractNumbers(message);
+          for (num number in numbers) {
+            amount = '$number';
+          }
+          Helper.bannerWarning(
+            '${_arb.recipientProviderMaxAmountIs} $amount ${_calculator.receiverCountry.currency.code}',
+          );
           break;
 
         case 492:

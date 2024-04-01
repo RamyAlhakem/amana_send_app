@@ -153,7 +153,7 @@ class _HomeState extends State<Home> {
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
                         return Helper.snack(
-                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyContactOurSupportTeam}',
+                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
                           action: Button(
                             () => Helper.launchURL('https://t.me/AMANA_SEND'),
                             width: MediaQuery.of(context).size.width,
@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                       if (double.parse(state.receiver.text) >
                           state.receiverAgent.maxAmount) {
                         return Helper.snack(
-                          '${arb.maximumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.maxAmount)} ${state.receiverCountry.currency.code}',
+                          '${arb.maximumReceivingLimitToThisPickUpPointIs} ${Tools.nicePrice(state.receiverAgent.maxAmount)} ${state.sendUSD ? 'USD' : state.receiverCountry.currency.code}',
                         );
                       }
 

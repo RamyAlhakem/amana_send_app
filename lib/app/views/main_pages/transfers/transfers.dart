@@ -158,9 +158,9 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
                 indicatorWeight: 4,
                 labelPadding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
                 tabs: [
-                  TextX(arb.pending),
-                  TextX(arb.neW),
-                  TextX(arb.processed),
+                  TextX(arb.waitingPayment),
+                  TextX(arb.awaitingProcess),
+                  TextX(arb.processing),
                   TextX(arb.completed),
                   TextX(arb.canceled),
                   TextX(arb.dispute),

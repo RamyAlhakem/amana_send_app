@@ -315,6 +315,7 @@ class Helper {
     String name = '';
 
     if (recipient.firstName.isNotEmpty) name = recipient.firstName;
+    if (recipient.fatherName.isNotEmpty) name += ' ${recipient.fatherName}';
     if (recipient.lastName.isNotEmpty) name += ' ${recipient.lastName}';
 
     return name;
