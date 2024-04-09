@@ -48,7 +48,9 @@ class _WalletTimerState extends State<WalletTimer>
     final DateTime now = DateTime.now();
 
     // Get transactionDate + additional timezone hours:
-    final date = DateTime.parse(transfer.addedAt).add(now.timeZoneOffset);
+    final date = DateTime.parse(transfer.addedAt).add(
+      now.timeZoneOffset - const Duration(hours: 1),
+    );
 
     // Calculate the remaining time
     final Duration difference = now.difference(date);
