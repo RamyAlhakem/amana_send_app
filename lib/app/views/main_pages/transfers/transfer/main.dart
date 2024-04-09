@@ -109,7 +109,7 @@ class _TransferMainState extends State<TransferMain>
         backgroundColor: Colors.transparent,
         appBar: AutoAppBar(
           title:
-              'ID: ${transfer.id} | ${Tools.transferStatus(transfer.status.index)}',
+              'ID: ${transfer.id} - ${Tools.transferStatus(transfer.status.index)}',
           actions: [
             RefreshButton(
               animation: animationRotate,
