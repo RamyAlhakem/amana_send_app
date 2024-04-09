@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '/app/messages/messages.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/home/screens/components/wallet_timer.dart';
@@ -19,6 +18,7 @@ import '/app/widgets/text/text_x.dart';
 import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';
+import '/services/popup_services.dart';
 import '/tools/attachment_tools.dart';
 import '/tools/tools.dart';
 
@@ -155,7 +155,7 @@ class _TransferDetailState extends State<TransferDetail> {
                           () => Clipboard.setData(
                             ClipboardData(text: transfer.wallet.address),
                           ).whenComplete(() {
-                            Messages.copySuccess(context, transfer: transfer);
+                            PopupService.copySuccess(transfer: transfer);
                           }),
                           Row(children: [
                             const Icon(Icons.copy, size: 16),

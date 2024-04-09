@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '/app/messages/messages.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
@@ -21,6 +20,7 @@ import '/helper/helper.dart';
 import '/models/transfer.dart';
 import '/router/app_route.dart';
 import '/services/lang_service.dart';
+import '/services/popup_services.dart';
 import '/services/user_service.dart';
 import 'components/wallet_timer.dart';
 
@@ -186,7 +186,7 @@ class _WalletAddressState extends State<WalletAddress>
                         () => Clipboard.setData(
                           ClipboardData(text: transfer.wallet.address),
                         ).whenComplete(() {
-                          Messages.copySuccess(context, transfer: transfer);
+                          PopupService.copySuccess(transfer: transfer);
                         }),
                         Row(children: [
                           const Icon(Icons.copy, size: 16),
