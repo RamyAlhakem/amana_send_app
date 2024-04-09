@@ -14,10 +14,12 @@ class WalletTimer extends StatefulWidget {
   const WalletTimer({
     super.key,
     required this.transfer,
+    required this.timerDuration,
     this.hideDecorations = false,
   });
   final TransferModel transfer;
   final bool hideDecorations;
+  final Function(int) timerDuration;
 
   @override
   State<WalletTimer> createState() => _WalletTimerState();
@@ -67,6 +69,7 @@ class _WalletTimerState extends State<WalletTimer>
     super.initState();
     transfer = widget.transfer;
     duration = calculateRemainingTime();
+    widget.timerDuration(duration);
     ctrl = AnimationController(
       vsync: this,
       duration: Duration(seconds: duration),

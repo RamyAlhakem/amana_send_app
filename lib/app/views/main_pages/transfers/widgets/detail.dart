@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +13,7 @@ import '/app/views/main_pages/transfers/widgets/agent_description.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/dotted_border/dotted_border.dart';
+import '/app/widgets/expander.dart';
 import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_c.dart';
@@ -38,6 +41,8 @@ class _TransferDetailState extends State<TransferDetail> {
   double exchangeRate = 0;
 
   String receiveType = '';
+
+  bool showWallet = true;
 
   @override
   void initState() {
@@ -121,54 +126,69 @@ class _TransferDetailState extends State<TransferDetail> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextX(
-                      arb.walletAddress,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 4),
-                    DottedBorder(
-                      borderType: BorderType.rRect,
-                      radius: const Radius.circular(6),
-                      padding: const EdgeInsets.all(4),
-                      dashPattern: const [5, 5],
-                      color: Theme.of(context).dividerColor,
-                      child: TextC(
-                        transfer.wallet.address,
-                        style: const TextStyle(fontSize: 13),
+                    Expander(
+                      expand: showWallet,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextX(
+                            arb.walletAddress,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 4),
+                          DottedBorder(
+                            borderType: BorderType.rRect,
+                            radius: const Radius.circular(6),
+                            padding: const EdgeInsets.all(4),
+                            dashPattern: const [5, 5],
+                            color: Theme.of(context).dividerColor,
+                            child: TextC(
+                              transfer.wallet.address,
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Button(
+                                () => Share.share(transfer.wallet.address),
+                                color: MainColors.color2,
+                                Row(children: [
+                                  const Icon(Icons.share, size: 16),
+                                  const SizedBox(width: 8),
+                                  TextX(arb.share),
+                                ]),
+                              ),
+                              const SizedBox(width: 8),
+                              Button(
+                                () => Clipboard.setData(
+                                  ClipboardData(text: transfer.wallet.address),
+                                ).whenComplete(() {
+                                  PopupService.copySuccess(transfer: transfer);
+                                }),
+                                Row(children: [
+                                  const Icon(Icons.copy, size: 16),
+                                  const SizedBox(width: 8),
+                                  TextX(arb.copy),
+                                ]),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Button(
-                          () => Share.share(transfer.wallet.address),
-                          color: MainColors.color2,
-                          Row(children: [
-                            const Icon(Icons.share, size: 16),
-                            const SizedBox(width: 8),
-                            TextX(arb.share),
-                          ]),
-                        ),
-                        const SizedBox(width: 8),
-                        Button(
-                          () => Clipboard.setData(
-                            ClipboardData(text: transfer.wallet.address),
-                          ).whenComplete(() {
-                            PopupService.copySuccess(transfer: transfer);
-                          }),
-                          Row(children: [
-                            const Icon(Icons.copy, size: 16),
-                            const SizedBox(width: 8),
-                            TextX(arb.copy),
-                          ]),
-                        ),
-                      ],
                     ),
 
                     // Timer:
                     if (transfer.status.name == TransferStatus.pending.name)
-                      WalletTimer(transfer: transfer, hideDecorations: true),
+                      WalletTimer(
+                        transfer: transfer,
+                        timerDuration: (x) => Timer.periodic(
+                          Duration(seconds: x),
+                          (_) => setState(() => showWallet = false),
+                        ),
+                        hideDecorations: true,
+                      ),
                   ],
                 ),
               ),

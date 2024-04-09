@@ -12,6 +12,7 @@ import '/app/theme/colors/main_colors.dart';
 import '/app/theme/decoration/decorations.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/buttons/button.dart';
+import '/app/widgets/expander.dart';
 import '/app/widgets/scroll_button.dart';
 import '/app/widgets/text/text_c.dart';
 import '/app/widgets/text/text_x.dart';
@@ -42,6 +43,8 @@ class _WalletAddressState extends State<WalletAddress>
 
   Timer? timer;
   int duration = 5; // five seconds.
+
+  bool showWallet = true;
 
   void checkTransaction(int id) {
     timer = Timer.periodic(Duration(seconds: duration), (_) async {
@@ -145,81 +148,90 @@ class _WalletAddressState extends State<WalletAddress>
                 ],
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-              padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-              decoration: Decorations.main(context, radius: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextX(
-                    '${arb.toThisWalletAddress}:',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextC(
-                    transfer.wallet.address,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: MainColors.color1,
-                      letterSpacing: 1,
+            Expander(
+              expand: showWallet,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                decoration: Decorations.main(context, radius: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextX(
+                      '${arb.toThisWalletAddress}:',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Button(
-                        () => Share.share(transfer.wallet.address),
-                        color: MainColors.color2,
-                        Row(children: [
-                          const Icon(Icons.share, size: 16),
-                          const SizedBox(width: 8),
-                          TextX(arb.share),
-                        ]),
+                    const SizedBox(height: 6),
+                    TextC(
+                      transfer.wallet.address,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: MainColors.color1,
+                        letterSpacing: 1,
                       ),
-                      const SizedBox(width: 8),
-                      Button(
-                        () => Clipboard.setData(
-                          ClipboardData(text: transfer.wallet.address),
-                        ).whenComplete(() {
-                          PopupService.copySuccess(transfer: transfer);
-                        }),
-                        Row(children: [
-                          const Icon(Icons.copy, size: 16),
-                          const SizedBox(width: 8),
-                          TextX(arb.copy),
-                        ]),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text.rich(
-                    textScaler: TextScaler.noScaling,
-                    TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(text: '${arb.walletNetwork}: '),
-                        const TextSpan(
-                          text: 'Polygon - (MATIC)',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Button(
+                          () => Share.share(transfer.wallet.address),
+                          color: MainColors.color2,
+                          Row(children: [
+                            const Icon(Icons.share, size: 16),
+                            const SizedBox(width: 8),
+                            TextX(arb.share),
+                          ]),
+                        ),
+                        const SizedBox(width: 8),
+                        Button(
+                          () => Clipboard.setData(
+                            ClipboardData(text: transfer.wallet.address),
+                          ).whenComplete(() {
+                            PopupService.copySuccess(transfer: transfer);
+                          }),
+                          Row(children: [
+                            const Icon(Icons.copy, size: 16),
+                            const SizedBox(width: 8),
+                            TextX(arb.copy),
+                          ]),
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  TextX(
-                    arb.useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly,
-                    style: const TextStyle(color: MainColors.lightRed),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Text.rich(
+                      textScaler: TextScaler.noScaling,
+                      TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(text: '${arb.walletNetwork}: '),
+                          const TextSpan(
+                            text: 'Polygon - (MATIC)',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    TextX(
+                      arb.useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly,
+                      style: const TextStyle(color: MainColors.lightRed),
+                    ),
+                  ],
+                ),
               ),
             ),
 
             // Timer:
-            WalletTimer(transfer: transfer),
+            WalletTimer(
+              transfer: transfer,
+              timerDuration: (x) => Timer.periodic(
+                Duration(seconds: x),
+                (_) => setState(() => showWallet = false),
+              ),
+            ),
 
             Container(
               decoration: Decorations.note(context),
