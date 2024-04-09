@@ -1,5 +1,6 @@
 import 'package:amana_send/models/server_app_version.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/global/variables.dart';
@@ -47,6 +48,14 @@ class Tools {
     }
 
     return 0; // versions are equal
+  }
+
+  static void removeSpaceFromClipboard(TextEditingController controller) async {
+    ClipboardData? content = await Clipboard.getData('text/plain');
+    if (content != null) {
+      String cleanContent = (content.text ?? '').replaceAll(RegExp(r'\D+'), '');
+      controller.text = cleanContent;
+    }
   }
 
   static String transferStatus(int i) {

@@ -12,7 +12,7 @@ class TextFieldValidator {
     }
   }
 
-  static List<TextInputFormatter> onlyDigits({int length = 10}) => [
+  static List<TextInputFormatter> onlyDigits({int length = 16}) => [
         LengthLimitingTextInputFormatter(length),
         FilteringTextInputFormatter.digitsOnly,
       ];

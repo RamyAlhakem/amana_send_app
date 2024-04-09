@@ -22,6 +22,7 @@ import '/helper/helper.dart';
 import '/models/city.dart';
 import '/models/recipient.dart';
 import '/services/lang_service.dart';
+import '/tools/tools.dart';
 
 class AddRecipient extends StatefulWidget {
   const AddRecipient({
@@ -56,6 +57,7 @@ class _AddRecipientState extends State<AddRecipient> {
   @override
   void initState() {
     super.initState();
+
     _registerState = Provider.of<RegistrationState>(context, listen: false);
     _recipientProvider = Provider.of<RecipientsState>(context, listen: false);
 
@@ -114,12 +116,22 @@ class _AddRecipientState extends State<AddRecipient> {
 
               // Phone country select
               const PhoneCountryPicker(isRegistration: false),
-              TextFieldX(
-                controller: _whatsApp,
-                hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
-                type: TextInputType.phone,
-                input: TextFieldValidator.onlyDigits(length: 20),
-                onSubmitted: (_) => _submit(),
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: Focus(
+                  onFocusChange: (focus) {
+                    if (focus && _whatsApp.text.isEmpty) {
+                      Tools.removeSpaceFromClipboard(_whatsApp);
+                    }
+                  },
+                  child: TextFieldX(
+                    controller: _whatsApp,
+                    hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
+                    type: TextInputType.phone,
+                    input: TextFieldValidator.onlyDigits(),
+                    onSubmitted: (_) => _submit(),
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               TextX(
