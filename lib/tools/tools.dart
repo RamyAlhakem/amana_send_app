@@ -1,10 +1,10 @@
-import 'package:amana_send/models/server_app_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/global/variables.dart';
 import '/helper/helper.dart';
+import '/models/server_app_version.dart';
 
 class Tools {
   static DateTime? _currentBackPressTime;
@@ -102,7 +102,7 @@ class Tools {
     Iterable<Match> matches = regExp.allMatches(input);
 
     for (Match match in matches) {
-      numbers.add(num.parse(match.group(0)!));
+      numbers.add(num.parse(match.group(0) ?? ''));
     }
 
     return numbers;

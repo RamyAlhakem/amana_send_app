@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '/global/variables.dart';
 import '/helper/helper.dart';
 
 class TextFieldValidator {
-  static void validateMobile(BuildContext _, TextEditingController num) {
-    final AppLocalizations? arb = AppLocalizations.of(_);
+  static void validateMobile(TextEditingController num) {
+    final arb = AppLocalizations.of(Global.key.currentContext!)!;
     if (num.text.isNotEmpty && num.text.startsWith('0')) {
       num.clear();
-      Helper.toast(arb!.pleaseAvoidStartingMobileNumberWithAZero);
+      Helper.toast(arb.pleaseAvoidStartingMobileNumberWithAZero);
     }
   }
 

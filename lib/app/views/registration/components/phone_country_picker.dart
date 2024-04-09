@@ -186,8 +186,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
             ),
           ),
           input: TextFieldValidator.onlyDigits(),
-          onChanged: (_) =>
-              TextFieldValidator.validateMobile(context, provider.mobile),
+          onChanged: (_) => TextFieldValidator.validateMobile(provider.mobile),
           validator: (v) {
             if (v == '' && provider.isRegister) {
               return _arb!.mobileNumber;
