@@ -36,6 +36,8 @@ class AppMetadata extends SafetyModel {
     this.appSignInCaptcha = false,
     this.appSignUpCaptcha = false,
     this.appForgetPasswordCaptcha = false,
+    this.timezone = 0,
+    this.plusTimezone = false,
   });
 
   String address = '', androidUrl = '', appGalleryUrl = '', appStoreUrl = '';
@@ -49,14 +51,14 @@ class AppMetadata extends SafetyModel {
   double sendsFees = 0;
   double usdRate = 0;
   double usdRatio = 0;
-  int walletAddressValidTime = 0;
+  int walletAddressValidTime = 0, timezone = 0;
   String phoneNumber = '';
   String whatsapp = '';
   String xUrl = '';
   String registerAddress = '', registerAddressLink = '';
   String registrationNumber = '';
   bool appSignInCaptcha = false, appSignUpCaptcha = false;
-  bool appForgetPasswordCaptcha = false;
+  bool appForgetPasswordCaptcha = false, plusTimezone = false;
 
   static AppMetadata get = AppMetadata();
   AppMetadata.fromJson(Map<String, dynamic> json) {
@@ -95,6 +97,8 @@ class AppMetadata extends SafetyModel {
     appSignInCaptcha = boolFromJson(json, 'appSignInCaptcha');
     appSignUpCaptcha = boolFromJson(json, 'appSignUpCaptcha');
     appForgetPasswordCaptcha = boolFromJson(json, 'appForgetPasswordCaptcha');
+    timezone = extractDigitsFromJson('${json['timezone']}');
+    plusTimezone = '${json['timezone']}'.contains('+');
     super.fromJson(json);
   }
 
@@ -135,5 +139,7 @@ class AppMetadata extends SafetyModel {
         'appSignInCaptcha': appSignInCaptcha,
         'appSignUpCaptcha': appSignUpCaptcha,
         'appForgetPasswordCaptcha': appForgetPasswordCaptcha,
+        'plusTimezone': plusTimezone,
+        'timezone': timezone,
       };
 }

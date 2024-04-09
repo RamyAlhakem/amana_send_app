@@ -208,4 +208,14 @@ abstract class SafetyModel {
       return defaultValue;
     }
   }
+
+  int extractDigitsFromJson(String attribute) {
+    RegExp regex = RegExp(r'\d+');
+    Iterable<Match> matches = regex.allMatches(attribute);
+    String digitsOnly = '';
+    for (Match match in matches) {
+      digitsOnly += match.group(0) ?? '';
+    }
+    return int.tryParse(digitsOnly) ?? 0;
+  }
 }

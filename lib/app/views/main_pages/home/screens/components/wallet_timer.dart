@@ -29,6 +29,9 @@ class _WalletTimerState extends State<WalletTimer>
   late AnimationController ctrl;
   TransferModel transfer = TransferModel();
 
+  final bool plus = AppMetadata.get.plusTimezone;
+  final Duration timezone = Duration(hours: AppMetadata.get.timezone);
+
   Timer? timer;
   Timer? reTimer;
   int duration = 120;
@@ -49,7 +52,7 @@ class _WalletTimerState extends State<WalletTimer>
 
     // Get transactionDate + additional timezone hours:
     final date = DateTime.parse(transfer.addedAt).add(
-      now.timeZoneOffset - const Duration(hours: 1),
+      now.timeZoneOffset + (plus ? -timezone : timezone),
     );
 
     // Calculate the remaining time

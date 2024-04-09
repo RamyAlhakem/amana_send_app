@@ -42,6 +42,7 @@ class Queries {
         registrationNumber
         sendsFees
         siteTitle
+        timezone
         usdRate
         usdRatio
         walletAddressValidTime
