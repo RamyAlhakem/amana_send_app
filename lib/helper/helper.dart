@@ -297,7 +297,7 @@ class Helper {
     double? fontSize,
     ToastGravity gravity = ToastGravity.CENTER,
     int timeInSecForIosWeb = 8,
-    Toast toastLength = Toast.LENGTH_LONG,
+    bool shortDuration = false,
   }) {
     Fluttertoast.cancel();
     Fluttertoast.showToast(
@@ -307,7 +307,7 @@ class Helper {
       textColor: textColor,
       backgroundColor: bgColor,
       timeInSecForIosWeb: timeInSecForIosWeb,
-      toastLength: toastLength,
+      toastLength: shortDuration ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG,
     );
   }
 

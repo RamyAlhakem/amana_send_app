@@ -62,7 +62,7 @@ class GetCountriesAPI {
         textColor: Colors.black54,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
-        toastLength: Toast.LENGTH_SHORT,
+        shortDuration: true,
       );
     }
   }

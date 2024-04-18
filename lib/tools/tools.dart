@@ -4,22 +4,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/global/variables.dart';
 import '/helper/helper.dart';
-import '/models/server_app_version.dart';
 
 class Tools {
   static DateTime? _currentBackPressTime;
 
   static bool onWillPop() {
     DateTime now = DateTime.now();
-    final BuildContext context = Global.key.currentContext!;
-    final AppLocalizations arb = AppLocalizations.of(context)!;
-
-    ServerAppVersion.isUpdate();
+    final BuildContext? x = Global.key.currentContext;
+    final AppLocalizations? arb = x != null ? AppLocalizations.of(x) : null;
 
     if (_currentBackPressTime == null ||
         now.difference(_currentBackPressTime!) > const Duration(seconds: 2)) {
       _currentBackPressTime = now;
-      Helper.toast(arb.pressBackAgainToExit);
+      if (arb != null) {
+        Helper.toast(arb.pressBackAgainToExit, shortDuration: true);
+      }
 
       return false;
     }
