@@ -27,7 +27,7 @@ class TimelineWidget extends StatelessWidget {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.22,
-                  child: Text(dates[i]),
+                  child: Text(status >= i ? dates[i] : ''),
                 ),
                 const SizedBox(width: 8),
                 Column(
