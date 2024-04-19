@@ -118,19 +118,14 @@ class _AddRecipientState extends State<AddRecipient> {
               const PhoneCountryPicker(isRegistration: false),
               Directionality(
                 textDirection: TextDirection.ltr,
-                child: Focus(
-                  onFocusChange: (focus) {
-                    if (focus && _whatsApp.text.isEmpty) {
-                      Tools.removeSpaceFromClipboard(_whatsApp);
-                    }
-                  },
-                  child: TextFieldX(
-                    controller: _whatsApp,
-                    hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
-                    type: TextInputType.phone,
-                    input: TextFieldValidator.onlyDigits(),
-                    onSubmitted: (_) => _submit(),
-                  ),
+                child: TextFieldX(
+                  controller: _whatsApp,
+                  hint: '${arb.whatsApp} ${arb.mobileNumber.toLowerCase()}',
+                  type: TextInputType.phone,
+                  input: TextFieldValidator.onlyDigits(),
+                  onChanged: (_) =>
+                      TextFieldValidator.validateMobile(_whatsApp),
+                  onSubmitted: (_) => _submit(),
                 ),
               ),
               const SizedBox(height: 8),

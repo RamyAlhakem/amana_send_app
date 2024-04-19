@@ -53,7 +53,7 @@ class Tools {
     ClipboardData? content = await Clipboard.getData('text/plain');
     if (content != null) {
       String cleanContent = (content.text ?? '').replaceAll(RegExp(r'\D+'), '');
-      controller.text = cleanContent;
+      if (controller.text.isEmpty) controller.text = cleanContent;
     }
   }
 
