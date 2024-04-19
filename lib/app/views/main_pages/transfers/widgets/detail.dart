@@ -86,7 +86,7 @@ class _TransferDetailState extends State<TransferDetail> {
                     child: Column(
                       children: [
                         TextX(
-                          arb.receipt,
+                          arb.ticket,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 4),
