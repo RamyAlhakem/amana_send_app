@@ -13,7 +13,6 @@ import '/app/widgets/text_form_field/text_form.dart';
 import '/app/widgets/text_form_field/tools/text_form_validator.dart';
 import '/models/country.dart';
 import '/services/lang_service.dart';
-import '/tools/tools.dart';
 
 class PhoneCountryPicker extends StatefulWidget {
   const PhoneCountryPicker({super.key, this.isRegistration = true});
