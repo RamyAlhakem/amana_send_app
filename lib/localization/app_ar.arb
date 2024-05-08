@@ -259,6 +259,7 @@
   "incorrectPassword": "كلمة السر خاطئة",
   "recipientHasBeenDeletedSuccessfully": "تم حذف المستلم بنجاح",
   "accountHasBeenDeletedSuccessfully": "تم حذف الحساب بنجاح",
+  "verificationCodeWhatsApp": "سيتم إرسال كود التحقق عبر الواتساب",
   "newPasswordCannotBeTheSameAsTheCurrentPassword": "لا يمكن أن تكون كلمة السر الجديدة هي نفسها كلمة السر الحالية",
   "invalidMobileNumber": "رقم الجوال غير صالح",
   "invalidEmail": "بريد إلكتروني غير صالح",

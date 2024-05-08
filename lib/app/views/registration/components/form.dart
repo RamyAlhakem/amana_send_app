@@ -1,3 +1,4 @@
+import 'package:amana_send/app/widgets/text/text_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -57,12 +58,14 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
     return Form(
       key: p.loginForm,
       child: Column(
+         crossAxisAlignment :CrossAxisAlignment.start,
         children: [
           SizeTransition(
             sizeFactor: animate,
             axis: Axis.vertical,
             axisAlignment: context.isKeyboardOpen ? 0 : -2,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RowSpaceBetween([
                   Expanded(child: _nameForm(p.firstName, arb!.firstName)),
@@ -81,6 +84,15 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
             ),
           ),
           const PhoneCountryPicker(),
+          TextX(
+            arb!.verificationCodeWhatsApp,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: Color.fromARGB(255, 148, 13, 4),
+            ),
+          ),
+          SizedBox(height: 20,),
           Directionality(
             textDirection: TextDirection.ltr,
             child: SizeTransition(
