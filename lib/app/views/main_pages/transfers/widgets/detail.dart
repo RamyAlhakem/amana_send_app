@@ -71,16 +71,6 @@ class _TransferDetailState extends State<TransferDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextX(
-                arb.transferDetails,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 4),
-              TextX(
-                arb.transferInformationDetails,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: transfer.receiptPic.isNotEmpty ? 10 : 20),
               RowSpaceBetween([
                 Expanded(
                   child: RecipientIconDetail(recipient: transfer.recipient),
@@ -96,7 +86,7 @@ class _TransferDetailState extends State<TransferDetail> {
                     child: Column(
                       children: [
                         TextX(
-                          arb.receipt,
+                          arb.ticket,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 4),

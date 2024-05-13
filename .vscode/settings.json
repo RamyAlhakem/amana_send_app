@@ -5,5 +5,25 @@
         "defaultmessage",
         "heroicons",
         "transferstatus"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "production",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_development.dart",
+        "args": ["--flavor", "production", "--target", "lib/main_production.dart" ]
+      },
+      {
+        "name": "staging",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_development.dart",
+        "args": ["--flavor", "staging", "--target", "lib/main_staging.dart" ]
+      }
+    ],
+    "compounds": []
 }

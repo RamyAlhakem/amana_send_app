@@ -4,14 +4,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/global/variables.dart';
 import '/helper/helper.dart';
+import '/tools/tools.dart';
 
 class TextFieldValidator {
   static void validateMobile(TextEditingController num) {
-    final arb = AppLocalizations.of(Global.key.currentContext!)!;
+    // final arb = AppLocalizations.of(Global.key.currentContext!)!;
     if (num.text.isNotEmpty && num.text.startsWith('0')) {
-      num.clear();
-      Helper.toast(arb.pleaseAvoidStartingMobileNumberWithAZero);
+      num.text = (num.text).replaceFirst(RegExp(r'^0+'), '');
+
+      // num.clear();
+      // Helper.toast(arb.pleaseAvoidStartingMobileNumberWithAZero);
     }
+    // if (num.text.isNotEmpty) Tools.removeSpaceFromClipboard(num);
   }
 
   static List<TextInputFormatter> onlyDigits({int length = 16}) => [

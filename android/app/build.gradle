@@ -60,7 +60,7 @@ android {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
+            storeFile file(keystoreProperties['storeFile']) 
             storePassword keystoreProperties['storePassword']
         }
     }
@@ -70,6 +70,20 @@ android {
         }
     }
     namespace 'com.amana_send'
+
+    flavorDimensions "default"
+        productFlavors {
+        production {
+            dimension "default"
+            resValue "string", "app_name", "Amana"
+        }
+        staging{
+            dimension "default"
+            resValue "string", "app_name", "Amana staging"
+        }
+        
+    }
+
 }
 
 flutter {
