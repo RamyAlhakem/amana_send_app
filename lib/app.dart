@@ -7,7 +7,7 @@ import 'database/injector.dart';
 import 'global/variables.dart';
 import 'graphql/api/get_metadata.dart';
 
-Future<void> main() async {
+Future<void> initlize() async {
   SystemChromeService.inject();
 
   await Database.inject();

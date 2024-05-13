@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:amana_send/app_config.dart';
+
 class Configs {
   static const bool debug = true;
 
@@ -8,23 +10,10 @@ class Configs {
   static String version = ''; // initialized in Metadata API request.
   static String buildNumber = ''; // initialized in Metadata API request.
 
-  static const String stagingUrl = 'https://amanasend.com/';
-  static const String productionUrl = 'https://amanasend.com/';
-
-  static const String graphqlStaging =
-      'https://api.amanasend.com/staging/graphql';
-  static const String graphqlProduction = 'https://api.amanasend.com/graphql';
-
-  static const String apiStaging = 'https://api.amanasend.com/staging/';
-  static const String apiProduction = 'https://api.amanasend.com/';
-
-  static const String photoStaging = 'https://api.amanasend.com/staging/photo';
-  static const String photoProduction = 'https://api.amanasend.com/photo';
-
-  static const String baseUrl = debug ? stagingUrl : productionUrl;
-  static const String graphql = debug ? graphqlStaging : graphqlProduction;
-  static const String apiRestPhoto = debug ? photoStaging : photoProduction;
-  static const String apiUrl = debug ? apiStaging : apiProduction;
+  static  String baseUrl = AppConfig.baseUrl;
+  static  String graphql = AppConfig.graphql;
+  static  String apiRestPhoto = AppConfig.apiRestPhoto;
+  static  String apiUrl = AppConfig.apiUrl;
 
   static String storeUrl = Platform.isIOS ? appleStore : googleStore;
   static String appleStore = 'https://apps.apple.com/app/id6474017595';
