@@ -80,6 +80,7 @@ android {
         staging{
             dimension "default"
             resValue "string", "app_name", "Amana staging"
+            applicationId "com.amana_send.staging"
         }
         
     }

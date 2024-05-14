@@ -69,6 +69,29 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.3
+  flutter_flavorizr: ^2.2.2
+
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "default"
+    ios:
+
+  flavors:
+    production:
+      app:
+        name: "Amana Send"
+        icon: "assets/app_icons/production_icon.png"
+
+      android:
+        applicationId: "com.amana_send"
+    staging:
+      app:
+        name: "Amana Send Staging"
+        icon: "assets/app_icons/staging_icon.png"
+
+      android:
+        applicationId: "com.amana_send.staging"
 
 flutter:
   uses-material-design: true
