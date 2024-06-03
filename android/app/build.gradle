@@ -85,6 +85,15 @@ android {
         
     }
 
+    sourceSets {
+        staging {
+            res.srcDirs = ['src/staging/res']
+        }
+        production {
+            res.srcDirs = ['src/production/res']
+        }
+    }
+
 }
 
 flutter {
