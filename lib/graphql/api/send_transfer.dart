@@ -93,7 +93,7 @@ class SendTransfer {
       final TransferModel transfer = TransferModel.fromJson(data['transfer']);
       const Duration duration = Duration(milliseconds: 250);
       page.nextPage(duration: duration, curve: Curves.easeIn);
-      Global.pageCtrl.jumpToPage(Pages.transfers.index);
+      // Global.pageCtrl.jumpToPage(Pages.transfers.index);
       _provider.getTransfer(transfer);
     }
   }

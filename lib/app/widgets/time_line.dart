@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../theme/colors/main_colors.dart';
 
@@ -25,9 +27,12 @@ class TimelineWidget extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.22,
-                  child: Text(status >= i ? dates[i] : ''),
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.22,
+                    child: Text(status >= i ? dates[i] : ''),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Column(
@@ -53,11 +58,14 @@ class TimelineWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(width: 20),
-                Row(children: [
-                  events.entries.toList()[i].key,
-                  const SizedBox(width: 4),
-                  Text(events.entries.toList()[i].value),
-                ]),
+                Expanded(
+                  flex: 5,
+                  child: Row(children: [
+                    events.entries.toList()[i].key,
+                    const SizedBox(width: 4),
+                    Text(events.entries.toList()[i].value),
+                  ]),
+                ),
               ],
             ),
         ],

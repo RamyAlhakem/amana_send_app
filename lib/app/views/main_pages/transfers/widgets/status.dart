@@ -79,8 +79,8 @@ class _TransferStateState extends State<TransferState> {
           ],
           events: {
             Icon(icon1, color: color1): _arb!.waitingPayment,
-            Icon(icon2, color: color2): _arb!.processing,
-            Icon(icon3, color: color3): _arb!.processed,
+            Icon(icon2, color: color2): _arb!.awaitingProcess,
+            Icon(icon3, color: color3): _arb!.processing,
             Icon(icon4, color: color4): status4,
           },
         ),
