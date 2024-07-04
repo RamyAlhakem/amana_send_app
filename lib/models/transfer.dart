@@ -150,3 +150,23 @@ class TransferModel extends SafetyModel {
     return empty;
   }
 }
+
+
+  int getStatusIndex(TransferStatus status) {
+  switch (status) {
+    case TransferStatus.pending:
+      return 0;
+    case TransferStatus.nEW:
+      return 1;
+    case TransferStatus.processed:
+      return 2;
+    case TransferStatus.completed:
+      return 3;
+    case TransferStatus.canceled:
+      return 4;
+    case TransferStatus.dispute:
+      return 5;
+    default:
+      return 0;
+  }
+}

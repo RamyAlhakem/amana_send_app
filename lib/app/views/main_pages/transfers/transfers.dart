@@ -78,7 +78,7 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
     animationRotate =
         Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
 
-    GetTransfers().request();
+
     scrollListener(scrollCtrl1);
     scrollListener(scrollCtrl2);
     scrollListener(scrollCtrl3);
@@ -91,6 +91,7 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
+        GetTransfers().request();
   }
 
   @override
@@ -113,6 +114,8 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
       builder: (_, state, child) {
         child = DefaultTabController(
           length: TransferStatus.values.length,
+           initialIndex: getStatusIndex(state.transfer.status),
+            
           child: Scaffold(
             appBar: AppBar(
               title: Column(
@@ -186,6 +189,8 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
                 ],
               ),
             ),
+         
+         
           ),
         );
         return child;

@@ -29,7 +29,7 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
 
   late Animation<double> animate;
   late RegistrationState p;
-
+   
   @override
   void initState() {
     super.initState();
@@ -84,14 +84,14 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
             ),
           ),
           const PhoneCountryPicker(),
-          TextX(
-            arb!.verificationCodeWhatsApp,
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: Color.fromARGB(255, 148, 13, 4),
-            ),
-          ),
+          // TextX(
+          //   arb!.verificationCodeWhatsApp,
+          //   style: const TextStyle(
+          //     fontSize: 11,
+          //     fontWeight: FontWeight.w500,
+          //     color: Color.fromARGB(255, 148, 13, 4),
+          //   ),
+          // ),
           SizedBox(height: 20,),
           Directionality(
             textDirection: TextDirection.ltr,

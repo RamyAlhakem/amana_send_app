@@ -80,8 +80,18 @@ android {
         staging{
             dimension "default"
             resValue "string", "app_name", "Amana staging"
+            applicationId "com.amana_send.staging"
         }
         
+    }
+
+    sourceSets {
+        staging {
+            res.srcDirs = ['src/staging/res']
+        }
+        production {
+            res.srcDirs = ['src/production/res']
+        }
     }
 
 }

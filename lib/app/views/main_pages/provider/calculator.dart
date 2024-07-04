@@ -320,7 +320,8 @@ class Calculator with ChangeNotifier {
     final double receiverRatio = receiverAgent.receiveFees;
 
     // Set receiverRate (recipient)
-    sendUSD ? receiverRate = usdRate : receiverRate = receiverAgent.rate;
+    // sendUSD ? receiverRate = usdRate : 
+    receiverRate = receiverAgent.rate;
 
     final double amount = double.tryParse(controller) ?? 0;
     double converted = 0;
@@ -341,9 +342,10 @@ class Calculator with ChangeNotifier {
       double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
 
       // Calculate the converted amount based on currency conversion rate
-      converted = sendUSD
-          ? amountWithoutUserFees
-          : amountWithoutUserFees * receiverRate;
+      // converted = sendUSD
+      //     ? amountWithoutUserFees
+      //     : amountWithoutUserFees * receiverRate;
+      converted =  amountWithoutUserFees * receiverRate;
 
       if (!sendUSD) {
         converted =
