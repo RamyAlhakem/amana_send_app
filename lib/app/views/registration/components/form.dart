@@ -29,8 +29,7 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
 
   late Animation<double> animate;
   late RegistrationState p;
-   final TextEditingController _fatherName = TextEditingController();
-
+   
   @override
   void initState() {
     super.initState();
