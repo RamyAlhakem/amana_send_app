@@ -34,7 +34,12 @@ class ServerAppVersion extends SafetyModel {
 
     final bool update = Tools.compareVersion(Configs.version, api) == -1;
     if (update) {
-      AppRoute.get().then((router) => router.go('/${AppRoute.updateApp}'));
+    
+        final router =  AppRoute.routes;
+        router.push('/${AppRoute.updateApp}');
+     
+      //  AppRoute.get().then((router) => router.push('/${AppRoute.updateApp}'));
+      // //AppRoute.routes.goNamed('/${AppRoute.updateApp}');
     }
   }
 }
