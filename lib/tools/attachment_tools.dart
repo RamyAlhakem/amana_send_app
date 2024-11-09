@@ -40,7 +40,7 @@ class AttachmentTools {
                     minScale: PhotoViewComputedScale.contained,
                     maxScale: PhotoViewComputedScale.covered,
                     imageProvider: fil == null
-                        ? image('${Configs.apiUrl}$url')
+                        ? image(url)
                         : file(fil.path),
                   )
                 ],

@@ -29,7 +29,7 @@ class ImageWidget extends StatelessWidget {
         child: Image.asset(asset, height: height, width: width, fit: fit),
       ),
       child: CachedNetworkImage(
-        imageUrl: '${Configs.apiUrl}$url',
+        imageUrl: url,
         height: height,
         width: width,
         imageBuilder: (BuildContext _, imageProvider) {
