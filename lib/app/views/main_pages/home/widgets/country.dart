@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -28,13 +29,15 @@ class Country extends StatelessWidget {
           Row(
             children: [
               if (country.coCode.isNotEmpty)
-                Flag.fromString(
-                  country.coCode,
-                  height: 30,
-                  width: 30,
-                  fit: BoxFit.fill,
-                  borderRadius: 100,
-                ),
+                country.coCode == "sy"
+                    ? const SyrFlag()
+                    : Flag.fromString(
+                        country.coCode,
+                        height: 30,
+                        width: 30,
+                        fit: BoxFit.fill,
+                        borderRadius: 100,
+                      ),
               const SizedBox(width: 12),
               TextX(
                 LangService.isAR() ? country.arName : country.enName,
