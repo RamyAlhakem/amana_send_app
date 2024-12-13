@@ -71,7 +71,7 @@ class PopupService {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const TextSpan(
-                        text: ' POLYGON (MATIC) ',
+                        text: ' POLYGON POS ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
