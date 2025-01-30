@@ -1,3 +1,4 @@
+import 'package:amana_send/app/widgets/drop_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -148,33 +149,43 @@ class _SendFormFieldsState extends State<SendFormFields>
                   );
                 },
               ),
-          TextFieldX(
-            key: isHome ? Tutorial.key4 : null,
-            hint: arb.youSend,
-            controller: state.sender,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: Container(
-              width: 60,
-              alignment: Alignment.center,
-              child: TextX(
-                'USDT',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: TextFieldX(
+                  key: isHome ? Tutorial.key4 : null,
+                  hint: arb.youSend,
+                  controller: state.sender,
+                  type: TextInputType.phone,
+                  input: _input,
+                  borderRadius: borderRadius,
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+                  onChanged: (String value) => state.setPrice(value),
                 ),
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-            onChanged: (String value) => state.setPrice(value),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                  child: DropForm(
+                      key: isHome ? Tutorial.key5 : null,
+                      hint: arb.typeOfCurrency,
+                      subHint: '',
+                      items: state.payments
+                          .map((payment) => {payment.id: payment.name})
+                          .toList()))
+            ],
           ),
 
           // Today exchange rate
           Padding(
-            key: isHome ? Tutorial.key5 : null,
+            key: isHome ? Tutorial.key6 : null,
             padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: RowSpaceBetween([
               TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
@@ -191,7 +202,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           ),
 
           TextFieldX(
-            key: isHome ? Tutorial.key6 : null,
+            key: isHome ? Tutorial.key7 : null,
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,
