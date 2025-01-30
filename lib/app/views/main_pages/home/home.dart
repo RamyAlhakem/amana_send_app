@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -49,6 +50,7 @@ class _HomeState extends State<Home> {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
 
     // call data:---------------------------------------------------------------
+    GetPaymentMethods.request();
     GetMetadata.request();
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
@@ -89,7 +91,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Calculator>(builder: (_, state, child) {
+    return Consumer<Calculator>(builder: (context, state, child) {
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
@@ -137,7 +139,7 @@ class _HomeState extends State<Home> {
                 Padding(padding: padding, child: const SendFormFields()),
 
                 Padding(
-                  key: Tutorial.key7,
+                  key: Tutorial.key8,
                   padding: padding,
                   child: Button(
                     () {

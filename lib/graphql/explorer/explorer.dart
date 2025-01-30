@@ -31,10 +31,10 @@ class Explorer {
   static const String paymentMethod = '''
       id
       name
-      isManual
       displayName
       status
       displayDescription
+      className
       ''';
 
   static const String provider = '''

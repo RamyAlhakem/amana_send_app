@@ -32,8 +32,8 @@ class Calculator with ChangeNotifier {
 
   bool _isLoading = true;
 
-  int _onlinePaymentMethodId = 0;
-  int _cashPaymentMethodId = 0;
+  // int _onlinePaymentMethodId = 0;
+  // int _cashPaymentMethodId = 0;
 
   RecipientModel? _selectedRecipient;
 
@@ -72,8 +72,8 @@ class Calculator with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  int get onlinePaymentMethodId => _onlinePaymentMethodId;
-  int get cashPaymentMethodId => _cashPaymentMethodId;
+  // int get onlinePaymentMethodId => _onlinePaymentMethodId;
+  // int get cashPaymentMethodId => _cashPaymentMethodId;
 
   RecipientModel? get selectedRecipient => _selectedRecipient;
 
@@ -185,17 +185,15 @@ class Calculator with ChangeNotifier {
 
   void getPayments(List<PaymentMethodModel> elements) {
     _payments = elements;
-
-    List.generate(elements.length, (index) {
-      // isManual = 1 which is cash.
-      // isManual = 0 which is online.
-      if (elements[index].isManual == 1) {
-        _cashPaymentMethodId = elements[index].id;
-      } else if (elements[index].isManual == 0) {
-        _onlinePaymentMethodId = elements[index].id;
-      }
-    });
-
+    // List.generate(elements.length, (index) {
+    //   // isManual = 1 which is cash.
+    //   // isManual = 0 which is online.
+    //   if (elements[index].isManual == 1) {
+    //     _cashPaymentMethodId = elements[index].id;
+    //   } else if (elements[index].isManual == 0) {
+    //     _onlinePaymentMethodId = elements[index].id;
+    //   }
+    // });
     notifyListeners();
   }
 
