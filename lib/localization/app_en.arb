@@ -195,6 +195,9 @@
   "bankName": "Bank name",
   "recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails": "Recipient bank info is missing, Please Edit recipient by adding bank account details",
   "selectCity": "Select city",
+  "typeOfCurrency":"Type of currency",
+  "chooseCurrency": "Choose the digital currency",
+  
   "selectCountry": "Select country",
   "selectCountryPhoneCodeFromTheListBelow": "Select country phone code from the list below",
   "selectCityFromTheListBelow": "Select city from the list below",
