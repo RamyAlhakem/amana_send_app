@@ -29,8 +29,9 @@ class Calculator with ChangeNotifier {
   double _maxUSD = 0;
   double _minUSD = 0;
   double _dynamicAgentRate = 0;
-
   bool _isLoading = true;
+  int _paymentMethodId = 0;
+  String _paymentMethodName = "USDC";
 
   // int _onlinePaymentMethodId = 0;
   // int _cashPaymentMethodId = 0;
@@ -69,8 +70,9 @@ class Calculator with ChangeNotifier {
   double get maxUSD => _maxUSD;
   double get minUSD => _minUSD;
   double get dynamicAgentRate => _dynamicAgentRate;
-
   bool get isLoading => _isLoading;
+  int get paymentMethodID => _paymentMethodId;
+  String get paymentMethodName => _paymentMethodName;
 
   // int get onlinePaymentMethodId => _onlinePaymentMethodId;
   // int get cashPaymentMethodId => _cashPaymentMethodId;
@@ -103,6 +105,12 @@ class Calculator with ChangeNotifier {
   //____________________________________________________________________________
   //----------------------------------------------------------------------------
   //** */
+  void setPaymentMethodID(int value) {
+    _paymentMethodId = value;
+    _paymentMethodName = _payments.firstWhere((payment)=>payment.id == value).name;
+    notifyListeners();
+    
+  }
 
   void isRequestLoading(bool loading) {
     _isLoading = loading;
@@ -185,15 +193,6 @@ class Calculator with ChangeNotifier {
 
   void getPayments(List<PaymentMethodModel> elements) {
     _payments = elements;
-    // List.generate(elements.length, (index) {
-    //   // isManual = 1 which is cash.
-    //   // isManual = 0 which is online.
-    //   if (elements[index].isManual == 1) {
-    //     _cashPaymentMethodId = elements[index].id;
-    //   } else if (elements[index].isManual == 0) {
-    //     _onlinePaymentMethodId = elements[index].id;
-    //   }
-    // });
     notifyListeners();
   }
 
@@ -318,7 +317,7 @@ class Calculator with ChangeNotifier {
     final double receiverRatio = receiverAgent.receiveFees;
 
     // Set receiverRate (recipient)
-    // sendUSD ? receiverRate = usdRate : 
+    // sendUSD ? receiverRate = usdRate :
     receiverRate = receiverAgent.rate;
 
     final double amount = double.tryParse(controller) ?? 0;
@@ -343,7 +342,7 @@ class Calculator with ChangeNotifier {
       // converted = sendUSD
       //     ? amountWithoutUserFees
       //     : amountWithoutUserFees * receiverRate;
-      converted =  amountWithoutUserFees * receiverRate;
+      converted = amountWithoutUserFees * receiverRate;
 
       if (!sendUSD) {
         converted =

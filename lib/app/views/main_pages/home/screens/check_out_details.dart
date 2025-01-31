@@ -197,7 +197,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${isAR ? '' : '1'} USDT ${isAR ? '1 ' : ''}= ',
+                                      '${isAR ? '' : '1'} ${state.paymentMethodName} ${isAR ? '1 ' : ''}= ',
                                 ),
                                 TextSpan(
                                   text:
@@ -226,7 +226,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   text:
                                       '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                 TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -248,7 +248,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   text:
                                       '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                 TextSpan(text: state.paymentMethodName),
                               ],
                             ),
                           ),
@@ -264,7 +264,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   text:
                                       '${Tools.nicePrice(state.amountPlusFee)} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                 TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -285,7 +285,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: Decorations.note(context),
                     child: TextX(
-                      arb.weOnlyAcceptInUSDT,
+                     " ${arb.weOnlyAcceptInUSDT} ${state.paymentMethodName}",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: MainColors.red,
                             fontWeight: FontWeight.bold,
@@ -329,6 +329,8 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                       ),
                     ),
                   ),
+                
+                
                 ],
               ),
             ),

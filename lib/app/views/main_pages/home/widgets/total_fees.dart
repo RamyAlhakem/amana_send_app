@@ -34,7 +34,7 @@ class TotalFees extends StatelessWidget {
                           text:
                               '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: state.paymentMethodName),
                       ],
                     ),
                   ),
@@ -50,7 +50,7 @@ class TotalFees extends StatelessWidget {
                           text:
                               '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                       TextSpan(text: state.paymentMethodName),
                       ],
                     ),
                   ),

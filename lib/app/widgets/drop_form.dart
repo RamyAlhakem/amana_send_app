@@ -1,4 +1,6 @@
+import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'general/general_widgets.dart';
 
 class DropForm extends StatefulWidget {
@@ -62,6 +64,7 @@ class _DropFormState extends State<DropForm> {
           underline: const SizedBox.shrink(),
           borderRadius: BorderRadius.circular(widget.radius),
           onChanged: (value) => setState(() {
+            Provider.of<Calculator>(context,listen: false).setPaymentMethodID(value!);
             _selectedItem = value;
             if (widget.onChange != null) widget.onChange!(value);
           }),

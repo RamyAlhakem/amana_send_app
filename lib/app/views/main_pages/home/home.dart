@@ -155,7 +155,7 @@ class _HomeState extends State<Home> {
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
                         return Helper.snack(
-                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
+                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} ${state.paymentMethodName}.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
                           action: Button(
                             () => Helper.launchURL('https://t.me/AMANA_SEND'),
                             width: MediaQuery.of(context).size.width,
