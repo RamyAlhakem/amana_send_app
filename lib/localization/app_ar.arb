@@ -53,7 +53,7 @@
   "readOnly": "قراءة فقط",
   "success": "نجاح",
   "confirmSendingOrder": "تأكيد طلب الحوالة",
-  "weOnlyAcceptInUSDT": "يتم تسديد الحوالة بواسطة الدولار الرقمي USDT فقط",
+  "weOnlyAcceptInUSDT": "يتم تسديد الحوالة بواسطة العملة الرقمية المختاره",
   "transferId": "رقم الحوالة",
   "transactionNo": "رقم الحوالة",
   "transactionDate": "تاريخ العملية",

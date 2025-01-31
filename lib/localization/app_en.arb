@@ -50,7 +50,7 @@
   "yourPaymentHasBeenSubmittedSuccessfully": "Your payment has been submitted successfully",
   "success": "Success",
   "confirmSendingOrder": "Confirm sending order",
-  "weOnlyAcceptInUSDT": "We only accept in USDT",
+  "weOnlyAcceptInUSDT": "The transfer is paid using the chosen digital currency",
   "readOnly": "Read Only",
   "transferId": "Transfer-ID",
   "transactionNo": "Transaction no",
