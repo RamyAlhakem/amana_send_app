@@ -1,4 +1,5 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
+import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'general/general_widgets.dart';
@@ -14,7 +15,7 @@ class DropForm extends StatefulWidget {
     this.width,
   });
 
-  final List<Map<int,String> > items;
+  final List<Map<int, String>> items;
   final String hint, subHint;
   final void Function(int?)? onChange;
   final double? width;
@@ -29,6 +30,7 @@ class _DropFormState extends State<DropForm> {
 
   @override
   Widget build(BuildContext context) {
+    final calculator = Provider.of<Calculator>(context, listen: false);
     return SizedBox(
       child: InputDecorator(
         decoration: InputDecoration(
@@ -38,13 +40,13 @@ class _DropFormState extends State<DropForm> {
           labelText: widget.hint,
           labelStyle: const TextStyle(color: Colors.black, fontSize: 14),
           focusedBorder: GeneralWidgets.formBorder(context),
-          enabledBorder: GeneralWidgets.formBorder(context,radius: 10),
-          border: GeneralWidgets.formBorder(context,radius: 10),
+          enabledBorder: GeneralWidgets.formBorder(context, radius: 10),
+          border: GeneralWidgets.formBorder(context, radius: 10),
           contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
         ),
         child: DropdownButton(
           value: _selectedItem,
-          items: widget.items.map((Map<int,String> item) {
+          items: widget.items.map((Map<int, String> item) {
             return DropdownMenuItem(
               value: item.keys.first,
               child: Text(
@@ -54,17 +56,19 @@ class _DropFormState extends State<DropForm> {
             );
           }).toList(),
           isExpanded: true,
-          hint: const Row(
+          hint: Row(
             children: [
-              Icon(Icons.currency_exchange, color: Colors.black),
-              // Text("change the currency" ,style:  TextStyle(color: Colors.black, fontSize: 11)),
+              // Icon(Icons.currency_exchange, color: Colors.black),
+              Text(calculator.paymentMethodName,
+                  style: const TextStyle(color: Colors.black, fontSize: 14)),
             ],
           ),
           icon: const Icon(Icons.expand_more_rounded),
           underline: const SizedBox.shrink(),
           borderRadius: BorderRadius.circular(widget.radius),
           onChanged: (value) => setState(() {
-            Provider.of<Calculator>(context,listen: false).setPaymentMethodID(value!);
+            calculator.setPaymentMethodID(value!);
+            calculator.setPrice( calculator.sender.text);
             _selectedItem = value;
             if (widget.onChange != null) widget.onChange!(value);
           }),

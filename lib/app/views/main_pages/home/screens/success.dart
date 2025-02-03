@@ -195,7 +195,7 @@ class _SuccessState extends State<Success> {
                           text:
                               '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: transfer.paymentMethod?.name)
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -215,7 +215,7 @@ class _SuccessState extends State<Success> {
                         TextSpan(
                           text: '${transfer.totalAmount.toStringAsFixed(2)} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: transfer.paymentMethod?.name)
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,

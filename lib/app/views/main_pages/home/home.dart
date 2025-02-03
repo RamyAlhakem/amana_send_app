@@ -151,6 +151,9 @@ class _HomeState extends State<Home> {
                       if (state.sender.text.isEmpty) {
                         return Helper.snack(arb.pleaseEnterSendingAmount);
                       }
+                      if (state.paymentMethodName =="") {
+                        return Helper.snack(arb.pleaseChooseCurrency);
+                      }
 
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
@@ -182,7 +185,7 @@ class _HomeState extends State<Home> {
                       }
 
                       Global.snackKey.currentState?.hideCurrentSnackBar();
-                      state.roundReceiverAmount();
+                      // state.roundReceiverAmount();
                       Helper.unFocusCursor(context);
                       context.pushNamed(
                         AppRoute.sendHub,

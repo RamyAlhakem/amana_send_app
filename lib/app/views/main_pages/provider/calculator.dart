@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -30,8 +33,8 @@ class Calculator with ChangeNotifier {
   double _minUSD = 0;
   double _dynamicAgentRate = 0;
   bool _isLoading = true;
-  int _paymentMethodId = 0;
-  String _paymentMethodName = "USDC";
+  int _paymentMethodId = 1;
+  String _paymentMethodName = "USDT";
 
   // int _onlinePaymentMethodId = 0;
   // int _cashPaymentMethodId = 0;
@@ -52,6 +55,7 @@ class Calculator with ChangeNotifier {
 
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
+  CalculateAmountModel _calculateAmount = CalculateAmountModel();
 
   bool _sendUSD = false;
   bool _showAgents = false;
@@ -73,6 +77,7 @@ class Calculator with ChangeNotifier {
   bool get isLoading => _isLoading;
   int get paymentMethodID => _paymentMethodId;
   String get paymentMethodName => _paymentMethodName;
+  CalculateAmountModel get calculateAmount => _calculateAmount;
 
   // int get onlinePaymentMethodId => _onlinePaymentMethodId;
   // int get cashPaymentMethodId => _cashPaymentMethodId;
@@ -107,9 +112,9 @@ class Calculator with ChangeNotifier {
   //** */
   void setPaymentMethodID(int value) {
     _paymentMethodId = value;
-    _paymentMethodName = _payments.firstWhere((payment)=>payment.id == value).name;
+    _paymentMethodName =
+        _payments.firstWhere((payment) => payment.id == value).name;
     notifyListeners();
-    
   }
 
   void isRequestLoading(bool loading) {
@@ -153,6 +158,11 @@ class Calculator with ChangeNotifier {
 
     setExchangeRate();
     getCurrencies();
+  }
+
+  void setCalculateAmount(CalculateAmountModel amount) {
+    _calculateAmount = amount;
+    notifyListeners();
   }
 
   //**Get receiver countries to add a recipient & setting exchange rates.
@@ -258,24 +268,25 @@ class Calculator with ChangeNotifier {
     });
   }
 
-  void roundReceiverAmount() {
-    if (receiver.text.isNotEmpty) {
-      double ceil = receiverCountry.currency.ceil;
-      double round = double.tryParse(receiver.text) ?? 0;
+  // void roundReceiverAmount() {
+  //   if (receiver.text.isNotEmpty) {
+  //     double ceil = receiverCountry.currency.ceil;
+  //     double round = double.tryParse(receiver.text) ?? 0;
 
-      if (!sendUSD) {
-        round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
-      } else {
-        round = round.ceilToDouble();
-      }
+  //     if (!sendUSD) {
+  //       round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
+  //     } else {
+  //       round = round.ceilToDouble();
+  //     }
 
-      Helper.log('round: $round');
-      _receiver.text = '$round';
-      _receiver.text = Helper.priced(calculate(sender.text), currency: false);
-      // _sender.text = Helper.priced(calculate(receiver.text), currency: false);
-      setExchangeRate();
-    }
-  }
+  //     Helper.log('round: $round');
+  //     _receiver.text = '$round';
+  //     _receiver.text =
+  //         Helper.priced(calculate(sender.text,false), context, currency: false);
+  //      _sender.text = Helper.priced(calculate(receiver.text), currency: false);
+  //     setExchangeRate();
+  //   }
+  // }
 
   void setPrice(String value, {bool? usd}) {
     if (usd == null) {
@@ -284,27 +295,16 @@ class Calculator with ChangeNotifier {
     } else {
       _sendUSD = usd;
     }
-
     if (sendUSD) {
       _minUSD = receiverAgent.minAmount / receiverAgent.rate;
       _maxUSD = receiverAgent.maxAmount / receiverAgent.rate;
     }
 
     if (value.isNotEmpty) {
-      double convertedAmount = double.parse(value);
-      convertedAmount = calculate(value);
-      setExchangeRate();
-
-      if (value == sender.text) {
-        _receiver = TextEditingController(
-          text: convertedAmount.toStringAsFixed(
-            _receiverCountry.currency.code == 'SYP' ? 0 : 2,
-          ),
-        );
-      } else {
-        _sender =
-            TextEditingController(text: convertedAmount.toStringAsFixed(2));
-      }
+      bool isSender = value ==
+          sender
+              .text; // true: how nuch you will send , false :how much you will recieve
+      calculate(value, isSender);
     } else {
       clearFields();
     }
@@ -312,73 +312,102 @@ class Calculator with ChangeNotifier {
     notifyListeners();
   }
 
-  double calculate(String controller) {
-    double receiverRate = 0;
-    final double receiverRatio = receiverAgent.receiveFees;
-
-    // Set receiverRate (recipient)
-    // sendUSD ? receiverRate = usdRate :
-    receiverRate = receiverAgent.rate;
-
+  void calculate(String controller, bool isSender) async {
     final double amount = double.tryParse(controller) ?? 0;
-    double converted = 0;
-
-    final double ceil = receiverCountry.currency.ceil;
-
-    // Text fields calculation:-------------------------------------------------
-    if (controller == sender.text) {
-      // Writing from sender.text filed:
-
-      // Calculate user fees based on the percentage
-      double userFees = (percentFee * amount) / 100;
-
-      // Ensure that the calculated user fees do not fall below the minimum fee
-      double sendFees = userFees > minFee ? userFees : minFee;
-
-      // Calculate the amount after deducting the user fees
-      double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
-
-      // Calculate the converted amount based on currency conversion rate
-      // converted = sendUSD
-      //     ? amountWithoutUserFees
-      //     : amountWithoutUserFees * receiverRate;
-      converted = amountWithoutUserFees * receiverRate;
-
-      if (!sendUSD) {
-        converted =
-            ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
+    await CalculateTransferMoney(context,
+            coCode: receiverCountry.coCode,
+            providerId: receiverAgent.id,
+            isReceiveInUSD: receiverAgent.usdAvailability == 2,
+            sendAmount: isSender ? amount : null,
+            recipientAmount: isSender ? null : amount,
+            paymentMethodId: paymentMethodID)
+        .request()
+        .then((result) {
+      if (result) {
+        if (isSender) {
+          _receiver = TextEditingController(
+            text: calculateAmount.recipientAmount.toStringAsFixed(
+              _receiverCountry.currency.code == 'SYP' ? 0 : 2,
+            ),
+          );
+        } else {
+          _sender = TextEditingController(
+              text: calculateAmount.sendAmount.toStringAsFixed(2));
+        }
       } else {
-        converted = converted.ceilToDouble();
+        _sender.text = "";
+        _receiver.text = "";
       }
-      _amountPlusFee = amount + receiverRatio;
-    } else {
-      // Writing from receiver.text filed:
+    });
+    // });
 
-      // Calculate the conversion fee based on the percentage and original amount
-      // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
-      // final double conversionFee = percentFee * to;
+    notifyListeners();
+    // double receiverRate = 0;
+    // final double receiverRatio = receiverAgent.receiveFees;
 
-      // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
+    // // Set receiverRate (recipient)
+    // // sendUSD ? receiverRate = usdRate :
+    // receiverRate = receiverAgent.rate;
 
-      final double finalReceiverRate =
-          receiverRate - (receiverRate * (percentFee / 100));
-      // Calculate the total amount after applying the conversion fee
-      final double totalAmount = amount / finalReceiverRate;
-      final double transferCost = amount / receiverRate;
-      final double finalProfit = totalAmount - transferCost;
-      // Finally, store the result in the 'toConvert' variable
-      converted =
-          totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
+    // final double amount = double.tryParse(controller) ?? 0;
+    // double converted = 0;
 
-      // Floor to sender amount only
-      converted = (converted * 100).floor() / 100;
+    // final double ceil = receiverCountry.currency.ceil;
 
-      _amountPlusFee = converted + receiverRatio;
-    }
-    //--------------------------------------------------------------------------
+    // // Text fields calculation:-------------------------------------------------
+    // if (controller == sender.text) {
+    //   // Writing from sender.text filed:
 
-    setExchangeRate();
-    return converted;
+    //   // Calculate user fees based on the percentage
+    //   double userFees = (percentFee * amount) / 100;
+
+    //   // Ensure that the calculated user fees do not fall below the minimum fee
+    //   double sendFees = userFees > minFee ? userFees : minFee;
+
+    //   // Calculate the amount after deducting the user fees
+    //   double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
+
+    //   // Calculate the converted amount based on currency conversion rate
+    //   // converted = sendUSD
+    //   //     ? amountWithoutUserFees
+    //   //     : amountWithoutUserFees * receiverRate;
+    //   converted = amountWithoutUserFees * receiverRate;
+
+    //   if (!sendUSD) {
+    //     converted =
+    //         ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
+    //   } else {
+    //     converted = converted.ceilToDouble();
+    //   }
+    //   _amountPlusFee = amount + receiverRatio;
+    // } else {
+    //   // Writing from receiver.text filed:
+
+    //   // Calculate the conversion fee based on the percentage and original amount
+    //   // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
+    //   // final double conversionFee = percentFee * to;
+
+    //   // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
+
+    //   final double finalReceiverRate =
+    //       receiverRate - (receiverRate * (percentFee / 100));
+    //   // Calculate the total amount after applying the conversion fee
+    //   final double totalAmount = amount / finalReceiverRate;
+    //   final double transferCost = amount / receiverRate;
+    //   final double finalProfit = totalAmount - transferCost;
+    //   // Finally, store the result in the 'toConvert' variable
+    //   converted =
+    //       totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
+
+    //   // Floor to sender amount only
+    //   converted = (converted * 100).floor() / 100;
+
+    //   _amountPlusFee = converted + receiverRatio;
+    // }
+    // //--------------------------------------------------------------------------
+
+    // setExchangeRate();
+    // return converted;
   }
 
   void agentsVisibility(bool show) {

@@ -197,6 +197,7 @@
   "selectCity": "Select city",
   "typeOfCurrency":"Type of currency",
   "chooseCurrency": "Choose the digital currency",
+  "pleaseChooseCurrency": "please choose the digital currency",
   
   "selectCountry": "Select country",
   "selectCountryPhoneCodeFromTheListBelow": "Select country phone code from the list below",

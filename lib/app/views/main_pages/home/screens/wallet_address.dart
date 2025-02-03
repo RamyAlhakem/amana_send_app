@@ -128,7 +128,7 @@ class _WalletAddressState extends State<WalletAddress>
                       ),
                       const SizedBox(width: 10),
                       TextX(
-                        Helper.priced(transfer.totalAmount),
+                        Helper.priced(transfer.totalAmount,context),
                         style: const TextStyle(
                           fontSize: 26,
                           color: Colors.green,

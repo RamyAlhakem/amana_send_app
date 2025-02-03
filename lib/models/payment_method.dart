@@ -7,18 +7,20 @@ class PaymentMethodModel extends SafetyModel {
     this.className = '',
     this.displayName = '',
     this.displayDescription = '',
+    this.iconUrl = '',
     this.status = 0,
     this.selected = false,
   });
 
   int id = 0 ,status = 0;
-  String name = '', displayName = '', displayDescription = '',className='';
+  String name = '', displayName = '', displayDescription = '',className='',iconUrl='';
   bool selected = false;
 
   PaymentMethodModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
     name = stringFromJson(json, 'name');
     className = stringFromJson(json, 'className');
+    iconUrl = stringFromJson(json, 'iconUrl');
     displayName = stringFromJson(json, 'displayName');
     displayDescription = stringFromJson(json, 'displayDescription');
     status = intFromJson(json, 'status');

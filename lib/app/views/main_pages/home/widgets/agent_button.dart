@@ -75,14 +75,14 @@ class AgentButton extends StatelessWidget {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${isAR ? 'USDT 1' : '1 USDT'} = ',
+                                  text: '${isAR ? '${state.paymentMethodName} 1' : '1 ${state.paymentMethodName}'} = ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(fontSize: 11),
                                 ),
                                 TextSpan(
-                                  text: Helper.priced(thisRate,
+                                  text: Helper.priced(thisRate,context,
                                       currencyCode: usd
                                           ? 'USD'
                                           : state

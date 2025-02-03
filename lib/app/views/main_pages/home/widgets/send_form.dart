@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amana_send/app/widgets/drop_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +37,7 @@ class _SendFormFieldsState extends State<SendFormFields>
     with AutomaticKeepAliveClientMixin {
   late AppLocalizations arb;
   late Calculator _calculator;
-
+  Timer? debounceTimer;
   String selection = '';
 
   bool isHome = true;
@@ -149,6 +151,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                   );
                 },
               ),
+          // you send
           Row(
             children: [
               Expanded(
@@ -166,7 +169,15 @@ class _SendFormFieldsState extends State<SendFormFields>
                         fontWeight: FontWeight.bold,
                       ),
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-                  onChanged: (String value) => state.setPrice(value),
+                  onChanged: (String value) {
+                    if (debounceTimer?.isActive ?? false) {
+                      debounceTimer?.cancel();
+                    }
+                    debounceTimer =
+                        Timer(const Duration(milliseconds: 2000), () async {
+                      state.setPrice(value);
+                    });
+                  },
                 ),
               ),
               const SizedBox(
@@ -215,9 +226,17 @@ class _SendFormFieldsState extends State<SendFormFields>
                 .textTheme
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) => state.setPrice(value),
+            onChanged: (String value) {
+              if (debounceTimer?.isActive ?? false) {
+                debounceTimer?.cancel();
+              }
+              debounceTimer =
+                  Timer(const Duration(milliseconds: 2000), () async {
+                state.setPrice(value);
+              });
+            },
             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-            onSubmitted: (_) => state.roundReceiverAmount(),
+            // onSubmitted: (_) => state.roundReceiverAmount(),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(4, 0, 4, 0),

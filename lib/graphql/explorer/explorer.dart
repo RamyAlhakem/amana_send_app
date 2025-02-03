@@ -112,7 +112,13 @@ class Explorer {
       paymentData
       paymentReference
       paymentMethod {
-        $paymentMethod
+      className
+      displayDescription
+      displayName
+      iconUrl
+      id
+      name
+      status
       }
       city {
         $city
@@ -124,6 +130,7 @@ class Explorer {
         id
         address
       }
+ 
       sendAmount
       status
       receiptPic
