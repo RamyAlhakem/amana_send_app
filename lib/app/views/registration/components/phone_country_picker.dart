@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,8 +84,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
               onSubmit: null,
               title: _arb!.countries,
               subTitle: _arb!.selectCountryPhoneCodeFromTheListBelow,
-              subTitleStyle:
-                  const TextStyle(color: Colors.white, fontSize: 14),
+              subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
               horizontalPadding: 0,
               content: (state) => Scrollbar(
                 interactive: true,
@@ -112,16 +112,15 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                                 );
                               } else {
                                 provider.setCountry(
-                                  _calculator
-                                      .setReceiverCountry(_countries[i]),
+                                  _calculator.setReceiverCountry(_countries[i]),
                                 );
                               }
                               provider.setCities(_countries[i].cities);
-      
+
                               _calculator.setPrice(_calculator.sender.text,
                                   usd: _calculator.sendUSD);
                             });
-      
+
                             SettingsDialog.dismiss();
                           }),
                           child: Country(
@@ -151,13 +150,15 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                 children: [
                   const SizedBox(width: 8),
                   if (provider.country != null)
-                    Flag.fromString(
-                      provider.country!.coCode,
-                      height: 30,
-                      width: 30,
-                      fit: BoxFit.fill,
-                      borderRadius: 100,
-                    ),
+                    provider.country!.coCode == "sy"
+                        ? const SyrFlag()
+                        : Flag.fromString(
+                            provider.country!.coCode,
+                            height: 30,
+                            width: 30,
+                            fit: BoxFit.fill,
+                            borderRadius: 100,
+                          ),
                   const SizedBox(width: 8),
                   if (provider.country != null)
                     TextX('+${provider.country!.phoneCode}'),

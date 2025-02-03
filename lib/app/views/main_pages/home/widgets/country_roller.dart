@@ -1,6 +1,8 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
@@ -93,13 +95,15 @@ class CountryRoller extends StatelessWidget {
           send ? HeroIcons.arrowUpRight : HeroIcons.arrowDownRight,
           size: 15,
         ),
-        valueIcon: Flag.fromString(
-          country.coCode.isEmpty ? 'us' : country.coCode,
-          height: 28,
-          width: 28,
-          borderRadius: 100,
-          fit: BoxFit.fill,
-        ),
+        valueIcon: country.coCode == "sy"
+            ? const SyrFlag()
+            : Flag.fromString(
+                country.coCode.isEmpty ? 'us' : country.coCode,
+                height: 28,
+                width: 28,
+                borderRadius: 100,
+                fit: BoxFit.fill,
+              ),
         color: Theme.of(context).cardColor,
       );
       return child;

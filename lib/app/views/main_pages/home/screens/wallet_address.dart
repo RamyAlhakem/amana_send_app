@@ -208,7 +208,7 @@ class _WalletAddressState extends State<WalletAddress>
                         children: <TextSpan>[
                           TextSpan(text: '${arb.walletNetwork}: '),
                           const TextSpan(
-                            text: 'Polygon - (MATIC)',
+                            text: 'POLYGON POS',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
