@@ -35,6 +35,7 @@ class Calculator with ChangeNotifier {
   bool _isLoading = true;
   int _paymentMethodId = 1;
   String _paymentMethodName = "USDT";
+  String icon = "";
 
   // int _onlinePaymentMethodId = 0;
   // int _cashPaymentMethodId = 0;
@@ -114,6 +115,9 @@ class Calculator with ChangeNotifier {
     _paymentMethodId = value;
     _paymentMethodName =
         _payments.firstWhere((payment) => payment.id == value).name;
+    icon =
+        _payments.firstWhere((payment) => payment.id == value).iconUrl;
+
     notifyListeners();
   }
 

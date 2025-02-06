@@ -34,11 +34,11 @@ class _DropFormState extends State<DropForm> {
     return SizedBox(
       child: InputDecorator(
         decoration: InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
+           filled: true,
+          fillColor: Theme.of(context).cardColor,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelText: widget.hint,
-          labelStyle: const TextStyle(color: Colors.black, fontSize: 14),
+          labelStyle:  TextStyle( fontSize: 14),
           focusedBorder: GeneralWidgets.formBorder(context),
           enabledBorder: GeneralWidgets.formBorder(context, radius: 10),
           border: GeneralWidgets.formBorder(context, radius: 10),
@@ -51,16 +51,15 @@ class _DropFormState extends State<DropForm> {
               value: item.keys.first,
               child: Text(
                 item.values.first,
-                style: const TextStyle(color: Colors.black, fontSize: 14),
+                style:  TextStyle( fontSize: 14),
               ),
             );
           }).toList(),
           isExpanded: true,
           hint: Row(
             children: [
-              // Icon(Icons.currency_exchange, color: Colors.black),
               Text(calculator.paymentMethodName,
-                  style: const TextStyle(color: Colors.black, fontSize: 14)),
+                  style: const TextStyle( fontSize: 14)),
             ],
           ),
           icon: const Icon(Icons.expand_more_rounded),

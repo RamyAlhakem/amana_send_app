@@ -35,6 +35,7 @@ class Explorer {
       status
       displayDescription
       className
+      iconUrl
       ''';
 
   static const String provider = '''
