@@ -259,6 +259,7 @@
   "enterCode": "Enter code",
   "recipientCountryUnavailableAtTheMoment": "Recipient country unavailable at the moment",
   "passwordSuccessfullyChangedPleaseLoginToContinue": "Password successfully changed, Please login to continue",
+  "pleaseloginToContinue":"Please login to continue",
   "incorrectPassword": "Incorrect password",
   "newPasswordCannotBeTheSameAsTheCurrentPassword": "New password cannot be the same as the current password",
   "recipientHasBeenDeletedSuccessfully": "Recipient has been deleted successfully",

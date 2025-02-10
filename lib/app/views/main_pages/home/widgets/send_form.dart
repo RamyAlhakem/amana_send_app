@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
 import 'package:amana_send/app/widgets/drop_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -155,7 +156,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           Row(
             children: [
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: TextFieldX(
                   key: isHome ? Tutorial.key4 : null,
                   hint: arb.youSend,
@@ -165,6 +166,14 @@ class _SendFormFieldsState extends State<SendFormFields>
                   borderRadius: borderRadius,
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
+                  suffixIcon: Container(
+                    width: 60,
+                    alignment: Alignment.center,
+                    child: TextX(
+                      state.paymentMethodName,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -180,17 +189,8 @@ class _SendFormFieldsState extends State<SendFormFields>
                   },
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
-              Expanded(
-                  child: DropForm(
-                      key: isHome ? Tutorial.key5 : null,
-                      hint: arb.typeOfCurrency,
-                      subHint: '',
-                      items: state.payments
-                          .map((payment) => {payment.id: payment.name})
-                          .toList()))
+
+            
             ],
           ),
 

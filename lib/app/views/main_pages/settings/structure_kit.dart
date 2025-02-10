@@ -1,3 +1,5 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
+import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -130,6 +132,7 @@ class StructureKit {
 
   List<Widget> actions(BuildContext context) {
     _arb = AppLocalizations.of(context);
+   Calculator state = Provider.of<Calculator>(context, listen: true);
 
     List<Widget> actions = <Widget>[];
     switch (pageIndex) {
@@ -138,6 +141,12 @@ class StructureKit {
           Visibility(
             visible: Global.appSettings.token.isEmpty,
             replacement: Row(children: [
+              IconButton(
+                  onPressed: () =>showDigitalCurrencies(context),
+                  icon: Image.network(state.icon,
+                    height: 23,
+                    fit: BoxFit.cover,
+                  )),
               IconButton(
                 onPressed: () => Tutorial(context, show: true).showTutorial(),
                 icon: const HeroIcon(HeroIcons.questionMarkCircle),
@@ -164,6 +173,12 @@ class StructureKit {
             ]),
             child: Row(
               children: [
+                 IconButton(
+                  onPressed: () =>showDigitalCurrencies(context),
+                  icon: Image.network(state.icon,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  )),
                 IconButton(
                   onPressed: () => Tutorial(context, show: true).showTutorial(),
                   icon: const HeroIcon(HeroIcons.questionMarkCircle),

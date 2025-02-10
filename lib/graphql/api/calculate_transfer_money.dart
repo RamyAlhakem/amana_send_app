@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/camera/camera.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/global/variables.dart';
@@ -6,9 +7,12 @@ import 'package:amana_send/graphql/graphql.dart';
 import 'package:amana_send/helper/debug_colors.dart';
 import 'package:amana_send/helper/helper.dart';
 import 'package:amana_send/models/currency.dart';
+import 'package:amana_send/router/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 class CalculateTransferMoney {
   final BuildContext context;
@@ -27,6 +31,7 @@ class CalculateTransferMoney {
       this.recipientAmount,
       required this.paymentMethodId});
   late Calculator _p;
+  late AppLocalizations? arb;
   Future<bool> request() async {
     _p = Provider.of<Calculator>(context, listen: false);
     Map<String, dynamic> variables = {
@@ -72,10 +77,14 @@ class CalculateTransferMoney {
   }
 
   void _error(OperationException error) async {
+     arb = AppLocalizations.of(context);
     _p.receiver.text = "";
     _p.sender.text = "";
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {
+        case 401:
+          Helper.toast(arb!.pleaseloginToContinue);
+           context.push('/${AppRoute.logIn}');
         default:
           Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
       }

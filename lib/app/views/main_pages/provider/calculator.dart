@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
 import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,7 +36,7 @@ class Calculator with ChangeNotifier {
   bool _isLoading = true;
   int _paymentMethodId = 1;
   String _paymentMethodName = "USDT";
-  String icon = "";
+  String icon = "https://staging-storage.amanasend.com/files/479625906.png";
 
   // int _onlinePaymentMethodId = 0;
   // int _cashPaymentMethodId = 0;
@@ -111,14 +112,18 @@ class Calculator with ChangeNotifier {
   //____________________________________________________________________________
   //----------------------------------------------------------------------------
   //** */
-  void setPaymentMethodID(int value) {
-    _paymentMethodId = value;
-    _paymentMethodName =
-        _payments.firstWhere((payment) => payment.id == value).name;
-    icon =
-        _payments.firstWhere((payment) => payment.id == value).iconUrl;
-
-    notifyListeners();
+  void setPaymentMethodID(PaymentMethodModel getPaymentMethod) {
+    if (getPaymentMethod.id !=0) {
+      _paymentMethodId = getPaymentMethod.id;
+      _paymentMethodName = getPaymentMethod.name;
+      icon = getPaymentMethod.iconUrl;
+      notifyListeners();
+    }
+    if (getPaymentMethod.id == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDigitalCurrencies(context);
+      });
+    }
   }
 
   void isRequestLoading(bool loading) {

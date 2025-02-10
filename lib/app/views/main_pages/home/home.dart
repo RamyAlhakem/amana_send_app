@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:amana_send/graphql/api/get_payments.dart';
+import 'package:amana_send/models/payment_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late AppLocalizations arb;
   late UserModel user;
+  PaymentMethodModel getPaymentMethod=PaymentMethodModel();
   String selection = '';
   late bool isAr;
 
@@ -78,7 +80,15 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
-    getResources().whenComplete(() => user = Database().getUser);
+    getResources().whenComplete(() {
+      user = Database().getUser;
+      if (getPaymentMethod != null) {
+        if (mounted) {
+          Provider.of<Calculator>(context, listen: false)
+              .setPaymentMethodID(getPaymentMethod);
+        }
+      }
+    });
   }
 
   @override
@@ -151,7 +161,7 @@ class _HomeState extends State<Home> {
                       if (state.sender.text.isEmpty) {
                         return Helper.snack(arb.pleaseEnterSendingAmount);
                       }
-                      if (state.paymentMethodName =="") {
+                      if (state.paymentMethodName == "") {
                         return Helper.snack(arb.pleaseChooseCurrency);
                       }
 

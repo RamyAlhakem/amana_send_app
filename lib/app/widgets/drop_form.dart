@@ -66,7 +66,7 @@ class _DropFormState extends State<DropForm> {
           underline: const SizedBox.shrink(),
           borderRadius: BorderRadius.circular(widget.radius),
           onChanged: (value) => setState(() {
-            calculator.setPaymentMethodID(value!);
+            // calculator.setPaymentMethodID(value!);
             calculator.setPrice( calculator.sender.text);
             _selectedItem = value;
             if (widget.onChange != null) widget.onChange!(value);

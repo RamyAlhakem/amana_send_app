@@ -31,16 +31,18 @@ static late Calculator _pr;
     });
   }
 
-  static void _result(Map<String, dynamic> data) async {
-    if (data.isNotEmpty && data.containsKey('paymentMethods')) {
-      if (data['paymentMethods'] is List && data['paymentMethods'].isNotEmpty) {
-        List<PaymentMethodModel> payments = List<PaymentMethodModel>.from(
-          data['paymentMethods'].map((x) => PaymentMethodModel.fromJson(x)),
-        );
-        _pr.getPayments(payments);
-      }
+ static void _result(Map<String, dynamic> data) async {
+  if (data.isNotEmpty && data.containsKey('paymentMethods')) {
+    if (data['paymentMethods'] is List && data['paymentMethods'].isNotEmpty) {
+      List<PaymentMethodModel> payments = List<PaymentMethodModel>.from(
+        data['paymentMethods'].map((x) => PaymentMethodModel.fromJson(x)).toList(),
+      );
+
+      _pr.getPayments(payments);
     }
   }
+}
+
 
  static void _error(List<GraphQLError> errors) async {
     if (errors.isNotEmpty) {
