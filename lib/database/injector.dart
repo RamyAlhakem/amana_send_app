@@ -36,14 +36,8 @@ class Database {
     return UserModel.fromJson(json.decode(userJson));
   }
 
-  static Future<void> clearUser() async {
-    await _preferences?.remove(userKey);
-    await _preferences?.remove(paymentKey);
-  }
+  static Future<void> clearUser() async => await _preferences?.remove(userKey);
 
-  //
-  //
-  //
   // User local data app preferences:
   set setUserBase(UserBase user) {
     _preferences?.setString(userBaseKey, json.encode(user.toJson()));

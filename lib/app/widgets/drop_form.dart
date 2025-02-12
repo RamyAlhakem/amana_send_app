@@ -1,5 +1,4 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
-import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'general/general_widgets.dart';

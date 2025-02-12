@@ -132,7 +132,7 @@ class StructureKit {
 
   List<Widget> actions(BuildContext context) {
     _arb = AppLocalizations.of(context);
-   Calculator state = Provider.of<Calculator>(context, listen: true);
+    Calculator state = Provider.of<Calculator>(context, listen: true);
 
     List<Widget> actions = <Widget>[];
     switch (pageIndex) {
@@ -141,12 +141,15 @@ class StructureKit {
           Visibility(
             visible: Global.appSettings.token.isEmpty,
             replacement: Row(children: [
-              IconButton(
-                  onPressed: () =>showDigitalCurrencies(context),
-                  icon: Image.network(state.icon,
-                    height: 23,
-                    fit: BoxFit.cover,
-                  )),
+              state.icon != ""
+                  ? IconButton(
+                      onPressed: () => showDigitalCurrencies(context),
+                      icon: Image.network(
+                        state.icon,
+                        height: 23,
+                        fit: BoxFit.cover,
+                      ))
+                  : const SizedBox(),
               IconButton(
                 onPressed: () => Tutorial(context, show: true).showTutorial(),
                 icon: const HeroIcon(HeroIcons.questionMarkCircle),
@@ -173,12 +176,15 @@ class StructureKit {
             ]),
             child: Row(
               children: [
-                 IconButton(
-                  onPressed: () =>showDigitalCurrencies(context),
-                  icon: Image.network(state.icon,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  )),
+                state.icon != ""
+                    ? IconButton(
+                        onPressed: () => showDigitalCurrencies(context),
+                        icon: Image.network(
+                          state.icon,
+                          height: 23,
+                          fit: BoxFit.cover,
+                        ))
+                    : const SizedBox(),
                 IconButton(
                   onPressed: () => Tutorial(context, show: true).showTutorial(),
                   icon: const HeroIcon(HeroIcons.questionMarkCircle),

@@ -41,16 +41,17 @@ class Mutations {
 
 
 static const String calculateAmount = '''
-mutation calculateAmount(\$coCode: String!, \$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$sendAmount: Float ,\$recipientAmount: Float) {
+mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$sendAmount: Float ,\$recipientAmount: Float) {
   calculateAmount(
     coCode: \$coCode
+    sendCountryCode: \$sendCountryCode
     isReceiveInUSD: \$isReceiveInUSD
     paymentMethodId: \$paymentMethodId
     providerId: \$providerId
     sendAmount: \$sendAmount
     recipientAmount: \$recipientAmount
   ) {
-    receiveFees
+    
     recipientAmount
     sendAmount
     sendFees

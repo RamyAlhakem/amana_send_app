@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '/configs/configs.dart';
 
 class ImageWidget extends StatelessWidget {
   const ImageWidget(

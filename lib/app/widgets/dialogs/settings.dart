@@ -1,3 +1,7 @@
+import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
+import 'package:amana_send/database/injector.dart';
+import 'package:amana_send/models/payment_method.dart';
+import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -6,6 +10,7 @@ import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsDialog {
   SettingsDialog({
@@ -122,4 +127,83 @@ class SettingsDialog {
   }
 
   static void dismiss() => Navigator.pop(Global.key.currentContext!);
+}
+
+class CurrencyWidget extends StatelessWidget {
+  final Calculator controller;
+  final AppLocalizations? arb;
+
+  const CurrencyWidget({
+    Key? key,
+    required this.controller,
+    required this.arb,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlurryContainer(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextX(
+            arb?.typeOfCurrency ?? "",
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
+            child: TextX(
+              arb?.pleaseChooseCurrency ?? "",
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          ),
+          ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            children: [
+              ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(10),
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  for (int i = 0; i < controller.payments.length; i++)
+                    InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onTap: () {
+                        PaymentMethodModel payment = controller.payments[i];
+                        Database().setCurrency = payment;
+                        controller.setPaymentMethodID(payment);
+                        controller.setPrice(controller.sender.text);
+                      },
+                      child: Row(children: [
+                        Image.network(
+                          controller.payments[i].iconUrl,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          controller.payments[i].name,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        )
+                      ]),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

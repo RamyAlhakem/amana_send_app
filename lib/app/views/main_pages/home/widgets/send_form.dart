@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
-import 'package:amana_send/app/widgets/drop_form.dart';
+import 'package:amana_send/database/injector.dart';
+import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
+import 'package:amana_send/graphql/graphql.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -179,11 +180,12 @@ class _SendFormFieldsState extends State<SendFormFields>
                       ),
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
                   onChanged: (String value) {
+                    state.receiver.clear();
                     if (debounceTimer?.isActive ?? false) {
                       debounceTimer?.cancel();
                     }
                     debounceTimer =
-                        Timer(const Duration(milliseconds: 2000), () async {
+                        Timer(const Duration(milliseconds: 1500), () async {
                       state.setPrice(value);
                     });
                   },
@@ -227,11 +229,12 @@ class _SendFormFieldsState extends State<SendFormFields>
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
             onChanged: (String value) {
+               state.sender.clear();
               if (debounceTimer?.isActive ?? false) {
                 debounceTimer?.cancel();
               }
               debounceTimer =
-                  Timer(const Duration(milliseconds: 2000), () async {
+                  Timer(const Duration(milliseconds: 1500), () async {
                 state.setPrice(value);
               });
             },

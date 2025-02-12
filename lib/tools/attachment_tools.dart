@@ -4,10 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
 import '../app/theme/colors/main_colors.dart';
 import '/app/widgets/blurry_container.dart';
-import '/configs/configs.dart';
+
 
 class AttachmentTools {
   static ImageProvider image(String url) => CachedNetworkImageProvider(url);
