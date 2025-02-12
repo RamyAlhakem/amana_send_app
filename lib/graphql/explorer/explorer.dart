@@ -49,6 +49,7 @@ class Explorer {
       maxAmount
       defaultMessage
       description
+      tab
       ''';
 
   static const String city = '''

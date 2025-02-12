@@ -39,10 +39,10 @@ class GetProviders {
   void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('providers')) {
       if (data['providers'] is List && data['providers'].isNotEmpty) {
-        List<AgentModel> payments = List<AgentModel>.from(
+        List<AgentModel> providers = List<AgentModel>.from(
           data['providers'].map((x) => AgentModel.fromJson(x)),
         );
-        _pr.getAgents(payments);
+        _pr.getAgents(providers);
       }
     }
   }

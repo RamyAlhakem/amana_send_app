@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:amana_send/database/injector.dart';
-import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
-import 'package:amana_send/graphql/graphql.dart';
+import 'package:amana_send/app/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -162,6 +160,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                   key: isHome ? Tutorial.key4 : null,
                   hint: arb.youSend,
                   controller: state.sender,
+                  enabled: state.senderLoading ? false : true,
                   type: TextInputType.phone,
                   input: _input,
                   borderRadius: borderRadius,
@@ -170,10 +169,14 @@ class _SendFormFieldsState extends State<SendFormFields>
                   suffixIcon: Container(
                     width: 60,
                     alignment: Alignment.center,
-                    child: TextX(
-                      state.paymentMethodName,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                    child: state.senderLoading
+                        ? const LoadingWidget(
+                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          )
+                        : TextX(
+                            state.paymentMethodName,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                   ),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -181,6 +184,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
                   onChanged: (String value) {
                     state.receiver.clear();
+                    state.recieverLoading = true;
                     if (debounceTimer?.isActive ?? false) {
                       debounceTimer?.cancel();
                     }
@@ -191,8 +195,6 @@ class _SendFormFieldsState extends State<SendFormFields>
                   },
                 ),
               ),
-
-            
             ],
           ),
 
@@ -219,8 +221,15 @@ class _SendFormFieldsState extends State<SendFormFields>
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,
+            enabled: state.recieverLoading ? false : true,
             input: _input,
-            suffixIcon: const CurrencyRoller(),
+            suffixIcon: Container(
+              child: state.recieverLoading
+                  ? const LoadingWidget(
+                      padding: EdgeInsets.fromLTRB(15, 10, 15, 10))
+                  : const CurrencyRoller(),
+            ),
+
             borderRadius: borderRadius,
             filled: true,
             fillColor: Theme.of(context).cardColor,
@@ -229,7 +238,8 @@ class _SendFormFieldsState extends State<SendFormFields>
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
             onChanged: (String value) {
-               state.sender.clear();
+              state.senderLoading = true;
+              state.sender.clear();
               if (debounceTimer?.isActive ?? false) {
                 debounceTimer?.cancel();
               }

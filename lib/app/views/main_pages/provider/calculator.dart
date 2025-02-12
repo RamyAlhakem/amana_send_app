@@ -34,9 +34,11 @@ class Calculator with ChangeNotifier {
   double _minUSD = 0;
   double _dynamicAgentRate = 0;
   bool _isLoading = true;
+  bool senderLoading = false;
+  bool recieverLoading = false;
   int _paymentMethodId = 1;
-  String _paymentMethodName = "USDT";
-  String icon = "https://staging-storage.amanasend.com/files/479625906.png";
+  String _paymentMethodName = "";
+  String icon = "";
 
   // int _onlinePaymentMethodId = 0;
   // int _cashPaymentMethodId = 0;
@@ -113,18 +115,13 @@ class Calculator with ChangeNotifier {
   //----------------------------------------------------------------------------
   //** */
   void setPaymentMethodID(PaymentMethodModel getPaymentMethod) {
-    if (getPaymentMethod.id !=0) {
+    if (getPaymentMethod.id != 0) {
       _paymentMethodId = getPaymentMethod.id;
       _paymentMethodName = getPaymentMethod.name;
       icon = getPaymentMethod.iconUrl;
       notifyListeners();
     }
-    if (getPaymentMethod.id == 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showDigitalCurrencies(context);
-      });
     }
-  }
 
   void isRequestLoading(bool loading) {
     _isLoading = loading;
@@ -215,8 +212,8 @@ class Calculator with ChangeNotifier {
     notifyListeners();
   }
 
-  void getAgents(List<AgentModel> elements) {
-    _agents = elements;
+  void getAgents(List<AgentModel> providers) {
+    _agents = providers;
 
     notifyListeners();
   }
@@ -313,6 +310,7 @@ class Calculator with ChangeNotifier {
       bool isSender = value ==
           sender
               .text; // true: how nuch you will send , false :how much you will recieve
+
       calculate(value, isSender);
     } else {
       clearFields();
@@ -323,8 +321,16 @@ class Calculator with ChangeNotifier {
 
   void calculate(String controller, bool isSender) async {
     final double amount = double.tryParse(controller) ?? 0;
+    String sendCountryCode = "";
+    if (Global.appSettings.token.isEmpty) {
+      sendCountryCode = sendCountry.coCode;
+    } else {
+      sendCountryCode = Database().getUser.country.coCode;
+    }
+
     await CalculateTransferMoney(context,
             coCode: receiverCountry.coCode,
+            sendCountryCode: sendCountryCode,
             providerId: receiverAgent.id,
             isReceiveInUSD: receiverAgent.usdAvailability == 2,
             sendAmount: isSender ? amount : null,
@@ -335,19 +341,20 @@ class Calculator with ChangeNotifier {
       if (result) {
         if (isSender) {
           _receiver = TextEditingController(
-            text: calculateAmount.recipientAmount.toStringAsFixed(
+            text: _calculateAmount.recipientAmount.toStringAsFixed(
               _receiverCountry.currency.code == 'SYP' ? 0 : 2,
             ),
           );
         } else {
           _sender = TextEditingController(
-              text: calculateAmount.sendAmount.toStringAsFixed(2));
+              text: _calculateAmount.sendAmount.toStringAsFixed(2));
         }
       } else {
         _sender.text = "";
         _receiver.text = "";
       }
     });
+    recieverLoading = senderLoading = false;
     // });
 
     notifyListeners();

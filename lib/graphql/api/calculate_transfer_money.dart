@@ -1,4 +1,4 @@
-import 'package:amana_send/app/views/camera/camera.dart';
+
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/global/variables.dart';
@@ -17,6 +17,7 @@ import 'package:go_router/go_router.dart';
 class CalculateTransferMoney {
   final BuildContext context;
   final String coCode;
+  final String sendCountryCode;
   final int providerId;
   final bool isReceiveInUSD;
   final double? sendAmount;
@@ -25,6 +26,7 @@ class CalculateTransferMoney {
 
   CalculateTransferMoney(this.context,
       {required this.coCode,
+      required this.sendCountryCode,
       required this.providerId,
       required this.isReceiveInUSD,
       this.sendAmount,
@@ -36,6 +38,7 @@ class CalculateTransferMoney {
     _p = Provider.of<Calculator>(context, listen: false);
     Map<String, dynamic> variables = {
       "coCode": coCode,
+      "sendCountryCode": sendCountryCode,
       "providerId": providerId,
       "isReceiveInUSD": isReceiveInUSD,
       "sendAmount": sendAmount,
@@ -44,14 +47,14 @@ class CalculateTransferMoney {
     };
     Helper.debugger('calculateAmount');
     Helper.log('PARAMETERS: $variables', color: DebugColor.white);
-    LoadingDialog().show();
+    // LoadingDialog().show();
     bool result = false;
     await GraphQL.client().mutate(MutationOptions(
         variables: variables,
         document: gql(Mutations.calculateAmount),
         update: (GraphQLDataProxy cache, QueryResult<Object?>? result) => cache,
         onCompleted: (Map<String, dynamic>? data) {
-          LoadingDialog.dismiss();
+          // LoadingDialog.dismiss();
           if (data != null && data.isNotEmpty) result = _result(data);
         },
         onError: (OperationException? error) {
