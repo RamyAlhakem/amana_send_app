@@ -182,6 +182,8 @@ class CurrencyWidget extends StatelessWidget {
                           controller.payments[i].iconUrl,
                           height: 50,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox(),
                         ),
                         const SizedBox(
                           width: 20,

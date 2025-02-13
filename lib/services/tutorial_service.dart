@@ -14,8 +14,8 @@ class Tutorial {
 
   static late AppLocalizations arb;
   static GlobalKey key1 = GlobalKey(), key2 = GlobalKey(), key3 = GlobalKey();
-  static GlobalKey key4 = GlobalKey(),key5 = GlobalKey(), key6 = GlobalKey();
-  static GlobalKey key7 = GlobalKey(),key8 =GlobalKey();
+  static GlobalKey key4 = GlobalKey(), key5 = GlobalKey(), key6 = GlobalKey();
+  static GlobalKey key7 = GlobalKey();
   static const TextStyle _style = TextStyle(
     fontWeight: FontWeight.bold,
     color: Colors.white,
@@ -105,7 +105,7 @@ class Tutorial {
         ],
       ),
     );
-      targets.add(
+    targets.add(
       TargetFocus(
         identify: 'Target 5',
         keyTarget: key5,
@@ -118,7 +118,7 @@ class Tutorial {
         contents: [
           TargetContent(
             child: Text(
-              arb.chooseCurrency,
+              arb.theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate,
               style: _style,
             ),
           ),
@@ -138,7 +138,7 @@ class Tutorial {
         contents: [
           TargetContent(
             child: Text(
-              arb.theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate,
+              arb.theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent,
               style: _style,
             ),
           ),
@@ -149,25 +149,6 @@ class Tutorial {
       TargetFocus(
         identify: 'Target 7',
         keyTarget: key7,
-        shape: ShapeLightFocus.RRect,
-        radius: 4,
-        enableOverlayTab: true,
-        focusAnimationDuration: focusDuration,
-        unFocusAnimationDuration: focusDuration,
-        contents: [
-          TargetContent(
-            child: Text(
-              arb.theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent,
-              style: _style,
-            ),
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
-        identify: 'Target 8',
-        keyTarget: key8,
         shape: ShapeLightFocus.RRect,
         radius: 4,
         enableOverlayTab: true,

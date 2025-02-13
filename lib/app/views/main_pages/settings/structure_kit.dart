@@ -148,7 +148,7 @@ class StructureKit {
                         state.icon,
                         height: 23,
                         fit: BoxFit.cover,
-                      ))
+                        errorBuilder:(context, error, stackTrace) => const SizedBox()))
                   : const SizedBox(),
               IconButton(
                 onPressed: () => Tutorial(context, show: true).showTutorial(),
@@ -183,6 +183,7 @@ class StructureKit {
                           state.icon,
                           height: 23,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => const SizedBox(),
                         ))
                     : const SizedBox(),
                 IconButton(

@@ -41,6 +41,7 @@ class DigitalCurrencyRoller extends StatelessWidget {
                 state.icon,
                 height: 30,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const SizedBox(),
               )
             : null,
         color: Theme.of(context).cardColor,
@@ -91,6 +92,7 @@ Future<void> showDigitalCurrencies(BuildContext context) {
                       state.payments[i].iconUrl,
                       height: 50,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const SizedBox(),
                     ),
                     const SizedBox(
                       width: 20,

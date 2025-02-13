@@ -11,16 +11,23 @@ import '/helper/helper.dart';
 import '/models/agent.dart';
 
 class GetProviders {
+  GetProviders({required this.cityID, required this.paymentMethodID});
+  int cityID;
+  int paymentMethodID;
   static final BuildContext context = Global.key.currentContext!;
   static late Calculator _pr;
 
   Future<void> request() async {
     _pr = Provider.of<Calculator>(context, listen: false);
-
+    Map<String, dynamic> variables = {
+      'cityId': cityID,
+      'paymentMethodId': paymentMethodID,
+    };
     Helper.debugger('providers');
 
     GraphQL.client()
-        .query(QueryOptions(document: gql(Queries.providers)))
+        .query(QueryOptions(
+            document: gql(Queries.providers), variables: variables))
         .then((result) {
       if (result.data != null) {
         Helper.debug('providers', '${result.data}');
@@ -36,7 +43,7 @@ class GetProviders {
     });
   }
 
-  void _result(Map<String, dynamic> data) async {
+  static void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('providers')) {
       if (data['providers'] is List && data['providers'].isNotEmpty) {
         List<AgentModel> providers = List<AgentModel>.from(
@@ -47,7 +54,7 @@ class GetProviders {
     }
   }
 
-  void _error(List<GraphQLError> errors) async {
+  static void _error(List<GraphQLError> errors) async {
     if (errors.isNotEmpty) {
       switch (errors.first.extensions?['code']) {
         // case 422:

@@ -38,8 +38,8 @@ class CheckOutDetails extends StatefulWidget {
             context,
             page,
             recipientAmount: double.parse(calculator.receiver.text),
-            sendAmount:
-                double.parse(calculator.amountPlusFee.toStringAsFixed(2)),
+            sendAmount: calculator.calculateAmount.totalAmount +
+                calculator.calculateAmount.receiveFees,
             recipientId: calculator.selectedRecipient!.id,
             isReceiveInUSD: calculator.sendUSD,
             receivingCityId: calculator.receiverCity.id,
@@ -110,7 +110,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
-      final rate = state.dynamicAgentRate;
+      final rate = state.receiverAgent.tab;
       final bool usd = state.receiverAgent.usdAvailability == 2;
       child = Stack(
         clipBehavior: Clip.none,
@@ -197,11 +197,13 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${isAR ? '' : '1'} ${state.paymentMethodName} ${isAR ? '1 ' : ''}= ',
+                                      '${isAR ? ' ' : '1'} ${state.paymentMethodName} ${isAR ? '1 ' : ' '}= ',
                                 ),
                                 TextSpan(
                                   text:
-                                      '${usd ? 'USD' : state.receiverCountry.currency.code}${Tools.nicePrice(rate)}',
+                                      '${usd ? 'USD' : state.receiverCountry.currency.code}'
+                                      ' '
+                                      '$rate',
                                 ),
                               ],
                             ),
@@ -223,10 +225,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text:
-                                      '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
+                                  text: '${state.calculateAmount.totalAmount} ',
                                 ),
-                                 TextSpan(text: state.paymentMethodName),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -246,9 +247,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
+                                      '${Tools.nicePrice(state.calculateAmount.receiveFees)} ',
                                 ),
-                                 TextSpan(text: state.paymentMethodName),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                             ),
                           ),
@@ -262,9 +263,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${Tools.nicePrice(state.amountPlusFee)} ',
+                                      '${state.calculateAmount.totalAmount + state.calculateAmount.receiveFees} ',
                                 ),
-                                 TextSpan(text: state.paymentMethodName),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme

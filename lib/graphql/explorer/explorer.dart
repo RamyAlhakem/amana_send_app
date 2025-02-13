@@ -57,9 +57,7 @@ class Explorer {
       coCode
       name
       defaultMessage
-      providers {
-        $provider
-      }
+     
       ''';
 
   static const String country = '''

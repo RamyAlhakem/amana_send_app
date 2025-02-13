@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:amana_send/models/payment_method.dart';
@@ -154,7 +152,7 @@ class _HomeState extends State<Home> {
                 Padding(padding: padding, child: const SendFormFields()),
 
                 Padding(
-                  key: Tutorial.key8,
+                  key: Tutorial.key7,
                   padding: padding,
                   child: Button(
                     () {

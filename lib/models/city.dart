@@ -5,8 +5,7 @@ class CityModel extends SafetyModel {
   CityModel({
     this.id = 0,
     this.name = '',
-    this.defaultMessage = '',
-    this.agents = const <AgentModel>[],
+    this.defaultMessage = ''
   });
 
   int id = 0;
@@ -18,7 +17,6 @@ class CityModel extends SafetyModel {
     id = intFromJson(json, 'id');
     name = stringFromJson(json, 'name');
     defaultMessage = stringFromJson(json, 'defaultMessage');
-    agents = listFromJson(json, 'providers', (v) => AgentModel.fromJson(v));
     super.fromJson(json);
   }
 
@@ -27,6 +25,5 @@ class CityModel extends SafetyModel {
         'id': id,
         'name': name,
         'defaultMessage': defaultMessage,
-        'providers': agents,
       };
 }

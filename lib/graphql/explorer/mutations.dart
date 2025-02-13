@@ -56,6 +56,7 @@ mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isRecei
     sendAmount
     sendFees
     totalAmount
+    receiveFees
   }
 }
 ''';

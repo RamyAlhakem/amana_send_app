@@ -58,7 +58,6 @@ class CountryRoller extends StatelessWidget {
                   children: [
                     for (int i = 0; i < countries.length; i++)
                       if (send || countries[i].cities.isNotEmpty)
-                        if (send || countries[i].cities.first.agents.isNotEmpty)
                           InkWell(
                             borderRadius: BorderRadius.circular(100),
                             onTap: () => setState(() {

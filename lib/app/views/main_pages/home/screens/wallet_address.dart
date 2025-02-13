@@ -127,6 +127,7 @@ class _WalletAddressState extends State<WalletAddress>
                         calController.icon,
                         height: 60,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => const SizedBox(),
                       ),
                       const SizedBox(width: 10),
                       TextX(

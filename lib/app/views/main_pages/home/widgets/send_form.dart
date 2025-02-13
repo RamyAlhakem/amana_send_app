@@ -129,7 +129,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 ),
               ),
           if (state.showAgents)
-            if (state.receiverCity.agents.isNotEmpty)
+            if (state.agents.isNotEmpty)
               MasonryGridView.count(
                 key: isHome ? Tutorial.key3 : null,
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
@@ -138,16 +138,16 @@ class _SendFormFieldsState extends State<SendFormFields>
                 crossAxisCount: ScreenSize.isTablet ? 4 : 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
-                itemCount: state.receiverCity.agents.length,
+                itemCount: state.agents.length,
                 itemBuilder: (_, i) {
                   selection = '${state.receiverAgent.id}';
                   return AgentButton(
                     () {
-                      selection = '${state.receiverCity.agents[i].id}';
-                      state.setAgent(state.receiverCity.agents[i]);
+                      selection = '${state.agents[i].id}';
+                      state.setAgent(state.agents[i]);
                     },
-                    selected: selection == '${state.receiverCity.agents[i].id}',
-                    agent: state.receiverCity.agents[i],
+                    selected: selection == '${state.agents[i].id}',
+                    agent: state.agents[i],
                   );
                 },
               ),
@@ -189,7 +189,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                       debounceTimer?.cancel();
                     }
                     debounceTimer =
-                        Timer(const Duration(milliseconds: 1500), () async {
+                        Timer(const Duration(milliseconds: 1000), () async {
                       state.setPrice(value);
                     });
                   },
@@ -200,7 +200,7 @@ class _SendFormFieldsState extends State<SendFormFields>
 
           // Today exchange rate
           Padding(
-            key: isHome ? Tutorial.key6 : null,
+            key: isHome ? Tutorial.key5 : null,
             padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
             child: RowSpaceBetween([
               TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
@@ -217,7 +217,7 @@ class _SendFormFieldsState extends State<SendFormFields>
           ),
 
           TextFieldX(
-            key: isHome ? Tutorial.key7 : null,
+            key: isHome ? Tutorial.key6 : null,
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,
@@ -244,7 +244,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 debounceTimer?.cancel();
               }
               debounceTimer =
-                  Timer(const Duration(milliseconds: 1500), () async {
+                  Timer(const Duration(milliseconds: 1000), () async {
                 state.setPrice(value);
               });
             },
