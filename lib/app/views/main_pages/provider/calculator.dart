@@ -168,6 +168,7 @@ class Calculator with ChangeNotifier {
   //**Get receiver city.
   void setReceiveCity(CityModel city) {
     _receiverCity = city;
+    Helper.log("agent>>>> ${_receiverCity.agents.first}");
     if (city.agents.isNotEmpty) setAgent(city.agents.first);
 
     notifyListeners();
@@ -320,7 +321,7 @@ class Calculator with ChangeNotifier {
     final double receiverRatio = receiverAgent.receiveFees;
 
     // Set receiverRate (recipient)
-    // sendUSD ? receiverRate = usdRate : 
+    // sendUSD ? receiverRate = usdRate :
     receiverRate = receiverAgent.rate;
 
     final double amount = double.tryParse(controller) ?? 0;
@@ -345,7 +346,7 @@ class Calculator with ChangeNotifier {
       // converted = sendUSD
       //     ? amountWithoutUserFees
       //     : amountWithoutUserFees * receiverRate;
-      converted =  amountWithoutUserFees * receiverRate;
+      converted = amountWithoutUserFees * receiverRate;
 
       if (!sendUSD) {
         converted =
