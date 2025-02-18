@@ -1,3 +1,5 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -151,6 +153,32 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
+                        ]),
+                         const SizedBox(height: 8),
+                            RowSpaceBetween([
+                          TextX(arb.mobileNumber),
+                          const SizedBox(width: 15),
+                          Flexible(
+                            child: TextX(
+                              isAR
+
+                              ?' ${state.selectedRecipient?.mobile} ${state.selectedRecipient!.country.phoneCode}+ '
+                                  .toUpperCase()
+                                  :"+${state.selectedRecipient!.country.phoneCode} ${state.selectedRecipient?.mobile} "
+                                  ,
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: MainColors.color3),
+                            ),
+                          ),
+                        //   state.selectedRecipient!.country.coCode=="sy"
+                              
+                        // ? const SyrFlag()
+                        // : Flag.fromString(
+                        //     state.selectedRecipient!.country.coCode,
+                        //     height: 30,
+                        //     width: 30,
+                        //     fit: BoxFit.fill,
+                        //     borderRadius: 100,
+                        //   ),
                         ]),
                         const SizedBox(height: 8),
                         RowSpaceBetween([
