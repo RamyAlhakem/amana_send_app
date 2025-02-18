@@ -30,7 +30,7 @@ class TotalFees extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${state.calculateAmount.receiveFees} ',
+                              '${(state.calculateAmount.receiveFees).toStringAsFixed(0)} ',
                         ),
                         TextSpan(text: state.paymentMethodName),
                       ],
@@ -46,7 +46,7 @@ class TotalFees extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${double.tryParse(state.calculateAmount.totalAmount.toString()) ?? 0} ',
+                              '${(double.tryParse(state.calculateAmount.totalAmount.toString()) ?? 0).toStringAsFixed(0)} ',
                         ),
                         TextSpan(text: state.paymentMethodName),
                       ],
@@ -71,7 +71,7 @@ class TotalFees extends StatelessWidget {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${state.calculateAmount.totalAmount+state.calculateAmount.receiveFees} ',
+                          text: '${(state.calculateAmount.totalAmount+state.calculateAmount.receiveFees).toStringAsFixed(0)} ',
                         ),
                          TextSpan(text: state.paymentMethodName),
                       ],
