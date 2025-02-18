@@ -73,16 +73,16 @@ class _TransferMainState extends State<TransferMain>
         Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
 
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
-    if (transfer.isEmpty()) {
+    // if (transfer.paymentMethod == null) {
       GetTransfer(
         context,
-        transfer.id,
+      transfer.id,
       ).request().then((value) => transfer = value).whenComplete(() {
         setState(() => isLoading = false);
       });
-    } else {
-      isLoading = false;
-    }
+    // } else {
+    //   isLoading = false;
+    // }
 
     GetRecipients.request();
   }
@@ -256,6 +256,8 @@ class _TransferMainState extends State<TransferMain>
                 ),
               ),
             ],
+          
+          
           ),
         ),
       ),

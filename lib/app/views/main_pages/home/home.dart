@@ -1,5 +1,7 @@
 import 'dart:async';
-
+import 'package:amana_send/app/widgets/dialogs/settings.dart';
+import 'package:amana_send/graphql/api/get_payments.dart';
+import 'package:amana_send/models/payment_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -40,6 +42,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late AppLocalizations arb;
   late UserModel user;
+  PaymentMethodModel getPaymentMethod = PaymentMethodModel();
   String selection = '';
   late bool isAr;
 
@@ -49,6 +52,7 @@ class _HomeState extends State<Home> {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
 
     // call data:---------------------------------------------------------------
+    GetPaymentMethods.request();
     GetMetadata.request();
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
@@ -76,7 +80,15 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
-    getResources().whenComplete(() => user = Database().getUser);
+    getResources().whenComplete(() {
+      user = Database().getUser;
+
+      if (mounted) {
+        getPaymentMethod = Database().getPaymentMethod;
+        Provider.of<Calculator>(context, listen: false)
+            .setPaymentMethodID(getPaymentMethod);
+      }
+    });
   }
 
   @override
@@ -89,7 +101,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Calculator>(builder: (_, state, child) {
+    return Consumer<Calculator>(builder: (context, state, child) {
+       if (state.paymentMethodName=="") {
+      return CurrencyWidget(arb:arb,controller:state);
+    }
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
@@ -149,11 +164,14 @@ class _HomeState extends State<Home> {
                       if (state.sender.text.isEmpty) {
                         return Helper.snack(arb.pleaseEnterSendingAmount);
                       }
+                      if (state.paymentMethodName == "") {
+                        return Helper.snack(arb.pleaseChooseCurrency);
+                      }
 
                       if (user.level.maxAmount <
                           double.parse(state.sender.text)) {
                         return Helper.snack(
-                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
+                          '${arb.yourMaxLevelSendingAmountIs} ${Tools.nicePrice(user.level.maxAmount)} ${state.paymentMethodName}.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
                           action: Button(
                             () => Helper.launchURL('https://t.me/AMANA_SEND'),
                             width: MediaQuery.of(context).size.width,
@@ -180,7 +198,7 @@ class _HomeState extends State<Home> {
                       }
 
                       Global.snackKey.currentState?.hideCurrentSnackBar();
-                      state.roundReceiverAmount();
+                      // state.roundReceiverAmount();
                       Helper.unFocusCursor(context);
                       context.pushNamed(
                         AppRoute.sendHub,

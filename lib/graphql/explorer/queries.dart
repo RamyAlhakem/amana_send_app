@@ -93,12 +93,12 @@ class Queries {
       ''';
 
   static const String providers = '''
-    query providers {
-      providers {
-        ${Explorer.provider}
-      }
+  query providers(\$cityId: Int, \$paymentMethodId: Int) {
+    providers(cityId: \$cityId, paymentMethodId: \$paymentMethodId) {
+      ${Explorer.provider}
     }
-      ''';
+  }
+''';
 
   static const String transaction = '''
     query MyQuery(\$id: ID!) {

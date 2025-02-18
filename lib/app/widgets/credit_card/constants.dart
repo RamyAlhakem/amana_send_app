@@ -3,3 +3,4 @@ class CreditCardConstants {
   static const double aspectRatio = 0.5714;
   static const double padding = 16;
 }
+

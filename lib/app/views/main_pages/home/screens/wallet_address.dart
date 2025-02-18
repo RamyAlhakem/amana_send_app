@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -85,6 +86,7 @@ class _WalletAddressState extends State<WalletAddress>
 
   @override
   Widget build(BuildContext context) {
+    final Calculator calController = Provider.of<Calculator>(context);
     return Stack(
       children: [
         ListView(
@@ -121,14 +123,15 @@ class _WalletAddressState extends State<WalletAddress>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/logo_coin.png',
-                        height: 30,
+                      Image.network(
+                        calController.icon,
+                        height: 60,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => const SizedBox(),
                       ),
                       const SizedBox(width: 10),
                       TextX(
-                        Helper.priced(transfer.totalAmount),
+                        Helper.priced(transfer.totalAmount,context),
                         style: const TextStyle(
                           fontSize: 26,
                           color: Colors.green,

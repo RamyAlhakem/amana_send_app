@@ -32,3 +32,35 @@ class CurrencyModel extends SafetyModel {
         'symbol': symbol,
       };
 }
+
+class CalculateAmountModel extends SafetyModel {
+  CalculateAmountModel({
+    this.receiveFees = 0,
+    this.recipientAmount = 0,
+    this.sendAmount = 0,
+    this.sendFees = 0,
+    this.totalAmount = 0,
+  });
+
+  double receiveFees = 0;
+  double recipientAmount = 0;
+  double sendAmount = 0;
+  double sendFees = 0;
+  double  totalAmount =0;
+  CalculateAmountModel.fromJson(Map<String, dynamic> json) {
+    receiveFees = doubleFromJson(json, 'receiveFees');
+    recipientAmount = doubleFromJson(json, 'recipientAmount');
+    sendAmount = doubleFromJson(json, 'sendAmount');
+    sendFees = doubleFromJson(json, 'sendFees');
+    totalAmount = doubleFromJson(json, 'totalAmount');
+    super.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'receiveFees': receiveFees,
+        'recipientAmount': recipientAmount,
+        'sendAmount': sendAmount,
+        'sendFees': sendFees,
+      };
+}

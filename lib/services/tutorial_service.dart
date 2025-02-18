@@ -134,6 +134,7 @@ class Tutorial {
         enableOverlayTab: true,
         focusAnimationDuration: focusDuration,
         unFocusAnimationDuration: focusDuration,
+        paddingFocus: 0,
         contents: [
           TargetContent(
             child: Text(

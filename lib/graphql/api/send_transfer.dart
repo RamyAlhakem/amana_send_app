@@ -5,10 +5,8 @@ import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/provider/calculator.dart';
-import '/app/views/main_pages/structure.dart';
 import '/app/views/main_pages/transfers/provider/transfers_state.dart';
 import '/app/widgets/dialogs/loading.dart';
-import '/global/variables.dart';
 import '/graphql/explorer/mutations.dart';
 import '/graphql/graphql.dart';
 import '/helper/debug_colors.dart';

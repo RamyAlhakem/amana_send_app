@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '/app/theme/colors/main_colors.dart';
@@ -21,6 +23,7 @@ import 'debug_colors.dart';
 
 class Helper {
   static AppLocalizations? _arb;
+  static String? paymentMethodName;
 
   static void log(dynamic text, {DebugColor color = DebugColor.white}) {
     if (kDebugMode) {
@@ -92,14 +95,17 @@ class Helper {
   }
 
   static String priced(
-    double amount, {
+    double amount,
+    BuildContext context, {
     bool currency = true,
-    String currencyCode = 'USDT',
+    String? currencyCode,
   }) {
-    final double fraction = (amount % 1);
-    final int fixed = fraction != 0 ? 2 : 0;
+    final String currencyCodeProvider = currencyCode ??
+        Provider.of<Calculator>(context, listen: false).paymentMethodName;
+
+     final int fixed = (amount % 1 != 0) ? 2 : 0;
     final String price = currency
-        ? '$currencyCode ${amount.toStringAsFixed(fixed)}'
+        ? '$currencyCodeProvider ${amount.toStringAsFixed(fixed)}'
         : amount.toStringAsFixed(fixed);
     return price;
   }

@@ -90,7 +90,7 @@ class _CurrenciesNewsState extends State<CurrenciesNews> {
                         const TextSpan(text: '1 USDT = '),
                         TextSpan(
                           text: Helper.priced(
-                            widget.currencies[x].rate,
+                            widget.currencies[x].rate,context,
                             currencyCode: widget.currencies[x].code,
                           ),
                         ),

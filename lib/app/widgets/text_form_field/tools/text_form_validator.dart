@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '/global/variables.dart';
 import '/helper/helper.dart';
-import '/tools/tools.dart';
+
 
 class TextFieldValidator {
   static void validateMobile(TextEditingController num) {

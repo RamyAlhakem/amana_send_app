@@ -37,6 +37,30 @@ class Mutations {
     }
       ''';
 
+
+
+
+static const String calculateAmount = '''
+mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$sendAmount: Float ,\$recipientAmount: Float) {
+  calculateAmount(
+    coCode: \$coCode
+    sendCountryCode: \$sendCountryCode
+    isReceiveInUSD: \$isReceiveInUSD
+    paymentMethodId: \$paymentMethodId
+    providerId: \$providerId
+    sendAmount: \$sendAmount
+    recipientAmount: \$recipientAmount
+  ) {
+    
+    recipientAmount
+    sendAmount
+    sendFees
+    totalAmount
+    receiveFees
+  }
+}
+''';
+
   static const String userChangePassword = '''
     mutation userChangePassword(\$currentPassword: NonEmptyString!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
       userChangePassword(

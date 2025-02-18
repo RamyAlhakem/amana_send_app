@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:amana_send/app/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,7 +37,7 @@ class _SendFormFieldsState extends State<SendFormFields>
     with AutomaticKeepAliveClientMixin {
   late AppLocalizations arb;
   late Calculator _calculator;
-
+  Timer? debounceTimer;
   String selection = '';
 
   bool isHome = true;
@@ -126,7 +129,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 ),
               ),
           if (state.showAgents)
-            if (state.receiverCity.agents.isNotEmpty)
+            if (state.agents.isNotEmpty)
               MasonryGridView.count(
                 key: isHome ? Tutorial.key3 : null,
                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
@@ -135,41 +138,64 @@ class _SendFormFieldsState extends State<SendFormFields>
                 crossAxisCount: ScreenSize.isTablet ? 4 : 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
-                itemCount: state.receiverCity.agents.length,
+                itemCount: state.agents.length,
                 itemBuilder: (_, i) {
                   selection = '${state.receiverAgent.id}';
                   return AgentButton(
                     () {
-                      selection = '${state.receiverCity.agents[i].id}';
-                      state.setAgent(state.receiverCity.agents[i]);
+                      selection = '${state.agents[i].id}';
+                      state.setAgent(state.agents[i]);
                     },
-                    selected: selection == '${state.receiverCity.agents[i].id}',
-                    agent: state.receiverCity.agents[i],
+                    selected: selection == '${state.agents[i].id}',
+                    agent: state.agents[i],
                   );
                 },
               ),
-          TextFieldX(
-            key: isHome ? Tutorial.key4 : null,
-            hint: arb.youSend,
-            controller: state.sender,
-            type: TextInputType.phone,
-            input: _input,
-            suffixIcon: Container(
-              width: 60,
-              alignment: Alignment.center,
-              child: TextX(
-                'USDT',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+          // you send
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: TextFieldX(
+                  key: isHome ? Tutorial.key4 : null,
+                  hint: arb.youSend,
+                  controller: state.sender,
+                  enabled: state.senderLoading ? false : true,
+                  type: TextInputType.phone,
+                  input: _input,
+                  borderRadius: borderRadius,
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                  suffixIcon: Container(
+                    width: 60,
+                    alignment: Alignment.center,
+                    child: state.senderLoading
+                        ? const LoadingWidget(
+                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          )
+                        : TextX(
+                            state.paymentMethodName,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+                  onChanged: (String value) {
+                    state.receiver.clear();
+                    state.recieverLoading = true;
+                    if (debounceTimer?.isActive ?? false) {
+                      debounceTimer?.cancel();
+                    }
+                    debounceTimer =
+                        Timer(const Duration(milliseconds: 1000), () async {
+                      state.setPrice(value);
+                    });
+                  },
                 ),
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
-            onChanged: (String value) => state.setPrice(value),
+              ),
+            ],
           ),
 
           // Today exchange rate
@@ -195,8 +221,15 @@ class _SendFormFieldsState extends State<SendFormFields>
             hint: arb.receiverGets,
             controller: state.receiver,
             type: TextInputType.phone,
+            enabled: state.recieverLoading ? false : true,
             input: _input,
-            suffixIcon: const CurrencyRoller(),
+            suffixIcon: Container(
+              child: state.recieverLoading
+                  ? const LoadingWidget(
+                      padding: EdgeInsets.fromLTRB(15, 10, 15, 10))
+                  : const CurrencyRoller(),
+            ),
+
             borderRadius: borderRadius,
             filled: true,
             fillColor: Theme.of(context).cardColor,
@@ -204,9 +237,19 @@ class _SendFormFieldsState extends State<SendFormFields>
                 .textTheme
                 .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) => state.setPrice(value),
+            onChanged: (String value) {
+              state.senderLoading = true;
+              state.sender.clear();
+              if (debounceTimer?.isActive ?? false) {
+                debounceTimer?.cancel();
+              }
+              debounceTimer =
+                  Timer(const Duration(milliseconds: 1000), () async {
+                state.setPrice(value);
+              });
+            },
             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-            onSubmitted: (_) => state.roundReceiverAmount(),
+            // onSubmitted: (_) => state.roundReceiverAmount(),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
