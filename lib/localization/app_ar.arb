@@ -36,7 +36,7 @@
   "processing": "جاري المعالجة",
   "processed": "تم المعالجة",
   "completed": "تم التنفيذ",
-  "typeOfCurrency":"نوع العمله",
+  "typeOfCurrency":"نوع العملة",
   "chooseCurrency": "اختر العملة الرقمية",
   "canceled": "ملغى",
   "providerFees": "رسوم المزود",
