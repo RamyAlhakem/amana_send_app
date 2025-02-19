@@ -207,7 +207,7 @@ class Calculator with ChangeNotifier {
 
     GetProviders(
       cityID: _receiverCity.id,
-      paymentMethodID: 0,
+      paymentMethodID: paymentMethodID,
     ).request();
     setExchangeRate();
     return country;
