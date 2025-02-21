@@ -78,7 +78,13 @@ class AgentButton extends StatelessWidget {
                                       ?.copyWith(fontSize: 11),
                                 ),
                                 TextSpan(
-                                  text: '${agent.tab}',
+                                  text:state.receiver.text.isEmpty
+                                   ?'${agent.tab}'
+                                   :agent==state.receiverAgent
+
+                                  ? "${((num.parse(state.receiver.text))/(num.parse(state.sender.text))).toStringAsFixed(0)}"
+                                  :'${agent.tab}'
+                                   ,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
