@@ -1,3 +1,4 @@
+import 'package:amana_send/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class AgentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Calculator state = Provider.of<Calculator>(context,listen: false);
     final bool isAR = LangService.isAR();
+    Helper.log;("agent>>>>>>>>>>>> ${agent.tab}");
     return Stack(
       clipBehavior: Clip.none,
       children: [

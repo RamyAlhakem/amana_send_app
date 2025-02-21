@@ -182,6 +182,7 @@ class Calculator with ChangeNotifier {
   }
 
   void getAgents(List<AgentModel> providers) {
+    Helper.log("providers ===> $providers");
     _agents = providers;
     setAgent(providers.first);
     notifyListeners();

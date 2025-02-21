@@ -16,15 +16,16 @@ class AgentModel extends SafetyModel {
     this.description = '',
     this.selected = false,
   });
-
-  int id = 0, status = 0,tab=0, usdAvailability = 0;
+num tab=0;
+  int id = 0, status = 0, usdAvailability = 0;
   String name = '', iconUrl = '', defaultMessage = '', description = '';
   double receiveFees = 0, rate = 0, minAmount = 0, maxAmount = 0;
   bool selected = false;
 
   AgentModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
-    tab = intFromJson(json, 'tab');
+    tab = json['tab'] ;
+    // intFromJson(json, 'tab');
     name = stringFromJson(json, 'displayName');
     iconUrl = stringFromJson(json, 'iconUrl');
     status = intFromJson(json, 'status');

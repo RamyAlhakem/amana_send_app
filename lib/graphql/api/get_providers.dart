@@ -48,6 +48,7 @@ class GetProviders {
   static void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('providers')) {
       if (data['providers'] is List && data['providers'].isNotEmpty) {
+        Helper.log("providers data ====> ${ data['providers']}");
         List<AgentModel> providers = List<AgentModel>.from(
           data['providers'].map((x) => AgentModel.fromJson(x)),
         );
