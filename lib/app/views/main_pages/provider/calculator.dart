@@ -163,6 +163,7 @@ class Calculator with ChangeNotifier {
     GetProviders(
       cityID: _receiverCity.id,
       paymentMethodID: paymentMethodID,
+      sendCountryCode: sendCountry.coCode
     ).request();
     notifyListeners();
   }
@@ -198,6 +199,8 @@ class Calculator with ChangeNotifier {
   CountryModel setReceiverCountry(CountryModel country) {
     Helper.log("city id ========>>>>>>>${_receiverCity.id}");
     Helper.log("paymentMethodID ========>>>>>>>$paymentMethodID");
+    Helper.log("sendCountryCode: ========>>>>>>>${sendCountry.coCode }");
+
     _receiverCountry = country;
     _receiverCity = CityModel();
     _receiverAgent = AgentModel();
@@ -208,6 +211,7 @@ class Calculator with ChangeNotifier {
     GetProviders(
       cityID: _receiverCity.id,
       paymentMethodID: paymentMethodID,
+      sendCountryCode: sendCountry.coCode
     ).request();
     setExchangeRate();
     return country;

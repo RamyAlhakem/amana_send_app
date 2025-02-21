@@ -93,8 +93,8 @@ class Queries {
       ''';
 
   static const String providers = '''
-  query providers(\$cityId: Int, \$paymentMethodId: Int) {
-    providers(cityId: \$cityId, paymentMethodId: \$paymentMethodId) {
+  query providers(\$cityId: Int, \$paymentMethodId: Int, \$sendCountryCode: String) {
+    providers(cityId: \$cityId, paymentMethodId: \$paymentMethodId, sendCountryCode: \$sendCountryCode) {
       ${Explorer.provider}
     }
   }

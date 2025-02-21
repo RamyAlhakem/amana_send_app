@@ -82,7 +82,7 @@ class AgentButton extends StatelessWidget {
                                    ?'${agent.tab}'
                                    :agent==state.receiverAgent
 
-                                  ? "${((num.parse(state.receiver.text))/(num.parse(state.sender.text))).toStringAsFixed(0)}"
+                                  ? ((num.parse(state.receiver.text))/(num.parse(state.sender.text))).toStringAsFixed(0)
                                   :'${agent.tab}'
                                    ,
                                   style: Theme.of(context)

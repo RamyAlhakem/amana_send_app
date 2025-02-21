@@ -11,9 +11,10 @@ import '/helper/helper.dart';
 import '/models/agent.dart';
 
 class GetProviders {
-  GetProviders({required this.cityID, required this.paymentMethodID});
+  GetProviders({required this.cityID, required this.paymentMethodID,required this.sendCountryCode});
   int cityID;
   int paymentMethodID;
+  String sendCountryCode;
   static final BuildContext context = Global.key.currentContext!;
   static late Calculator _pr;
 
@@ -22,6 +23,7 @@ class GetProviders {
     Map<String, dynamic> variables = {
       'cityId': cityID,
       'paymentMethodId': paymentMethodID,
+      'sendCountryCode':sendCountryCode
     };
     Helper.debugger('providers');
 
