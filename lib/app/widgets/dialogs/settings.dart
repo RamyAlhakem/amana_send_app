@@ -142,7 +142,10 @@ class CurrencyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlurryContainer(
-      child: Column(
+      child:Global.appSettings.token.isNotEmpty
+      ? Container()
+      :
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextX(
@@ -206,6 +209,70 @@ class CurrencyWidget extends StatelessWidget {
           ),
         ],
       ),
+      // child: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     TextX(
+      //       arb?.typeOfCurrency ?? "",
+      //       style: Theme.of(context).textTheme.titleLarge!.copyWith(
+      //             color: Colors.white,
+      //             fontWeight: FontWeight.w600,
+      //           ),
+      //     ),
+      //     Padding(
+      //       padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
+      //       child: TextX(
+      //         arb?.pleaseChooseCurrency ?? "",
+      //         style: const TextStyle(color: Colors.white, fontSize: 14),
+      //       ),
+      //     ),
+      //     ListView(
+      //       shrinkWrap: true,
+      //       padding: EdgeInsets.zero,
+      //       children: [
+      //         ListView(
+      //           shrinkWrap: true,
+      //           padding: const EdgeInsets.all(10),
+      //           physics: const NeverScrollableScrollPhysics(),
+      //           children: [
+      //             for (int i = 0; i < controller.payments.length; i++)
+      //               InkWell(
+      //                 borderRadius: BorderRadius.circular(100),
+      //                 onTap: () {
+      //                   PaymentMethodModel payment = controller.payments[i];
+      //                   Database().setCurrency = payment;
+      //                   controller.setPaymentMethodID(payment);
+      //                   controller.setPrice(controller.sender.text);
+      //                 },
+      //                 child: Row(children: [
+      //                   Image.network(
+      //                     controller.payments[i].iconUrl,
+      //                     height: 50,
+      //                     fit: BoxFit.cover,
+      //                     errorBuilder: (context, error, stackTrace) =>
+      //                         const SizedBox(),
+      //                   ),
+      //                   const SizedBox(
+      //                     width: 20,
+      //                   ),
+      //                   Text(
+      //                     controller.payments[i].name,
+      //                     style: const TextStyle(
+      //                         color: Colors.white,
+      //                         fontSize: 14,
+      //                         fontWeight: FontWeight.w700),
+      //                   ),
+      //                   const SizedBox(
+      //                     height: 60,
+      //                   )
+      //                 ]),
+      //               ),
+      //           ],
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

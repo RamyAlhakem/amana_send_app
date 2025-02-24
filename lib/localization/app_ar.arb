@@ -55,7 +55,7 @@
   "success": "نجاح",
   "confirmSendingOrder": "تأكيد طلب الحوالة",
   "weOnlyAcceptInUSDT": "يتم تسديد الحوالة بواسطة العملة الرقمية المختارة",
-  "pleaseChooseCurrency": "الرجاء اختيار العملة الرقمية",
+  "pleaseChooseCurrency": "اختر العملة الرقمية للدفع",
   "transferId": "رقم الحوالة",
   "transactionNo": "رقم الحوالة",
   "transactionDate": "تاريخ العملية",

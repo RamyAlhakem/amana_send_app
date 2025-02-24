@@ -105,6 +105,9 @@ class _HomeState extends State<Home> {
        if (state.paymentMethodName=="") {
       return CurrencyWidget(arb:arb,controller:state);
     }
+    // else if(Global.appSettings.token.isNotEmpty){
+    //   return Container();
+    // }
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
