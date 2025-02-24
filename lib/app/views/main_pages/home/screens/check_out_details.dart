@@ -253,7 +253,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${state.calculateAmount.totalAmount.toStringAsFixed(0)} ',
+                                  text: '${state.calculateAmount.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                                 ),
                                 TextSpan(text: state.paymentMethodName),
                               ],
@@ -291,7 +291,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${(state.calculateAmount.totalAmount + state.calculateAmount.receiveFees).toStringAsFixed(0)} ',
+                                      '${(state.calculateAmount.totalAmount + state.calculateAmount.receiveFees).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                                 ),
                                 TextSpan(text: state.paymentMethodName),
                               ],
