@@ -85,7 +85,7 @@ class AgentButton extends StatelessWidget {
                                    :agent==state.receiverAgent
 
                                   ? ((num.parse(state.receiver.text))/(num.parse(state.sender.text))).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
-                                  :'${agent.tab}'
+                                  :(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
                                    ,
                                   style: Theme.of(context)
                                       .textTheme
