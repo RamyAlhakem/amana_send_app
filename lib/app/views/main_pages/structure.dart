@@ -1,3 +1,12 @@
+import 'package:amana_send/app/widgets/dialogs/loading.dart';
+import 'package:amana_send/graphql/api/get_countries.dart';
+import 'package:amana_send/graphql/api/get_metadata.dart';
+import 'package:amana_send/graphql/api/get_notifications.dart';
+import 'package:amana_send/graphql/api/get_payments.dart';
+import 'package:amana_send/graphql/api/get_recipients.dart';
+import 'package:amana_send/graphql/api/get_user.dart';
+import 'package:amana_send/models/user.dart';
+import 'package:amana_send/services/popup_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +40,33 @@ class Structure extends StatefulWidget {
 class _StructureState extends State<Structure> {
   late AppLocalizations arb;
   late int _index;
+  //    Future<void> getResources() async {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
+
+  //   // call data:---------------------------------------------------------------
+  //   GetPaymentMethods.request();
+  //   GetMetadata.request();
+  //   if (Global.appSettings.token.isNotEmpty) {
+  //     GetNotifications.request();
+  //     GetRecipients.request();
+  //     await GetUserMeta.request();
+  //   }
+  //   await GetCountriesAPI.request();
+  //   // -------------------------------------------------------------------------
+
+  //   if (context.mounted && Global.isAnyDialogOpen(context)) {
+  //     LoadingDialog.dismiss();
+  //   }
+
+  //   // Check user verification status
+  //   Helper.userVerify(
+  //     UserModel.get.verified,
+  //     showDialog: true,
+  //     returnSnack: UserModel.get.verified == 0,
+  //   );
+
+  //   PopupService.show();
+  // }
 
   @override
   void initState() {
@@ -38,6 +74,7 @@ class _StructureState extends State<Structure> {
 
     _index = Pages.home.index;
     Global.pageCtrl = PageController(initialPage: _index);
+  // getResources();
   }
 
   @override

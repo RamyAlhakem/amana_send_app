@@ -89,6 +89,9 @@ class _HomeState extends State<Home> {
             .setPaymentMethodID(getPaymentMethod);
       }
     });
+    Future.delayed( const Duration(seconds: 1),(){
+      getResources();
+    });
   }
 
   @override
