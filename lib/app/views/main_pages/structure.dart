@@ -1,10 +1,12 @@
 import 'package:amana_send/app/widgets/dialogs/loading.dart';
+import 'package:amana_send/database/injector.dart';
 import 'package:amana_send/graphql/api/get_countries.dart';
 import 'package:amana_send/graphql/api/get_metadata.dart';
 import 'package:amana_send/graphql/api/get_notifications.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:amana_send/graphql/api/get_recipients.dart';
 import 'package:amana_send/graphql/api/get_user.dart';
+import 'package:amana_send/models/payment_method.dart';
 import 'package:amana_send/models/user.dart';
 import 'package:amana_send/services/popup_services.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +69,7 @@ class _StructureState extends State<Structure> {
 
   //   PopupService.show();
   // }
+   PaymentMethodModel getPaymentMethod = PaymentMethodModel();
 
   @override
   void initState() {
@@ -75,6 +78,11 @@ class _StructureState extends State<Structure> {
     _index = Pages.home.index;
     Global.pageCtrl = PageController(initialPage: _index);
   // getResources();
+    if (mounted) {
+        getPaymentMethod = Database().getPaymentMethod;
+        Provider.of<Calculator>(context, listen: false)
+            .setPaymentMethodID(getPaymentMethod);
+      }
   }
 
   @override

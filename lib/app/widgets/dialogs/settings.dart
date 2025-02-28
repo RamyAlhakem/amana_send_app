@@ -4,6 +4,7 @@ import 'package:amana_send/models/payment_method.dart';
 import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/blurry_container.dart';
@@ -141,8 +142,9 @@ class CurrencyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state=Provider.of<Calculator>(context);
     return BlurryContainer(
-      child:Global.appSettings.token.isNotEmpty
+      child:state.paymentMethodName.isNotEmpty
       ? Container()
       :
       Column(
