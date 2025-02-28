@@ -173,6 +173,7 @@ class Calculator with ChangeNotifier {
       _sender.clear();
       _receiver.clear();
       senderLoading=false;
+      recieverLoading=false;
       notifyListeners();
     });
   }
