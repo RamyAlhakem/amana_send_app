@@ -1,5 +1,16 @@
+import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/database/injector.dart';
+import 'package:amana_send/global/variables.dart';
+import 'package:amana_send/graphql/api/get_countries.dart';
+import 'package:amana_send/graphql/api/get_metadata.dart';
+import 'package:amana_send/graphql/api/get_notifications.dart';
+import 'package:amana_send/graphql/api/get_payments.dart';
+import 'package:amana_send/graphql/api/get_recipients.dart';
+import 'package:amana_send/graphql/api/get_user.dart';
+import 'package:amana_send/helper/helper.dart';
 import 'package:amana_send/models/payment_method.dart';
+import 'package:amana_send/models/user.dart';
+import 'package:amana_send/services/popup_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
@@ -20,6 +31,7 @@ class DigitalCurrencyRoller extends StatelessWidget {
   final bool send;
   final double? width;
   final double borderRadius;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +98,7 @@ Future<void> showDigitalCurrencies(BuildContext context) {
                     state.setPaymentMethodID(payment);
                     state.setPrice(state.sender.text);
                     SettingsDialog.dismiss();
+  getResources(context);
                   },
                   child: Row(children: [
                     Image.network(
@@ -113,3 +126,32 @@ Future<void> showDigitalCurrencies(BuildContext context) {
     ),
   ).show();
 }
+
+
+   Future<void> getResources(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
+
+    // call data:---------------------------------------------------------------
+    GetPaymentMethods.request();
+    GetMetadata.request();
+    if (Global.appSettings.token.isNotEmpty) {
+      GetNotifications.request();
+      GetRecipients.request();
+      await GetUserMeta.request();
+    }
+    await GetCountriesAPI.request();
+    // -------------------------------------------------------------------------
+
+    if (context.mounted && Global.isAnyDialogOpen(context)) {
+      LoadingDialog.dismiss();
+    }
+
+    // Check user verification status
+    Helper.userVerify(
+      UserModel.get.verified,
+      showDialog: true,
+      returnSnack: UserModel.get.verified == 0,
+    );
+
+    PopupService.show();
+  }
