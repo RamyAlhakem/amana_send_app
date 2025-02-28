@@ -172,6 +172,7 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
+      senderLoading=false;
       notifyListeners();
     });
   }
