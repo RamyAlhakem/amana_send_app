@@ -48,9 +48,12 @@ class _WalletAddressState extends State<WalletAddress>
   bool showWallet = true;
 
   void checkTransaction(int id) {
+    
     timer = Timer.periodic(Duration(seconds: duration), (_) async {
+      Helper.log("transaction checking======>>>>>>>>>>>");
       transfer = await GetTransfer(context, id).request().then((transfer) {
-        if (transfer.status.name.toLowerCase() == 'new') {
+        Helper.log("status name======>>>>>>>>>>>${transfer.status.name}");
+        if (transfer.status.name.toLowerCase() == 'new'||transfer.status.name.toLowerCase() =="dispute") {
           UserService.countTransfers(count: 1); // add +1
           context.pushReplacementNamed(
             AppRoute.success,
