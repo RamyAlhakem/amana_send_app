@@ -111,6 +111,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                 // Select city.
                 Expanded(
                   child: CityPicker(
+                    
                     key: isHome ? Tutorial.key2 : null,
                     country: state.receiverCountry,
                     onChange: (city) => state.setReceiveCity(city),
