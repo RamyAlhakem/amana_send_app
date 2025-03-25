@@ -26,6 +26,7 @@ class SettingsDialog {
     this.onSubmitColor,
     this.horizontalPadding = 20,
     this.backgroundColor,
+    this.onChanged
   });
 
   final String title;
@@ -37,6 +38,7 @@ class SettingsDialog {
   final Color? onSubmitColor, backgroundColor;
   final double horizontalPadding;
   final void Function()? onSubmit;
+  final void Function (String)? onChanged;
 
   Future<void> show() async {
     final BuildContext context = Global.key.currentContext!;
@@ -69,7 +71,20 @@ class SettingsDialog {
                       style: subTitleStyle ??
                           Theme.of(context).textTheme.bodyMedium,
                     ),
-                  )
+                  ),
+              // TextField(
+              //   onChanged:onChanged ,
+              //   decoration: InputDecoration(
+              //   fillColor: Colors.white,
+              //   filled: true,
+              //   hintText: "Search",
+              //   enabledBorder: OutlineInputBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   focusedBorder: OutlineInputBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              // ),)
                 ],
               ),
               titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

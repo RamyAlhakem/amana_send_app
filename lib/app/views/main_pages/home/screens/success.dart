@@ -83,6 +83,7 @@ class _SuccessState extends State<Success> {
           title: arb.paymentSuccessful,
           subTitle: arb.yourPaymentHasBeenSubmittedSuccessfully,
           onPressed: () {
+             Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.transfers.index}");
             Global.pageCtrl.jumpToPage(Pages.transfers.index);
             context.goNamed(AppRoute.home);
           },
@@ -251,6 +252,7 @@ class _SuccessState extends State<Success> {
         bottomNavigationBar: BottomButtons(
           firstButton: Button(
             () {
+               Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.home.index}");
               Global.pageCtrl.jumpToPage(Pages.home.index);
               context.goNamed(AppRoute.home);
             },
@@ -271,6 +273,7 @@ class _SuccessState extends State<Success> {
           ),
           secondButton: ExpandButton(
             () {
+              Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.transfers.index}");
               Global.pageCtrl.jumpToPage(Pages.transfers.index);
               context.goNamed(AppRoute.home);
               context.pushNamed(

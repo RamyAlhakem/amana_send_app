@@ -373,4 +373,7 @@ class Calculator with ChangeNotifier {
 
     return canSend;
   }
+  updateUi(){
+    notifyListeners();
+  }
 }
