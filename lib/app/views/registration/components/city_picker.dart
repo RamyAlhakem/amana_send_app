@@ -60,6 +60,7 @@ allCities=cities;
     return PickerForm(
       () {
         cities=widget.country.cities;
+        allCities=widget.country.cities;
         if (country.cities.isEmpty) {
           return Helper.toast(arb.selectCountry);
         }
