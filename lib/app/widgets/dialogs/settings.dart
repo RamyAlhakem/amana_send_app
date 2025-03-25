@@ -72,19 +72,19 @@ class SettingsDialog {
                           Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
-              // TextField(
-              //   onChanged:onChanged ,
-              //   decoration: InputDecoration(
-              //   fillColor: Colors.white,
-              //   filled: true,
-              //   hintText: "Search",
-              //   enabledBorder: OutlineInputBorder(
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   focusedBorder: OutlineInputBorder(
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              // ),)
+              TextField(
+                onChanged:onChanged ,
+                decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: "Search",
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),)
                 ],
               ),
               titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

@@ -1,4 +1,5 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:amana_send/helper/helper.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,6 +33,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
   late AppLocalizations? _arb;
 
   late List<CountryModel> _countries;
+  late List<CountryModel> allCountries;
   late bool isRegistration;
 
   @override
@@ -43,6 +45,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
     _countries = isRegistration
         ? _calculator.sendCountries
         : _calculator.receiveCountries;
+        allCountries=_countries;
   }
 
   @override
@@ -80,18 +83,24 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
           visible: _countries.isNotEmpty,
           child: InkWell(
             borderRadius: BorderRadius.circular(4),
-            onTap: () => SettingsDialog(
+            onTap: () {
+               _countries = isRegistration
+        ? _calculator.sendCountries
+        : _calculator.receiveCountries;
+              SettingsDialog(
               onChanged: (text){
                 if(text.isNotEmpty){
-                  List<CountryModel> foundCountries= _countries.where((e)=>e.arName.toLowerCase().startsWith(text)).toList();
+                  List<CountryModel> foundCountries= allCountries.where((e)=>e.arName.toLowerCase().startsWith(text)).toList();
                   _countries=foundCountries;
                _calculator.updateUi();
+               Helper.log("text ======>>>>>>> $text ,countries====>>>>>>>>>>$_countries");
                 }
                 else{
                    _countries = isRegistration
         ? _calculator.sendCountries
         : _calculator.receiveCountries;
       _calculator.updateUi();
+        Helper.log("else ======>>>>>>> $text");
                 }
               },
               onSubmit: null,
@@ -159,7 +168,8 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                   
                 ),
               ),
-            ).show(),
+            ).show();
+            },
             child: Visibility(
               visible: provider.country == null,
               replacement: Row(
