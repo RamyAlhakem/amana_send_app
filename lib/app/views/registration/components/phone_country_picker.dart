@@ -90,7 +90,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
               SettingsDialog(
               onChanged: (text){
                 if(text.isNotEmpty){
-                  List<CountryModel> foundCountries= allCountries.where((e)=>e.arName.toLowerCase().startsWith(text)).toList();
+                  List<CountryModel> foundCountries= allCountries.where((e)=>isAr? e.arName.toLowerCase().startsWith(text.toLowerCase()):e.enName.toLowerCase().startsWith(text.toLowerCase())).toList();
                   _countries=foundCountries;
                _calculator.updateUi();
                Helper.log("text ======>>>>>>> $text ,countries====>>>>>>>>>>$_countries");
