@@ -10,6 +10,7 @@ class GetSliders {
     final HttpLink httpLink = HttpLink(
       Configs.graphql,
     );
+     Helper.debugger('sliders');
     GraphQLClient client = GraphQLClient(link: httpLink, cache: GraphQLCache());
     final QueryOptions options = QueryOptions(
       document: gql(Queries.sliders),
