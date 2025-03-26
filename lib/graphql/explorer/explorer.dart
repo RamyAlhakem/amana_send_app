@@ -93,6 +93,7 @@ class Explorer {
       status
       dateAdded
       whatsappNumber
+      note
       $country
       ''';
 

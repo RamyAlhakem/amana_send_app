@@ -12,10 +12,11 @@ class RecipientModel extends SafetyModel {
     this.cityId = 0,
     this.dateAdded = '',
     this.whatsappNumber = '',
+    this.note=''
   });
 
   int id = 0;
-  String firstName = '', fatherName = '', lastName = '', dateAdded = '';
+  String firstName = '', fatherName = '', lastName = '', dateAdded = '',note='';
   String whatsappNumber = '';
   int mobile = 0, cityId = 0, status = 0;
   CountryModel country = CountryModel();
@@ -25,6 +26,7 @@ class RecipientModel extends SafetyModel {
     firstName = stringFromJson(json, 'firstName');
     fatherName = stringFromJson(json, 'fatherName');
     lastName = stringFromJson(json, 'lastName');
+    note = stringFromJson(json, 'note');
     mobile = intFromJson(json, 'mobile');
     status = intFromJson(json, 'status');
     cityId = intFromJson(json, 'cityId');
@@ -47,5 +49,6 @@ class RecipientModel extends SafetyModel {
         'dateAdded': dateAdded,
         'country': country,
         'whatsappNumber': whatsappNumber,
+        'note':note
       };
 }
