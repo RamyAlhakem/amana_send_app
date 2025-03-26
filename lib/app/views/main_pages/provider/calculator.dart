@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:amana_send/graphql/api/get_providers.dart';
+import 'package:amana_send/graphql/api/get_sliders.dart';
+import 'package:amana_send/models/slider_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +26,7 @@ import '/router/app_route.dart';
 class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
+  List<SlidersModel> sliders = [];
   double _percentFee = 0;
   double _minFee = 0;
   double _usdRate = 0;
@@ -374,6 +377,11 @@ class Calculator with ChangeNotifier {
     return canSend;
   }
   updateUi(){
+    notifyListeners();
+  }
+   
+  getSliders(int type) async {
+    sliders = await GetSliders.request(type) ?? [];
     notifyListeners();
   }
 }

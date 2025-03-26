@@ -130,4 +130,19 @@ class Queries {
       }
     }
       ''';
+        static const String sliders = ''' 
+  
+  query MyQuery(\$type: Int = 10) {
+  sliders(type: \$type) {
+    id
+    picUrl
+    sortId
+    status
+    title
+    type
+  }
+}
+  
+  
+  ''';
 }

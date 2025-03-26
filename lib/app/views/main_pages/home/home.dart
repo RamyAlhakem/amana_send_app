@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:amana_send/app/views/main_pages/home/widgets/sliders.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:amana_send/models/payment_method.dart';
@@ -50,10 +51,11 @@ class _HomeState extends State<Home> {
 
   Future<void> getResources() async {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
-
+ final calculater=Provider.of<Calculator>(context,listen: false);
     // call data:---------------------------------------------------------------
     GetPaymentMethods.request();
     GetMetadata.request();
+    calculater.getSliders(0);
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
       GetRecipients.request();
@@ -92,6 +94,7 @@ class _HomeState extends State<Home> {
     Future.delayed( const Duration(seconds: 2),(){
       getResources();
     });
+  
   }
 
   @override
@@ -156,7 +159,7 @@ class _HomeState extends State<Home> {
 
                 // "You send", "Receiver gets"
                 Padding(padding: padding, child: const SendFormFields()),
-
+Sliders(),
                 Padding(
                   key: Tutorial.key7,
                   padding: padding,
