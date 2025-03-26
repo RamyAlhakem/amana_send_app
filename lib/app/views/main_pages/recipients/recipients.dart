@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:amana_send/app/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -61,27 +62,13 @@ class _RecipientsState extends State<Recipients> {
                 child: Column(
                   children: [
                   const  SizedBox(height: 20,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: TextField(
-                        onChanged: (text){
-                          recipients.search(text);
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: _arb!.search,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                      
-                      
-                        ),
-                      ),
-                    ),
+                  SearchWidget(
+                    hint: _arb!.search,
+                    onChange: (text){
+                       recipients.search(text);
+                    },
+                  ),
+                
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
