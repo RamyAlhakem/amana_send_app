@@ -1,3 +1,4 @@
+import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
 
 import '/app/widgets/text/text_x.dart';
@@ -19,6 +20,7 @@ class RecipientIconDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   final  isAr = LangService.isAR();
     return Row(
       children: [
         UserAvatar(code: recipient.country.coCode),
@@ -46,6 +48,9 @@ class RecipientIconDetail extends StatelessWidget {
                   ),
                 ),
               ]),
+              isAr
+              ?Text(" ${recipient.mobile} ${recipient.country.phoneCode}+")
+              :Text("+${recipient.country.phoneCode} ${recipient.mobile}")
             ],
           ),
         ),
