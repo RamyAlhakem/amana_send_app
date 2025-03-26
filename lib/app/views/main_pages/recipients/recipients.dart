@@ -58,63 +58,91 @@ class _RecipientsState extends State<Recipients> {
                 onRefresh: () async {
                   await GetRecipients.request();
                 },
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
-                  itemCount: recipients.all.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return Container(
-                      margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
-                      width: MediaQuery.of(context).size.width,
-                      child: GestureDetector(
-                        onTap: () => context.pushNamed(
-                          AppRoute.recipient,
-                          pathParameters: <String, String>{
-                            'recipient': jsonEncode(recipients.all[i]),
-                          },
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                          child: RowSpaceBetween([
-                            RecipientIconDetail(recipient: recipients.all[i]),
-                            Button(
-                              () {
-                                if (AppMetadata.get.maintenanceMode) {
-                                  return Helper.bannerWarning(
-                                    '\n${AppMetadata.get.maintenanceMessage}\n',
-                                  );
-                                }
-                                final calculator = Provider.of<Calculator>(
-                                  context,
-                                  listen: false,
-                                );
-                                calculator.setReceiverCountry(CountryModel());
-                                calculator.agentsVisibility(true);
-                                calculator.recipientSend(
-                                  recipients.all[i],
-                                  navigate: true,
-                                );
-                              },
-                              height: 38,
-                              padding: EdgeInsets.zero,
-                              color: Colors.transparent,
-                              foregroundColor: context.isDarkMode
-                                  ? Colors.white
-                                  : Colors.black,
-                              Row(children: [
-                                const SizedBox(width: 10),
-                                TextX(
-                                  _arb!.send.toUpperCase(),
-                                ),
-                                const SizedBox(width: 10),
-                                const Icon(Icons.chevron_right)
-                              ]),
-                            ),
-                          ]),
+                child: Column(
+                  children: [
+                  const  SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        onChanged: (text){
+                          recipients.search(text);
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: _arb!.search,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                      
+                      
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
+                        itemCount: recipients.receipients.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          return Container(
+                            margin: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+                            width: MediaQuery.of(context).size.width,
+                            child: GestureDetector(
+                              onTap: () => context.pushNamed(
+                                AppRoute.recipient,
+                                pathParameters: <String, String>{
+                                  'recipient': jsonEncode(recipients.receipients[i]),
+                                },
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                                child: RowSpaceBetween([
+                                  RecipientIconDetail(recipient: recipients.receipients[i]),
+                                  Button(
+                                    () {
+                                      if (AppMetadata.get.maintenanceMode) {
+                                        return Helper.bannerWarning(
+                                          '\n${AppMetadata.get.maintenanceMessage}\n',
+                                        );
+                                      }
+                                      final calculator = Provider.of<Calculator>(
+                                        context,
+                                        listen: false,
+                                      );
+                                      calculator.setReceiverCountry(CountryModel());
+                                      calculator.agentsVisibility(true);
+                                      calculator.recipientSend(
+                                        recipients.receipients[i],
+                                        navigate: true,
+                                      );
+                                    },
+                                    height: 38,
+                                    padding: EdgeInsets.zero,
+                                    color: Colors.transparent,
+                                    foregroundColor: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    Row(children: [
+                                      const SizedBox(width: 10),
+                                      TextX(
+                                        _arb!.send.toUpperCase(),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Icon(Icons.chevron_right)
+                                    ]),
+                                  ),
+                                ]),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

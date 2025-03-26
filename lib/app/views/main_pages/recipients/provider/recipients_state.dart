@@ -15,6 +15,8 @@ class RecipientsState extends ChangeNotifier {
   bool _isEditRecipient = false;
 
   List<RecipientModel> _all = <RecipientModel>[];
+  List<RecipientModel> foundReceipients = <RecipientModel>[];
+  List<RecipientModel> receipients = <RecipientModel>[];
   RecipientModel _recipient = RecipientModel();
 
   bool get isLoading => _isLoading;
@@ -32,6 +34,7 @@ class RecipientsState extends ChangeNotifier {
 
   void getAll(List<RecipientModel> elements) {
     _all = elements;
+    receipients=_all;
     notifyListeners();
   }
 
@@ -73,5 +76,16 @@ class RecipientsState extends ChangeNotifier {
   void clearRecipients() {
     _all.clear();
     notifyListeners();
+  }
+  search(String text){
+    if(text.isNotEmpty){
+foundReceipients=all.where((e)=>e.firstName.toLowerCase().startsWith(text.toLowerCase())).toList();
+receipients=foundReceipients;
+notifyListeners();
+    }
+    else{
+      receipients=all;
+      notifyListeners();
+    }
   }
 }
