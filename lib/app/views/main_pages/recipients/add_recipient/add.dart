@@ -174,36 +174,38 @@ class _AddRecipientState extends State<AddRecipient> {
               ),
               isAR
               ?Container()
-              :      Row(children: [
-                Expanded(
-                  child: TextFieldX(
-                         validator: (String){
-                  return null;
-                },
-                    controller: enName,
-                    hint:"${ arb.firstName}(optional)",
-                    type: TextInputType.name,
-                    onChanged: (_) {
-                      TextFieldValidator.latin(context, enName);
+              :      Column(
+                children: [
+                  Row(children: [
+                    Expanded(
+                      child: TextFieldX(
+                             validator: (String){
+                      return null;
                     },
-                  ),
-                ),
-                const SizedBox(width: 13),
-                Expanded(
-                  child: TextFieldX(
-                               validator: (String){
-                  return null;
-                },
-                    controller: enLast,
-                    hint: "${ arb.lastName}(optional)",
-                    type: TextInputType.name,
-                    onChanged: (_) {
-                      TextFieldValidator.latin(context, enLast);
+                        controller: enName,
+                        hint:"${ arb.firstName}(optional)",
+                        type: TextInputType.name,
+                        onChanged: (_) {
+                          TextFieldValidator.latin(context, enName);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 13),
+                    Expanded(
+                      child: TextFieldX(
+                                   validator: (String){
+                      return null;
                     },
-                  ),
-                ),
-              ]),
-              TextFieldX(
+                        controller: enLast,
+                        hint: "${ arb.lastName}(optional)",
+                        type: TextInputType.name,
+                        onChanged: (_) {
+                          TextFieldValidator.latin(context, enLast);
+                        },
+                      ),
+                    ),
+                  ]),
+                      TextFieldX(
                            validator: (String){
                   return null;
                 },
@@ -215,6 +217,9 @@ class _AddRecipientState extends State<AddRecipient> {
                 },
                 onSubmitted: (_) => _submit(),
               ),
+                ],
+              ),
+          
               // TextFieldX(
               //     validator: (String){
               //     return null;
