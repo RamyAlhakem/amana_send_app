@@ -79,11 +79,11 @@ state.updateUi();
                               onTap: () => setState(() {
                                 if (send) {
                                   country = state.setSendCountry(
-                                    state.sendCountries[i],
+                                   countries[i],
                                   );
                                 } else {
                                   country = state.setReceiverCountry(
-                                    state.receiveCountries[i],
+                                    countries[i],
                                   );
                                 }
               
