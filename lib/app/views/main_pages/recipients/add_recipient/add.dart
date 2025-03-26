@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -49,6 +51,10 @@ class _AddRecipientState extends State<AddRecipient> {
   TextEditingController _firstName = TextEditingController();
   TextEditingController _lastName = TextEditingController();
   TextEditingController _fatherName = TextEditingController();
+  TextEditingController enName = TextEditingController();
+  TextEditingController enLast = TextEditingController();
+  TextEditingController enFather = TextEditingController();
+  TextEditingController notes = TextEditingController();
   TextEditingController _whatsApp = TextEditingController();
 
   bool keepSendProcess = false, isAR = false;
@@ -166,6 +172,74 @@ class _AddRecipientState extends State<AddRecipient> {
                 },
                 onSubmitted: (_) => _submit(),
               ),
+              isAR
+              ?Container()
+              :      Row(children: [
+                Expanded(
+                  child: TextFieldX(
+                         validator: (String){
+                  return null;
+                },
+                    controller: enName,
+                    hint:"${ arb.firstName}(optional)",
+                    type: TextInputType.name,
+                    onChanged: (_) {
+                      TextFieldValidator.latin(context, enName);
+                    },
+                  ),
+                ),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: TextFieldX(
+                               validator: (String){
+                  return null;
+                },
+                    controller: enLast,
+                    hint: "${ arb.lastName}(optional)",
+                    type: TextInputType.name,
+                    onChanged: (_) {
+                      TextFieldValidator.latin(context, enLast);
+                    },
+                  ),
+                ),
+              ]),
+              TextFieldX(
+                           validator: (String){
+                  return null;
+                },
+                controller: enFather,
+                hint: "${ arb.fatherName}(optional)",
+                type: TextInputType.name,
+                onChanged: (_) {
+                  TextFieldValidator.latin(context, enFather);
+                },
+                onSubmitted: (_) => _submit(),
+              ),
+              // TextFieldX(
+              //     validator: (String){
+              //     return null;
+              //   },
+              //   controller: enName,
+              //   hint: "Recipient Name(optional)",
+              //   type: TextInputType.name,
+              //   onChanged: (_) {
+              //     TextFieldValidator.latin(context, enName);
+              //   },
+              //   onSubmitted: (_) => _submit(),
+              // ),
+              TextFieldX(
+                // ignore: avoid_types_as_parameter_names
+                validator: (String){
+                  return null;
+                },
+                controller: notes,
+                hint: "Notes(optional)",
+                type: TextInputType.name,
+                onChanged: (_) {
+                  // TextFieldValidator.latin(context, notes);
+                },
+                onSubmitted: (_) => _submit(),
+              ),
               // ---
 
               const SizedBox(height: 18),
@@ -242,12 +316,16 @@ class _AddRecipientState extends State<AddRecipient> {
     Global.snackKey.currentState?.hideCurrentMaterialBanner();
 
     AddEditRecipientAPI(
-      firstName: _firstName.text,
-      lastName: _lastName.text,
-      fatherName: _fatherName.text,
+      firstName: enName.text,
+      lastName: enLast.text,
+      fatherName: enFather.text,
       countryCode: '${_registerState.country?.coCode}',
       mobile: _registerState.mobile.text,
       whatsApp: _whatsApp.text,
+      arFatherName: _fatherName.text,
+      arFirstName:_firstName.text ,
+      arLastName:_lastName.text ,
+      note: notes.text,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {

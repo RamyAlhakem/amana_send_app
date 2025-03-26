@@ -19,11 +19,15 @@ class AddEditRecipientAPI {
     required this.countryCode,
     required this.mobile,
     required this.whatsApp,
+    required this.arFatherName,
+    required this.arFirstName,
+    required this.arLastName,
+    required this.note,
     this.id = 0,
   });
 
-  final String firstName, lastName, fatherName;
-  final String countryCode, mobile, whatsApp;
+  final String firstName, lastName, fatherName,arFatherName,arFirstName,arLastName;
+  final String countryCode, mobile, whatsApp,note;
   final int id;
 
   static Map<String, dynamic> _variables = const <String, dynamic>{};
@@ -41,6 +45,12 @@ class AddEditRecipientAPI {
       'countryCode': countryCode,
       'mobile': mobile,
       'whatsappNumber': whatsApp,
+      'arFatherName':arFatherName,
+      'arFirstName':arFirstName,
+      'arLastName':arLastName,
+      'note':note
+
+      
     };
 
     Helper.debugger(json);
