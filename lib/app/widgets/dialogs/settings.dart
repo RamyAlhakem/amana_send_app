@@ -77,7 +77,7 @@ class SettingsDialog {
                 decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
-                hintText: "Search",
+                hintText: arb!.search,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

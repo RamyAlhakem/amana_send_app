@@ -377,5 +377,6 @@
   "totalPaid": "Total paid",
   "recipientGets": "Recipient gets",
   "closed": "Closed",
-  "close": "Close"
+  "close": "Close",
+  "search":"Search"
 }

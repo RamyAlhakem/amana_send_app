@@ -376,5 +376,6 @@
   "totalPaid": "إجمالي المبلغ المدفوع",
   "recipientGets": "يحصل المستلم",
   "closed": "مغلق",
-  "close": "أغلق"
+  "close": "أغلق",
+  "search":"بحث"
 }
