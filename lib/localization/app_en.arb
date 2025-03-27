@@ -378,5 +378,11 @@
   "recipientGets": "Recipient gets",
   "closed": "Closed",
   "close": "Close",
-  "search":"Search"
+  "search":"Search",
+    "firstNameOne":"First name (arabic)",
+  "lastNameOne":"Last name (arabic)",
+  "fatherNameOne":"Father name (arabic)",
+  "notes":"Notes",
+   "english":"EN",
+   "optional":"Optional"
 }

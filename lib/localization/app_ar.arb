@@ -377,5 +377,11 @@
   "recipientGets": "يحصل المستلم",
   "closed": "مغلق",
   "close": "أغلق",
-  "search":"بحث"
+  "search":"بحث",
+  "firstNameOne":"الاسم (عربي)",
+  "lastNameOne":"الكنية (عربي)",
+  "fatherNameOne":"اسم الأب (عربي)",
+   "notes":"ملاحظات",
+   "english":"انكليزي",
+   "optional":"اختياري"
 }

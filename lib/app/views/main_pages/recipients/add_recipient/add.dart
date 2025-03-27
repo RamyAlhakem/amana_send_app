@@ -145,7 +145,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 Expanded(
                   child: TextFieldX(
                     controller: _firstName,
-                    hint: arb.firstName,
+                    hint: arb.firstNameOne,
                     type: TextInputType.name,
                     onChanged: (_) {
                       TextFieldValidator.arabic(context, _firstName);
@@ -156,7 +156,7 @@ class _AddRecipientState extends State<AddRecipient> {
                 Expanded(
                   child: TextFieldX(
                     controller: _lastName,
-                    hint: arb.lastName,
+                    hint: arb.lastNameOne,
                     type: TextInputType.name,
                     onChanged: (_) {
                       TextFieldValidator.arabic(context, _lastName);
@@ -166,16 +166,17 @@ class _AddRecipientState extends State<AddRecipient> {
               ]),
               TextFieldX(
                 controller: _fatherName,
-                hint: arb.fatherName,
+                hint: arb.fatherNameOne,
                 type: TextInputType.name,
                 onChanged: (_) {
                   TextFieldValidator.arabic(context, _fatherName);
                 },
                 onSubmitted: (_) => _submit(),
               ),
-              isAR
-              ?Container()
-              :      Column(
+              // isAR
+              // ?Container()
+              // :    
+                Column(
                 children: [
                   Row(children: [
                     Expanded(
@@ -184,7 +185,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       return null;
                     },
                         controller: enName,
-                        hint:"${ arb.firstName}(optional)",
+                        hint:"${ arb.firstName}(${arb.english}-${arb.optional})",
                         type: TextInputType.name,
                         onChanged: (_) {
                           TextFieldValidator.latin(context, enName);
@@ -198,7 +199,7 @@ class _AddRecipientState extends State<AddRecipient> {
                       return null;
                     },
                         controller: enLast,
-                        hint: "${ arb.lastName}(optional)",
+                        hint: "${ arb.lastName}(${arb.english}-${arb.optional})",
                         type: TextInputType.name,
                         onChanged: (_) {
                           TextFieldValidator.latin(context, enLast);
@@ -211,7 +212,7 @@ class _AddRecipientState extends State<AddRecipient> {
                   return null;
                 },
                 controller: enFather,
-                hint: "${ arb.fatherName}(optional)",
+                hint: "${ arb.fatherName}(${arb.english}-${arb.optional})",
                 type: TextInputType.name,
                 onChanged: (_) {
                   TextFieldValidator.latin(context, enFather);
@@ -239,7 +240,7 @@ class _AddRecipientState extends State<AddRecipient> {
                   return null;
                 },
                 controller: notes,
-                hint: "Notes(optional)",
+                hint: "${arb.notes}(${arb.optional})",
                 type: TextInputType.name,
                 onChanged: (_) {
                   // TextFieldValidator.latin(context, notes);
