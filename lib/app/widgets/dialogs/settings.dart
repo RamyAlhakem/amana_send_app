@@ -75,7 +75,7 @@ class SettingsDialog {
               TextField(
                 onChanged:onChanged ,
                 decoration: InputDecoration(
-                fillColor: Colors.white,
+               
                 filled: true,
                 hintText: arb!.search,
                 enabledBorder: OutlineInputBorder(

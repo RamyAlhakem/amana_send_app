@@ -12,7 +12,7 @@ class SearchWidget extends StatelessWidget {
                       child: TextField(
                         onChanged: onChange,
                         decoration: InputDecoration(
-                          fillColor: Colors.white,
+                          // fillColor: Colors.white,
                           filled: true,
                           hintText: hint,
                           enabledBorder: OutlineInputBorder(
