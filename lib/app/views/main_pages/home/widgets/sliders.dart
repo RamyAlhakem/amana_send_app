@@ -15,6 +15,7 @@ class Sliders extends StatelessWidget {
       width: double.infinity,
       height: 200,
       child: PageView(
+        controller: calculater.pageController,
         children: calculater.sliders
             .map((e) => CachedNetworkImageApp(
                   urlImg: e.picUrl,

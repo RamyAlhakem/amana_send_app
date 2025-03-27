@@ -27,6 +27,9 @@ class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
   List<SlidersModel> sliders = [];
+  PageController pageController=PageController();
+  int currentSlider=0;
+  Timer? timer;
   double _percentFee = 0;
   double _minFee = 0;
   double _usdRate = 0;
@@ -383,5 +386,21 @@ class Calculator with ChangeNotifier {
   getSliders(int type) async {
     sliders = await GetSliders.request(type) ?? [];
     notifyListeners();
+  }
+  moveSlider(){
+timer=Timer.periodic( const Duration(seconds: 4), (timer){
+  if(currentSlider+1<sliders.length){
+    currentSlider++;
+ pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
+ Helper.log("current sliders $currentSlider");
+  }
+  else{
+    currentSlider=0;
+     pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
+     Helper.log("current sliders  = 0 $currentSlider");
+  }
+ 
+});
+notifyListeners();
   }
 }

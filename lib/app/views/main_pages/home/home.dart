@@ -56,6 +56,7 @@ class _HomeState extends State<Home> {
     GetPaymentMethods.request();
     GetMetadata.request();
     calculater.getSliders(0);
+    calculater.moveSlider();
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
       GetRecipients.request();
