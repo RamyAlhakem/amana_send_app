@@ -67,7 +67,7 @@ allCities=cities;
         SettingsDialog(
           onChanged: (text) {
             if(text.isNotEmpty){
-              List<CityModel>foundCities=allCities.where((e)=>e.name.toLowerCase().startsWith(text.toLowerCase())).toList();
+              List<CityModel>foundCities=allCities.where((e)=>e.name.toLowerCase().contains(text.toLowerCase())).toList();
 cities=foundCities;
 state.updateUi();
 Helper.log("text =========>>>>$text  citites=======>>>>>>>$cities");
