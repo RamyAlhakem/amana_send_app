@@ -79,7 +79,7 @@ class RecipientsState extends ChangeNotifier {
   }
   search(String text){
     if(text.isNotEmpty){
-foundReceipients=all.where((e)=>e.firstName.toLowerCase().startsWith(text.toLowerCase())).toList();
+foundReceipients=all.where((e)=>(("${e.firstName} ${e.fatherName} ${e.lastName}").toLowerCase()).contains(text.toLowerCase())).toList();
 receipients=foundReceipients;
 notifyListeners();
     }
