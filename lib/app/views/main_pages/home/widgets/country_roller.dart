@@ -40,7 +40,7 @@ class CountryRoller extends StatelessWidget {
         () => SettingsDialog(
           onChanged: (text) {
             if(text.isNotEmpty){
-              final List<CountryModel> foundContries=allContries.where((e)=>isAr? e.arName.toLowerCase().contains(text.toLowerCase()):e.enName.toLowerCase().startsWith(text.toLowerCase())).toList();
+              final List<CountryModel> foundContries=allContries.where((e)=>isAr? e.arName.toLowerCase().contains(text.toLowerCase()):e.enName.toLowerCase().contains(text.toLowerCase())).toList();
 countries=foundContries;
 state.updateUi();
             }
