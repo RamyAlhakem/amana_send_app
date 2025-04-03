@@ -78,7 +78,8 @@ Helper.log("text =========>>>>$text  citites=======>>>>>>>$cities");
             }
           },
           onSubmit: null,
-          title: arb.cities,
+          // title: arb.cities,
+          title: "",
           subTitle: arb.selectCityFromTheListBelow,
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,

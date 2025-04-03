@@ -70,7 +70,8 @@ Future<void> showDigitalCurrencies(BuildContext context) {
   final Calculator state = Provider.of<Calculator>(context, listen: false);
   return SettingsDialog(
     onSubmit: null,
-    title: arb?.typeOfCurrency ?? '',
+    // title: arb?.typeOfCurrency ?? '',
+    title: "",
     subTitle: arb?.pleaseChooseCurrency ?? "",
     subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
     horizontalPadding: 0,

@@ -125,10 +125,10 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
                     arb.transfersHistory,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  TextX(
-                    arb.allTransfers,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+                  // TextX(
+                  //   arb.allTransfers,
+                  //   style: Theme.of(context).textTheme.bodySmall,
+                  // ),
                 ],
               ),
               actions: [

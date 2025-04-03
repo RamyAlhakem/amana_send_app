@@ -84,10 +84,10 @@ class StructureKit {
         return title = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextX(
-              _arb!.myRecipients,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+            // TextX(
+            //   _arb!.myRecipients,
+            //   style: Theme.of(context).textTheme.bodyLarge,
+            // ),
             TextX(
               _arb!.recipientsList,
               style: Theme.of(context).textTheme.bodySmall,

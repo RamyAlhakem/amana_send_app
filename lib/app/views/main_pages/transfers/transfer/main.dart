@@ -143,7 +143,7 @@ class _TransferMainState extends State<TransferMain>
           child: Column(
             children: [
               const SizedBox(height: 12),
-              Center(child: TextX(arb.sent)),
+              // Center(child: TextX(arb.sent)),
               const SizedBox(height: 6),
               Center(
                 child: TextX(
@@ -152,12 +152,12 @@ class _TransferMainState extends State<TransferMain>
                 ),
               ),
               const SizedBox(height: 4),
-              Center(
-                child: TextX(
-                  '${transfer.recipient.firstName} ${transfer.recipient.fatherName} ${transfer.recipient.lastName}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // Center(
+              //   child: TextX(
+              //     '${transfer.recipient.firstName} ${transfer.recipient.fatherName} ${transfer.recipient.lastName}',
+              //     textAlign: TextAlign.center,
+              //   ),
+              // ),
               Expanded(
                 child: Container(
                   alignment: Alignment.center,

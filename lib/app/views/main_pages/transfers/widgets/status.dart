@@ -55,11 +55,11 @@ class _TransferStateState extends State<TransferState> {
       shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(16, kTextTabBarHeight, 16, 0),
       children: [
-        TextX(
-          _arb!.transferStatus,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 4),
+        // TextX(
+        //   _arb!.transferStatus,
+        //   style: Theme.of(context).textTheme.titleLarge,
+        // ),
+        // const SizedBox(height: 4),
         TextX(
           _arb!.recentTransferUpdateStatus,
           style: Theme.of(context).textTheme.bodyMedium,

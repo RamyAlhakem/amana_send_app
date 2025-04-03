@@ -52,7 +52,8 @@ state.updateUi();
           },
           onSubmit: null,
           title: title,
-          subTitle: arb.chooseCountry,
+          // subTitle: arb.chooseCountry,
+          subTitle: "",
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
           content: (setState) => Scrollbar(
