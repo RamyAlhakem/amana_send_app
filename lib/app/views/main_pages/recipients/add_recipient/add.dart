@@ -68,11 +68,14 @@ class _AddRecipientState extends State<AddRecipient> {
 
     if (widget.recipient != 'null') {
       _recipient = RecipientModel.fromJson(jsonDecode(widget.recipient));
-      _firstName = TextEditingController(text: _recipient?.firstName);
-      _lastName = TextEditingController(text: _recipient?.lastName);
-      _fatherName = TextEditingController(text: _recipient?.fatherName);
+      _firstName = TextEditingController(text: _recipient?.arFirstName);
+      _lastName = TextEditingController(text: _recipient?.arLastName);
+      _fatherName = TextEditingController(text: _recipient?.arFatherName);
       _whatsApp = TextEditingController(text: _recipient?.whatsappNumber);
       notes = TextEditingController(text: _recipient?.note);
+      enName=TextEditingController(text:_recipient?.enFirstName );
+      enLast=TextEditingController(text: _recipient?.enLastName);
+      enFather=TextEditingController(text: _recipient?.enFatherName);
 
       if (widget.query.isNotEmpty) {
         if (widget.query['keepSendProcess'] == 'true') keepSendProcess = true;

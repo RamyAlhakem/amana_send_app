@@ -94,6 +94,12 @@ class Explorer {
       dateAdded
       whatsappNumber
       note
+      arFatherName
+      arFirstName
+      arLastName
+      enFatherName
+      enFirstName
+      enLastName
       $country
       ''';
 
