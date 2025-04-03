@@ -52,6 +52,7 @@ class _WalletAddressState extends State<WalletAddress>
     timer = Timer.periodic(Duration(seconds: duration), (_) async {
       Helper.log("transaction checking======>>>>>>>>>>>");
       transfer = await GetTransfer(context, id).request().then((transfer) {
+        Helper.log("transfer fulllllllll->>>>>>>>>>>>>>>>>>>>> $transfer");
         Helper.log("status name======>>>>>>>>>>>${transfer.status.name}");
         if (transfer.status.name.toLowerCase() == 'new'||transfer.status.name.toLowerCase() =="pending") {
           UserService.countTransfers(count: 1); // add +1

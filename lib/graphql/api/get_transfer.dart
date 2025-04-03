@@ -48,6 +48,7 @@ class GetTransfer {
         }
       }
     });
+    Helper.log("finally transfer================>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $transfer");
     return transfer;
   }
 

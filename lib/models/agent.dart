@@ -24,7 +24,7 @@ num tab=0;
 
   AgentModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
-    tab = json['tab'] ;
+    tab = json['tab']??0 ;
     // intFromJson(json, 'tab');
     name = stringFromJson(json, 'displayName');
     iconUrl = stringFromJson(json, 'iconUrl');
@@ -47,6 +47,7 @@ num tab=0;
         'iconUrl': iconUrl,
         'status': status,
         'rate': rate,
+        'tab':tab,
         'receiveFees': receiveFees,
         'usdAvailability': usdAvailability,
         'minAmount': minAmount,

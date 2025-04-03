@@ -44,8 +44,10 @@ class _SuccessState extends State<Success> {
   void initState() {
     super.initState();
     transfer = TransferModel.fromJson(jsonDecode(widget.transferData));
+    Helper.log("transfer ==================>>>>>> $transfer");
     final int count = UserService.countTransfers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+
       if (count == 2) {
         MessageDialog(
           arb.wouldYouLikeToRateOurApp,
@@ -194,7 +196,7 @@ class _SuccessState extends State<Success> {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
+                              '${transfer.provider.receiveFees.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} ',
                         ),
                          TextSpan(text: transfer.paymentMethod?.name)
                       ],
@@ -214,7 +216,7 @@ class _SuccessState extends State<Success> {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${transfer.totalAmount.toStringAsFixed(2)} ',
+                          text: '${transfer.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} ',
                         ),
                          TextSpan(text: transfer.paymentMethod?.name)
                       ],
