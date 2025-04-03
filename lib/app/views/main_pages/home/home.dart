@@ -161,7 +161,7 @@ class _HomeState extends State<Home> {
                 // "You send", "Receiver gets"
                 Padding(padding: padding, child: const SendFormFields()),
       //  const Sliders(),
- const SizedBox(height: 20,),
+//  const SizedBox(height: 20,),
                 Padding(
                   key: Tutorial.key7,
                   padding: padding,
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-               const SizedBox(height: 30,),
+               const SizedBox(height: 7,),
                const Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: const Sliders(),
