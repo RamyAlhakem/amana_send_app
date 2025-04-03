@@ -231,7 +231,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   text:
                                       '${usd ? 'USD' : state.receiverCountry.currency.code}'
                                       ' '
-                                      '$rate',
+                                      '${rate.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")}',
                                 ),
                               ],
                             ),
