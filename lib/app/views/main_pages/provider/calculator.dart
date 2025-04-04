@@ -58,6 +58,7 @@ class Calculator with ChangeNotifier {
   bool _sendUSD = false;
   bool _showAgents = false;
   double _exchangeRate = 0;
+  bool isLoad=false;
 
   //____________________________________________________________________________
 
@@ -354,8 +355,11 @@ class Calculator with ChangeNotifier {
     canSend = checkRecipientAvailability(recipient);
 
     if (transfer != null) {
+      isLoad=true;
+      notifyListeners();
       _sender.text = '${transfer.sendAmount}';
       _receiver.text = '${transfer.recipientAmount}';
+        // setAgent(transfer.provider);
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
         _sendUSD = true;
@@ -363,8 +367,19 @@ class Calculator with ChangeNotifier {
         _sendUSD = transfer.isReceiveInUsd;
       }
 
-      setAgent(transfer.provider);
+      // setAgent(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
+      Future.delayed(const  Duration(seconds: 2),(){
+setAgent(transfer.provider);
+
+notifyListeners();
+      });
+      Future.delayed(const  Duration(seconds: 3),(){
+
+isLoad=false;
+notifyListeners();
+      });
+        
     } else if (receiverCountry.id == 0) {
       setReceiverCountry(recipient.country);
     }

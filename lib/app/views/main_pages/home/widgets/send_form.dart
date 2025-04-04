@@ -83,7 +83,9 @@ class _SendFormFieldsState extends State<SendFormFields>
     super.build(context);
     return Consumer<Calculator>(builder: (_, state, child) {
       final double send = double.tryParse(state.sender.text) ?? 1;
-      child = Column(
+      child = state.isLoad
+      ?const Center(child: CircularProgressIndicator())
+      :Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
