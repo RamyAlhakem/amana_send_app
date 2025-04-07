@@ -100,8 +100,9 @@ class _RecipientsState extends State<Recipients> {
                                         context,
                                         listen: false,
                                       );
-                                      calculator.setReceiverCountry(CountryModel());
+                                      calculator.setReceiverCountry(recipients.receipients[i].country);
                                       calculator.agentsVisibility(true);
+                                      // calculator.setIsLoad(true);
                                       calculator.recipientSend(
                                         recipients.receipients[i],
                                         navigate: true,

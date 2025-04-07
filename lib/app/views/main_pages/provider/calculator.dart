@@ -173,6 +173,7 @@ class Calculator with ChangeNotifier {
       paymentMethodID: paymentMethodID,
       sendCountryCode: sendCountry.coCode
     ).request();
+    // isLoad=false;
     notifyListeners();
   }
 
@@ -425,6 +426,14 @@ notifyListeners();
   }
     set calculateAmount(CalculateAmountModel value) {
     _calculateAmount = value;
+    notifyListeners();
+  }
+  setShowAgent(bool value){
+    _showAgents=value;
+    notifyListeners();
+  }
+  setIsLoad(bool val){
+    isLoad=val;
     notifyListeners();
   }
 }

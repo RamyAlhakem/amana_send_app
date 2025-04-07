@@ -36,18 +36,44 @@ late List<CityModel> cities;
 late List<CityModel> allCities;
   @override
   void initState() {
+//     country = widget.country;
+// cities=widget.country.cities;
+// allCities=cities;
+//     if (country.cities.isNotEmpty) city = country.cities.first;
+    // state.setReceiveCity(city),
+    WidgetsBinding.instance.addPostFrameCallback((_){
+    final state=Provider.of<Calculator>(context,listen: false);
     country = widget.country;
 cities=widget.country.cities;
 allCities=cities;
-    if (country.cities.isNotEmpty) city = country.cities.first;
+    if (country.cities.isNotEmpty){ 
+      city = country.cities.first;
+      // state.setIsLoad(true);
+
+  Future.delayed(const Duration(seconds: 0),(){
+ state.setReceiveCity(city!);
+//  state.setIsLoad(false);
+ 
+ 
+//  state.setShowAgent(true);
+      });
+     
+      }
+
+
+    });
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant CityPicker oldWidget) {
+    final state=Provider.of<Calculator>(context,listen: false);
     if (oldWidget.country != widget.country) {
       country = widget.country;
-      if (widget.country.cities.isNotEmpty) city = widget.country.cities.first;
+      if (widget.country.cities.isNotEmpty) 
+      {city = widget.country.cities.first;
+state.setReceiveCity(city!);
+      }
     }
     super.didUpdateWidget(oldWidget);
   }
