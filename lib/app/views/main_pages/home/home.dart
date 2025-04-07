@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:amana_send/app/views/main_pages/home/widgets/sliders.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
+import 'package:amana_send/models/currency.dart';
 import 'package:amana_send/models/payment_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -148,7 +149,9 @@ class _HomeState extends State<Home> {
           child: RefreshIndicator(
             onRefresh: () async {
               await getResources();
-              state.setPrice(state.sender.text, usd: state.sendUSD);
+              // state.setPrice(state.sender.text, usd: state.sendUSD);
+              state.clearFields();
+              state.setCalculateAmount(CalculateAmountModel());   
             },
             child: ListView(
               clipBehavior: Clip.none,

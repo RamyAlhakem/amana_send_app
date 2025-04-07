@@ -1,4 +1,5 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:amana_send/models/currency.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -82,13 +83,15 @@ state.updateUi();
                                   country = state.setSendCountry(
                                    countries[i],
                                   );
+                                  state.setCalculateAmount(CalculateAmountModel());                  
                                 } else {
                                   country = state.setReceiverCountry(
                                     countries[i],
                                   );
+                                   state.setCalculateAmount(CalculateAmountModel());     
                                 }
-              
-                                state.setPrice(state.sender.text);
+              state.clearFields();
+                                // state.setPrice(state.sender.text);
                                 SettingsDialog.dismiss();
                               }),
                               child: Country(

@@ -142,6 +142,7 @@ class Calculator with ChangeNotifier {
 
   void setCalculateAmount(CalculateAmountModel amount) {
     _calculateAmount = amount;
+    Helper.log("calculate amount $_calculateAmount");
     notifyListeners();
   }
 
@@ -417,5 +418,9 @@ timer=Timer.periodic( const Duration(seconds: 4), (timer){
  
 });
 notifyListeners();
+  }
+    set calculateAmount(CalculateAmountModel value) {
+    _calculateAmount = value;
+    notifyListeners();
   }
 }
