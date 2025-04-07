@@ -105,7 +105,7 @@ class _RecipientsState extends State<Recipients> {
                                       calculator.recipientSend(
                                         recipients.receipients[i],
                                         navigate: true,
-                                      );
+                                      ); 
                                     },
                                     height: 38,
                                     padding: EdgeInsets.zero,

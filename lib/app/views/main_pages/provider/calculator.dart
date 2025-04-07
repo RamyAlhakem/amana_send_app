@@ -193,6 +193,7 @@ class Calculator with ChangeNotifier {
 
   void getAgents(List<AgentModel> providers) {
     Helper.log("providers ===> $providers");
+  
     _agents = providers;
     setAgent(providers.first);
     notifyListeners();
@@ -224,6 +225,7 @@ class Calculator with ChangeNotifier {
       paymentMethodID: paymentMethodID,
       sendCountryCode: sendCountry.coCode
     ).request();
+    Helper.log("myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    ${paymentMethodID}    ${sendCountry.coCode}");
     setExchangeRate();
     return country;
   }
