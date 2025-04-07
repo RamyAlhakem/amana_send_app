@@ -54,7 +54,7 @@ class _WalletAddressState extends State<WalletAddress>
       transfer = await GetTransfer(context, id).request().then((transfer) {
         Helper.log("transfer fulllllllll->>>>>>>>>>>>>>>>>>>>> $transfer");
         Helper.log("status name======>>>>>>>>>>>${transfer.status.name}");
-        if (transfer.status.name.toLowerCase() == 'new'||transfer.status.name.toLowerCase() =="pending") {
+        if (transfer.status.name.toLowerCase() == 'new'||transfer.status.name.toLowerCase() =="dispute") {
           UserService.countTransfers(count: 1); // add +1
           context.pushReplacementNamed(
             AppRoute.success,
