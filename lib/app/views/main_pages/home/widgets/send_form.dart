@@ -202,6 +202,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                     debounceTimer =
                         Timer(const Duration(milliseconds: 1000), () async {
                       state.setPrice(value);
+                      FocusScope.of(context).unfocus();
                     });
                   },
                 ),
@@ -257,6 +258,7 @@ class _SendFormFieldsState extends State<SendFormFields>
               debounceTimer =
                   Timer(const Duration(milliseconds: 1000), () async {
                 state.setPrice(value);
+                  FocusScope.of(context).unfocus();
               });
             },
             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
