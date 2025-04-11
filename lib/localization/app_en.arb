@@ -384,5 +384,6 @@
   "fatherNameOne":"Father name (arabic)",
   "notes":"Notes",
    "english":"EN",
-   "optional":"Optional"
+   "optional":"Optional",
+   "suggestionsAndComplaints":"Suggestions And Complaints"
 }
