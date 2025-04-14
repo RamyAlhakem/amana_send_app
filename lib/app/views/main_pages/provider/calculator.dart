@@ -423,7 +423,7 @@ timer=Timer.periodic( const Duration(seconds: 4), (timer){
   }
  
 });
-notifyListeners();
+// notifyListeners();
   }
     set calculateAmount(CalculateAmountModel value) {
     _calculateAmount = value;
