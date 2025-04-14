@@ -27,6 +27,7 @@ class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
   List<SlidersModel> sliders = [];
+   List<AgentModel> providersNew=[];
   PageController pageController=PageController();
   int currentSlider=0;
   Timer? timer;

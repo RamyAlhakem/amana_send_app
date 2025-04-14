@@ -52,6 +52,7 @@ class GetProviders {
         List<AgentModel> providers = List<AgentModel>.from(
           data['providers'].map((x) => AgentModel.fromJson(x)),
         );
+        _pr.providersNew=providers;
           Helper.log("providers data leangth ====> ${providers.length}");
         _pr.getAgents(providers);
       }

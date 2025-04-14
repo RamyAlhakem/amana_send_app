@@ -52,12 +52,12 @@ class _HomeState extends State<Home> {
 
   Future<void> getResources() async {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
-//  final calculater=Provider.of<Calculator>(context,listen: false);
+ final calculater=Provider.of<Calculator>(context,listen: false);
     // call data:---------------------------------------------------------------
     GetPaymentMethods.request();
     GetMetadata.request();
-    // calculater.getSliders(0);
-    // calculater.moveSlider();
+    calculater.getSliders(0);
+    calculater.moveSlider();
     if (Global.appSettings.token.isNotEmpty) {
       GetNotifications.request();
       GetRecipients.request();
@@ -93,8 +93,12 @@ class _HomeState extends State<Home> {
             .setPaymentMethodID(getPaymentMethod);
       }
     });
-    Future.delayed( const Duration(seconds: 2),(){
-      getResources();
+    Future.delayed( const Duration(seconds: 2),()async{
+     await getResources();
+      // WidgetsBinding.instance.addPostFrameCallback((_){
+      //   final calculate=Provider.of<Calculator>(context,listen: false);
+      //   calculate.getAgents(calculate.providersNew);
+      // });
     });
   
   }
@@ -150,6 +154,9 @@ class _HomeState extends State<Home> {
             onRefresh: () async {
               await getResources();
               state.setPrice(state.sender.text, usd: state.sendUSD);
+              // Future.delayed(const Duration(seconds: 2),(){
+              //   state.getAgents(state.providersNew);
+              // });
               // state.clearFields();
               // state.setCalculateAmount(CalculateAmountModel());   
             },
@@ -227,10 +234,10 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                const SizedBox(height: 7,),
-              //  const Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 10),
-              //     child: const Sliders(),
-              //   ),
+               const Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: const Sliders(),
+                ),
                  const SizedBox(height: 20,),
               ],
             ),

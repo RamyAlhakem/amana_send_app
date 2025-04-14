@@ -55,7 +55,7 @@ class _SendFormFieldsState extends State<SendFormFields>
     _calculator = Provider.of<Calculator>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       _calculator = Provider.of<Calculator>(context, listen: false);
+      //  _calculator = Provider.of<Calculator>(context, listen: false);
       Tutorial(context).showTutorial();
 //       Future.delayed(const Duration(seconds: 2),(){
 // _calculator.setIsLoad(false);
