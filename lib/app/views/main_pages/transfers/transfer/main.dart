@@ -232,13 +232,15 @@ class _TransferMainState extends State<TransferMain>
                             }
                             final calculator =
                                 Provider.of<Calculator>(context, listen: false);
-                            calculator.setReceiverCountry(CountryModel());
+                            calculator.setReceiverCountry(transfer.recipient.country);
+                            // calculator.setReceiveCity(transfer.city);
                             // calculator.agentsVisibility(true);
                             calculator.recipientSend(
                               transfer.recipient,
                               transfer: transfer,
                               navigate: true,
                             );
+                        
                           },
                           height: 55,
                           width: MediaQuery.of(context).size.width,

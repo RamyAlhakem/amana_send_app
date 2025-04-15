@@ -377,11 +377,20 @@ class Calculator with ChangeNotifier {
       // setAgent(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
       Future.delayed(const  Duration(seconds: 2),(){
+        Helper.log("city           =========>>>>>>>>>> ${transfer.city}");
+      
+         setReceiveCity(transfer.city);
+
+
+notifyListeners();
+      });
+         Future.delayed(const  Duration(seconds: 3),(){
+      
 setAgent(transfer.provider);
 
 notifyListeners();
       });
-      Future.delayed(const  Duration(seconds: 3),(){
+      Future.delayed(const  Duration(seconds: 4),(){
 
 isLoad=false;
 notifyListeners();
