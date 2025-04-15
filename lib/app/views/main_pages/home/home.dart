@@ -157,8 +157,8 @@ class _HomeState extends State<Home> {
               // Future.delayed(const Duration(seconds: 2),(){
               //   state.getAgents(state.providersNew);
               // });
-              // state.clearFields();
-              // state.setCalculateAmount(CalculateAmountModel());   
+              state.clearFields();
+              state.setCalculateAmount(CalculateAmountModel());   
             },
             child: ListView(
               clipBehavior: Clip.none,
@@ -235,8 +235,8 @@ class _HomeState extends State<Home> {
                 ),
                const SizedBox(height: 7,),
                const Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const Sliders(),
+                  padding:  EdgeInsets.symmetric(horizontal: 10),
+                  child:  Sliders(),
                 ),
                  const SizedBox(height: 20,),
               ],

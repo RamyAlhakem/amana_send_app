@@ -269,7 +269,7 @@ class Calculator with ChangeNotifier {
       calculate(value, isSender);
     } else {
       clearFields();
-      // setCalculateAmount(CalculateAmountModel()); 
+      setCalculateAmount(CalculateAmountModel()); 
     }
 
     notifyListeners();
@@ -309,7 +309,7 @@ class Calculator with ChangeNotifier {
       } else {
         _sender.text = "";
         _receiver.text = "";
-        // setCalculateAmount(CalculateAmountModel()); 
+        setCalculateAmount(CalculateAmountModel()); 
       }
     });
     recieverLoading = senderLoading = false;
