@@ -235,7 +235,7 @@ Widget whtaUpBtn(BuildContext context){
       ),
                         shape:WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)))),
                       onPressed: (){
-                    callWhatsUp("00447933600060");
+                    openWhatsApp("447933600060");
                     }, child: Row(
                     
                       children: [
@@ -255,4 +255,13 @@ callWhatsUp(String phone)async{
                       if(await canLaunchUrl(phoneUri)){
                         launchUrl(phoneUri);
                       }
+}
+void openWhatsApp(String phoneNumber) async {
+  final Uri whatsappUri = Uri.parse("https://wa.me/$phoneNumber"); 
+  
+  if (await canLaunchUrl(whatsappUri)) {
+    await launchUrl(whatsappUri);
+  } else {
+    Helper.log("Could not launch WhatsApp");
+  }
 }
