@@ -33,7 +33,7 @@ runs:
         CURRENT_SHA="$GITHUB_SHA"
         TRIGGERING_ACTOR="$GITHUB_ACTOR"
 
-        echo "Fetching current run duration from GitHub..."
+        echo "--- Fetching duration ---"
         RUN_ID="$GITHUB_RUN_ID"
         REPO="$GITHUB_REPOSITORY"
         STARTED_AT=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}" --jq '.run_started_at')
@@ -42,57 +42,55 @@ runs:
         END_EPOCH=$(date -d "$COMPLETED_AT" +%s)
         DURATION=$((END_EPOCH - START_EPOCH))
         FORMATTED_DURATION=$(printf "%02d:%02d" $((DURATION / 60)) $((DURATION % 60)))
-        echo "Run duration: ${FORMATTED_DURATION}min"
 
-        echo "Owner: $OWNER"
-        echo "Repo: $REPO_NAME"
-        echo "Branch: $BRANCH_NAME"
-        echo "Current SHA: $CURRENT_SHA"
-        echo "Triggering Actor: $TRIGGERING_ACTOR"
-        echo "Starting commit fetching and notification process..."
+        echo "--- Run duration: ${FORMATTED_DURATION}min ---"
+        echo "--- Owner: $OWNER ---"
+        echo "--- Repo: $REPO_NAME ---"
+        echo "--- Branch: $BRANCH_NAME ---"
+        echo "--- Current SHA: $CURRENT_SHA ---"
+        echo "--- Triggering Actor: $TRIGGERING_ACTOR ---"
+        echo "--- Starting commit fetching and notification process ...---"
 
         COMMIT_FETCH_FAILED="false"
         PREVIOUS_SHA=""
         COMMITS_JSON_DATA="[]"
 
-        echo "Fetching workflow ID for ${BRANCH_NAME}..."
+        echo "--- Fetching workflow ID for ${BRANCH_NAME} ---"
         WORKFLOW_ID=$(gh api "repos/${OWNER}/${REPO_NAME}/actions/workflows" --jq ".workflows[] | select(.path==\".github/workflows/${BRANCH_NAME}.yml\") | .id" 2>/dev/null || echo "")
 
         if [ -z "$WORKFLOW_ID" ]; then
-          echo "::warning::Workflow ID not found for workflow file .github/workflows/${BRANCH_NAME}.yml. Cannot determine commit range."
+          echo "--- ::warning::Cannot determine commit range, Workflow ID is not set or its your first commit on ${BRANCH_NAME} ---"
           COMMIT_FETCH_FAILED="true"
         else
-          echo "Workflow ID: $WORKFLOW_ID"
-          echo "Fetching last successful run SHA on branch ${BRANCH_NAME}..."
+          echo "--- Fetching last successful run on branch ${BRANCH_NAME} ---"
 
           PREVIOUS_SHA=$(gh api "repos/${OWNER}/${REPO_NAME}/actions/workflows/${WORKFLOW_ID}/runs?branch=${BRANCH_NAME}&status=success&per_page=1" \
             --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || echo "")
 
           if [ -z "$PREVIOUS_SHA" ]; then
-            echo "::warning::No previous successful run found on branch ${BRANCH_NAME}. Cannot determine commit range."
+            echo "--- ::warning::Cannot determine commit range, No previous successful run found on ${BRANCH_NAME} or its your first commit on ${BRANCH_NAME} ---"
             COMMIT_FETCH_FAILED="true"
           elif [ "$PREVIOUS_SHA" == "$CURRENT_SHA" ]; then
-            echo "No new commits since last successful run (SHA: $PREVIOUS_SHA)."
+            echo "--- No new commits since last successful run of ${BRANCH_NAME} ---"
           else
-            echo "Previous successful SHA: $PREVIOUS_SHA"
-            echo "Fetching commits between $PREVIOUS_SHA and $CURRENT_SHA..."
+            echo "--- Fetching commits ---"
 
             COMMITS_JSON_DATA=$(gh api "repos/${OWNER}/${REPO_NAME}/compare/${PREVIOUS_SHA}...${CURRENT_SHA}" --jq '[.commits[] | {sha: .sha, message: .commit.message, author: .commit.author.name}]' 2>/dev/null || echo "FETCH_ERROR")
 
             if [[ "$COMMITS_JSON_DATA" == "FETCH_ERROR" ]] || [[ "$COMMITS_JSON_DATA" == "null" ]] || [[ -z "$COMMITS_JSON_DATA" ]]; then
-              echo "::warning::Failed to get commits from GitHub compare API between $PREVIOUS_SHA and $CURRENT_SHA. Sending notification without changelog."
+              echo "--- ::warning::Failed to get commits, Sending notification without changelog ---"
+
               COMMITS_JSON_DATA="[]"
               COMMIT_FETCH_FAILED="true"
             elif [[ "$COMMITS_JSON_DATA" == "[]" ]]; then
-              echo "No new unique commits found between $PREVIOUS_SHA and $CURRENT_SHA."
+              echo "--- No new commits found on ${BRANCH_NAME} ---"
             else
-              echo "Successfully fetched commit data."
+              echo "--- Successfully fetched commit data ---"
             fi
           fi
         fi
 
-        echo "Commit fetching part complete. Fetch failed: $COMMIT_FETCH_FAILED"
-        echo "Preparing ClickUp notification..."
+        echo "--- Preparing ClickUp notification ---"
 
         TRIGGERING_USER_NAME=$(curl -sf -H "Authorization: Bearer ${GH_TOKEN}" \
           -H "Accept: application/vnd.github.v3+json" \
@@ -101,9 +99,8 @@ runs:
         if [ -z "$TRIGGERING_USER_NAME" ]; then
             TRIGGERING_USER_NAME="${TRIGGERING_ACTOR}"
         fi
-        echo "Triggering user: $TRIGGERING_USER_NAME"
 
-        BASE_MESSAGE="🚀 **${CLICKUP_PROJECT_NAME}** deployment to **staging** succeeded"
+        BASE_MESSAGE="🚀 **${CLICKUP_PROJECT_NAME}** deployed to **${BRANCH_NAME}**"
         DEPLOY_INFO=$(printf '\n_Triggered by: %s, Done in: %smin_' "$TRIGGERING_USER_NAME" "$FORMATTED_DURATION")
         COMMIT_LIST_MD=""
 
@@ -114,24 +111,24 @@ runs:
           ')
 
           if [ $? -ne 0 ]; then
-            echo "::warning:: jq command failed to generate commit list."
+            echo "--- ::warning:: JQ command failed to generate commit list ---"
             COMMIT_LIST_MD=""
           fi
         fi
 
         MESSAGE_CONTENT="${BASE_MESSAGE}${DEPLOY_INFO}${COMMIT_LIST_MD}"
-
-        echo "--- Message Content Start ---"
         echo -e "$MESSAGE_CONTENT"
-        echo "--- Message Content End ---"
 
         ESCAPED_CONTENT=$(printf '%s' "$MESSAGE_CONTENT" | jq -s -R '.')
         if [ $? -ne 0 ] || [ -z "$ESCAPED_CONTENT" ]; then
-            echo "::error:: jq command failed to escape the final message content."
+            echo "--- ::error:: JQ command failed to escape the final message content ---"
+
             MESSAGE_CONTENT="${BASE_MESSAGE}${DEPLOY_INFO}\n\n*(Error formatting change log)*"
             ESCAPED_CONTENT=$(printf '%s' "$MESSAGE_CONTENT" | jq -s -R '.')
+
             if [ $? -ne 0 ] || [ -z "$ESCAPED_CONTENT" ]; then
-              echo "::error:: Could not even escape the fallback message. Aborting ClickUp notification."
+              echo "--- ::error:: Could not even escape the fallback message, Aborting ClickUp notification ---"
+
               exit 1
             fi
         fi
@@ -145,11 +142,9 @@ runs:
         EOF
         )
 
-        echo "--- JSON Payload Start ---"
         echo "$JSON_PAYLOAD"
-        echo "--- JSON Payload End ---"
 
-        echo "Sending payload to ClickUp..."
+        echo "--- Sending payload to ClickUp ---"
 
         RESPONSE_FILE=$(mktemp)
         HTTP_RESPONSE=$(curl --fail-with-body -s -o "$RESPONSE_FILE" -w "%{http_code}" -X POST \
@@ -160,21 +155,21 @@ runs:
           -d "$JSON_PAYLOAD")
         CURL_EXIT_CODE=$?
 
-        echo "ClickUp API HTTP Status Code: $HTTP_RESPONSE"
-        echo "ClickUp API Response Body:"
+        echo "--- ClickUp API HTTP Status Code: $HTTP_RESPONSE ---"
+        echo "--- ClickUp API Response Body: ---"
         cat "$RESPONSE_FILE" || echo "(No response body)"
         rm -f "$RESPONSE_FILE"
 
         if [ $CURL_EXIT_CODE -ne 0 ]; then
-            echo "::error:: curl command failed with exit code $CURL_EXIT_CODE. See response body above for details."
+            echo "--- ::error:: curl command failed with exit code $CURL_EXIT_CODE, See response body above for details ---"
 
             if [ $CURL_EXIT_CODE -eq 22 ]; then
-              echo "::error:: ClickUp API request failed with HTTP status $HTTP_RESPONSE."
+              echo "--- ::error:: ClickUp API request failed with HTTP status $HTTP_RESPONSE ---"
             fi
             exit 1
         elif [[ "$HTTP_RESPONSE" -lt 200 || "$HTTP_RESPONSE" -ge 300 ]]; then
-            echo "::error:: ClickUp API request returned non-success status code $HTTP_RESPONSE."
+            echo "--- ::error:: ClickUp API request returned non-success status code $HTTP_RESPONSE ---"
             exit 1
         else
-            echo "ClickUp notification sent successfully."
+            echo "--- ClickUp notification sent successfully ---"
         fi
