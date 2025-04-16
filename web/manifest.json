@@ -1,6 +1,6 @@
 {
-    "name": "amana_send",
-    "short_name": "amana_send",
+    "name": "ex",
+    "short_name": "ex",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

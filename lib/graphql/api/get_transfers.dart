@@ -17,7 +17,7 @@ class GetTransfers {
 
   static late TransfersState _provider;
   static late AppLocalizations? _arb;
-  static Map<String, dynamic> _variables = const <String, dynamic>{};
+  static Map<String, dynamic> _variables = const <String, dynamic>{};  
 
   Future<bool> request() async {
     bool isNotEmpty = false;

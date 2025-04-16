@@ -1,3 +1,5 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:amana_send/helper/helper.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,6 +33,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
   late AppLocalizations? _arb;
 
   late List<CountryModel> _countries;
+  late List<CountryModel> allCountries;
   late bool isRegistration;
 
   @override
@@ -42,6 +45,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
     _countries = isRegistration
         ? _calculator.sendCountries
         : _calculator.receiveCountries;
+        allCountries=_countries;
   }
 
   @override
@@ -79,71 +83,93 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
           visible: _countries.isNotEmpty,
           child: InkWell(
             borderRadius: BorderRadius.circular(4),
-            onTap: () => SettingsDialog(
+            onTap: () {
+               _countries = isRegistration
+        ? _calculator.sendCountries
+        : _calculator.receiveCountries;
+              SettingsDialog(
+              onChanged: (text){
+                if(text.isNotEmpty){
+                  List<CountryModel> foundCountries= allCountries.where((e)=>isAr? e.arName.toLowerCase().contains(text.toLowerCase()):e.enName.toLowerCase().startsWith(text.toLowerCase())).toList();
+                  _countries=foundCountries;
+               _calculator.updateUi();
+               Helper.log("text ======>>>>>>> $text ,countries====>>>>>>>>>>$_countries");
+                }
+                else{
+                   _countries = isRegistration
+        ? _calculator.sendCountries
+        : _calculator.receiveCountries;
+      _calculator.updateUi();
+        Helper.log("else ======>>>>>>> $text");
+                }
+              },
               onSubmit: null,
               title: _arb!.countries,
               subTitle: _arb!.selectCountryPhoneCodeFromTheListBelow,
-              subTitleStyle:
-                  const TextStyle(color: Colors.white, fontSize: 14),
+              subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
               horizontalPadding: 0,
               content: (state) => Scrollbar(
                 interactive: true,
                 thumbVisibility: true,
                 thickness: 5,
                 radius: const Radius.circular(100),
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  children: [
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(
-                          isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
-                      itemCount: _countries.length,
-                      itemBuilder: (BuildContext _, int i) {
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(100),
-                          onTap: () => state(() {
-                            setState(() {
-                              if (isRegistration) {
-                                provider.setCountry(
-                                  _calculator.setSendCountry(_countries[i]),
-                                );
-                              } else {
-                                provider.setCountry(
-                                  _calculator
-                                      .setReceiverCountry(_countries[i]),
-                                );
-                              }
-                              provider.setCities(_countries[i].cities);
-      
-                              _calculator.setPrice(_calculator.sender.text,
-                                  usd: _calculator.sendUSD);
-                            });
-      
-                            SettingsDialog.dismiss();
-                          }),
-                          child: Country(
-                            registration: true,
-                            country: _countries[i],
-                            selected: provider.country?.coCode ==
-                                _countries[i].coCode,
-                          ),
-                        );
-                      },
-                      separatorBuilder: (__, ___) {
-                        return const HDivider(
-                          color: Colors.white,
-                          height: 8,
-                          thickness: 0.1,
-                        );
-                      },
-                    ),
-                  ],
+                child: Consumer<Calculator>(
+                  builder: (context, state1, child) =>
+                  ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(
+                            isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
+                        itemCount: _countries.length,
+                        itemBuilder: (BuildContext _, int i) {
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: () => state(() {
+                              setState(() {
+                                if (isRegistration) {
+                                  provider.setCountry(
+                                    _calculator.setSendCountry(_countries[i]),
+                                  );
+                                } else {
+                                  provider.setCountry(
+                                    _calculator.setReceiverCountry(_countries[i]),
+                                  );
+                                }
+                                provider.setCities(_countries[i].cities);
+                  
+                                _calculator.setPrice(_calculator.sender.text,
+                                    usd: _calculator.sendUSD);
+                              });
+                  
+                              SettingsDialog.dismiss();
+                            }),
+                            child: Country(
+                              registration: true,
+                              country: _countries[i],
+                              selected: provider.country?.coCode ==
+                                  _countries[i].coCode,
+                            ),
+                          );
+                        },
+                        separatorBuilder: (__, ___) {
+                          return const HDivider(
+                            color: Colors.white,
+                            height: 8,
+                            thickness: 0.1,
+                          );
+                        },
+                      ),
+                    ],
+                  ) ,
+                  
                 ),
               ),
-            ).show(),
+            ).show();
+            },
             child: Visibility(
               visible: provider.country == null,
               replacement: Row(
@@ -151,13 +177,15 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                 children: [
                   const SizedBox(width: 8),
                   if (provider.country != null)
-                    Flag.fromString(
-                      provider.country!.coCode,
-                      height: 30,
-                      width: 30,
-                      fit: BoxFit.fill,
-                      borderRadius: 100,
-                    ),
+                    provider.country!.coCode == "sy"
+                        ? const SyrFlag()
+                        : Flag.fromString(
+                            provider.country!.coCode,
+                            height: 30,
+                            width: 30,
+                            fit: BoxFit.fill,
+                            borderRadius: 100,
+                          ),
                   const SizedBox(width: 8),
                   if (provider.country != null)
                     TextX('+${provider.country!.phoneCode}'),

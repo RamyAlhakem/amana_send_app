@@ -37,6 +37,30 @@ class Mutations {
     }
       ''';
 
+
+
+
+static const String calculateAmount = '''
+mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$sendAmount: Float ,\$recipientAmount: Float) {
+  calculateAmount(
+    coCode: \$coCode
+    sendCountryCode: \$sendCountryCode
+    isReceiveInUSD: \$isReceiveInUSD
+    paymentMethodId: \$paymentMethodId
+    providerId: \$providerId
+    sendAmount: \$sendAmount
+    recipientAmount: \$recipientAmount
+  ) {
+    
+    recipientAmount
+    sendAmount
+    sendFees
+    totalAmount
+    receiveFees
+  }
+}
+''';
+
   static const String userChangePassword = '''
     mutation userChangePassword(\$currentPassword: NonEmptyString!, \$newPassword: NonEmptyString!, \$confirmNewPassword: NonEmptyString!) {
       userChangePassword(
@@ -71,17 +95,42 @@ class Mutations {
       }
       ''';
 
+//   static String recipientAdd(int id) {
+//     return '''
+//    mutation recipient {
+//   recipientAdd(
+//     arFatherName: \$arFatherName
+//     arFirstName: \$arFirstName
+//     arLastName: \$arLastName
+//   firstName: \$firstName
+//   lastName: \$lastName
+//   fatherName: \$fatherName
+//   countryCode: \$countryCode
+//    mobile: \$mobile
+//    whatsappNumber: \$whatsappNumber
+//     note: \$note
+//   ) {
+//     code
+//     message
+//   }
+// }
+//       ''';
+//   }
   static String recipientAdd(int id) {
     return '''
-    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$firstName: String!, \$lastName: String!, \$fatherName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$whatsappNumber: NonEmptyString!) {
+    mutation recipient${id == 0 ? 'Add' : 'Edit'}(${id != 0 ? '\$id: Int!, ' : ''}\$arFatherName: String!, \$arFirstName: String!, \$arLastName: String!, \$countryCode: NonEmptyString!, \$mobile: NonEmptyString!, \$whatsappNumber: NonEmptyString!,\$firstName:String!,\$lastName:String!,\$fatherName:String!,\$note:String!,) {
       recipient${id == 0 ? 'Add' : 'Edit'}(
         ${id != 0 ? 'id: \$id' : ''}
-        firstName: \$firstName
-        lastName: \$lastName
-        fatherName: \$fatherName
-        countryCode: \$countryCode
-        mobile: \$mobile
-        whatsappNumber: \$whatsappNumber
+      arFatherName: \$arFatherName
+    arFirstName: \$arFirstName
+    arLastName: \$arLastName
+  firstName: \$firstName
+  lastName: \$lastName
+  fatherName: \$fatherName
+  countryCode: \$countryCode
+   mobile: \$mobile
+   whatsappNumber: \$whatsappNumber
+    note: \$note
       ) {
         message
       }

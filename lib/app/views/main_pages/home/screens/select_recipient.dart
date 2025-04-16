@@ -1,3 +1,4 @@
+import 'package:amana_send/app/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -71,13 +72,13 @@ class SelectRecipient extends StatefulWidget {
           if (user.level.maxAmount < senderAmount) {
             return ContactUs(
               message:
-                  '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
+                  '${arb.yourMaxLevelSendingAmountIs} ${user.level.maxAmount} ${calculator.paymentMethodName}.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
             ).show();
           }
           if (user.remainingSendLimit < senderAmount) {
             return ContactUs(
               message:
-                  '${arb.yourMaxSendingAmountWithin} ${user.level.duration.toStringAsFixed(0)} ${arb.day} ${arb.iS} ${user.remainingSendLimit} USDT.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
+                  '${arb.yourMaxSendingAmountWithin} ${user.level.duration.toStringAsFixed(0)} ${arb.day} ${arb.iS} ${user.remainingSendLimit} ${calculator.paymentMethodName}.\n${arb.toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount}',
             ).show();
           }
           if (double.parse(calculator.receiver.text) <
@@ -158,6 +159,7 @@ class _SelectRecipientState extends State<SelectRecipient>
 
   @override
   Widget build(BuildContext context) {
+    final  arb = AppLocalizations.of(context)!;
     super.build(context);
     return Consumer<RecipientsState>(builder: (_, recipients, child) {
       child = Visibility(
@@ -166,34 +168,47 @@ class _SelectRecipientState extends State<SelectRecipient>
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
           children: const [ShimmerLoad(height: 80, verticalCount: 4)],
         ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-          itemCount: recipients.all.length,
-          itemBuilder: (BuildContext context, int i) {
-            // Fill up select list once empty or when recipients list is changed.
-            selection = Tools.setSelect(recipients.all, selection);
-            return InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: () => setState(() {
-                // give selected recipient values for start send purpose
-                _calc.recipientSend(recipients.all[i]).then((isOK) {
-                  /// if all conditions met [isOK]:
-                  if (isOK) {
-                    // reset [selection] list to close all expanded recipients cards.
-                    selection = Tools.setSelect(recipients.all, <bool>[]);
-
-                    // select recipient by expanding their card.
-                    selection[i] = !selection[i];
-                  }
-                });
-              }),
-              child: RecipientSelector(
-                recipient: recipients.all[i],
-                select: selection[i],
+        child: Column(
+          children: [
+           const SizedBox(height: 20,),
+            SearchWidget(
+                    hint: arb.search,
+                    onChange: (text){
+                       recipients.search(text);
+                    },
+                  ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                itemCount: recipients.receipients.length,
+                itemBuilder: (BuildContext context, int i) {
+                  // Fill up select list once empty or when recipients list is changed.
+                  selection = Tools.setSelect(recipients.receipients, selection);
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () => setState(() {
+                      // give selected recipient values for start send purpose
+                      _calc.recipientSend(recipients.receipients[i]).then((isOK) {
+                        /// if all conditions met [isOK]:
+                        if (isOK) {
+                          // reset [selection] list to close all expanded recipients cards.
+                          selection = Tools.setSelect(recipients.receipients, <bool>[]);
+              
+                          // select recipient by expanding their card.
+                          selection[i] = !selection[i];
+                        }
+                      });
+                    }),
+                    child: RecipientSelector(
+                      recipient: recipients.receipients[i],
+                      select: selection[i],
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ],
         ),
       );
       return child;

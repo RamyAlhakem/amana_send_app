@@ -1,3 +1,5 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -38,13 +40,13 @@ class CheckOutDetails extends StatefulWidget {
             context,
             page,
             recipientAmount: double.parse(calculator.receiver.text),
-            sendAmount:
-                double.parse(calculator.amountPlusFee.toStringAsFixed(2)),
+            sendAmount: calculator.calculateAmount.totalAmount +
+                calculator.calculateAmount.receiveFees,
             recipientId: calculator.selectedRecipient!.id,
             isReceiveInUSD: calculator.sendUSD,
             receivingCityId: calculator.receiverCity.id,
             providerId: calculator.receiverAgent.id,
-            paymentMethodId: 1,
+            paymentMethodId: calculator.paymentMethodID,
           ).request();
         },
         height: 45,
@@ -110,7 +112,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
-      final rate = state.dynamicAgentRate;
+      final rate = state.receiverAgent.tab;
       final bool usd = state.receiverAgent.usdAvailability == 2;
       child = Stack(
         clipBehavior: Clip.none,
@@ -151,6 +153,32 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
+                        ]),
+                         const SizedBox(height: 8),
+                            RowSpaceBetween([
+                          TextX(arb.mobileNumber),
+                          const SizedBox(width: 15),
+                          Flexible(
+                            child: TextX(
+                              isAR
+
+                              ?' ${state.selectedRecipient?.mobile} ${state.selectedRecipient!.country.phoneCode}+ '
+                                  .toUpperCase()
+                                  :"+${state.selectedRecipient!.country.phoneCode} ${state.selectedRecipient?.mobile} "
+                                  ,
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: MainColors.color3),
+                            ),
+                          ),
+                        //   state.selectedRecipient!.country.coCode=="sy"
+                              
+                        // ? const SyrFlag()
+                        // : Flag.fromString(
+                        //     state.selectedRecipient!.country.coCode,
+                        //     height: 30,
+                        //     width: 30,
+                        //     fit: BoxFit.fill,
+                        //     borderRadius: 100,
+                        //   ),
                         ]),
                         const SizedBox(height: 8),
                         RowSpaceBetween([
@@ -197,11 +225,13 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${isAR ? '' : '1'} USDT ${isAR ? '1 ' : ''}= ',
+                                      '${isAR ? ' ' : '1'} ${state.paymentMethodName} ${isAR ? '1 ' : ' '}= ',
                                 ),
                                 TextSpan(
                                   text:
-                                      '${usd ? 'USD' : state.receiverCountry.currency.code}${Tools.nicePrice(rate)}',
+                                      '${usd ? 'USD' : state.receiverCountry.currency.code}'
+                                      ' '
+                                      '${rate.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")}',
                                 ),
                               ],
                             ),
@@ -223,10 +253,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text:
-                                      '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
+                                  text: '${state.calculateAmount.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -246,9 +275,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
+                                      '${Tools.nicePrice(state.calculateAmount.receiveFees)} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                             ),
                           ),
@@ -262,9 +291,9 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      '${Tools.nicePrice(state.amountPlusFee)} ',
+                                      '${(state.calculateAmount.totalAmount + state.calculateAmount.receiveFees).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                                 ),
-                                const TextSpan(text: 'USDT'),
+                                TextSpan(text: state.paymentMethodName),
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -285,7 +314,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: Decorations.note(context),
                     child: TextX(
-                      arb.weOnlyAcceptInUSDT,
+                     " ${arb.weOnlyAcceptInUSDT} ${state.paymentMethodName}",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: MainColors.red,
                             fontWeight: FontWeight.bold,
@@ -329,6 +358,8 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                       ),
                     ),
                   ),
+                
+                
                 ],
               ),
             ),

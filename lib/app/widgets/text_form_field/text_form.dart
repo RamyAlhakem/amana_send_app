@@ -43,9 +43,11 @@ class TextFieldX extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.textDirection,
     this.floatingLabelBehavior,
+    this.onEditingComplete,
   }) : super(key: key);
 
   final Function(String)? onChanged;
+  final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
   final void Function()? onTap;
   final TextEditingController? controller;
@@ -87,6 +89,7 @@ class TextFieldX extends StatelessWidget {
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: TextFormField(
             readOnly: readOnly,
+            onEditingComplete:onEditingComplete,
             style: style,
             autocorrect: false,
             enableSuggestions: false,

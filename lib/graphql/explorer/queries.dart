@@ -93,12 +93,12 @@ class Queries {
       ''';
 
   static const String providers = '''
-    query providers {
-      providers {
-        ${Explorer.provider}
-      }
+  query providers(\$cityId: Int, \$paymentMethodId: Int, \$sendCountryCode: String) {
+    providers(cityId: \$cityId, paymentMethodId: \$paymentMethodId, sendCountryCode: \$sendCountryCode) {
+      ${Explorer.provider}
     }
-      ''';
+  }
+''';
 
   static const String transaction = '''
     query MyQuery(\$id: ID!) {
@@ -130,4 +130,19 @@ class Queries {
       }
     }
       ''';
+        static const String sliders = ''' 
+  
+  query MyQuery(\$type: Int = 10) {
+  sliders(type: \$type) {
+    id
+    picUrl
+    sortId
+    status
+    title
+    type
+  }
+}
+  
+  
+  ''';
 }

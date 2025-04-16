@@ -1,3 +1,5 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
+import 'package:amana_send/models/currency.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,11 +35,26 @@ class CountryRoller extends StatelessWidget {
       CountryModel country = send ? state.sendCountry : state.receiverCountry;
       List<CountryModel> countries =
           send ? state.sendCountries : state.receiveCountries;
+      List<CountryModel> allContries =
+          send ? state.sendCountries : state.receiveCountries;
       child = PickerForm(
         () => SettingsDialog(
+          onChanged: (text) {
+            if(text.isNotEmpty){
+              final List<CountryModel> foundContries=allContries.where((e)=>isAr? e.arName.toLowerCase().contains(text.toLowerCase()):e.enName.toLowerCase().contains(text.toLowerCase())).toList();
+countries=foundContries;
+state.updateUi();
+            }
+            else{
+              countries =
+          send ? state.sendCountries : state.receiveCountries;
+          state.updateUi();
+            }
+          },
           onSubmit: null,
           title: title,
-          subTitle: arb.chooseCountry,
+          // subTitle: arb.chooseCountry,
+          subTitle: "",
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
           content: (setState) => Scrollbar(
@@ -45,43 +62,48 @@ class CountryRoller extends StatelessWidget {
             thumbVisibility: true,
             thickness: 5,
             radius: const Radius.circular(100),
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              children: [
-                ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.fromLTRB(
-                      isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    for (int i = 0; i < countries.length; i++)
-                      if (send || countries[i].cities.isNotEmpty)
-                        if (send || countries[i].cities.first.agents.isNotEmpty)
-                          InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: () => setState(() {
-                              if (send) {
-                                country = state.setSendCountry(
-                                  state.sendCountries[i],
-                                );
-                              } else {
-                                country = state.setReceiverCountry(
-                                  state.receiveCountries[i],
-                                );
-                              }
-
-                              state.setPrice(state.sender.text);
-                              SettingsDialog.dismiss();
-                            }),
-                            child: Country(
-                              country: countries[i],
-                              selected: country.coCode == countries[i].coCode,
+            child: Consumer<Calculator>(
+              builder: (context, calculater, child) =>
+              ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.fromLTRB(
+                        isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      for (int i = 0; i < countries.length; i++)
+                        if (send || countries[i].cities.isNotEmpty)
+                            InkWell(
+                              borderRadius: BorderRadius.circular(100),
+                              onTap: () => setState(() {
+                                if (send) {
+                                  country = state.setSendCountry(
+                                   countries[i],
+                                  );
+                                  state.setCalculateAmount(CalculateAmountModel());                  
+                                } else {
+                                  country = state.setReceiverCountry(
+                                    countries[i],
+                                  );
+                                   state.setCalculateAmount(CalculateAmountModel());     
+                                }
+              state.clearFields();
+                                // state.setPrice(state.sender.text);
+                                SettingsDialog.dismiss();
+                              }),
+                              child: Country(
+                                country: countries[i],
+                                selected: country.coCode == countries[i].coCode,
+                              ),
                             ),
-                          ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ) ,
+              
             ),
           ),
         ).show(),
@@ -93,13 +115,15 @@ class CountryRoller extends StatelessWidget {
           send ? HeroIcons.arrowUpRight : HeroIcons.arrowDownRight,
           size: 15,
         ),
-        valueIcon: Flag.fromString(
-          country.coCode.isEmpty ? 'us' : country.coCode,
-          height: 28,
-          width: 28,
-          borderRadius: 100,
-          fit: BoxFit.fill,
-        ),
+        valueIcon: country.coCode == "sy"
+            ? const SyrFlag()
+            : Flag.fromString(
+                country.coCode.isEmpty ? 'us' : country.coCode,
+                height: 28,
+                width: 28,
+                borderRadius: 100,
+                fit: BoxFit.fill,
+              ),
         color: Theme.of(context).cardColor,
       );
       return child;

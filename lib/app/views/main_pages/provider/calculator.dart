@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
+import 'package:amana_send/graphql/api/get_providers.dart';
+import 'package:amana_send/graphql/api/get_sliders.dart';
+import 'package:amana_send/models/slider_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -21,44 +26,40 @@ import '/router/app_route.dart';
 class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
-
+  List<SlidersModel> sliders = [];
+   List<AgentModel> providersNew=[];
+  PageController pageController=PageController();
+  int currentSlider=0;
+  Timer? timer;
   double _percentFee = 0;
   double _minFee = 0;
   double _usdRate = 0;
   double _usdRatio = 0;
   double _maxUSD = 0;
   double _minUSD = 0;
-  double _dynamicAgentRate = 0;
-
   bool _isLoading = true;
-
-  int _onlinePaymentMethodId = 0;
-  int _cashPaymentMethodId = 0;
-
+  bool senderLoading = false;
+  bool recieverLoading = false;
+  int _paymentMethodId = 1;
+  String _paymentMethodName = "";
+  String icon = "";
   RecipientModel? _selectedRecipient;
-
   List<AgentModel> _agents = <AgentModel>[];
   List<PaymentMethodModel> _payments = <PaymentMethodModel>[];
-
   List<CountryModel> _sendCountries = <CountryModel>[];
   List<CountryModel> _receiveCountries = <CountryModel>[];
   List<CurrencyModel> _currencies = <CurrencyModel>[];
-
   CountryModel _sendCountry = CountryModel();
   CountryModel _receiverCountry = CountryModel();
   CityModel _receiverCity = CityModel();
   AgentModel _receiverAgent = AgentModel();
-
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
-
+  CalculateAmountModel _calculateAmount = CalculateAmountModel();
   bool _sendUSD = false;
   bool _showAgents = false;
-
-  // double _fees = 0;
-
-  double _amountPlusFee = 0;
   double _exchangeRate = 0;
+  bool isLoad=false;
 
   //____________________________________________________________________________
 
@@ -68,45 +69,42 @@ class Calculator with ChangeNotifier {
   double get usdRatio => _usdRatio;
   double get maxUSD => _maxUSD;
   double get minUSD => _minUSD;
-  double get dynamicAgentRate => _dynamicAgentRate;
-
   bool get isLoading => _isLoading;
-
-  int get onlinePaymentMethodId => _onlinePaymentMethodId;
-  int get cashPaymentMethodId => _cashPaymentMethodId;
-
+  int get paymentMethodID => _paymentMethodId;
+  String get paymentMethodName => _paymentMethodName;
+  CalculateAmountModel get calculateAmount => _calculateAmount;
   RecipientModel? get selectedRecipient => _selectedRecipient;
-
   List<PaymentMethodModel> get payments => _payments;
   List<AgentModel> get agents => _agents;
-
   List<CountryModel> get sendCountries => _sendCountries;
   List<CountryModel> get receiveCountries => _receiveCountries;
   List<CurrencyModel> get currencies => _currencies;
-
   CountryModel get sendCountry => _sendCountry;
   CountryModel get receiverCountry => _receiverCountry;
   CityModel get receiverCity => _receiverCity;
   AgentModel get receiverAgent => _receiverAgent;
-
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
-
   bool get sendUSD => _sendUSD;
   bool get showAgents => _showAgents;
-
-  // double get fees => _fees;
-  double get amountPlusFee => _amountPlusFee;
   double get exchangeRate => _exchangeRate;
 
   //** */
   //____________________________________________________________________________
   //----------------------------------------------------------------------------
   //** */
+  
+  void setPaymentMethodID(PaymentMethodModel getPaymentMethod) {
+    if (getPaymentMethod.id != 0) {
+      _paymentMethodId = getPaymentMethod.id;
+      _paymentMethodName = getPaymentMethod.name;
+      icon = getPaymentMethod.iconUrl;
+      notifyListeners();
+    }
+  }
 
   void isRequestLoading(bool loading) {
     _isLoading = loading;
-
     if (!loading) notifyListeners();
   }
 
@@ -119,7 +117,6 @@ class Calculator with ChangeNotifier {
   //**Select a recipient.
   void selectRecipient(RecipientModel recipient) {
     _selectedRecipient = recipient;
-
     notifyListeners();
   }
 
@@ -132,11 +129,8 @@ class Calculator with ChangeNotifier {
   //**Get sender countries for registration purpose & setting exchange rates.
   void getSendCountries(List<CountryModel> countries) {
     initializeData();
-
     final UserModel user = Database().getUser;
-
     _sendCountries = countries;
-
     if (countries.isNotEmpty) {
       Global.appSettings.token.isEmpty
           ? setSendCountry(countries.first)
@@ -145,6 +139,12 @@ class Calculator with ChangeNotifier {
 
     setExchangeRate();
     getCurrencies();
+  }
+
+  void setCalculateAmount(CalculateAmountModel amount) {
+    _calculateAmount = amount;
+    Helper.log("calculate amount $_calculateAmount");
+    notifyListeners();
   }
 
   //**Get receiver countries to add a recipient & setting exchange rates.
@@ -167,9 +167,14 @@ class Calculator with ChangeNotifier {
 
   //**Get receiver city.
   void setReceiveCity(CityModel city) {
+    Helper.log("city id ========>>>>>>>${city.id}");
     _receiverCity = city;
-    if (city.agents.isNotEmpty) setAgent(city.agents.first);
-
+    GetProviders(
+      cityID: _receiverCity.id,
+      paymentMethodID: paymentMethodID,
+      sendCountryCode: sendCountry.coCode
+    ).request();
+    // isLoad=false;
     notifyListeners();
   }
 
@@ -177,31 +182,22 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
-      // _fees = 0;
-      _amountPlusFee = 0;
+      senderLoading=false;
+      recieverLoading=false;
       notifyListeners();
     });
   }
 
   void getPayments(List<PaymentMethodModel> elements) {
     _payments = elements;
-
-    List.generate(elements.length, (index) {
-      // isManual = 1 which is cash.
-      // isManual = 0 which is online.
-      if (elements[index].isManual == 1) {
-        _cashPaymentMethodId = elements[index].id;
-      } else if (elements[index].isManual == 0) {
-        _onlinePaymentMethodId = elements[index].id;
-      }
-    });
-
     notifyListeners();
   }
 
-  void getAgents(List<AgentModel> elements) {
-    _agents = elements;
-
+  void getAgents(List<AgentModel> providers) {
+    Helper.log("providers ===> $providers");
+  
+    _agents = providers;
+    setAgent(providers.first);
     notifyListeners();
   }
 
@@ -215,16 +211,23 @@ class Calculator with ChangeNotifier {
   }
 
   CountryModel setReceiverCountry(CountryModel country) {
+    Helper.log("city id ========>>>>>>>${_receiverCity.id}");
+    Helper.log("paymentMethodID ========>>>>>>>$paymentMethodID");
+    Helper.log("sendCountryCode: ========>>>>>>>${sendCountry.coCode }");
+
     _receiverCountry = country;
     _receiverCity = CityModel();
     _receiverAgent = AgentModel();
     if (country.cities.isNotEmpty) {
       _receiverCity = country.cities.first;
-      if (country.cities.first.agents.isNotEmpty) {
-        setAgent(country.cities.first.agents.first);
-      }
     }
 
+    GetProviders(
+      cityID: _receiverCity.id,
+      paymentMethodID: paymentMethodID,
+      sendCountryCode: sendCountry.coCode
+    ).request();
+    Helper.log("myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    ${paymentMethodID}    ${sendCountry.coCode}");
     setExchangeRate();
     return country;
   }
@@ -234,51 +237,17 @@ class Calculator with ChangeNotifier {
     sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
     _percentFee = sendCountry.sendFees;
     notifyListeners();
-    setDynamicAgentRate();
+
   }
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
-    _dynamicAgentRate = receiverAgent.rate * (1 - (percentFee / 100));
-
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
-    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
-  void setDynamicAgentRate() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      final double thisSender = double.tryParse(sender.text) ?? 0;
-      final double thisReceiver = double.tryParse(receiver.text) ?? 0;
-      if (thisSender > 0 && thisReceiver > 0) {
-        _dynamicAgentRate = thisReceiver / thisSender;
-      }
 
-      // Helper.log('thisSender: $thisSender');
-      // Helper.log('thisReceiver: $thisReceiver');
-      // Helper.log('dynamicAgentRate:  $_dynamicAgentRate ');
-      notifyListeners();
-    });
-  }
-
-  void roundReceiverAmount() {
-    if (receiver.text.isNotEmpty) {
-      double ceil = receiverCountry.currency.ceil;
-      double round = double.tryParse(receiver.text) ?? 0;
-
-      if (!sendUSD) {
-        round = ceil > 0 ? (round / ceil).ceilToDouble() * ceil : round;
-      } else {
-        round = round.ceilToDouble();
-      }
-
-      Helper.log('round: $round');
-      _receiver.text = '$round';
-      _receiver.text = Helper.priced(calculate(sender.text), currency: false);
-      // _sender.text = Helper.priced(calculate(receiver.text), currency: false);
-      setExchangeRate();
-    }
-  }
 
   void setPrice(String value, {bool? usd}) {
     if (usd == null) {
@@ -287,101 +256,64 @@ class Calculator with ChangeNotifier {
     } else {
       _sendUSD = usd;
     }
-
     if (sendUSD) {
       _minUSD = receiverAgent.minAmount / receiverAgent.rate;
       _maxUSD = receiverAgent.maxAmount / receiverAgent.rate;
     }
 
     if (value.isNotEmpty) {
-      double convertedAmount = double.parse(value);
-      convertedAmount = calculate(value);
-      setExchangeRate();
+      bool isSender = value ==
+          sender
+              .text; // true: how nuch you will send , false :how much you will recieve
 
-      if (value == sender.text) {
-        _receiver = TextEditingController(
-          text: convertedAmount.toStringAsFixed(
-            _receiverCountry.currency.code == 'SYP' ? 0 : 2,
-          ),
-        );
-      } else {
-        _sender =
-            TextEditingController(text: convertedAmount.toStringAsFixed(2));
-      }
+      calculate(value, isSender);
     } else {
       clearFields();
+      setCalculateAmount(CalculateAmountModel()); 
     }
 
     notifyListeners();
   }
 
-  double calculate(String controller) {
-    double receiverRate = 0;
-    final double receiverRatio = receiverAgent.receiveFees;
-
-    // Set receiverRate (recipient)
-    // sendUSD ? receiverRate = usdRate : 
-    receiverRate = receiverAgent.rate;
-
+  void calculate(String controller, bool isSender) async {
     final double amount = double.tryParse(controller) ?? 0;
-    double converted = 0;
-
-    final double ceil = receiverCountry.currency.ceil;
-
-    // Text fields calculation:-------------------------------------------------
-    if (controller == sender.text) {
-      // Writing from sender.text filed:
-
-      // Calculate user fees based on the percentage
-      double userFees = (percentFee * amount) / 100;
-
-      // Ensure that the calculated user fees do not fall below the minimum fee
-      double sendFees = userFees > minFee ? userFees : minFee;
-
-      // Calculate the amount after deducting the user fees
-      double amountWithoutUserFees = amount > sendFees ? amount - sendFees : 0;
-
-      // Calculate the converted amount based on currency conversion rate
-      // converted = sendUSD
-      //     ? amountWithoutUserFees
-      //     : amountWithoutUserFees * receiverRate;
-      converted =  amountWithoutUserFees * receiverRate;
-
-      if (!sendUSD) {
-        converted =
-            ceil > 0 ? (converted / ceil).ceilToDouble() * ceil : converted;
-      } else {
-        converted = converted.ceilToDouble();
-      }
-      _amountPlusFee = amount + receiverRatio;
+    String sendCountryCode = "";
+    Helper.log("provider id =====>>> ${receiverAgent.id}");
+    if (Global.appSettings.token.isEmpty) {
+      sendCountryCode = sendCountry.coCode;
     } else {
-      // Writing from receiver.text filed:
-
-      // Calculate the conversion fee based on the percentage and original amount
-      // final double sendFees = (amount / receiverRate) / (1 - (percentFee / 100));
-      // final double conversionFee = percentFee * to;
-
-      // Calculate the converted amount by applying the conversion fee and adjusting for the exchange rate
-
-      final double finalReceiverRate =
-          receiverRate - (receiverRate * (percentFee / 100));
-      // Calculate the total amount after applying the conversion fee
-      final double totalAmount = amount / finalReceiverRate;
-      final double transferCost = amount / receiverRate;
-      final double finalProfit = totalAmount - transferCost;
-      // Finally, store the result in the 'toConvert' variable
-      converted =
-          totalAmount + (finalProfit < minFee ? minFee - finalProfit : 0);
-
-      // Floor to sender amount only
-      converted = (converted * 100).floor() / 100;
-
-      _amountPlusFee = converted + receiverRatio;
+      sendCountryCode = Database().getUser.country.coCode;
     }
-    //--------------------------------------------------------------------------
 
-    setExchangeRate();
-    return converted;
+    await CalculateTransferMoney(context,
+            coCode: receiverCountry.coCode,
+            sendCountryCode: sendCountryCode,
+            providerId: receiverAgent.id,
+            isReceiveInUSD: receiverAgent.usdAvailability == 2,
+            sendAmount: isSender ? amount : null,
+            recipientAmount: isSender ? null : amount,
+            paymentMethodId: paymentMethodID)
+        .request()
+        .then((result) {
+      if (result) {
+        if (isSender) {
+          _receiver = TextEditingController(
+            text: _calculateAmount.recipientAmount.toStringAsFixed(
+              _receiverCountry.currency.code == 'SYP' ? 0 : 2,
+            ),
+          );
+        } else {
+          _sender = TextEditingController(
+              text: _calculateAmount.sendAmount.toStringAsFixed(2));
+        }
+      } else {
+        _sender.text = "";
+        _receiver.text = "";
+        setCalculateAmount(CalculateAmountModel()); 
+      }
+    });
+    recieverLoading = senderLoading = false;
+    notifyListeners();
   }
 
   void agentsVisibility(bool show) {
@@ -430,8 +362,11 @@ class Calculator with ChangeNotifier {
     canSend = checkRecipientAvailability(recipient);
 
     if (transfer != null) {
+      isLoad=true;
+      notifyListeners();
       _sender.text = '${transfer.sendAmount}';
       _receiver.text = '${transfer.recipientAmount}';
+        // setAgent(transfer.provider);
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
         _sendUSD = true;
@@ -439,15 +374,33 @@ class Calculator with ChangeNotifier {
         _sendUSD = transfer.isReceiveInUsd;
       }
 
-      setAgent(transfer.provider);
+      // setAgent(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
+      Future.delayed(const  Duration(seconds: 2),(){
+        Helper.log("city           =========>>>>>>>>>> ${transfer.city}");
+      
+         setReceiveCity(transfer.city);
+
+
+notifyListeners();
+      });
+         Future.delayed(const  Duration(seconds: 3),(){
+      
+setAgent(transfer.provider);
+
+notifyListeners();
+      });
+      Future.delayed(const  Duration(seconds: 4),(){
+
+isLoad=false;
+notifyListeners();
+      });
+        
     } else if (receiverCountry.id == 0) {
       setReceiverCountry(recipient.country);
     }
-
     // Check if user wants to send from recipient/recipients page.
     // if (showAgents) setReceiverCountry(recipient.country);
-
     if (canSend && navigate) {
       context.pushNamed(
         AppRoute.sendHub,
@@ -456,5 +409,41 @@ class Calculator with ChangeNotifier {
     }
 
     return canSend;
+  }
+  updateUi(){
+    notifyListeners();
+  }
+   
+  getSliders(int type) async {
+    sliders = await GetSliders.request(type) ?? [];
+    notifyListeners();
+  }
+  moveSlider(){
+timer=Timer.periodic( const Duration(seconds: 4), (timer){
+  if(currentSlider+1<sliders.length){
+    currentSlider++;
+ pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
+ Helper.log("current sliders $currentSlider");
+  }
+  else{
+    currentSlider=0;
+     pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
+     Helper.log("current sliders  = 0 $currentSlider");
+  }
+ 
+});
+// notifyListeners();
+  }
+    set calculateAmount(CalculateAmountModel value) {
+    _calculateAmount = value;
+    notifyListeners();
+  }
+  setShowAgent(bool value){
+    _showAgents=value;
+    notifyListeners();
+  }
+  setIsLoad(bool val){
+    isLoad=val;
+    notifyListeners();
   }
 }

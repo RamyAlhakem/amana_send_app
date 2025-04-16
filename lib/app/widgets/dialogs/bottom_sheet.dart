@@ -56,7 +56,7 @@ class BottomSheeter {
                         borderRadius: BorderRadius.circular(15),
                         child: InAppWebView(
                           initialUrlRequest: URLRequest(
-                            url: Uri.parse('${Configs.apiUrl}captcha'),
+                            url: WebUri('${Configs.apiUrl}captcha'),
                           ),
                           onProgressChanged: (InAppWebViewController _, int p) {
                             set(() => progress = p / 100);

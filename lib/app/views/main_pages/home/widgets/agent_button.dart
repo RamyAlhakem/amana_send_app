@@ -1,3 +1,4 @@
+import 'package:amana_send/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +7,6 @@ import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/image/image_widget.dart';
 import '/app/widgets/text/text_x.dart';
-import '/helper/helper.dart';
 import '/models/agent.dart';
 import '/services/lang_service.dart';
 
@@ -28,12 +28,9 @@ class AgentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Calculator state = context.watch<Calculator>();
+    final Calculator state = Provider.of<Calculator>(context,listen: false);
     final bool isAR = LangService.isAR();
-    final double rate = agent.rate * (1 - (state.percentFee / 100));
-    final bool usd = agent.usdAvailability == 2;
-    final double thisRate =
-        selected && state.dynamicAgentRate > 0 ? state.dynamicAgentRate : rate;
+    Helper.log;("agent>>>>>>>>>>>> ${agent.tab}");
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -75,18 +72,21 @@ class AgentButton extends StatelessWidget {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${isAR ? 'USDT 1' : '1 USDT'} = ',
+                                  text:
+                                      '${isAR ? '${state.paymentMethodName} 1' : '1 ${state.paymentMethodName}'} = ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(fontSize: 11),
                                 ),
                                 TextSpan(
-                                  text: Helper.priced(thisRate,
-                                      currencyCode: usd
-                                          ? 'USD'
-                                          : state
-                                              .receiverCountry.currency.code),
+                                  text:state.receiver.text.isEmpty
+                                   ?(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
+                                   :agent==state.receiverAgent
+
+                                  ? ((double.tryParse(state.receiver.text)??1)/(double.tryParse(state.sender.text)??1)).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
+                                  :'${(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} '
+                                   ,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
@@ -82,6 +83,16 @@ class SupportBody extends StatelessWidget {
                     arb.telegram,
                   ),
                 ]),
+               const  SizedBox(height: 10,),
+                    // SizedBox(
+                    //   height: 40,
+                    //   child: _social(
+                    //   MainColors.color1,
+                    //   'assets/svg/whatsapp.svg',
+                    //   arb.suggestionsAndComplaints,
+                    //                     ),
+                    // ),
+                 whtaUpBtn(context),
                 const HDivider(height: 20),
                 TextX(
                   arb.workingHours,
@@ -175,6 +186,9 @@ class SupportBody extends StatelessWidget {
           // case 'assets/svg/phone.svg':
           //   Helper.launchURL('tel:00442088111222');
           //   break;
+          case 'assets/svg/whatsapp.svg':
+            Helper.launchURL('tel:00447933600060');
+            break;
           // case 'assets/svg/facebook.svg':
           //   Helper.launchURL('https://www.facebook.com/profile.php?id=00045/');
           //   break;
@@ -208,5 +222,46 @@ class SupportBody extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Widget whtaUpBtn(BuildContext context){
+   final AppLocalizations arb = AppLocalizations.of(context)!;
+  return    ElevatedButton(
+    
+                      style: ButtonStyle(
+                           padding: WidgetStateProperty.all(
+        const EdgeInsets.symmetric( horizontal: 8), // Adjust padding
+      ),
+                        shape:WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)))),
+                      onPressed: (){
+                    openWhatsApp("447933600060");
+                    }, child: Row(
+                    
+                      children: [
+                        SvgPicture.asset("assets/svg/whatsapp.svg",height: 20,),
+                      const  SizedBox(width: 10,),
+                        Text(arb.suggestionsAndComplaints),
+                      ],
+                    ));
+}
+
+
+callWhatsUp(String phone)async{
+   final Uri phoneUri = Uri(
+                                scheme: 'tel',
+                                path: phone,
+                                                       );
+                      if(await canLaunchUrl(phoneUri)){
+                        launchUrl(phoneUri);
+                      }
+}
+void openWhatsApp(String phoneNumber) async {
+  final Uri whatsappUri = Uri.parse("https://wa.me/$phoneNumber"); 
+  
+  if (await canLaunchUrl(whatsappUri)) {
+    await launchUrl(whatsappUri);
+  } else {
+    Helper.log("Could not launch WhatsApp");
   }
 }

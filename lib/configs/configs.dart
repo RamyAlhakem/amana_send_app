@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:amana_send/app_config.dart';
 
 class Configs {
-  static const bool debug = true;
+  // static const bool debug = true;
 
   static String appName = 'AmanaSend';
   static String packageName = 'com.amana_send';

@@ -1,3 +1,5 @@
+import 'package:amana_send/models/payment_method.dart';
+
 import '/helper/safety_model.dart';
 import '/models/city.dart';
 import '/models/recipient.dart';
@@ -39,6 +41,7 @@ class TransferModel extends SafetyModel {
     this.paymentReference = '',
     this.paymentData = '',
     this.addedAt = '0000-00-00',
+    this.paymentMethod,
   });
 
   int id = 0, reason = 0, branchId = 0;
@@ -54,6 +57,7 @@ class TransferModel extends SafetyModel {
   AgentModel provider = AgentModel();
   WalletModel wallet = WalletModel();
   TransferStatus status = TransferStatus.pending;
+  PaymentMethodModel? paymentMethod = PaymentMethodModel();
 
   TransferStatus parseStatus(String status) {
     switch (status.toLowerCase()) {
@@ -107,6 +111,9 @@ class TransferModel extends SafetyModel {
     wallet = objectFromJson(
         json, 'walletAddress', (x) => WalletModel.fromJson(x),
         defaultValue: WalletModel());
+    paymentMethod =objectFromJson(
+        json, 'paymentMethod', (x) => PaymentMethodModel.fromJson(x),
+        defaultValue: PaymentMethodModel());
     super.fromJson(json);
   }
 

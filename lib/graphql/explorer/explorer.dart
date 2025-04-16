@@ -31,10 +31,11 @@ class Explorer {
   static const String paymentMethod = '''
       id
       name
-      isManual
       displayName
       status
       displayDescription
+      className
+      iconUrl
       ''';
 
   static const String provider = '''
@@ -48,6 +49,7 @@ class Explorer {
       maxAmount
       defaultMessage
       description
+      tab
       ''';
 
   static const String city = '''
@@ -55,9 +57,7 @@ class Explorer {
       coCode
       name
       defaultMessage
-      providers {
-        $provider
-      }
+     
       ''';
 
   static const String country = '''
@@ -93,6 +93,13 @@ class Explorer {
       status
       dateAdded
       whatsappNumber
+      note
+      arFatherName
+      arFirstName
+      arLastName
+      enFatherName
+      enFirstName
+      enLastName
       $country
       ''';
 
@@ -112,7 +119,13 @@ class Explorer {
       paymentData
       paymentReference
       paymentMethod {
-        $paymentMethod
+      className
+      displayDescription
+      displayName
+      iconUrl
+      id
+      name
+      status
       }
       city {
         $city
@@ -124,6 +137,7 @@ class Explorer {
         id
         address
       }
+ 
       sendAmount
       status
       receiptPic

@@ -44,8 +44,10 @@ class _SuccessState extends State<Success> {
   void initState() {
     super.initState();
     transfer = TransferModel.fromJson(jsonDecode(widget.transferData));
+    Helper.log("transfer ==================>>>>>> $transfer");
     final int count = UserService.countTransfers();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+
       if (count == 2) {
         MessageDialog(
           arb.wouldYouLikeToRateOurApp,
@@ -83,6 +85,7 @@ class _SuccessState extends State<Success> {
           title: arb.paymentSuccessful,
           subTitle: arb.yourPaymentHasBeenSubmittedSuccessfully,
           onPressed: () {
+             Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.transfers.index}");
             Global.pageCtrl.jumpToPage(Pages.transfers.index);
             context.goNamed(AppRoute.home);
           },
@@ -193,9 +196,9 @@ class _SuccessState extends State<Success> {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${transfer.provider.receiveFees.toStringAsFixed(2)} ',
+                              '${transfer.provider.receiveFees.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: transfer.paymentMethod?.name)
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -213,9 +216,9 @@ class _SuccessState extends State<Success> {
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${transfer.totalAmount.toStringAsFixed(2)} ',
+                          text: '${transfer.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: transfer.paymentMethod?.name)
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -251,6 +254,7 @@ class _SuccessState extends State<Success> {
         bottomNavigationBar: BottomButtons(
           firstButton: Button(
             () {
+               Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.home.index}");
               Global.pageCtrl.jumpToPage(Pages.home.index);
               context.goNamed(AppRoute.home);
             },
@@ -271,6 +275,7 @@ class _SuccessState extends State<Success> {
           ),
           secondButton: ExpandButton(
             () {
+              Helper.log("pageeeeeeeeeeeee ============>>>>>>>>>>>>>>>>> ${Pages.transfers.index}");
               Global.pageCtrl.jumpToPage(Pages.transfers.index);
               context.goNamed(AppRoute.home);
               context.pushNamed(

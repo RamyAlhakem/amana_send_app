@@ -73,16 +73,16 @@ class _TransferMainState extends State<TransferMain>
         Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
 
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
-    if (transfer.isEmpty()) {
+    // if (transfer.paymentMethod == null) {
       GetTransfer(
         context,
-        transfer.id,
+      transfer.id,
       ).request().then((value) => transfer = value).whenComplete(() {
         setState(() => isLoading = false);
       });
-    } else {
-      isLoading = false;
-    }
+    // } else {
+    //   isLoading = false;
+    // }
 
     GetRecipients.request();
   }
@@ -143,7 +143,7 @@ class _TransferMainState extends State<TransferMain>
           child: Column(
             children: [
               const SizedBox(height: 12),
-              Center(child: TextX(arb.sent)),
+              // Center(child: TextX(arb.sent)),
               const SizedBox(height: 6),
               Center(
                 child: TextX(
@@ -152,12 +152,12 @@ class _TransferMainState extends State<TransferMain>
                 ),
               ),
               const SizedBox(height: 4),
-              Center(
-                child: TextX(
-                  '${transfer.recipient.firstName} ${transfer.recipient.fatherName} ${transfer.recipient.lastName}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // Center(
+              //   child: TextX(
+              //     '${transfer.recipient.firstName} ${transfer.recipient.fatherName} ${transfer.recipient.lastName}',
+              //     textAlign: TextAlign.center,
+              //   ),
+              // ),
               Expanded(
                 child: Container(
                   alignment: Alignment.center,
@@ -232,13 +232,15 @@ class _TransferMainState extends State<TransferMain>
                             }
                             final calculator =
                                 Provider.of<Calculator>(context, listen: false);
-                            calculator.setReceiverCountry(CountryModel());
+                            calculator.setReceiverCountry(transfer.recipient.country);
+                            // calculator.setReceiveCity(transfer.city);
                             // calculator.agentsVisibility(true);
                             calculator.recipientSend(
                               transfer.recipient,
                               transfer: transfer,
                               navigate: true,
                             );
+                        
                           },
                           height: 55,
                           width: MediaQuery.of(context).size.width,
@@ -256,6 +258,8 @@ class _TransferMainState extends State<TransferMain>
                 ),
               ),
             ],
+          
+          
           ),
         ),
       ),

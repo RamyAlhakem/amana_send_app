@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/expander.dart';
 import '/app/widgets/row.dart';
 import '/app/widgets/text/text_x.dart';
-import '/tools/tools.dart';
 
 class TotalFees extends StatelessWidget {
   const TotalFees({super.key});
@@ -32,9 +30,9 @@ class TotalFees extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${Tools.nicePrice(state.receiverAgent.receiveFees)} ',
+                              '${(state.calculateAmount.receiveFees).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                        TextSpan(text: state.paymentMethodName),
                       ],
                     ),
                   ),
@@ -48,9 +46,9 @@ class TotalFees extends StatelessWidget {
                       children: <TextSpan>[
                         TextSpan(
                           text:
-                              '${Tools.nicePrice(double.tryParse(state.sender.text) ?? 0)} ',
+                              '${(double.tryParse(state.calculateAmount.totalAmount.toString()) ?? 0).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                        TextSpan(text: state.paymentMethodName),
                       ],
                     ),
                   ),
@@ -64,15 +62,18 @@ class TotalFees extends StatelessWidget {
             child: Column(
               children: [
                 RowSpaceBetween([
-                  TextX(arb.total),
+                  TextX(arb.total,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          )),
                   Text.rich(
                     textScaler: TextScaler.noScaling,
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${Tools.nicePrice(state.amountPlusFee)} ',
+                          text: '${(state.calculateAmount.totalAmount+state.calculateAmount.receiveFees).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                         ),
-                        const TextSpan(text: 'USDT'),
+                         TextSpan(text: state.paymentMethodName),
                       ],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -81,27 +82,27 @@ class TotalFees extends StatelessWidget {
                   ),
                 ]),
                 const SizedBox(height: 4),
-                RowSpaceBetween([
-                  TextX(arb.recipientGets),
-                  Text.rich(
-                    textScaler: TextScaler.noScaling,
-                    TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '${Tools.nicePrice(receiverAmount)} ',
-                        ),
-                        TextSpan(
-                          text: state.sendUSD
-                              ? 'USD'
-                              : state.receiverCountry.currency.code,
-                        ),
-                      ],
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                ]),
+                // RowSpaceBetween([
+                //   TextX(arb.recipientGets),
+                //   Text.rich(
+                //     textScaler: TextScaler.noScaling,
+                //     TextSpan(
+                //       children: <TextSpan>[
+                //         TextSpan(
+                //           text: '${Tools.nicePrice(receiverAmount)} ',
+                //         ),
+                //         TextSpan(
+                //           text: state.sendUSD
+                //               ? 'USD'
+                //               : state.receiverCountry.currency.code,
+                //         ),
+                //       ],
+                //       style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //     ),
+                //   ),
+                // ]),
               ],
             ),
           ),

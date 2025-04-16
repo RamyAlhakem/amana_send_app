@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -39,13 +40,18 @@ class UserAvatar extends StatelessWidget {
           Positioned(
             top: -4,
             right: -4,
-            child: Flag.fromString(
-              code,
-              height: 22,
-              width: 22,
-              borderRadius: 100,
-              fit: BoxFit.fill,
-            ),
+            child: code == "sy"
+                ? const SyrFlag(
+                    width: 22,
+                    height: 22,
+                  )
+                : Flag.fromString(
+                    code,
+                    height: 22,
+                    width: 22,
+                    borderRadius: 100,
+                    fit: BoxFit.fill,
+                  ),
           ),
       ],
     );

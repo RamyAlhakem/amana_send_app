@@ -7,6 +7,7 @@ class AgentModel extends SafetyModel {
     this.iconUrl = '',
     this.status = 0,
     this.rate = 0,
+    this.tab = 0,
     this.receiveFees = 0,
     this.usdAvailability = 0,
     this.minAmount = 0,
@@ -15,7 +16,7 @@ class AgentModel extends SafetyModel {
     this.description = '',
     this.selected = false,
   });
-
+num tab=0;
   int id = 0, status = 0, usdAvailability = 0;
   String name = '', iconUrl = '', defaultMessage = '', description = '';
   double receiveFees = 0, rate = 0, minAmount = 0, maxAmount = 0;
@@ -23,6 +24,8 @@ class AgentModel extends SafetyModel {
 
   AgentModel.fromJson(Map<String, dynamic> json) {
     id = intFromJson(json, 'id');
+    tab = json['tab']??0 ;
+    // intFromJson(json, 'tab');
     name = stringFromJson(json, 'displayName');
     iconUrl = stringFromJson(json, 'iconUrl');
     status = intFromJson(json, 'status');
@@ -44,6 +47,7 @@ class AgentModel extends SafetyModel {
         'iconUrl': iconUrl,
         'status': status,
         'rate': rate,
+        'tab':tab,
         'receiveFees': receiveFees,
         'usdAvailability': usdAvailability,
         'minAmount': minAmount,
