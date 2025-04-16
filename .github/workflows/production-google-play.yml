@@ -15,7 +15,7 @@ jobs:
     env:
       JAVA_VERSION: 21
       FLUTTER_VERSION: 3.27.1
-      AAB_PATH: build/app/outputs/bundle/release/app-release.aab
+      AAB_PATH: build/app/outputs/bundle/productionRelease/app-production-release.aab
       KEYSTORE_PATH: android/upload-keystore.jks
       KEY_PROPS_PATH: android/key.properties
       SERVICE_ACCOUNT_PATH: store_credentials.json
@@ -76,10 +76,10 @@ jobs:
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
 
-    #   - name: Send ClickUp Notification
-    #     uses: ./.github/actions/clickup-notify
-    #     with:
-    #       clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
-    #       clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
-    #       clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
-    #       clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_GOOGLE_PLAY }} - _v${{ env.APP_VERSION }}_"
+      - name: Send ClickUp Notification
+        uses: ./.github/actions/clickup-notify
+        with:
+          clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
+          clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
+          clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
+          clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_GOOGLE_PLAY }} - _v${{ env.APP_VERSION }}_"
