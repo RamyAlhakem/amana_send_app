@@ -67,7 +67,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: ${{ env.SERVICE_ACCOUNT_PATH }}
-          packageName: com.amana_send
+          packageName: ${{ secrets.APP_PACKAGE_NAME }}
           releaseFiles: ${{ env.AAB_PATH }}
           track: internal
 
