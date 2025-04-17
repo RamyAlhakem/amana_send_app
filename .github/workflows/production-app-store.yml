@@ -59,7 +59,7 @@ jobs:
       - name: Download provisioning profiles
         uses: apple-actions/download-provisioning-profiles@v4
         with:
-          bundle-id: ${{ secrets.APP_PACKAGE_NAME }}
+          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}
           issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
@@ -82,7 +82,7 @@ jobs:
               <string>manual</string>
               <key>provisioningProfiles</key>
               <dict>
-            <key>${{ secrets.APP_PACKAGE_NAME }}</key>
+            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}</key>
             <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}</string>
               </dict>
           </dict>
