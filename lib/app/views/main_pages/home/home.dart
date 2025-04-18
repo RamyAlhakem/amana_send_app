@@ -93,13 +93,14 @@ class _HomeState extends State<Home> {
             .setPaymentMethodID(getPaymentMethod);
       }
     });
-    Future.delayed( const Duration(seconds: 2),()async{
-     await getResources();
+    // Future.delayed( const Duration(seconds: 2),()async{
+    //  await getResources();
+    //  Helper.log("timmmmmmmmmmming =======>>>>>>>>>> 5 secounds");
       // WidgetsBinding.instance.addPostFrameCallback((_){
       //   final calculate=Provider.of<Calculator>(context,listen: false);
       //   calculate.getAgents(calculate.providersNew);
       // });
-    });
+    // });
   
   }
 
