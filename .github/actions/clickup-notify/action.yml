@@ -1,180 +1,208 @@
-name: 'Send ClickUp Notification Action'
-description: 'Fetches commit history (if possible) and sends a notification to ClickUp.'
+name: "Send ClickUp Notification Action"
+description: "Fetches commit history (if possible) and sends a notification to ClickUp."
 
 inputs:
   clickup_api_token:
-    description: 'ClickUp API Token'
+    description: "ClickUp API Token"
     required: true
   clickup_workspace_id:
-    description: 'ClickUp Workspace ID'
+    description: "ClickUp Workspace ID"
     required: true
   clickup_channel_id:
-    description: 'ClickUp Channel ID'
+    description: "ClickUp Channel ID"
     required: true
   clickup_project_name:
-    description: 'ClickUp Project Name for the message'
+    description: "ClickUp Project Name for the message"
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: Execute ClickUp Notification Script
+    - name: Set Environment Variables
       shell: bash
       run: |
-        export CLICKUP_API_TOKEN="${{ inputs.clickup_api_token }}"
-        export CLICKUP_WORKSPACE_ID="${{ inputs.clickup_workspace_id }}"
-        export CLICKUP_CHANNEL_ID="${{ inputs.clickup_channel_id }}"
-        export CLICKUP_PROJECT_NAME="${{ inputs.clickup_project_name }}"
-        export GH_TOKEN="${{ github.token }}"
+        echo "CLICKUP_API_TOKEN=${{ inputs.clickup_api_token }}" >> $GITHUB_ENV
+        echo "CLICKUP_WORKSPACE_ID=${{ inputs.clickup_workspace_id }}" >> $GITHUB_ENV
+        echo "CLICKUP_CHANNEL_ID=${{ inputs.clickup_channel_id }}" >> $GITHUB_ENV
+        echo "CLICKUP_PROJECT_NAME=${{ inputs.clickup_project_name }}" >> $GITHUB_ENV
+        echo "GITHUB_TOKEN=${{ github.token }}" >> $GITHUB_ENV
+        echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
+        echo "REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)" >> $GITHUB_ENV
+        echo "BRANCH_NAME=$GITHUB_REF_NAME" >> $GITHUB_ENV
+        echo "CURRENT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+        echo "TRIGGERING_ACTOR=$GITHUB_ACTOR" >> $GITHUB_ENV
+        echo "RUN_ID=$GITHUB_RUN_ID" >> $GITHUB_ENV
+        echo "REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
 
-        OWNER="$GITHUB_REPOSITORY_OWNER"
-        REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
-        BRANCH_NAME="$GITHUB_REF_NAME"
-        CURRENT_SHA="$GITHUB_SHA"
-        TRIGGERING_ACTOR="$GITHUB_ACTOR"
+    - name: Fetch Duration
+      id: duration
+      shell: bash
+      run: |
+        echo "--- Fetching duration ---"
 
-        echo "Fetching current run duration from GitHub..."
-        RUN_ID="$GITHUB_RUN_ID"
-        REPO="$GITHUB_REPOSITORY"
-        STARTED_AT=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}" --jq '.run_started_at')
-        COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-        START_EPOCH=$(date -d "$STARTED_AT" +%s)
-        END_EPOCH=$(date -d "$COMPLETED_AT" +%s)
-        DURATION=$((END_EPOCH - START_EPOCH))
-        FORMATTED_DURATION=$(printf "%02d:%02d" $((DURATION / 60)) $((DURATION % 60)))
-        echo "Run duration: ${FORMATTED_DURATION}min"
+        STARTED_AT=""
+        FORMATTED_DURATION="unknown"
 
-        echo "Owner: $OWNER"
-        echo "Repo: $REPO_NAME"
-        echo "Branch: $BRANCH_NAME"
-        echo "Current SHA: $CURRENT_SHA"
-        echo "Triggering Actor: $TRIGGERING_ACTOR"
-        echo "Starting commit fetching and notification process..."
+        if command -v gh &> /dev/null; then
+          STARTED_AT=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq '.run_started_at' 2>/dev/null || echo "")
 
-        COMMIT_FETCH_FAILED="false"
-        PREVIOUS_SHA=""
-        COMMITS_JSON_DATA="[]"
+          if [ -n "$STARTED_AT" ]; then
+            COMPLETED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-        echo "Fetching workflow ID for ${BRANCH_NAME}..."
-        WORKFLOW_ID=$(gh api "repos/${OWNER}/${REPO_NAME}/actions/workflows" --jq ".workflows[] | select(.path==\".github/workflows/${BRANCH_NAME}.yml\") | .id" 2>/dev/null || echo "")
+            if command -v date &> /dev/null; then
+              START_EPOCH=$(date -d "$STARTED_AT" +%s 2>/dev/null || echo "")
+              END_EPOCH=$(date -d "$COMPLETED_AT" +%s 2>/dev/null || echo "")
 
-        if [ -z "$WORKFLOW_ID" ]; then
-          echo "::warning::Workflow ID not found for workflow file .github/workflows/${BRANCH_NAME}.yml. Cannot determine commit range."
-          COMMIT_FETCH_FAILED="true"
-        else
-          echo "Workflow ID: $WORKFLOW_ID"
-          echo "Fetching last successful run SHA on branch ${BRANCH_NAME}..."
-
-          PREVIOUS_SHA=$(gh api "repos/${OWNER}/${REPO_NAME}/actions/workflows/${WORKFLOW_ID}/runs?branch=${BRANCH_NAME}&status=success&per_page=1" \
-            --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || echo "")
-
-          if [ -z "$PREVIOUS_SHA" ]; then
-            echo "::warning::No previous successful run found on branch ${BRANCH_NAME}. Cannot determine commit range."
-            COMMIT_FETCH_FAILED="true"
-          elif [ "$PREVIOUS_SHA" == "$CURRENT_SHA" ]; then
-            echo "No new commits since last successful run (SHA: $PREVIOUS_SHA)."
-          else
-            echo "Previous successful SHA: $PREVIOUS_SHA"
-            echo "Fetching commits between $PREVIOUS_SHA and $CURRENT_SHA..."
-
-            COMMITS_JSON_DATA=$(gh api "repos/${OWNER}/${REPO_NAME}/compare/${PREVIOUS_SHA}...${CURRENT_SHA}" --jq '[.commits[] | {sha: .sha, message: .commit.message, author: .commit.author.name}]' 2>/dev/null || echo "FETCH_ERROR")
-
-            if [[ "$COMMITS_JSON_DATA" == "FETCH_ERROR" ]] || [[ "$COMMITS_JSON_DATA" == "null" ]] || [[ -z "$COMMITS_JSON_DATA" ]]; then
-              echo "::warning::Failed to get commits from GitHub compare API between $PREVIOUS_SHA and $CURRENT_SHA. Sending notification without changelog."
-              COMMITS_JSON_DATA="[]"
-              COMMIT_FETCH_FAILED="true"
-            elif [[ "$COMMITS_JSON_DATA" == "[]" ]]; then
-              echo "No new unique commits found between $PREVIOUS_SHA and $CURRENT_SHA."
-            else
-              echo "Successfully fetched commit data."
+              if [ -n "$START_EPOCH" ] && [ -n "$END_EPOCH" ]; then
+                DURATION=$((END_EPOCH - START_EPOCH))
+                FORMATTED_DURATION=$(printf "%02d:%02d" $((DURATION / 60)) $((DURATION % 60)))
+                echo "--- Run duration: ${FORMATTED_DURATION}min ---"
+              fi
             fi
           fi
         fi
 
-        echo "Commit fetching part complete. Fetch failed: $COMMIT_FETCH_FAILED"
-        echo "Preparing ClickUp notification..."
+        echo "FORMATTED_DURATION=${FORMATTED_DURATION}" >> $GITHUB_OUTPUT
 
-        TRIGGERING_USER_NAME=$(curl -sf -H "Authorization: Bearer ${GH_TOKEN}" \
+    - name: Fetch Commits
+      id: commits
+      shell: bash
+      run: |
+        echo "--- Starting commit fetching process ---"
+
+        COMMIT_LIST_MD=""
+
+        if command -v gh &> /dev/null; then
+          # Get workflow ID
+          WORKFLOW_ID=""
+          WORKFLOW_ID=$(gh api "repos/${GITHUB_REPOSITORY_OWNER}/${REPO_NAME}/actions/runs/${GITHUB_RUN_ID}" --jq '.workflow_id' 2>/dev/null || echo "")
+
+          if [ -n "$WORKFLOW_ID" ]; then
+            echo "--- Found workflow ID for ${GITHUB_REF_NAME} ---"
+
+            # Get previous successful run
+            PREVIOUS_SHA=""
+            PREVIOUS_SHA=$(gh api "repos/${GITHUB_REPOSITORY_OWNER}/${REPO_NAME}/actions/workflows/${WORKFLOW_ID}/runs?branch=${GITHUB_REF_NAME}&status=success&per_page=1" \
+              --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || echo "")
+
+            if [ -n "$PREVIOUS_SHA" ] && [ "$PREVIOUS_SHA" != "$GITHUB_SHA" ]; then
+              echo "--- Fetching commits between ${PREVIOUS_SHA} and ${GITHUB_SHA} ---"
+
+              # Get commits
+              COMMITS_JSON=$(gh api "repos/${GITHUB_REPOSITORY_OWNER}/${REPO_NAME}/compare/${PREVIOUS_SHA}...${GITHUB_SHA}" \
+                --jq '[.commits[] | {sha: .sha, message: .commit.message, author: .commit.author.name}]' 2>/dev/null || echo "[]")
+
+              if [ "$COMMITS_JSON" != "[]" ] && [ -n "$COMMITS_JSON" ]; then
+                echo "--- Successfully fetched commit data ---"
+
+                # Process each commit individually to avoid command interpretation issues
+                COMMIT_COUNT=$(echo "$COMMITS_JSON" | jq 'length')
+
+                if [ "$COMMIT_COUNT" -gt 0 ]; then
+                  COMMIT_LIST_MD="\n\n**Change Log:**\n"
+
+                  for ((i=0; i<$COMMIT_COUNT; i++)); do
+                    AUTHOR=$(echo "$COMMITS_JSON" | jq -r ".[$i].author")
+                    MESSAGE=$(echo "$COMMITS_JSON" | jq -r ".[$i].message" | sed -n '1p')
+
+                    # Skip merge commits (starting with "Merge" or containing "merge")
+                    if [[ ! "$MESSAGE" =~ ^[Mm]erge ]]; then
+                      COMMIT_LIST_MD="${COMMIT_LIST_MD}* _${AUTHOR}_: ${MESSAGE}\n"
+                    else
+                      echo "Skipping merge commit: $MESSAGE"
+                    fi
+                  done
+
+                  # Check if we have any non-merge commits
+                  if [[ "$COMMIT_LIST_MD" == "\n\n**Change Log:**\n" ]]; then
+                    COMMIT_LIST_MD=""
+                    echo "--- No non-merge commits found ---"
+                  fi
+                fi
+              fi
+            else
+              echo "--- No new commits to fetch ---"
+            fi
+          else
+            echo "--- Could not find workflow ID for ${GITHUB_REF_NAME} ---"
+          fi
+        fi
+
+        # Create a file with the commit list to avoid issues with special characters
+        COMMIT_FILE=$(mktemp)
+        echo -e "$COMMIT_LIST_MD" > "$COMMIT_FILE"
+        echo "COMMIT_FILE=$COMMIT_FILE" >> $GITHUB_OUTPUT
+
+    - name: Send ClickUp Notification
+      shell: bash
+      run: |
+        # Get outputs from previous steps
+        FORMATTED_DURATION="${{ steps.duration.outputs.FORMATTED_DURATION }}"
+        COMMIT_FILE="${{ steps.commits.outputs.COMMIT_FILE }}"
+
+        echo "--- Preparing and sending ClickUp notification ---"
+
+        TRIGGERING_USER_NAME=$(curl -sf -H "Authorization: Bearer ${GITHUB_TOKEN}" \
           -H "Accept: application/vnd.github.v3+json" \
           "https://api.github.com/users/${TRIGGERING_ACTOR}" | jq -r '.name // ""')
 
         if [ -z "$TRIGGERING_USER_NAME" ]; then
             TRIGGERING_USER_NAME="${TRIGGERING_ACTOR}"
         fi
-        echo "Triggering user: $TRIGGERING_USER_NAME"
 
-        BASE_MESSAGE="🚀 **${CLICKUP_PROJECT_NAME}** deployment to **staging** succeeded"
-        DEPLOY_INFO=$(printf '\n_Triggered by: %s, Done in: %smin_' "$TRIGGERING_USER_NAME" "$FORMATTED_DURATION")
-        COMMIT_LIST_MD=""
+        # Basic message content
+        BASE_MESSAGE="🚀 **${CLICKUP_PROJECT_NAME}** deployed to **${GITHUB_REF_NAME}**"
+        DEPLOY_INFO="_Triggered by: ${TRIGGERING_USER_NAME}, Done in: ${FORMATTED_DURATION}min_"
 
-        if [ "$COMMIT_FETCH_FAILED" == "false" ] && [ "$(echo "$COMMITS_JSON_DATA" | jq 'length')" -gt 0 ]; then
-          COMMIT_LIST_MD=$(echo "$COMMITS_JSON_DATA" | jq -r '
-            "\n\n**Change Log:**\n" +
-            (map("* " + "_" + (.author | split("\n")[0]) + "_: " + (.message | split("\n")[0])) | join("\n"))
-          ')
+        # Create the final message
+        FINAL_MESSAGE="${BASE_MESSAGE}\n\n${DEPLOY_INFO}"
 
-          if [ $? -ne 0 ]; then
-            echo "::warning:: jq command failed to generate commit list."
-            COMMIT_LIST_MD=""
+        # Add commit list if available
+        if [ -f "$COMMIT_FILE" ] && [ -s "$COMMIT_FILE" ]; then
+          COMMIT_LIST=$(cat "$COMMIT_FILE")
+          if [ -n "$COMMIT_LIST" ]; then
+            FINAL_MESSAGE="${FINAL_MESSAGE}${COMMIT_LIST}"
           fi
         fi
 
-        MESSAGE_CONTENT="${BASE_MESSAGE}${DEPLOY_INFO}${COMMIT_LIST_MD}"
+        # Save to file and show
+        MESSAGE_FILE=$(mktemp)
+        echo -e "$FINAL_MESSAGE" > "$MESSAGE_FILE"
 
-        echo "--- Message Content Start ---"
-        echo -e "$MESSAGE_CONTENT"
-        echo "--- Message Content End ---"
+        echo "Message content:"
+        cat "$MESSAGE_FILE"
 
-        ESCAPED_CONTENT=$(printf '%s' "$MESSAGE_CONTENT" | jq -s -R '.')
-        if [ $? -ne 0 ] || [ -z "$ESCAPED_CONTENT" ]; then
-            echo "::error:: jq command failed to escape the final message content."
-            MESSAGE_CONTENT="${BASE_MESSAGE}${DEPLOY_INFO}\n\n*(Error formatting change log)*"
-            ESCAPED_CONTENT=$(printf '%s' "$MESSAGE_CONTENT" | jq -s -R '.')
-            if [ $? -ne 0 ] || [ -z "$ESCAPED_CONTENT" ]; then
-              echo "::error:: Could not even escape the fallback message. Aborting ClickUp notification."
-              exit 1
-            fi
-        fi
+        # Create JSON payload without using variables directly in the JSON structure
+        PAYLOAD_FILE=$(mktemp)
+        jq -n --arg content "$(cat "$MESSAGE_FILE")" '{
+          type: "message",
+          content_format: "text/md",
+          content: $content
+        }' > "$PAYLOAD_FILE"
 
-        JSON_PAYLOAD=$(cat <<EOF
-        {
-          "type": "message",
-          "content_format": "text/md",
-          "content": $ESCAPED_CONTENT
-        }
-        EOF
-        )
+        echo "JSON payload:"
+        cat "$PAYLOAD_FILE"
 
-        echo "--- JSON Payload Start ---"
-        echo "$JSON_PAYLOAD"
-        echo "--- JSON Payload End ---"
-
-        echo "Sending payload to ClickUp..."
-
+        # Send the notification
         RESPONSE_FILE=$(mktemp)
-        HTTP_RESPONSE=$(curl --fail-with-body -s -o "$RESPONSE_FILE" -w "%{http_code}" -X POST \
-          "https://api.clickup.com/api/v3/workspaces/${CLICKUP_WORKSPACE_ID}/chat/channels/${CLICKUP_CHANNEL_ID}/messages" \
-          -H 'Accept: application/json' \
-          -H 'Content-Type: application/json' \
-          -H "Authorization: ${CLICKUP_API_TOKEN}" \
-          -d "$JSON_PAYLOAD")
-        CURL_EXIT_CODE=$?
+        HTTP_CODE=$(curl -s -o "$RESPONSE_FILE" -w "%{http_code}" \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: ${{ inputs.clickup_api_token }}" \
+          -d @"$PAYLOAD_FILE" \
+          "https://api.clickup.com/api/v3/workspaces/${{ inputs.clickup_workspace_id }}/chat/channels/${{ inputs.clickup_channel_id }}/messages")
 
-        echo "ClickUp API HTTP Status Code: $HTTP_RESPONSE"
-        echo "ClickUp API Response Body:"
-        cat "$RESPONSE_FILE" || echo "(No response body)"
-        rm -f "$RESPONSE_FILE"
+        echo "Response code: $HTTP_CODE"
+        echo "Response body:"
+        cat "$RESPONSE_FILE"
 
-        if [ $CURL_EXIT_CODE -ne 0 ]; then
-            echo "::error:: curl command failed with exit code $CURL_EXIT_CODE. See response body above for details."
+        # Clean up temporary files
+        rm -f "$MESSAGE_FILE" "$PAYLOAD_FILE" "$COMMIT_FILE" "$RESPONSE_FILE"
 
-            if [ $CURL_EXIT_CODE -eq 22 ]; then
-              echo "::error:: ClickUp API request failed with HTTP status $HTTP_RESPONSE."
-            fi
-            exit 1
-        elif [[ "$HTTP_RESPONSE" -lt 200 || "$HTTP_RESPONSE" -ge 300 ]]; then
-            echo "::error:: ClickUp API request returned non-success status code $HTTP_RESPONSE."
-            exit 1
+        # Check for success
+        if [[ "$HTTP_CODE" -ge 200 && "$HTTP_CODE" -lt 300 ]]; then
+          echo "--- ClickUp notification sent successfully ---"
         else
-            echo "ClickUp notification sent successfully."
+          echo "::error::Failed to send notification to ClickUp. HTTP code: $HTTP_CODE"
+          exit 1
         fi
