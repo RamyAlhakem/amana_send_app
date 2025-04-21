@@ -147,7 +147,7 @@ class _RecipientState extends State<Recipient> {
               );
             }
             final calculator = Provider.of<Calculator>(context, listen: false);
-            calculator.setReceiverCountry(CountryModel());
+            calculator.setReceiverCountry(recipient.country);
             calculator.agentsVisibility(true);
             calculator.recipientSend(recipient, navigate: true);
           },
