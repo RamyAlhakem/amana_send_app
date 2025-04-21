@@ -83,7 +83,7 @@ jobs:
               <key>provisioningProfiles</key>
               <dict>
             <key>${{ secrets.IOS_APP_PACKAGE_NAME }}.staging</key>
-            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}</string>
+            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }} staging</string>
               </dict>
           </dict>
           </plist>
