@@ -94,11 +94,10 @@ jobs:
           xcodebuild -exportArchive \
           -archivePath build/ios/archive/Runner.xcarchive \
           -exportOptionsPlist ios/ExportOptions.plist \
-          -exportPath build/ios/ipa \
-          -allowProvisioningUpdates \
-          -signWithEntitlements Runner/Runner.entitlements
+          -exportPath build/ios/ipa
           APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))
           echo "APP_FILE=$APP_FILE" >> $GITHUB_ENV
+          codesign -d --entitlements :- "$APP_FILE" || echo "*** Failed to extract entitlements from archived app bundle! ***"
 
       - name: Upload generated ipa to the artifacts
         uses: actions/upload-artifact@master
