@@ -95,7 +95,8 @@ jobs:
           -archivePath build/ios/archive/Runner.xcarchive \
           -exportOptionsPlist ios/ExportOptions.plist \
           -exportPath build/ios/ipa \
-          -allowProvisioningUpdates
+          -allowProvisioningUpdates \
+          -signWithEntitlements Runner/Runner.entitlements
           APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))
           echo "APP_FILE=$APP_FILE" >> $GITHUB_ENV
 
