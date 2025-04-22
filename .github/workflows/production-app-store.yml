@@ -64,9 +64,6 @@ jobs:
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
-      - name: Build App
-        run: flutter build ipa --no-codesign --flavor production -t lib/main_production.dart --release
-
       - name: Generate ExportOptions
         run: |
           cat <<EOF > ios/ExportOptions.plist
@@ -89,21 +86,17 @@ jobs:
           </plist>
           EOF
 
-      - name: Export Signed App
+      - name: Build App
         run: |
-          xcodebuild -exportArchive \
-          -archivePath build/ios/archive/Runner.xcarchive \
-          -exportOptionsPlist ios/ExportOptions.plist \
-          -exportPath build/ios/ipa
-          APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))
-          echo "APP_FILE=$APP_FILE" >> $GITHUB_ENV
-          codesign -d --entitlements :- "$APP_FILE" || echo "*** Failed to extract entitlements from archived app bundle! ***"
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --flavor production -t lib/main_production.dart
+          echo "APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))" >> $GITHUB_ENV
 
       - name: Upload generated ipa to the artifacts
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_FILE }}
           path: build/ios/ipa/${{ env.APP_FILE }}
+          retention-days: 7
 
       - name: Decode App Store API key
         run: |
@@ -116,8 +109,6 @@ jobs:
           --output-format json \
           --file build/ios/ipa/${{ env.APP_FILE }} \
           --type ios \
-          --export-compliance yes \
-          --encryption-used no \
           --apiKey ${{ secrets.APPSTORE_API_KEY_ID }} \
           --apiIssuer ${{ secrets.APPSTORE_API_ISSUER_ID }}
 
