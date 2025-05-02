@@ -101,15 +101,27 @@ runs:
                 if [ "$COMMIT_COUNT" -gt 0 ]; then
                   COMMIT_LIST_MD="\n\n**Change Log:**\n"
 
+                  declare -A AUTHOR_COMMITS
+                  declare -A UNIQUE_MESSAGES
+
                   for ((i=0; i<$COMMIT_COUNT; i++)); do
                     AUTHOR=$(echo "$COMMITS_JSON" | jq -r ".[$i].author")
                     MESSAGE=$(echo "$COMMITS_JSON" | jq -r ".[$i].message" | sed -n '1p')
 
                     # Skip merge commits (starting with "Merge" or containing "merge")
-                    if [[ ! "$MESSAGE" =~ ^[Mm]erge ]]; then
-                      COMMIT_LIST_MD="${COMMIT_LIST_MD}* _${AUTHOR}_: ${MESSAGE}\n"
+                    KEY="${AUTHOR}::${MESSAGE}"
+                    if [[ ! "$MESSAGE" =~ ^[Mm]erge ]] && [[ -z "${UNIQUE_MESSAGES["$KEY"]}" ]]; then
+                      UNIQUE_MESSAGES["$KEY"]=1
+                      AUTHOR_COMMITS["$AUTHOR"]+=$'* '"$MESSAGE"$'\n'
                     else
                       echo "Skipping merge commit: $MESSAGE"
+                    fi
+                  done
+
+                  for AUTHOR in "${!AUTHOR_COMMITS[@]}"; do
+                    COMMITS="${AUTHOR_COMMITS[$AUTHOR]}"
+                    if [ -n "$COMMITS" ]; then
+                      COMMIT_LIST_MD+=$'\n'"_*$AUTHOR:*_\n$COMMITS"
                     fi
                   done
 
