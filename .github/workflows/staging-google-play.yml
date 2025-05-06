@@ -2,7 +2,8 @@ name: Staging Google Play
 
 on:
   push:
-    branches: "release/staging"
+    branches:
+      - "release/staging"
 
 jobs:
   build_and_deploy:
@@ -30,9 +31,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: ${{ env.JAVA_VERSION }}
-
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -78,7 +78,7 @@ jobs:
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Send ClickUp Notification
-        uses: ./.github/actions/clickup-notify
+        uses: architweb/ClickUpNotification@v1
         with:
           clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
           clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
