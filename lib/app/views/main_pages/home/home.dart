@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
 
   Future<void> getResources() async {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
- final calculater=Provider.of<Calculator>(context,listen: false);
+    final calculater = Provider.of<Calculator>(context, listen: false);
     // call data:---------------------------------------------------------------
     GetPaymentMethods.request();
     GetMetadata.request();
@@ -80,6 +80,7 @@ class _HomeState extends State<Home> {
     PopupService.show();
   }
 
+  Timer? debounceTimer;
   @override
   void initState() {
     super.initState();
@@ -96,12 +97,11 @@ class _HomeState extends State<Home> {
     // Future.delayed( const Duration(seconds: 2),()async{
     //  await getResources();
     //  Helper.log("timmmmmmmmmmming =======>>>>>>>>>> 5 secounds");
-      // WidgetsBinding.instance.addPostFrameCallback((_){
-      //   final calculate=Provider.of<Calculator>(context,listen: false);
-      //   calculate.getAgents(calculate.providersNew);
-      // });
+    // WidgetsBinding.instance.addPostFrameCallback((_){
+    //   final calculate=Provider.of<Calculator>(context,listen: false);
+    //   calculate.getAgents(calculate.providersNew);
     // });
-  
+    // });
   }
 
   @override
@@ -115,12 +115,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (context, state, child) {
-       if (state.paymentMethodName=="") {
-      return CurrencyWidget(arb:arb,controller:state);
-    }
-    // else if(Global.appSettings.token.isNotEmpty){
-    //   return Container();
-    // }
+      if (state.paymentMethodName == "") {
+        return CurrencyWidget(arb: arb, controller: state);
+      }
+      // else if(Global.appSettings.token.isNotEmpty){
+      //   return Container();
+      // }
       child = Visibility(
         visible: !AppMetadata.get.maintenanceMode,
         replacement: Center(
@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
               //   state.getAgents(state.providersNew);
               // });
               state.clearFields();
-              state.setCalculateAmount(CalculateAmountModel());   
+              state.setCalculateAmount(CalculateAmountModel());
             },
             child: ListView(
               clipBehavior: Clip.none,
@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
 
                 // "You send", "Receiver gets"
                 Padding(padding: padding, child: const SendFormFields()),
-      //  const Sliders(),
+                //  const Sliders(),
 //  const SizedBox(height: 20,),
                 Padding(
                   key: Tutorial.key7,
@@ -182,10 +182,46 @@ class _HomeState extends State<Home> {
                         context.pushNamed('/${AppRoute.logIn}');
                         return;
                       }
+                      if (state.sender.text.isNotEmpty &&
+                          state.receiver.text.isNotEmpty) {
+                        // context.pushNamed(
+                        //   AppRoute.sendHub,
+                        //   pathParameters: <String, String>{
+                        //     'recipient': 'false'
+                        //   },
+                        // );
+                      } else {
+                        if (state.sender.text.isNotEmpty) {
+                          state.receiver.clear();
+                          state.recieverLoading = true;
+                          if (debounceTimer?.isActive ?? false) {
+                            debounceTimer?.cancel();
+                          }
+                          debounceTimer = Timer(
+                              const Duration(milliseconds: 1000), () async {
+                            state.setPrice(state.sender.text);
+                            FocusScope.of(context).unfocus();
+                          });
+                        }
+                        if (state.receiver.text.isNotEmpty) {
+                          state.senderLoading = true;
+                          state.sender.clear();
+                          if (debounceTimer?.isActive ?? false) {
+                            debounceTimer?.cancel();
+                          }
+                          debounceTimer = Timer(
+                              const Duration(milliseconds: 1000), () async {
+                            state.setPrice(state.receiver.text);
+                            FocusScope.of(context).unfocus();
+                          });
+                        }
+                      }
 
-                      if (state.sender.text.isEmpty) {
+                      if (state.sender.text.isEmpty &&
+                          state.receiver.text.isEmpty) {
                         return Helper.snack(arb.pleaseEnterSendingAmount);
                       }
+
                       if (state.paymentMethodName == "") {
                         return Helper.snack(arb.pleaseChooseCurrency);
                       }
@@ -234,12 +270,16 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-               const SizedBox(height: 7,),
-               const Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 10),
-                  child:  Sliders(),
+                const SizedBox(
+                  height: 7,
                 ),
-                 const SizedBox(height: 20,),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Sliders(),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),

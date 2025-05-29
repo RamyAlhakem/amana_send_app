@@ -1,4 +1,3 @@
-
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/global/variables.dart';
@@ -72,6 +71,12 @@ class CalculateTransferMoney {
         CalculateAmountModel calculateAmount =
             CalculateAmountModel.fromJson(data['calculateAmount']);
         _p.setCalculateAmount(calculateAmount);
+        // Future.delayed(const Duration(seconds: 1), () {
+        //   context.pushNamed(
+        //     AppRoute.sendHub,
+        //     pathParameters: <String, String>{'recipient': 'false'},
+        //   );
+        // });
       }
       return true;
       // Helper.banner('Email successfully changed');
@@ -80,14 +85,14 @@ class CalculateTransferMoney {
   }
 
   void _error(OperationException error) async {
-     arb = AppLocalizations.of(context);
-    _p.receiver.text = "";
-    _p.sender.text = "";
+    arb = AppLocalizations.of(context);
+    // _p.receiver.text = "";
+    // _p.sender.text = "";
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {
         case 401:
           Helper.toast(arb!.pleaseloginToContinue);
-           context.push('/${AppRoute.logIn}');
+          context.push('/${AppRoute.logIn}');
         default:
           Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
       }

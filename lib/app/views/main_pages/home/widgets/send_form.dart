@@ -61,8 +61,6 @@ class _SendFormFieldsState extends State<SendFormFields>
 // _calculator.setIsLoad(false);
 
 //       });
-      
-      
     });
   }
 
@@ -91,111 +89,167 @@ class _SendFormFieldsState extends State<SendFormFields>
     return Consumer<Calculator>(builder: (_, state, child) {
       final double send = double.tryParse(state.sender.text) ?? 1;
       child = state.isLoad
-      ?const Center(child: CircularProgressIndicator())
-      :Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8),
-          if (Global.appSettings.token.isEmpty)
-            CountryRoller(
-              send: true,
-              title: arb.sendCountries,
-              borderRadius: 11,
-            ),
-          if (state.showAgents)
-            Row(
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Select country
-                if (state.selectedRecipient == null)
-                  Expanded(
-                    child: CountryRoller(
-                      key: isHome ? Tutorial.key1 : null,
-                      title: arb.receiverCountries,
-                      borderRadius: 11,
-                    ),
+                const SizedBox(height: 8),
+                if (Global.appSettings.token.isEmpty)
+                  CountryRoller(
+                    send: true,
+                    title: arb.sendCountries,
+                    borderRadius: 11,
                   ),
-                if (state.selectedRecipient == null) const SizedBox(width: 10),
+                if (state.showAgents)
+                  Row(
+                    children: [
+                      // Select country
+                      if (state.selectedRecipient == null)
+                        Expanded(
+                          child: CountryRoller(
+                            key: isHome ? Tutorial.key1 : null,
+                            title: arb.receiverCountries,
+                            borderRadius: 11,
+                          ),
+                        ),
+                      if (state.selectedRecipient == null)
+                        const SizedBox(width: 10),
 
-                // Select city.
-                Expanded(
-                  child: CityPicker(
-                    
-                    key: isHome ? Tutorial.key2 : null,
-                    country: state.receiverCountry,
-                    onChange: (city) => state.setReceiveCity(city),
-                    fieldColor: Theme.of(context).cardColor,
+                      // Select city.
+                      Expanded(
+                        child: CityPicker(
+                          key: isHome ? Tutorial.key2 : null,
+                          country: state.receiverCountry,
+                          onChange: (city) => state.setReceiveCity(city),
+                          fieldColor: Theme.of(context).cardColor,
+                        ),
+                      ),
+                    ],
                   ),
+                if (!widget.keepAlive)
+                  if (state.receiverCity.agents.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                      child: TextX(
+                        arb.selectPickUpPoint,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ),
+                if (state.showAgents)
+                  if (state.agents.isNotEmpty)
+                    MasonryGridView.count(
+                      key: isHome ? Tutorial.key3 : null,
+                      padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: ScreenSize.isTablet ? 4 : 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      itemCount: state.agents.length,
+                      itemBuilder: (_, i) {
+                        selection = '${state.receiverAgent.id}';
+                        return AgentButton(
+                          () {
+                            Helper.log("aget tab==> ${state.agents[i].tab}");
+                            selection = '${state.agents[i].id}';
+                            state.setAgent(state.agents[i]);
+                          },
+                          selected: selection == '${state.agents[i].id}',
+                          agent: state.agents[i],
+                        );
+                      },
+                    ),
+                // you send
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextFieldX(
+                        key: isHome ? Tutorial.key4 : null,
+                        hint: arb.youSend,
+                        controller: state.sender,
+                        enabled: state.senderLoading ? false : true,
+                        type: TextInputType.phone,
+                        input: _input,
+                        borderRadius: borderRadius,
+                        filled: true,
+                        fillColor: Theme.of(context).cardColor,
+                        suffixIcon: Container(
+                          width: 60,
+                          alignment: Alignment.center,
+                          child: state.senderLoading
+                              ? const LoadingWidget(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                )
+                              : TextX(
+                                  state.paymentMethodName,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                        ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+                        onChanged: (String value) {
+                          state.receiver.clear();
+                          state.recieverLoading = true;
+                          if (debounceTimer?.isActive ?? false) {
+                            debounceTimer?.cancel();
+                          }
+                          debounceTimer = Timer(
+                              const Duration(milliseconds: 1000), () async {
+                            state.setPrice(value);
+                            FocusScope.of(context).unfocus();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          if (!widget.keepAlive)
-            if (state.receiverCity.agents.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                child: TextX(
-                  arb.selectPickUpPoint,
-                  style: Theme.of(context).textTheme.bodySmall,
+
+                // Today exchange rate
+                Padding(
+                  key: isHome ? Tutorial.key5 : null,
+                  padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                  child: RowSpaceBetween([
+                    TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: FittedBox(
+                        child: TextX(
+                          '${state.sendCountry.currency.code} ${Tools.nicePrice(state.sendCountry.currency.rate * send)}',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
-              ),
-          if (state.showAgents)
-            if (state.agents.isNotEmpty)
-           MasonryGridView.count(
-                key: isHome ? Tutorial.key3 : null,
-                padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: ScreenSize.isTablet ? 4 : 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                itemCount: state.agents.length,
-                itemBuilder: (_, i) {
-                  selection = '${state.receiverAgent.id}';
-                  return AgentButton(
-                    () {
-                      Helper.log("aget tab==> ${state.agents[i].tab}");
-                      selection = '${state.agents[i].id}';
-                      state.setAgent(state.agents[i]);
-                    },
-                    selected: selection == '${state.agents[i].id}',
-                    agent: state.agents[i],
-                  );
-                },
-              ),
-          // you send
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: TextFieldX(
-                  key: isHome ? Tutorial.key4 : null,
-                  hint: arb.youSend,
-                  controller: state.sender,
-                  enabled: state.senderLoading ? false : true,
+
+                TextFieldX(
+                  key: isHome ? Tutorial.key6 : null,
+                  hint: arb.receiverGets,
+                  controller: state.receiver,
                   type: TextInputType.phone,
+                  enabled: state.recieverLoading ? false : true,
                   input: _input,
+                  suffixIcon: Container(
+                    child: state.recieverLoading
+                        ? const LoadingWidget(
+                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10))
+                        : const CurrencyRoller(),
+                  ),
+
                   borderRadius: borderRadius,
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
-                  suffixIcon: Container(
-                    width: 60,
-                    alignment: Alignment.center,
-                    child: state.senderLoading
-                        ? const LoadingWidget(
-                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          )
-                        : TextX(
-                            state.paymentMethodName,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                  ),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 2),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                   onChanged: (String value) {
-                    state.receiver.clear();
-                    state.recieverLoading = true;
+                    state.senderLoading = true;
+                    state.sender.clear();
                     if (debounceTimer?.isActive ?? false) {
                       debounceTimer?.cancel();
                     }
@@ -205,72 +259,16 @@ class _SendFormFieldsState extends State<SendFormFields>
                       FocusScope.of(context).unfocus();
                     });
                   },
+                  padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                  // onSubmitted: (_) => state.roundReceiverAmount(),
                 ),
-              ),
-            ],
-          ),
-
-          // Today exchange rate
-          Padding(
-            key: isHome ? Tutorial.key5 : null,
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-            child: RowSpaceBetween([
-              TextShine(arb.estimatedValueInLocalCurrency, fontSize: 12),
-              const SizedBox(width: 10),
-              Flexible(
-                child: FittedBox(
-                  child: TextX(
-                    '${state.sendCountry.currency.code} ${Tools.nicePrice(state.sendCountry.currency.rate * send)}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                  child: TotalFees(),
                 ),
-              ),
-            ]),
-          ),
-
-          TextFieldX(
-            key: isHome ? Tutorial.key6 : null,
-            hint: arb.receiverGets,
-            controller: state.receiver,
-            type: TextInputType.phone,
-            enabled: state.recieverLoading ? false : true,
-            input: _input,
-            suffixIcon: Container(
-              child: state.recieverLoading
-                  ? const LoadingWidget(
-                      padding: EdgeInsets.fromLTRB(15, 10, 15, 10))
-                  : const CurrencyRoller(),
-            ),
-
-            borderRadius: borderRadius,
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-            onChanged: (String value) {
-              state.senderLoading = true;
-              state.sender.clear();
-              if (debounceTimer?.isActive ?? false) {
-                debounceTimer?.cancel();
-              }
-              debounceTimer =
-                  Timer(const Duration(milliseconds: 1000), () async {
-                state.setPrice(value);
-                  FocusScope.of(context).unfocus();
-              });
-            },
-            padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-            // onSubmitted: (_) => state.roundReceiverAmount(),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-            child: TotalFees(),
-          ),
-          SizedBox(height: state.receiverAgent.name.isNotEmpty ? 15 : 5),
-        ],
-      );
+                SizedBox(height: state.receiverAgent.name.isNotEmpty ? 15 : 5),
+              ],
+            );
       return child;
     });
   }
