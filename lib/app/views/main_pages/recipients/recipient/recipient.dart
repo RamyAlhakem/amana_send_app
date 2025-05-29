@@ -89,13 +89,13 @@ class _RecipientState extends State<Recipient> {
                 TextX('${recipient.mobile}'),
               ]),
               const SizedBox(height: 8),
-              RowSpaceBetween([
-                TextX(arb!.countryCity),
-                if (recipient.country.cities.isNotEmpty)
-                  TextX(
-                      '${recipient.country.enName}/${recipient.country.cities.first.name}'),
-              ]),
-              const SizedBox(height: 8),
+              // RowSpaceBetween([
+              //   TextX(arb!.countryCity),
+              //   if (recipient.country.cities.isNotEmpty)
+              //     TextX(
+              //         '${recipient.country.enName}/${recipient.country.cities.first.name}'),
+              // ]),
+              // const SizedBox(height: 8),
             ],
           ),
         ),
