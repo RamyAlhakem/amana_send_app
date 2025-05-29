@@ -32,8 +32,8 @@ class CityPicker extends StatefulWidget {
 class _CityPickerState extends State<CityPicker> {
   CountryModel country = CountryModel();
   CityModel? city;
-late List<CityModel> cities;
-late List<CityModel> allCities;
+  late List<CityModel> cities;
+  late List<CityModel> allCities;
   @override
   void initState() {
 //     country = widget.country;
@@ -41,26 +41,22 @@ late List<CityModel> allCities;
 // allCities=cities;
 //     if (country.cities.isNotEmpty) city = country.cities.first;
     // state.setReceiveCity(city),
-    WidgetsBinding.instance.addPostFrameCallback((_){
-    // final state=Provider.of<Calculator>(context,listen: false);
-    country = widget.country;
-cities=widget.country.cities;
-allCities=cities;
-    if (country.cities.isNotEmpty){ 
-      city = country.cities.first;
-      // state.setIsLoad(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // final state=Provider.of<Calculator>(context,listen: false);
+      country = widget.country;
+      cities = widget.country.cities;
+      allCities = cities;
+      if (country.cities.isNotEmpty) {
+        city = country.cities.first;
+        // state.setIsLoad(true);
 
 //   Future.delayed(const Duration(seconds: 0),(){
 //  state.setReceiveCity(city!);
 //  state.setIsLoad(false);
- 
- 
+
 //  state.setShowAgent(true);
-      // });
-     
+        // });
       }
-
-
     });
     super.initState();
   }
@@ -70,8 +66,8 @@ allCities=cities;
     // final state=Provider.of<Calculator>(context,listen: false);
     if (oldWidget.country != widget.country) {
       country = widget.country;
-      if (widget.country.cities.isNotEmpty) 
-      {city = widget.country.cities.first;
+      if (widget.country.cities.isNotEmpty) {
+        city = widget.country.cities.first;
 // state.setReceiveCity(city!);
       }
     }
@@ -82,31 +78,34 @@ allCities=cities;
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
     final bool isAr = LangService.isAR();
-    final state=Provider.of<Calculator>(context);
+    final state = Provider.of<Calculator>(context);
     return PickerForm(
       () {
-        cities=widget.country.cities;
-        allCities=widget.country.cities;
+        cities = widget.country.cities;
+        allCities = widget.country.cities;
         if (country.cities.isEmpty) {
           return Helper.toast(arb.selectCountry);
         }
         SettingsDialog(
           onChanged: (text) {
-            if(text.isNotEmpty){
-              List<CityModel>foundCities=allCities.where((e)=>e.name.toLowerCase().contains(text.toLowerCase())).toList();
-cities=foundCities;
-state.updateUi();
-Helper.log("text =========>>>>$text  citites=======>>>>>>>$cities");
-            }
-            else{
-              cities=widget.country.cities;
+            if (text.isNotEmpty) {
+              List<CityModel> foundCities = allCities
+                  .where(
+                      (e) => e.name.toLowerCase().contains(text.toLowerCase()))
+                  .toList();
+              cities = foundCities;
+              state.updateUi();
+              Helper.log(
+                  "text =========>>>>$text  citites=======>>>>>>>$cities");
+            } else {
+              cities = widget.country.cities;
               state.updateUi();
             }
           },
           onSubmit: null,
           // title: arb.cities,
-          title: "",
-          subTitle: arb.selectCityFromTheListBelow,
+          title: arb.selectCityFromTheListBelow,
+          subTitle: "",
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
           content: (state) => Scrollbar(
@@ -115,8 +114,7 @@ Helper.log("text =========>>>>$text  citites=======>>>>>>>$cities");
             thickness: 5,
             radius: const Radius.circular(100),
             child: Consumer<Calculator>(
-              builder: (context, state, child) =>
-              ListView(
+              builder: (context, state, child) => ListView(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [
@@ -149,8 +147,7 @@ Helper.log("text =========>>>>$text  citites=======>>>>>>>$cities");
                     },
                   ),
                 ],
-              ) ,
-              
+              ),
             ),
           ),
         ).show();
