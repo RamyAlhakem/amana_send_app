@@ -1,5 +1,4 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
-import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/global/variables.dart';
 import 'package:amana_send/graphql/explorer/mutations.dart';
 import 'package:amana_send/graphql/graphql.dart';

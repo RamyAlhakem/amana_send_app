@@ -19,7 +19,6 @@ import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';

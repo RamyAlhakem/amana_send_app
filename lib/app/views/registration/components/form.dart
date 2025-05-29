@@ -91,7 +91,7 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
           //     color: Color.fromARGB(255, 148, 13, 4),
           //   ),
           // ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Directionality(
             textDirection: TextDirection.ltr,
             child: SizeTransition(

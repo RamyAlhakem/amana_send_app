@@ -228,7 +228,7 @@ class Calculator with ChangeNotifier {
             sendCountryCode: sendCountry.coCode)
         .request();
     Helper.log(
-        "myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    ${paymentMethodID}    ${sendCountry.coCode}");
+        "myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    $paymentMethodID    ${sendCountry.coCode}");
     setExchangeRate();
     return country;
   }

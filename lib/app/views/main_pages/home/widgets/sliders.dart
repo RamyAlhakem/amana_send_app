@@ -1,6 +1,5 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/cached_network_img_app.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

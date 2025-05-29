@@ -17,7 +17,6 @@ import '/app/widgets/text/text_x.dart';
 import '/app/widgets/user_avatar.dart';
 import '/graphql/api/delete_recipient.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/recipient.dart';
 

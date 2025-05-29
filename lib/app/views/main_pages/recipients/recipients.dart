@@ -16,7 +16,6 @@ import '/app/widgets/shimmer/shimmer_load.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/router/app_route.dart';
 

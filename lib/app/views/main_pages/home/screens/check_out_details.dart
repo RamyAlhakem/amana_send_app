@@ -1,5 +1,3 @@
-import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -1,7 +1,6 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/database/injector.dart';
 import 'package:amana_send/models/payment_method.dart';
-import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,6 @@ import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
-import 'package:go_router/go_router.dart';
 
 class SettingsDialog {
   SettingsDialog(
@@ -107,7 +105,7 @@ class SettingsDialog {
                         height: 40,
                         width: MediaQuery.of(context).size.width,
                         TextX(
-                          onSubmitTitle ?? arb!.ok,
+                          onSubmitTitle ?? arb.ok,
                           style: onSubmitTitleStyle ??
                               Theme.of(context).textTheme.bodyLarge!.copyWith(
                                     color: Colors.white,
@@ -123,7 +121,7 @@ class SettingsDialog {
                       width: MediaQuery.of(context).size.width,
                       FittedBox(
                         child: TextX(
-                          onSubmit == null ? arb!.done : arb!.ok,
+                          onSubmit == null ? arb.done : arb.ok,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),

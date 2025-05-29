@@ -86,7 +86,7 @@ class TextFieldX extends StatelessWidget {
         height: height,
         width: MediaQuery.of(context).size.width * (width ?? 1.0),
         child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
           child: TextFormField(
             readOnly: readOnly,
             onEditingComplete:onEditingComplete,
