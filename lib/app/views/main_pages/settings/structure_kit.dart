@@ -90,7 +90,7 @@ class StructureKit {
             // ),
             TextX(
               _arb!.recipientsList,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.labelMedium,
             ),
           ],
         );
@@ -144,11 +144,11 @@ class StructureKit {
               state.icon != ""
                   ? IconButton(
                       onPressed: () => showDigitalCurrencies(context),
-                      icon: Image.network(
-                        state.icon,
-                        height: 23,
-                        fit: BoxFit.cover,
-                        errorBuilder:(context, error, stackTrace) => const SizedBox()))
+                      icon: Image.network(state.icon,
+                          height: 23,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox()))
                   : const SizedBox(),
               IconButton(
                 onPressed: () => Tutorial(context, show: true).showTutorial(),
@@ -183,7 +183,8 @@ class StructureKit {
                           state.icon,
                           height: 23,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const SizedBox(),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox(),
                         ))
                     : const SizedBox(),
                 IconButton(
