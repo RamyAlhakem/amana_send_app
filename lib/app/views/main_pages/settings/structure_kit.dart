@@ -90,7 +90,7 @@ class StructureKit {
             // ),
             TextX(
               _arb!.recipientsList,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         );
@@ -214,7 +214,7 @@ class StructureKit {
             color: Colors.transparent,
             TextX(
               _arb!.addNewRecipient.toUpperCase(),
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ];
