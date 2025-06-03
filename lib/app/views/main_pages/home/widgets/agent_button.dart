@@ -28,9 +28,10 @@ class AgentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Calculator state = Provider.of<Calculator>(context,listen: false);
+    final Calculator state = Provider.of<Calculator>(context, listen: false);
     final bool isAR = LangService.isAR();
-    Helper.log;("agent>>>>>>>>>>>> ${agent.tab}");
+    Helper.log;
+    ("agent>>>>>>>>>>>> ${agent.tab}");
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -67,32 +68,43 @@ class AgentButton extends StatelessWidget {
                       ),
                       Flexible(
                         child: FittedBox(
-                          child: Text.rich(
-                            textScaler: TextScaler.noScaling,
-                            TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text:
-                                      '${isAR ? '${state.paymentMethodName} 1' : '1 ${state.paymentMethodName}'} = ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontSize: 11),
-                                ),
-                                TextSpan(
-                                  text:state.receiver.text.isEmpty
-                                   ?(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
-                                   :agent==state.receiverAgent
-
-                                  ? ((double.tryParse(state.receiver.text)??1)/(double.tryParse(state.sender.text)??1)).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")
-                                  :'${(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} '
-                                   ,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(fontSize: 11),
-                                ),
-                              ],
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: Text.rich(
+                              textScaler: TextScaler.noScaling,
+                              TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        ' ${isAR ? '1 ${state.paymentMethodName} ' : '1 ${state.paymentMethodName}'} = ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(fontSize: 11),
+                                  ),
+                                  TextSpan(
+                                    text: state.receiver.text.isEmpty
+                                        ? (agent.tab)
+                                            .toStringAsFixed(2)
+                                            .replaceFirst(RegExp(r'\.00$'), "")
+                                        : agent == state.receiverAgent
+                                            ? ((double.tryParse(state
+                                                            .receiver.text) ??
+                                                        1) /
+                                                    (double.tryParse(state
+                                                            .sender.text) ??
+                                                        1))
+                                                .toStringAsFixed(2)
+                                                .replaceFirst(
+                                                    RegExp(r'\.00$'), "")
+                                            : '${(agent.tab).toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), "")} ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(fontSize: 11),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
