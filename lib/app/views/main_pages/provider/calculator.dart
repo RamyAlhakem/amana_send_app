@@ -302,14 +302,26 @@ class Calculator with ChangeNotifier {
               _receiverCountry.currency.code == 'SYP' ? 0 : 2,
             ),
           );
+          Helper.log("amount=====> sender $_calculateAmount ");
+        } else {
+          _sender = TextEditingController(
+              text: _calculateAmount.sendAmount.toStringAsFixed(2));
+          Helper.log("amount=====> receiver $_calculateAmount ");
+        }
+      } else {
+        if (isSender) {
+          _receiver = TextEditingController(
+            text: _calculateAmount.recipientAmount.toStringAsFixed(
+              _receiverCountry.currency.code == 'SYP' ? 0 : 2,
+            ),
+          );
         } else {
           _sender = TextEditingController(
               text: _calculateAmount.sendAmount.toStringAsFixed(2));
         }
-      } else {
         // _sender.text = "";
         // _receiver.text = "";
-        setCalculateAmount(CalculateAmountModel());
+        // setCalculateAmount(CalculateAmountModel());
       }
     });
     recieverLoading = senderLoading = false;

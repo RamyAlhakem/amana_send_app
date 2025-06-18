@@ -94,6 +94,9 @@ class CalculateTransferMoney {
           context.push('/${AppRoute.logIn}');
         default:
           Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
+          CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
+              error.graphqlErrors.first.extensions!);
+          _p.setCalculateAmount(calculateAmount);
       }
 
       // auto close banner message & rest button
