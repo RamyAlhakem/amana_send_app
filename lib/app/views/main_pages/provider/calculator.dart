@@ -218,15 +218,16 @@ class Calculator with ChangeNotifier {
     _receiverCountry = country;
     _receiverCity = CityModel();
     _receiverAgent = AgentModel();
-    if (country.cities.isNotEmpty) {
-      _receiverCity = country.cities.first;
-    }
+    // if (country.cities.isNotEmpty) {
+    //   _receiverCity = country.cities.first;
+    // }
 
-    GetProviders(
-            cityID: _receiverCity.id,
-            paymentMethodID: paymentMethodID,
-            sendCountryCode: sendCountry.coCode)
-        .request();
+    // GetProviders(
+    //         cityID: _receiverCity.id,
+    //         paymentMethodID: paymentMethodID,
+    //         sendCountryCode: sendCountry.coCode)
+    //     .request();
+
     Helper.log(
         "myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    $paymentMethodID    ${sendCountry.coCode}");
     setExchangeRate();
@@ -459,6 +460,11 @@ class Calculator with ChangeNotifier {
 
   setIsLoad(bool val) {
     isLoad = val;
+    notifyListeners();
+  }
+
+  clearAgents() {
+    _agents = [];
     notifyListeners();
   }
 }
