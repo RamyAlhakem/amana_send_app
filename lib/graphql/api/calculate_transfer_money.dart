@@ -97,6 +97,7 @@ class CalculateTransferMoney {
           CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
               error.graphqlErrors.first.extensions!);
           _p.setCalculateAmount(calculateAmount);
+          Helper.snack(arb!.pleaseChooseTheCity);
       }
 
       // auto close banner message & rest button

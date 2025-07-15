@@ -386,5 +386,6 @@
    "english":"EN",
    "optional":"Optional",
    "suggestionsAndComplaints":"Suggestions And Complaints",
-   "chooseTheCity":"Choose the city"
+   "chooseTheCity":"Choose the city",
+   "pleaseChooseTheCity":"Please choose the city"
 }

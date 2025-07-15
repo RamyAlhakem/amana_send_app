@@ -385,5 +385,6 @@
    "english":"انكليزي",
    "optional":"اختياري",
    "suggestionsAndComplaints":"الاقتراحات والشكاوى",
-    "chooseTheCity":"اختر المدينة"
+    "chooseTheCity":"اختر المدينة",
+     "pleaseChooseTheCity":"الرجاء اختر المدينة"
 }
