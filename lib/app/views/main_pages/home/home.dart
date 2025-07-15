@@ -160,6 +160,7 @@ class _HomeState extends State<Home> {
               // });
               state.clearFields();
               state.setCalculateAmount(CalculateAmountModel());
+              state.clearAgents();
             },
             child: ListView(
               clipBehavior: Clip.none,
