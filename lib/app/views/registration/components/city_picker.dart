@@ -47,7 +47,7 @@ class _CityPickerState extends State<CityPicker> {
       cities = widget.country.cities;
       allCities = cities;
       if (country.cities.isNotEmpty) {
-        city = country.cities.first;
+        // city = country.cities.first;
         // state.setIsLoad(true);
 
 //   Future.delayed(const Duration(seconds: 0),(){
@@ -67,7 +67,9 @@ class _CityPickerState extends State<CityPicker> {
     if (oldWidget.country != widget.country) {
       country = widget.country;
       if (widget.country.cities.isNotEmpty) {
-        city = widget.country.cities.first;
+        // city = widget.country.cities.first;
+        city = null;
+
 // state.setReceiveCity(city!);
       }
     }
@@ -153,7 +155,7 @@ class _CityPickerState extends State<CityPicker> {
         ).show();
       },
       hint: arb!.selectCity,
-      value: '${city?.name}',
+      value: city?.name ?? arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
     );
