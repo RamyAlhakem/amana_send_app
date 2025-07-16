@@ -104,6 +104,7 @@ class _CityPickerState extends State<CityPicker> {
               state.updateUi();
             }
           },
+
           onSubmit: null,
           // title: arb.cities,
           title: arb.selectCityFromTheListBelow,
@@ -133,6 +134,7 @@ class _CityPickerState extends State<CityPicker> {
                           SettingsDialog.dismiss();
                           widget.onChange(cities[i]);
                           setState(() => city = cities[i]);
+                          state.setBorderColor(null);
                         },
                         child: City(
                           city: cities[i],
@@ -158,6 +160,7 @@ class _CityPickerState extends State<CityPicker> {
       value: city?.name ?? arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
+      borderColor: state.borderColor,
     );
   }
 }

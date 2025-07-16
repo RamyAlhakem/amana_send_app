@@ -70,6 +70,7 @@ class CalculateTransferMoney {
         CalculateAmountModel calculateAmount =
             CalculateAmountModel.fromJson(data['calculateAmount']);
         _p.setCalculateAmount(calculateAmount);
+        _p.setBorderColor(null);
         // Future.delayed(const Duration(seconds: 1), () {
         //   context.pushNamed(
         //     AppRoute.sendHub,
@@ -94,6 +95,7 @@ class CalculateTransferMoney {
           context.push('/${AppRoute.logIn}');
         default:
           Helper.toast(arb!.pleaseChooseTheCity);
+          _p.setBorderColor(Colors.red);
           // Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
           CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
               error.graphqlErrors.first.extensions!);

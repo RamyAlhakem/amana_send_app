@@ -48,12 +48,13 @@ class GeneralWidgets {
     BuildContext context, {
     Color? color,
     double borderRadius = 8,
+    Color? borderColor,
   }) {
     return BoxDecoration(
       color: color ?? Theme.of(context).inputDecorationTheme.fillColor,
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
-        color: Theme.of(context).dividerColor,
+        color: borderColor ?? Theme.of(context).dividerColor,
         width: 0.9,
       ),
     );
