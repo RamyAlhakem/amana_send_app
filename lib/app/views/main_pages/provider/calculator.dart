@@ -60,6 +60,7 @@ class Calculator with ChangeNotifier {
   bool _showAgents = false;
   double _exchangeRate = 0;
   bool isLoad = false;
+  Color? borderColor;
 
   //____________________________________________________________________________
 
@@ -184,6 +185,7 @@ class Calculator with ChangeNotifier {
       _receiver.clear();
       senderLoading = false;
       recieverLoading = false;
+      borderColor = null;
       notifyListeners();
     });
   }
@@ -465,6 +467,11 @@ class Calculator with ChangeNotifier {
 
   clearAgents() {
     _agents = [];
+    notifyListeners();
+  }
+
+  setBorderColor(Color? color) {
+    borderColor = color;
     notifyListeners();
   }
 }
