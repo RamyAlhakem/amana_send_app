@@ -93,14 +93,19 @@ class CalculateTransferMoney {
         case 401:
           Helper.toast(arb!.pleaseloginToContinue);
           context.push('/${AppRoute.logIn}');
-        default:
+        case 476:
           Helper.toast(arb!.pleaseChooseTheCity);
           _p.setBorderColor(Colors.red);
-          // Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
+          Helper.snack(arb!.pleaseChooseTheCity);
+        default:
+
+          // Helper.toast(arb!.pleaseChooseTheCity);
+          // _p.setBorderColor(Colors.red);
+          Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
           CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
               error.graphqlErrors.first.extensions!);
           _p.setCalculateAmount(calculateAmount);
-          Helper.snack(arb!.pleaseChooseTheCity);
+        // Helper.snack(arb!.pleaseChooseTheCity);
       }
 
       // auto close banner message & rest button
