@@ -11,8 +11,9 @@ import 'package:amana_send/helper/helper.dart';
 import 'package:amana_send/models/payment_method.dart';
 import 'package:amana_send/models/user.dart';
 import 'package:amana_send/services/popup_services.dart';
-import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 import '/app/views/main_pages/provider/calculator.dart';
@@ -31,7 +32,6 @@ class DigitalCurrencyRoller extends StatelessWidget {
   final bool send;
   final double? width;
   final double borderRadius;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -95,18 +95,19 @@ Future<void> showDigitalCurrencies(BuildContext context) {
                   borderRadius: BorderRadius.circular(100),
                   onTap: () {
                     PaymentMethodModel payment = state.payments[i];
-                    Database().setCurrency=payment;
+                    Database().setCurrency = payment;
                     state.setPaymentMethodID(payment);
                     state.setPrice(state.sender.text);
                     SettingsDialog.dismiss();
-  getResources(context);
+                    getResources(context);
                   },
                   child: Row(children: [
                     Image.network(
                       state.payments[i].iconUrl,
                       height: 50,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => const SizedBox(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox(),
                     ),
                     const SizedBox(
                       width: 20,
@@ -128,31 +129,30 @@ Future<void> showDigitalCurrencies(BuildContext context) {
   ).show();
 }
 
+Future<void> getResources(BuildContext context) async {
+  WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
 
-   Future<void> getResources(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
-
-    // call data:---------------------------------------------------------------
-    GetPaymentMethods.request();
-    GetMetadata.request();
-    if (Global.appSettings.token.isNotEmpty) {
-      GetNotifications.request();
-      GetRecipients.request();
-      await GetUserMeta.request();
-    }
-    await GetCountriesAPI.request();
-    // -------------------------------------------------------------------------
-
-    if (context.mounted && Global.isAnyDialogOpen(context)) {
-      LoadingDialog.dismiss();
-    }
-
-    // Check user verification status
-    Helper.userVerify(
-      UserModel.get.verified,
-      showDialog: true,
-      returnSnack: UserModel.get.verified == 0,
-    );
-
-    PopupService.show();
+  // call data:---------------------------------------------------------------
+  GetPaymentMethods.request();
+  GetMetadata.request();
+  if (Global.appSettings.token.isNotEmpty) {
+    GetNotifications.request();
+    GetRecipients.request();
+    await GetUserMeta.request();
   }
+  await GetCountriesAPI.request();
+  // -------------------------------------------------------------------------
+
+  if (context.mounted && Global.isAnyDialogOpen(context)) {
+    LoadingDialog.dismiss();
+  }
+
+  // Check user verification status
+  Helper.userVerify(
+    UserModel.get.verified,
+    showDialog: true,
+    returnSnack: UserModel.get.verified == 0,
+  );
+
+  PopupService.show();
+}
