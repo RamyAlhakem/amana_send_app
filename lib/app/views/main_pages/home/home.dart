@@ -5,7 +5,7 @@ import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:amana_send/models/currency.dart';
 import 'package:amana_send/models/payment_method.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';

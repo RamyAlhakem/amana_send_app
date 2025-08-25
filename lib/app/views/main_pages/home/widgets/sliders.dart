@@ -2,6 +2,7 @@ import 'package:amana_send/app/views/main_pages/home/widgets/cached_network_img_
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Sliders extends StatelessWidget {
   const Sliders({super.key});
@@ -9,15 +10,23 @@ class Sliders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calculater = Provider.of<Calculator>(context);
- 
+
     return SizedBox(
       width: double.infinity,
       height: 200,
-      child: PageView(
-        controller: calculater.pageController,
-        children: calculater.sliders
-            .map((e) => CachedNetworkImageApp(
-                  urlImg: e.picUrl,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          height: 200,
+          viewportFraction: 1,
+          autoPlay: true,
+          enableInfiniteScroll: true,
+        ),
+        items: calculater.sliders
+            .map((e) => SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImageApp(
+                    urlImg: e.picUrl,
+                  ),
                 ))
             .toList(),
       ),
