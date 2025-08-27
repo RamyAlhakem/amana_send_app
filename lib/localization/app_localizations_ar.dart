@@ -710,7 +710,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount =>
-      'لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى تفعيل الحساب';
+      'لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى ترقية الحساب';
 
   @override
   String get selectTheCountryYouWantToTransferTo =>
