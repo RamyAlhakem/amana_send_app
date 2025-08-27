@@ -20,7 +20,7 @@ class RecipientIconDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final  isAr = LangService.isAR();
+    final isAr = LangService.isAR();
     return Row(
       children: [
         UserAvatar(code: recipient.country.coCode),
@@ -49,8 +49,11 @@ class RecipientIconDetail extends StatelessWidget {
                 ),
               ]),
               isAr
-              ?Text(" ${recipient.mobile} ${recipient.country.phoneCode}+")
-              :Text("+${recipient.country.phoneCode} ${recipient.mobile}")
+                  ? Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Text(
+                          " ${recipient.mobile} ${recipient.country.phoneCode}+"))
+                  : Text("+${recipient.country.phoneCode} ${recipient.mobile}")
             ],
           ),
         ),

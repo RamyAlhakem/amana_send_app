@@ -1,7 +1,7 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +90,7 @@ class StructureKit {
             // ),
             TextX(
               _arb!.recipientsList,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         );
@@ -144,11 +144,11 @@ class StructureKit {
               state.icon != ""
                   ? IconButton(
                       onPressed: () => showDigitalCurrencies(context),
-                      icon: Image.network(
-                        state.icon,
-                        height: 23,
-                        fit: BoxFit.cover,
-                        errorBuilder:(context, error, stackTrace) => const SizedBox()))
+                      icon: Image.network(state.icon,
+                          height: 23,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox()))
                   : const SizedBox(),
               IconButton(
                 onPressed: () => Tutorial(context, show: true).showTutorial(),
@@ -183,7 +183,8 @@ class StructureKit {
                           state.icon,
                           height: 23,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => const SizedBox(),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox(),
                         ))
                     : const SizedBox(),
                 IconButton(
@@ -213,7 +214,7 @@ class StructureKit {
             color: Colors.transparent,
             TextX(
               _arb!.addNewRecipient.toUpperCase(),
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ];

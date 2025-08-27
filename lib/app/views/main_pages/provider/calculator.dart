@@ -4,7 +4,7 @@ import 'package:amana_send/graphql/api/get_providers.dart';
 import 'package:amana_send/graphql/api/get_sliders.dart';
 import 'package:amana_send/models/slider_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +27,9 @@ class Calculator with ChangeNotifier {
   static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
   List<SlidersModel> sliders = [];
-   List<AgentModel> providersNew=[];
-  PageController pageController=PageController();
-  int currentSlider=0;
+  List<AgentModel> providersNew = [];
+  PageController pageController = PageController();
+  int currentSlider = 0;
   Timer? timer;
   double _percentFee = 0;
   double _minFee = 0;
@@ -59,7 +59,8 @@ class Calculator with ChangeNotifier {
   bool _sendUSD = false;
   bool _showAgents = false;
   double _exchangeRate = 0;
-  bool isLoad=false;
+  bool isLoad = false;
+  Color? borderColor;
 
   //____________________________________________________________________________
 
@@ -93,7 +94,7 @@ class Calculator with ChangeNotifier {
   //____________________________________________________________________________
   //----------------------------------------------------------------------------
   //** */
-  
+
   void setPaymentMethodID(PaymentMethodModel getPaymentMethod) {
     if (getPaymentMethod.id != 0) {
       _paymentMethodId = getPaymentMethod.id;
@@ -170,10 +171,10 @@ class Calculator with ChangeNotifier {
     Helper.log("city id ========>>>>>>>${city.id}");
     _receiverCity = city;
     GetProviders(
-      cityID: _receiverCity.id,
-      paymentMethodID: paymentMethodID,
-      sendCountryCode: sendCountry.coCode
-    ).request();
+            cityID: _receiverCity.id,
+            paymentMethodID: paymentMethodID,
+            sendCountryCode: sendCountry.coCode)
+        .request();
     // isLoad=false;
     notifyListeners();
   }
@@ -182,8 +183,9 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sender.clear();
       _receiver.clear();
-      senderLoading=false;
-      recieverLoading=false;
+      senderLoading = false;
+      recieverLoading = false;
+      borderColor = null;
       notifyListeners();
     });
   }
@@ -195,7 +197,7 @@ class Calculator with ChangeNotifier {
 
   void getAgents(List<AgentModel> providers) {
     Helper.log("providers ===> $providers");
-  
+
     _agents = providers;
     setAgent(providers.first);
     notifyListeners();
@@ -213,21 +215,23 @@ class Calculator with ChangeNotifier {
   CountryModel setReceiverCountry(CountryModel country) {
     Helper.log("city id ========>>>>>>>${_receiverCity.id}");
     Helper.log("paymentMethodID ========>>>>>>>$paymentMethodID");
-    Helper.log("sendCountryCode: ========>>>>>>>${sendCountry.coCode }");
+    Helper.log("sendCountryCode: ========>>>>>>>${sendCountry.coCode}");
 
     _receiverCountry = country;
     _receiverCity = CityModel();
     _receiverAgent = AgentModel();
-    if (country.cities.isNotEmpty) {
-      _receiverCity = country.cities.first;
-    }
+    // if (country.cities.isNotEmpty) {
+    //   _receiverCity = country.cities.first;
+    // }
 
-    GetProviders(
-      cityID: _receiverCity.id,
-      paymentMethodID: paymentMethodID,
-      sendCountryCode: sendCountry.coCode
-    ).request();
-    Helper.log("myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    ${paymentMethodID}    ${sendCountry.coCode}");
+    // GetProviders(
+    //         cityID: _receiverCity.id,
+    //         paymentMethodID: paymentMethodID,
+    //         sendCountryCode: sendCountry.coCode)
+    //     .request();
+
+    Helper.log(
+        "myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    $paymentMethodID    ${sendCountry.coCode}");
     setExchangeRate();
     return country;
   }
@@ -237,17 +241,14 @@ class Calculator with ChangeNotifier {
     sendUSD ? _exchangeRate = usdRate : _exchangeRate = rate;
     _percentFee = sendCountry.sendFees;
     notifyListeners();
-
   }
 
   void setAgent(AgentModel agent) {
     _receiverAgent = agent;
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
-     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
-
-
 
   void setPrice(String value, {bool? usd}) {
     if (usd == null) {
@@ -268,8 +269,10 @@ class Calculator with ChangeNotifier {
 
       calculate(value, isSender);
     } else {
-      clearFields();
-      setCalculateAmount(CalculateAmountModel()); 
+      senderLoading = false;
+      recieverLoading = false;
+      // clearFields();
+      setCalculateAmount(CalculateAmountModel());
     }
 
     notifyListeners();
@@ -302,14 +305,26 @@ class Calculator with ChangeNotifier {
               _receiverCountry.currency.code == 'SYP' ? 0 : 2,
             ),
           );
+          Helper.log("amount=====> sender $_calculateAmount ");
+        } else {
+          _sender = TextEditingController(
+              text: _calculateAmount.sendAmount.toStringAsFixed(2));
+          Helper.log("amount=====> receiver $_calculateAmount ");
+        }
+      } else {
+        if (isSender) {
+          _receiver = TextEditingController(
+            text: _calculateAmount.recipientAmount.toStringAsFixed(
+              _receiverCountry.currency.code == 'SYP' ? 0 : 2,
+            ),
+          );
         } else {
           _sender = TextEditingController(
               text: _calculateAmount.sendAmount.toStringAsFixed(2));
         }
-      } else {
-        _sender.text = "";
-        _receiver.text = "";
-        setCalculateAmount(CalculateAmountModel()); 
+        // _sender.text = "";
+        // _receiver.text = "";
+        // setCalculateAmount(CalculateAmountModel());
       }
     });
     recieverLoading = senderLoading = false;
@@ -362,11 +377,11 @@ class Calculator with ChangeNotifier {
     canSend = checkRecipientAvailability(recipient);
 
     if (transfer != null) {
-      isLoad=true;
+      isLoad = true;
       notifyListeners();
       _sender.text = '${transfer.sendAmount}';
       _receiver.text = '${transfer.recipientAmount}';
-        // setAgent(transfer.provider);
+      // setAgent(transfer.provider);
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
         _sendUSD = true;
@@ -376,26 +391,22 @@ class Calculator with ChangeNotifier {
 
       // setAgent(transfer.provider);
       _sender.text = '${transfer.sendAmount}';
-      Future.delayed(const  Duration(seconds: 2),(){
+      Future.delayed(const Duration(seconds: 2), () {
         Helper.log("city           =========>>>>>>>>>> ${transfer.city}");
-      
-         setReceiveCity(transfer.city);
 
+        setReceiveCity(transfer.city);
 
-notifyListeners();
+        notifyListeners();
       });
-         Future.delayed(const  Duration(seconds: 3),(){
-      
-setAgent(transfer.provider);
+      Future.delayed(const Duration(seconds: 3), () {
+        setAgent(transfer.provider);
 
-notifyListeners();
+        notifyListeners();
       });
-      Future.delayed(const  Duration(seconds: 4),(){
-
-isLoad=false;
-notifyListeners();
+      Future.delayed(const Duration(seconds: 4), () {
+        isLoad = false;
+        notifyListeners();
       });
-        
     } else if (receiverCountry.id == 0) {
       setReceiverCountry(recipient.country);
     }
@@ -410,40 +421,55 @@ notifyListeners();
 
     return canSend;
   }
-  updateUi(){
+
+  updateUi() {
     notifyListeners();
   }
-   
+
   getSliders(int type) async {
     sliders = await GetSliders.request(type) ?? [];
     notifyListeners();
   }
-  moveSlider(){
-timer=Timer.periodic( const Duration(seconds: 4), (timer){
-  if(currentSlider+1<sliders.length){
-    currentSlider++;
- pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
- Helper.log("current sliders $currentSlider");
-  }
-  else{
-    currentSlider=0;
-     pageController.animateToPage(currentSlider, duration:const Duration(milliseconds: 700), curve: Curves.easeInOut);
-     Helper.log("current sliders  = 0 $currentSlider");
-  }
- 
-});
+
+  moveSlider() {
+    timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      if (currentSlider + 1 < sliders.length) {
+        currentSlider++;
+        pageController.animateToPage(currentSlider,
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeInOut);
+        Helper.log("current sliders $currentSlider");
+      } else {
+        currentSlider = 0;
+        pageController.jumpTo(50);
+        Helper.log("current sliders  = 0 $currentSlider");
+      }
+    });
 // notifyListeners();
   }
-    set calculateAmount(CalculateAmountModel value) {
+
+  set calculateAmount(CalculateAmountModel value) {
     _calculateAmount = value;
     notifyListeners();
   }
-  setShowAgent(bool value){
-    _showAgents=value;
+
+  setShowAgent(bool value) {
+    _showAgents = value;
     notifyListeners();
   }
-  setIsLoad(bool val){
-    isLoad=val;
+
+  setIsLoad(bool val) {
+    isLoad = val;
+    notifyListeners();
+  }
+
+  clearAgents() {
+    _agents = [];
+    notifyListeners();
+  }
+
+  setBorderColor(Color? color) {
+    borderColor = color;
     notifyListeners();
   }
 }

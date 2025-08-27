@@ -2,7 +2,7 @@ import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:amana_send/helper/helper.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '/app/views/main_pages/home/widgets/country.dart';

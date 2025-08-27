@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,6 @@ import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/graphql/api/get_transfer.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/transfer.dart';
 import '/services/lang_service.dart';

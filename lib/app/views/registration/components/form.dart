@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +91,7 @@ class _LogInFormState extends State<LogInForm> with TickerProviderStateMixin {
           //     color: Color.fromARGB(255, 148, 13, 4),
           //   ),
           // ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Directionality(
             textDirection: TextDirection.ltr,
             child: SizeTransition(

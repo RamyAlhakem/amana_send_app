@@ -1,6 +1,4 @@
-
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
-import 'package:amana_send/app/widgets/dialogs/loading.dart';
 import 'package:amana_send/global/variables.dart';
 import 'package:amana_send/graphql/explorer/mutations.dart';
 import 'package:amana_send/graphql/graphql.dart';
@@ -11,7 +9,7 @@ import 'package:amana_send/router/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class CalculateTransferMoney {
@@ -72,6 +70,13 @@ class CalculateTransferMoney {
         CalculateAmountModel calculateAmount =
             CalculateAmountModel.fromJson(data['calculateAmount']);
         _p.setCalculateAmount(calculateAmount);
+        _p.setBorderColor(null);
+        // Future.delayed(const Duration(seconds: 1), () {
+        //   context.pushNamed(
+        //     AppRoute.sendHub,
+        //     pathParameters: <String, String>{'recipient': 'false'},
+        //   );
+        // });
       }
       return true;
       // Helper.banner('Email successfully changed');
@@ -80,16 +85,27 @@ class CalculateTransferMoney {
   }
 
   void _error(OperationException error) async {
-     arb = AppLocalizations.of(context);
-    _p.receiver.text = "";
-    _p.sender.text = "";
+    arb = AppLocalizations.of(context);
+    // _p.receiver.text = "";
+    // _p.sender.text = "";
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {
         case 401:
           Helper.toast(arb!.pleaseloginToContinue);
-           context.push('/${AppRoute.logIn}');
+          context.push('/${AppRoute.logIn}');
+        case 476:
+          Helper.toast(arb!.pleaseChooseTheCity);
+          _p.setBorderColor(Colors.red);
+          Helper.snack(arb!.pleaseChooseTheCity);
         default:
+
+          // Helper.toast(arb!.pleaseChooseTheCity);
+          // _p.setBorderColor(Colors.red);
           Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
+          CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
+              error.graphqlErrors.first.extensions!);
+          _p.setCalculateAmount(calculateAmount);
+        // Helper.snack(arb!.pleaseChooseTheCity);
       }
 
       // auto close banner message & rest button

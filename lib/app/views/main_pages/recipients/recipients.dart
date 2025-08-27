@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:amana_send/app/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,6 @@ import '/app/widgets/shimmer/shimmer_load.dart';
 import '/app/widgets/text/text_x.dart';
 import '/graphql/api/get_recipients.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/router/app_route.dart';
 

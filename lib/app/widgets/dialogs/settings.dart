@@ -1,9 +1,8 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/database/injector.dart';
 import 'package:amana_send/models/payment_method.dart';
-import 'package:amana_send/services/lang_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
@@ -11,23 +10,21 @@ import '/app/widgets/blurry_container.dart';
 import '/app/widgets/buttons/button.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';
-import 'package:go_router/go_router.dart';
 
 class SettingsDialog {
-  SettingsDialog({
-    required this.onSubmit,
-    required this.title,
-    required this.subTitle,
-    required this.content,
-    this.barrierDismissible = false,
-    this.onSubmitTitle,
-    this.subTitleStyle,
-    this.onSubmitTitleStyle,
-    this.onSubmitColor,
-    this.horizontalPadding = 20,
-    this.backgroundColor,
-    this.onChanged
-  });
+  SettingsDialog(
+      {required this.onSubmit,
+      required this.title,
+      required this.subTitle,
+      required this.content,
+      this.barrierDismissible = false,
+      this.onSubmitTitle,
+      this.subTitleStyle,
+      this.onSubmitTitleStyle,
+      this.onSubmitColor,
+      this.horizontalPadding = 20,
+      this.backgroundColor,
+      this.onChanged});
 
   final String title;
   final String subTitle;
@@ -38,7 +35,7 @@ class SettingsDialog {
   final Color? onSubmitColor, backgroundColor;
   final double horizontalPadding;
   final void Function()? onSubmit;
-  final void Function (String)? onChanged;
+  final void Function(String)? onChanged;
 
   Future<void> show() async {
     final BuildContext context = Global.key.currentContext!;
@@ -72,19 +69,19 @@ class SettingsDialog {
                           Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
-              TextField(
-                onChanged:onChanged ,
-                decoration: InputDecoration(
-               
-                filled: true,
-                hintText: arb!.search,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),)
+                  TextField(
+                    onChanged: onChanged,
+                    decoration: InputDecoration(
+                      filled: true,
+                      hintText: arb!.search,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  )
                 ],
               ),
               titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -108,7 +105,7 @@ class SettingsDialog {
                         height: 40,
                         width: MediaQuery.of(context).size.width,
                         TextX(
-                          onSubmitTitle ?? arb!.ok,
+                          onSubmitTitle ?? arb.ok,
                           style: onSubmitTitleStyle ??
                               Theme.of(context).textTheme.bodyLarge!.copyWith(
                                     color: Colors.white,
@@ -124,7 +121,7 @@ class SettingsDialog {
                       width: MediaQuery.of(context).size.width,
                       FittedBox(
                         child: TextX(
-                          onSubmit == null ? arb!.done : arb!.ok,
+                          onSubmit == null ? arb.done : arb.ok,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
@@ -157,75 +154,75 @@ class CurrencyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state=Provider.of<Calculator>(context);
+    final state = Provider.of<Calculator>(context);
     return BlurryContainer(
-      child:state.paymentMethodName.isNotEmpty
-      ? Container()
-      :
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextX(
-            arb?.typeOfCurrency ?? "",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+      child: state.paymentMethodName.isNotEmpty
+          ? Container()
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextX(
+                  arb?.typeOfCurrency ?? "",
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
-            child: TextX(
-              arb?.pleaseChooseCurrency ?? "",
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-            ),
-          ),
-          ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            children: [
-              ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  for (int i = 0; i < controller.payments.length; i++)
-                    InkWell(
-                      borderRadius: BorderRadius.circular(100),
-                      onTap: () {
-                        PaymentMethodModel payment = controller.payments[i];
-                        Database().setCurrency = payment;
-                        controller.setPaymentMethodID(payment);
-                        controller.setPrice(controller.sender.text);
-                      },
-                      child: Row(children: [
-                        Image.network(
-                          controller.payments[i].iconUrl,
-                          height: 50,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const SizedBox(),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          controller.payments[i].name,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        )
-                      ]),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 0),
+                  child: TextX(
+                    arb?.pleaseChooseCurrency ?? "",
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    ListView(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(10),
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        for (int i = 0; i < controller.payments.length; i++)
+                          InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: () {
+                              PaymentMethodModel payment =
+                                  controller.payments[i];
+                              Database().setCurrency = payment;
+                              controller.setPaymentMethodID(payment);
+                              controller.setPrice(controller.sender.text);
+                            },
+                            child: Row(children: [
+                              Image.network(
+                                controller.payments[i].iconUrl,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const SizedBox(),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                controller.payments[i].name,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              const SizedBox(
+                                height: 60,
+                              )
+                            ]),
+                          ),
+                      ],
                     ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+                  ],
+                ),
+              ],
+            ),
       // child: Column(
       //   mainAxisAlignment: MainAxisAlignment.center,
       //   children: [

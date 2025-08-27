@@ -2,7 +2,7 @@ import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:amana_send/models/currency.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
@@ -40,15 +40,17 @@ class CountryRoller extends StatelessWidget {
       child = PickerForm(
         () => SettingsDialog(
           onChanged: (text) {
-            if(text.isNotEmpty){
-              final List<CountryModel> foundContries=allContries.where((e)=>isAr? e.arName.toLowerCase().contains(text.toLowerCase()):e.enName.toLowerCase().contains(text.toLowerCase())).toList();
-countries=foundContries;
-state.updateUi();
-            }
-            else{
-              countries =
-          send ? state.sendCountries : state.receiveCountries;
-          state.updateUi();
+            if (text.isNotEmpty) {
+              final List<CountryModel> foundContries = allContries
+                  .where((e) => isAr
+                      ? e.arName.toLowerCase().contains(text.toLowerCase())
+                      : e.enName.toLowerCase().contains(text.toLowerCase()))
+                  .toList();
+              countries = foundContries;
+              state.updateUi();
+            } else {
+              countries = send ? state.sendCountries : state.receiveCountries;
+              state.updateUi();
             }
           },
           onSubmit: null,
@@ -63,8 +65,7 @@ state.updateUi();
             thickness: 5,
             radius: const Radius.circular(100),
             child: Consumer<Calculator>(
-              builder: (context, calculater, child) =>
-              ListView(
+              builder: (context, calculater, child) => ListView(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [
@@ -76,34 +77,36 @@ state.updateUi();
                     children: [
                       for (int i = 0; i < countries.length; i++)
                         if (send || countries[i].cities.isNotEmpty)
-                            InkWell(
-                              borderRadius: BorderRadius.circular(100),
-                              onTap: () => setState(() {
-                                if (send) {
-                                  country = state.setSendCountry(
-                                   countries[i],
-                                  );
-                                  state.setCalculateAmount(CalculateAmountModel());                  
-                                } else {
-                                  country = state.setReceiverCountry(
-                                    countries[i],
-                                  );
-                                   state.setCalculateAmount(CalculateAmountModel());     
-                                }
-              state.clearFields();
-                                // state.setPrice(state.sender.text);
-                                SettingsDialog.dismiss();
-                              }),
-                              child: Country(
-                                country: countries[i],
-                                selected: country.coCode == countries[i].coCode,
-                              ),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: () => setState(() {
+                              if (send) {
+                                country = state.setSendCountry(
+                                  countries[i],
+                                );
+                                state
+                                    .setCalculateAmount(CalculateAmountModel());
+                              } else {
+                                country = state.setReceiverCountry(
+                                  countries[i],
+                                );
+                                state.clearAgents();
+                                state
+                                    .setCalculateAmount(CalculateAmountModel());
+                              }
+                              state.clearFields();
+                              // state.setPrice(state.sender.text);
+                              SettingsDialog.dismiss();
+                            }),
+                            child: Country(
+                              country: countries[i],
+                              selected: country.coCode == countries[i].coCode,
                             ),
+                          ),
                     ],
                   ),
                 ],
-              ) ,
-              
+              ),
             ),
           ),
         ).show(),

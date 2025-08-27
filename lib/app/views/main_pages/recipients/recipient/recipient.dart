@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
@@ -17,7 +17,6 @@ import '/app/widgets/text/text_x.dart';
 import '/app/widgets/user_avatar.dart';
 import '/graphql/api/delete_recipient.dart';
 import '/helper/helper.dart';
-import '/models/country.dart';
 import '/models/metadata.dart';
 import '/models/recipient.dart';
 
@@ -89,13 +88,14 @@ class _RecipientState extends State<Recipient> {
                 TextX('${recipient.mobile}'),
               ]),
               const SizedBox(height: 8),
-              RowSpaceBetween([
-                TextX(arb!.countryCity),
-                if (recipient.country.cities.isNotEmpty)
-                  TextX(
-                      '${recipient.country.enName}/${recipient.country.cities.first.name}'),
-              ]),
-              const SizedBox(height: 8),
+              // RowSpaceBetween([
+
+              //   TextX(arb!.countryCity),
+              //   if (recipient.country.cities.isNotEmpty)
+              //     TextX(
+              //         '${recipient.country.enName}/${recipient.country.cities.first.name}'),
+              // ]),
+              // const SizedBox(height: 8),
             ],
           ),
         ),

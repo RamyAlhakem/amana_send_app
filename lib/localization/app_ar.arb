@@ -173,7 +173,7 @@
   "youHaveExceededTheMaximumSendingAmountThisMonth": "لقد تجاوزت الحد الأعلى لمبلغ الإرسال هذا الشهر",
   "country": "البلد",
   "yourMaxLevelSendingAmountIs": "الحد الأعلى لمبلغ الإرسال الخاص بك هو",
-  "toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount": "لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى تفعيل الحساب",
+  "toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount": "لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى ترقية الحساب",
   "yourMaxSendingAmountWithin": "الحد الأعلى لمبلغ الإرسال الخاص بك خلال",
   "contactUs": "اتصل بنا",
   "day": "يوم",
@@ -384,5 +384,7 @@
    "notes":"ملاحظات",
    "english":"انكليزي",
    "optional":"اختياري",
-   "suggestionsAndComplaints":"الاقتراحات والشكاوى"
+   "suggestionsAndComplaints":"الاقتراحات والشكاوى",
+    "chooseTheCity":"اختر المدينة",
+     "pleaseChooseTheCity":"الرجاء اختر المدينة"
 }

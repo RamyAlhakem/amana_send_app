@@ -37,7 +37,7 @@ class _DropFormState extends State<DropForm> {
           fillColor: Theme.of(context).cardColor,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelText: widget.hint,
-          labelStyle:  TextStyle( fontSize: 14),
+          labelStyle:  const TextStyle( fontSize: 14),
           focusedBorder: GeneralWidgets.formBorder(context),
           enabledBorder: GeneralWidgets.formBorder(context, radius: 10),
           border: GeneralWidgets.formBorder(context, radius: 10),
@@ -50,7 +50,7 @@ class _DropFormState extends State<DropForm> {
               value: item.keys.first,
               child: Text(
                 item.values.first,
-                style:  TextStyle( fontSize: 14),
+                style:  const TextStyle( fontSize: 14),
               ),
             );
           }).toList(),
