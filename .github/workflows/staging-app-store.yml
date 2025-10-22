@@ -128,7 +128,7 @@ jobs:
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Send ClickUp Notification
-        uses: architweb/ClickUpNotification@v3.0.0
+        uses: architweb/ClickUpNotification@v3.1.0
         with:
           clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
           clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
