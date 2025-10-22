@@ -1,7 +1,7 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/choose_digital_currency_roller.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';

@@ -5,19 +5,18 @@ import '/app/widgets/text/text_x.dart';
 import '/services/lang_service.dart';
 
 class PickerForm extends StatelessWidget {
-  const PickerForm(
-    this.onTap, {
-    super.key,
-    required this.hint,
-    this.value = '',
-    this.height,
-    this.width,
-    this.borderRadius = 8,
-    this.align = MainAxisAlignment.spaceBetween,
-    this.color,
-    this.hintIcon,
-    this.valueIcon,
-  });
+  const PickerForm(this.onTap,
+      {super.key,
+      required this.hint,
+      this.value = '',
+      this.height,
+      this.width,
+      this.borderRadius = 8,
+      this.align = MainAxisAlignment.spaceBetween,
+      this.color,
+      this.hintIcon,
+      this.valueIcon,
+      this.borderColor});
 
   final String hint;
   final String value;
@@ -26,6 +25,7 @@ class PickerForm extends StatelessWidget {
   final double borderRadius;
   final MainAxisAlignment align;
   final Color? color;
+  final Color? borderColor;
   final Widget? hintIcon;
   final Widget? valueIcon;
 
@@ -39,6 +39,7 @@ class PickerForm extends StatelessWidget {
           width: width,
           margin: const EdgeInsets.fromLTRB(0, 6, 0, 6),
           decoration: GeneralWidgets.formDecoration(
+            borderColor: borderColor,
             context,
             color: color,
             borderRadius: borderRadius,

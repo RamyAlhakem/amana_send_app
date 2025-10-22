@@ -4,7 +4,7 @@ import 'package:amana_send/graphql/api/get_providers.dart';
 import 'package:amana_send/graphql/api/get_sliders.dart';
 import 'package:amana_send/models/slider_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -60,6 +60,7 @@ class Calculator with ChangeNotifier {
   bool _showAgents = false;
   double _exchangeRate = 0;
   bool isLoad = false;
+  Color? borderColor;
 
   //____________________________________________________________________________
 
@@ -184,6 +185,7 @@ class Calculator with ChangeNotifier {
       _receiver.clear();
       senderLoading = false;
       recieverLoading = false;
+      borderColor = null;
       notifyListeners();
     });
   }
@@ -218,15 +220,16 @@ class Calculator with ChangeNotifier {
     _receiverCountry = country;
     _receiverCity = CityModel();
     _receiverAgent = AgentModel();
-    if (country.cities.isNotEmpty) {
-      _receiverCity = country.cities.first;
-    }
+    // if (country.cities.isNotEmpty) {
+    //   _receiverCity = country.cities.first;
+    // }
 
-    GetProviders(
-            cityID: _receiverCity.id,
-            paymentMethodID: paymentMethodID,
-            sendCountryCode: sendCountry.coCode)
-        .request();
+    // GetProviders(
+    //         cityID: _receiverCity.id,
+    //         paymentMethodID: paymentMethodID,
+    //         sendCountryCode: sendCountry.coCode)
+    //     .request();
+
     Helper.log(
         "myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${_receiverCity.id}    $paymentMethodID    ${sendCountry.coCode}");
     setExchangeRate();
@@ -438,9 +441,7 @@ class Calculator with ChangeNotifier {
         Helper.log("current sliders $currentSlider");
       } else {
         currentSlider = 0;
-        pageController.animateToPage(currentSlider,
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.easeInOut);
+        pageController.jumpTo(50);
         Helper.log("current sliders  = 0 $currentSlider");
       }
     });
@@ -459,6 +460,16 @@ class Calculator with ChangeNotifier {
 
   setIsLoad(bool val) {
     isLoad = val;
+    notifyListeners();
+  }
+
+  clearAgents() {
+    _agents = [];
+    notifyListeners();
+  }
+
+  setBorderColor(Color? color) {
+    borderColor = color;
     notifyListeners();
   }
 }

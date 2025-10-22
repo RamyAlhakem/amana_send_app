@@ -1,6 +1,6 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +47,7 @@ class _CityPickerState extends State<CityPicker> {
       cities = widget.country.cities;
       allCities = cities;
       if (country.cities.isNotEmpty) {
-        city = country.cities.first;
+        // city = country.cities.first;
         // state.setIsLoad(true);
 
 //   Future.delayed(const Duration(seconds: 0),(){
@@ -67,7 +67,9 @@ class _CityPickerState extends State<CityPicker> {
     if (oldWidget.country != widget.country) {
       country = widget.country;
       if (widget.country.cities.isNotEmpty) {
-        city = widget.country.cities.first;
+        // city = widget.country.cities.first;
+        city = null;
+
 // state.setReceiveCity(city!);
       }
     }
@@ -102,6 +104,7 @@ class _CityPickerState extends State<CityPicker> {
               state.updateUi();
             }
           },
+
           onSubmit: null,
           // title: arb.cities,
           title: arb.selectCityFromTheListBelow,
@@ -131,6 +134,7 @@ class _CityPickerState extends State<CityPicker> {
                           SettingsDialog.dismiss();
                           widget.onChange(cities[i]);
                           setState(() => city = cities[i]);
+                          state.setBorderColor(null);
                         },
                         child: City(
                           city: cities[i],
@@ -153,9 +157,10 @@ class _CityPickerState extends State<CityPicker> {
         ).show();
       },
       hint: arb!.selectCity,
-      value: '${city?.name}',
+      value: city?.name ?? arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
+      borderColor: state.borderColor,
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:amana_send/app/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +57,7 @@ class _SendFormFieldsState extends State<SendFormFields>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //  _calculator = Provider.of<Calculator>(context, listen: false);
       Tutorial(context).showTutorial();
+      _calculator.clearAgents();
 //       Future.delayed(const Duration(seconds: 2),(){
 // _calculator.setIsLoad(false);
 

@@ -9,7 +9,7 @@ import 'package:amana_send/router/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class CalculateTransferMoney {
@@ -70,6 +70,7 @@ class CalculateTransferMoney {
         CalculateAmountModel calculateAmount =
             CalculateAmountModel.fromJson(data['calculateAmount']);
         _p.setCalculateAmount(calculateAmount);
+        _p.setBorderColor(null);
         // Future.delayed(const Duration(seconds: 1), () {
         //   context.pushNamed(
         //     AppRoute.sendHub,
@@ -92,11 +93,19 @@ class CalculateTransferMoney {
         case 401:
           Helper.toast(arb!.pleaseloginToContinue);
           context.push('/${AppRoute.logIn}');
+        case 476:
+          Helper.toast(arb!.pleaseChooseTheCity);
+          _p.setBorderColor(Colors.red);
+          Helper.snack(arb!.pleaseChooseTheCity);
         default:
+
+          // Helper.toast(arb!.pleaseChooseTheCity);
+          // _p.setBorderColor(Colors.red);
           Helper.toast('${error.graphqlErrors.first.extensions?['message']}');
           CalculateAmountModel calculateAmount = CalculateAmountModel.fromJson(
               error.graphqlErrors.first.extensions!);
           _p.setCalculateAmount(calculateAmount);
+        // Helper.snack(arb!.pleaseChooseTheCity);
       }
 
       // auto close banner message & rest button
