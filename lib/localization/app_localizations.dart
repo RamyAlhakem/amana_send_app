@@ -1441,7 +1441,7 @@ abstract class AppLocalizations {
   /// No description provided for @toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount.
   ///
   /// In en, this message translates to:
-  /// **'To increase your max level amount, Kindly verify your account'**
+  /// **'To increase your max level amount, Kindly upgrade your account'**
   String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount;
 
   /// No description provided for @selectTheCountryYouWantToTransferTo.

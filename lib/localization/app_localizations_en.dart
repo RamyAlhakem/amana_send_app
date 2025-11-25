@@ -715,7 +715,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount =>
-      'To increase your max level amount, Kindly verify your account';
+      'To increase your max level amount, Kindly upgrade your account';
 
   @override
   String get selectTheCountryYouWantToTransferTo =>
