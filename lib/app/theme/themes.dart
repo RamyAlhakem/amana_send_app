@@ -25,7 +25,6 @@ class Themes {
       cardColor: DarkColors.main,
       canvasColor: DarkColors.third,
       primaryColor: DarkColors.main,
- 
       bannerTheme:
           const MaterialBannerThemeData(dividerColor: Colors.transparent),
       badgeTheme: BadgeThemeData(
@@ -100,8 +99,8 @@ class Themes {
         surface: Color.fromARGB(94, 57, 58, 59),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        thumbColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -110,8 +109,8 @@ class Themes {
           }
           return null;
         }),
-        trackColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        trackColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -122,8 +121,8 @@ class Themes {
         }),
       ),
       radioTheme: RadioThemeData(
-        fillColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -134,8 +133,8 @@ class Themes {
         }),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -231,8 +230,8 @@ class Themes {
         ),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        thumbColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -241,8 +240,8 @@ class Themes {
           }
           return null;
         }),
-        trackColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        trackColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -253,8 +252,8 @@ class Themes {
         }),
       ),
       radioTheme: RadioThemeData(
-        fillColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
@@ -265,8 +264,8 @@ class Themes {
         }),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
           if (states.contains(WidgetState.disabled)) {
             return null;
           }
