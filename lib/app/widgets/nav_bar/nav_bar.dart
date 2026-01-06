@@ -101,7 +101,7 @@ class NavBar extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: containerHeight ?? (Platform.isIOS ? 85 : 75),
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
         child: Row(
           mainAxisAlignment: mainAxisAlignment,
           children: items.map((item) {
