@@ -21,6 +21,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Import certs
+        uses: apple-actions/import-codesign-certs@v5
+        with:
+          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
+          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
+
+      - name: Download provisioning profiles
+        uses: apple-actions/download-provisioning-profiles@v4
+        with:
+          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
+          issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
 
@@ -57,20 +71,6 @@ jobs:
 
       # - name: Analyze to check for bad Dart/Flutter practices
       #   run: flutter analyze
-
-      - name: Import certs
-        uses: apple-actions/import-codesign-certs@v5
-        with:
-          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
-          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
-
-      - name: Download provisioning profiles
-        uses: apple-actions/download-provisioning-profiles@v4
-        with:
-          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
-          issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
       - name: Generate ExportOptions
         run: |
