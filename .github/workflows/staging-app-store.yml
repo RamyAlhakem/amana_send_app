@@ -51,6 +51,12 @@ jobs:
           pod install --repo-update
           cd ..
 
+      - name: Update Firebase/CoreOnly pod
+        run: |
+          cd ios
+          pod update Firebase/CoreOnly
+          cd ..
+
       # - name: Analyze to check for bad Dart/Flutter practices
       #   run: flutter analyze
 
