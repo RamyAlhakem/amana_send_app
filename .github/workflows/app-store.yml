@@ -1,9 +1,8 @@
 name: Staging App Store
 
 on:
-  push:
-    branches:
-      - "release/staging"
+  release:
+    types: [published]
 
 jobs:
   build_and_deploy:
@@ -14,13 +13,12 @@ jobs:
       actions: read
 
     env:
-      FLUTTER_VERSION: 3.27.1
+      FLUTTER_VERSION: 3.32.8
 
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
         with:
-          ref: "release/staging"
           fetch-depth: 0
 
       - name: Select Xcode version
@@ -69,7 +67,7 @@ jobs:
       - name: Download provisioning profiles
         uses: apple-actions/download-provisioning-profiles@v4
         with:
-          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}.staging
+          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
           issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
@@ -89,8 +87,8 @@ jobs:
               <string>manual</string>
               <key>provisioningProfiles</key>
               <dict>
-            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}.staging</key>
-            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }} staging</string>
+            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}</key>
+            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}</string>
               </dict>
           </dict>
           </plist>
@@ -98,7 +96,11 @@ jobs:
 
       - name: Build App
         run: |
-          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --flavor staging -t lib/main_staging.dart
+          flutter build ipa \
+          --release \
+          --export-options-plist=ios/ExportOptions.plist \
+          --flavor ${{ env.FLAVOR }} \
+          -t lib/main_${{ env.FLAVOR }}.dart
           echo "APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))" >> $GITHUB_ENV
 
       - name: Upload generated ipa to the artifacts
@@ -106,7 +108,7 @@ jobs:
         with:
           name: ${{ env.APP_FILE }}
           path: build/ios/ipa/${{ env.APP_FILE }}
-          retention-days: 7
+          retention-days: 3
 
       - name: Decode App Store API key
         run: |
