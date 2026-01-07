@@ -70,7 +70,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'المزود المستلم يمكنه الحصول على الحد الأقصى ';
 
   @override
-  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
+  String
+  get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
       'Please make sure to enter phone number, WhatsApp number, and full name correctly to avoid delaying the transfer delivery';
 
   @override
@@ -92,11 +93,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toThisWalletAddress => 'To this Wallet Address';
 
   @override
-  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
+  String
+  get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
       'Once the payment is being confirmed, we will notify you and process the transfer immediately';
 
   @override
-  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
+  String
+  get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
       'Please Make sure to pay the exact amount to the WALLET in one go, otherwise if the amount paid in more or less we will pay out exactly what we received on same exchange rate';
 
   @override
@@ -189,7 +192,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sentTo => 'Sent to';
 
   @override
-  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
+  String
+  get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
       'Thank you for using AmanaSend. You can track the transaction processing on the transfers page';
 
   @override
@@ -264,7 +268,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get share => 'Share';
 
   @override
-  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
+  String
+  get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
       'Please note that this wallet address is just for this transfer, please don\'t use it for another transfers';
 
   @override
@@ -577,7 +582,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backside => 'backside';
 
   @override
-  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
+  String
+  get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
       'in the (other documents) section below on this page, otherwise your account will be rejected';
 
   @override
@@ -617,7 +623,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bankName => 'Bank name';
 
   @override
-  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
+  String
+  get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
       'Recipient bank info is missing, Please Edit recipient by adding bank account details';
 
   @override
@@ -707,7 +714,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeLimitToPay => 'Time limit to pay';
 
   @override
-  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
+  String
+  get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
       'If the payment has not been done in certain time, it is no longer possible to use this wallet and the order will be canceled.';
 
   @override
@@ -729,19 +737,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Know the current exchange rate and choose your preferred agent';
 
   @override
-  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
+  String
+  get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
       'Enter the amount you want to transfer in the USDT which is equal to the value of the US dollar \$';
 
   @override
-  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
+  String
+  get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
       'The amount required to be transferred in your local currency is approximately based on the current exchange rate';
 
   @override
-  String get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
+  String
+  get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
       'The amount the recipient will receive depends on the exchange rate of the selected agent';
 
   @override
-  String get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
+  String
+  get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
       'After completing the transfer information, click here to specify the name of the recipient and pay the amount';
 
   @override
@@ -999,7 +1011,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newVersionIsAvailable => 'New Version is available';
 
   @override
-  String get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
+  String
+  get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
       'There\'s a new version available to download! Please update AmanaSend to continue';
 
   @override
@@ -1021,7 +1034,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proofOfAddress => 'Proof of address';
 
   @override
-  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
+  String
+  get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
       'A document proving your place of residence with your address written on it, such as (Utility bill / Lease contract / Residence permit)';
 
   @override
@@ -1038,7 +1052,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Privacy policy and personal data protection';
 
   @override
-  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
+  String
+  get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
       'In order to be able to use our services, we must verify your identity. Upload a clear copy of identification card and proof of residence address, in addition to Take a selfie without a hat or sunglasses on the eye.';
 
   @override
@@ -1051,7 +1066,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expiryDate => 'Expiry date';
 
   @override
-  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
+  String
+  get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
       'Upload a clear copy of identity document such as a Passport – Driving License - Residence Permit';
 
   @override
@@ -1067,7 +1083,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get takeSelfie => 'Take selfie';
 
   @override
-  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
+  String
+  get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
       'Take a selfie without a hat or sunglasses on the eye to compare your photo on the identification document';
 
   @override
@@ -1104,7 +1121,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Provider is inactive for the receiving city';
 
   @override
-  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
+  String
+  get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
       'Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours';
 
   @override
@@ -1115,14 +1133,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get support => 'Support';
 
   @override
-  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
+  String
+  get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
       'Cannot send this transfer due to recipient details has been modified or delete, Kindly make new transfer';
 
   @override
   String get amanaSendSupportTeam => 'AmanaSend support team';
 
   @override
-  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
+  String
+  get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
       'Dear valued customer, AmanaSend support team is here to help you, please feel free to contact us via the following:';
 
   @override
@@ -1184,7 +1204,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'The verification code will be sent via WhatsApp';
 
   @override
-  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
+  String
+  get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
       'Account verification in process, once account is verified, you will be able to transfer money worldwide';
 
   @override
@@ -1192,7 +1213,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'To ensure that you can send money worldwide, please verify your account.';
 
   @override
-  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
+  String
+  get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
       'Please pay the balance for this transaction within 3 days at your nearest approved cash payment address.';
 
   @override
