@@ -218,6 +218,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                     const SizedBox(width: 10),
                     Flexible(
                       child: FittedBox(
+                        
                         child: TextX(
                           '${state.sendCountry.currency.code} ${Tools.nicePrice(state.sendCountry.currency.rate * send)}',
                           style: Theme.of(context).textTheme.bodyLarge,

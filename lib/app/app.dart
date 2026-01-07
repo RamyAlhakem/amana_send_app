@@ -31,6 +31,7 @@ class AmanaSend extends StatelessWidget {
         builder: (BuildContext context, Widget? main) {
           main = MaterialApp.router(
             // debugShowMaterialGrid: true,
+            
             routerConfig: AppRoute.routes,
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'amana_send',

@@ -60,7 +60,7 @@ class _StructureState extends State<Structure> {
 
   //   PopupService.show();
   // }
-   PaymentMethodModel getPaymentMethod = PaymentMethodModel();
+  PaymentMethodModel getPaymentMethod = PaymentMethodModel();
 
   @override
   void initState() {
@@ -68,12 +68,12 @@ class _StructureState extends State<Structure> {
 
     _index = Pages.home.index;
     Global.pageCtrl = PageController(initialPage: _index);
-  // getResources();
+    // getResources();
     if (mounted) {
-        getPaymentMethod = Database().getPaymentMethod;
-        Provider.of<Calculator>(context, listen: false)
-            .setPaymentMethodID(getPaymentMethod);
-      }
+      getPaymentMethod = Database().getPaymentMethod;
+      Provider.of<Calculator>(context, listen: false)
+          .setPaymentMethodID(getPaymentMethod);
+    }
   }
 
   @override
@@ -120,43 +120,45 @@ class _StructureState extends State<Structure> {
           visible: !context.select((Calculator c) => c.isLoading),
           child: StructureKit(pageIndex: _index).floatingBottom(context),
         ),
-        bottomNavigationBar: NavBar(
-          selectedIndex: _index,
-          showElevation: false,
-          onItemSelected: (int i) {
-            if (Global.appSettings.token.isEmpty &&
-                i >= Pages.transfers.index) {
-              context.push('/${AppRoute.logIn}');
-              return;
-            } else {
-              if (i == _index) return;
+        bottomNavigationBar: SafeArea(
+          child: NavBar(
+            selectedIndex: _index,
+            showElevation: false,
+            onItemSelected: (int i) {
+              if (Global.appSettings.token.isEmpty &&
+                  i >= Pages.transfers.index) {
+                context.push('/${AppRoute.logIn}');
+                return;
+              } else {
+                if (i == _index) return;
 
-              _index = i;
-              Global.pageCtrl.jumpToPage(i);
-            }
-          },
-          items: <NavBarItem>[
-            NavBarItem(
-              icon: const HeroIcon(HeroIcons.home),
-              title: arb.home,
-            ),
-            NavBarItem(
-              icon: const HeroIcon(HeroIcons.creditCard),
-              title: arb.transfers,
-            ),
-            NavBarItem(
-              icon: const HeroIcon(HeroIcons.users),
-              title: arb.recipients,
-            ),
-            NavBarItem(
-              icon: const HeroIcon(HeroIcons.cog6Tooth),
-              title: arb.settings,
-            ),
-            NavBarItem(
-              icon: const Icon(LineIcons.headset),
-              title: arb.support,
-            ),
-          ],
+                _index = i;
+                Global.pageCtrl.jumpToPage(i);
+              }
+            },
+            items: <NavBarItem>[
+              NavBarItem(
+                icon: const HeroIcon(HeroIcons.home),
+                title: arb.home,
+              ),
+              NavBarItem(
+                icon: const HeroIcon(HeroIcons.creditCard),
+                title: arb.transfers,
+              ),
+              NavBarItem(
+                icon: const HeroIcon(HeroIcons.users),
+                title: arb.recipients,
+              ),
+              NavBarItem(
+                icon: const HeroIcon(HeroIcons.cog6Tooth),
+                title: arb.settings,
+              ),
+              NavBarItem(
+                icon: const Icon(LineIcons.headset),
+                title: arb.support,
+              ),
+            ],
+          ),
         ),
       ),
     );

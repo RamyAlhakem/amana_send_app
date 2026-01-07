@@ -151,12 +151,14 @@ class _SendHubState extends State<SendHub>
             const WalletAddress(),
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: AnimatedSwitcher(
-            duration: expandDuration,
-            reverseDuration: expandDuration,
-            child: Expander(expand: expand, child: buttons),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: AnimatedSwitcher(
+              duration: expandDuration,
+              reverseDuration: expandDuration,
+              child: Expander(expand: expand, child: buttons),
+            ),
           ),
         ),
       ),

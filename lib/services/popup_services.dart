@@ -1,3 +1,5 @@
+import 'package:amana_send/app/theme/colors/dark_colors.dart';
+import 'package:amana_send/app/theme/colors/light_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 
@@ -25,6 +27,8 @@ class PopupService {
       useRootNavigator: false,
       builder: (BuildContext _) {
         return AlertDialog(
+          backgroundColor:
+              context.isDarkMode ? DarkColors.main : LightColors.main,
           elevation: 0,
           insetPadding: padding,
           contentPadding: padding,

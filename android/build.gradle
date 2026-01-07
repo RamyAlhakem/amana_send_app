@@ -1,8 +1,11 @@
 buildscript {
     ext.kotlin_version = '1.9.10'
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
@@ -14,13 +17,27 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
 rootProject.buildDir = '../build'
 subprojects {
+    buildscript {
+        repositories {
+            maven { url 'https://maven.aliyun.com/repository/public' }
+            maven { url 'https://maven.aliyun.com/repository/google' }
+            google()
+            mavenCentral()
+            maven { url "https://plugins.gradle.org/m2/" }
+            maven { url 'https://jitpack.io' }
+        }
+    }
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 
     project.evaluationDependsOn(':app')
