@@ -56,7 +56,7 @@ android {
     defaultConfig {
         applicationId "com.amana_send"
         minSdkVersion 22
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -96,6 +96,12 @@ android {
         }
         production {
             res.srcDirs = ['src/production/res']
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
         }
     }
 

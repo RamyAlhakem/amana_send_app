@@ -1,9 +1,8 @@
-name: Production App Store
+name: 🚀 App Store Release
 
 on:
-  push:
-    branches:
-      - "release/production"
+  release:
+    types: [published]
 
 jobs:
   build_and_deploy:
@@ -14,17 +13,31 @@ jobs:
       actions: read
 
     env:
-      FLUTTER_VERSION: 3.27.1
+      FLUTTER_VERSION: 3.32.8
+      FLAVOR: ${{ contains(github.ref_name, 'staging') && 'staging' || 'production' }}
 
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
         with:
-          ref: "release/production"
           fetch-depth: 0
 
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+      - name: Import certs
+        uses: apple-actions/import-codesign-certs@v5
+        with:
+          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
+          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
+
+      - name: Download provisioning profiles
+        uses: apple-actions/download-provisioning-profiles@v4
+        with:
+          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
+          issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+      - name: Select Xcode 16.4
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -51,22 +64,14 @@ jobs:
           pod install --repo-update
           cd ..
 
+      - name: Update Firebase/CoreOnly pod
+        run: |
+          cd ios
+          pod update Firebase/CoreOnly
+          cd ..
+
       # - name: Analyze to check for bad Dart/Flutter practices
       #   run: flutter analyze
-
-      - name: Import certs
-        uses: apple-actions/import-codesign-certs@v5
-        with:
-          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
-          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
-
-      - name: Download provisioning profiles
-        uses: apple-actions/download-provisioning-profiles@v4
-        with:
-          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}
-          issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
       - name: Generate ExportOptions
         run: |
@@ -83,8 +88,8 @@ jobs:
               <string>manual</string>
               <key>provisioningProfiles</key>
               <dict>
-            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}</key>
-            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}</string>
+            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}</key>
+            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}</string>
               </dict>
           </dict>
           </plist>
@@ -92,7 +97,11 @@ jobs:
 
       - name: Build App
         run: |
-          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --flavor production -t lib/main_production.dart
+          flutter build ipa \
+          --release \
+          --export-options-plist=ios/ExportOptions.plist \
+          --flavor ${{ env.FLAVOR }} \
+          -t lib/main_${{ env.FLAVOR }}.dart
           echo "APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))" >> $GITHUB_ENV
 
       - name: Upload generated ipa to the artifacts
@@ -100,7 +109,7 @@ jobs:
         with:
           name: ${{ env.APP_FILE }}
           path: build/ios/ipa/${{ env.APP_FILE }}
-          retention-days: 7
+          retention-days: 3
 
       - name: Decode App Store API key
         run: |
