@@ -70,6 +70,13 @@ jobs:
           pod update Firebase/CoreOnly
           cd ..
 
+      - name: Update Provisioning Profile
+        run: |
+          PROFILE_NAME="${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}"
+          sed -i '' "s/PROVISIONING_PROFILE_SPECIFIER = \"deploy all\";/PROVISIONING_PROFILE_SPECIFIER = \"$PROFILE_NAME\";/g" ios/Runner.xcodeproj/project.pbxproj
+          sed -i '' "s/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g" ios/Runner.xcodeproj/project.pbxproj
+          sed -i '' "s/DEVELOPMENT_TEAM = [A-Z0-9]*;/DEVELOPMENT_TEAM = ${{ secrets.APPSTORE_TEAM_ID }};/g" ios/Runner.xcodeproj/project.pbxproj
+
       # - name: Analyze to check for bad Dart/Flutter practices
       #   run: flutter analyze
 
