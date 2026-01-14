@@ -69,7 +69,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recipientProviderMaxAmountIs => 'الحد الأقصى للمزود المستلم';
 
   @override
-  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
+  String
+  get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
       'يرجى التأكد من إدخال رقم الهاتف ورقم الواتساب والاسم الكامل بشكل صحيح لتجنب تأخير تسليم الحوالة';
 
   @override
@@ -91,11 +92,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get toThisWalletAddress => 'الى عنوان المحفظة الآتية';
 
   @override
-  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
+  String
+  get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
       'بمجرد إتمامك التسديد سوف نعلمك بإستلامنا المبلغ, و نقوم بتنفيذ الحوالة مباشرة حسب شروط التسليم';
 
   @override
-  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
+  String
+  get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
       'يرجى مراعاة تسديد المبلغ بالكامل إلى المحفظة وفي حال وصول مبلغ أقل أو أكثر سيتم تحويل قيمة المبلغ المستلم من قبلكم فقط و بنفس سعر الصرف المحدد للحوالة';
 
   @override
@@ -187,7 +190,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sentTo => 'مرسلة إلى';
 
   @override
-  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
+  String
+  get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
       'شكرا لاستخدامكم تطبيق أمانة، بإمكانكم تتبع معالجة وتنفيذ الحوالة في سجل الحوالات';
 
   @override
@@ -262,7 +266,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get share => 'مشاركة';
 
   @override
-  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
+  String
+  get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
       'يرجى ملاحظة أن عنوان المحفظة مخصص لهذا التحويل فقط، يرجى عدم استخدامه لعمليات تحويل أخرى';
 
   @override
@@ -573,7 +578,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get backside => 'الجانب الخلفي';
 
   @override
-  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
+  String
+  get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
       'في قسم (المستندات الأخرى) الموجود في أسفل هذه الصفحة، وإلا فسيتم رفض حسابك';
 
   @override
@@ -613,7 +619,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bankName => 'اسم البنك';
 
   @override
-  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
+  String
+  get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
       'معلومات بنك المستلم مفقودة ، يرجى تحرير المستلم بإضافة تفاصيل الحساب المصرفي';
 
   @override
@@ -701,7 +708,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get timeLimitToPay => 'يجب السداد خلال مدة أقصاها';
 
   @override
-  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
+  String
+  get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
       'في حال عدم السداد وإنتهاء المدة, لا يمكن استخدام المحفظة و ستيم إلغاء طلب الحوالة.';
 
   @override
@@ -724,22 +732,24 @@ class AppLocalizationsAr extends AppLocalizations {
       'أعرف سعر الصرف الحالي واختر وكيل التسليم المفضل إليك';
 
   @override
-  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
+  String
+  get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
       'ادخل المبلغ الذي ترغب بتحويله بالدولار الرقميUSDT والذي يساوي بقيمته الدولار الأميريكي \$';
 
   @override
-  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
+  String
+  get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
       'قيمة المبلغ المطلوب تحويله بعملتك المحلية بشكل تقريبي حسب سعر الصرف الحالي';
 
   @override
   String
-      get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
-          'المبلغ الذي سيحصل عليه المستلم حسب سعر الصرف للوكيل المحدد';
+  get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
+      'المبلغ الذي سيحصل عليه المستلم حسب سعر الصرف للوكيل المحدد';
 
   @override
   String
-      get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
-          'بعد إتمام معلومات التحويل اضغط هنا لتحديد اسم المستلم و سداد المبلغ';
+  get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
+      'بعد إتمام معلومات التحويل اضغط هنا لتحديد اسم المستلم و سداد المبلغ';
 
   @override
   String get cameraPermission => 'إذن الكاميرا';
@@ -996,8 +1006,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String
-      get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
-          'هناك إصدار جديد متاح للتنزيل! يرجى تحديث تطبيق امانة للمتابعة';
+  get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
+      'هناك إصدار جديد متاح للتنزيل! يرجى تحديث تطبيق امانة للمتابعة';
 
   @override
   String get updateAmanaSend => 'تحديث تطبيق امانة';
@@ -1018,7 +1028,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get proofOfAddress => 'إثبات العنوان';
 
   @override
-  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
+  String
+  get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
       'وثيقة تثبت مكان إقامتك مع عنوانك المكتوب عليها، مثل (فاتورة خدمات / عقد إيجار / تصريح إقامة)';
 
   @override
@@ -1035,7 +1046,8 @@ class AppLocalizationsAr extends AppLocalizations {
       'سياسة الخصوصية وحماية البيانات الشخصية';
 
   @override
-  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
+  String
+  get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
       'لكي نتمكن من استخدام خدماتنا، يجب علينا التحقق من هويتك. قم بتحميل نسخة واضحة من بطاقة الهوية وإثبات عنوان الإقامة، بالإضافة إلى التقاط صورة سيلفي بدون قبعة أو نظارة شمسية على العين.';
 
   @override
@@ -1048,7 +1060,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get expiryDate => 'تاريخ الانتهاء';
 
   @override
-  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
+  String
+  get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
       'قم بتحميل نسخة واضحة من وثيقة الهوية مثل جواز السفر - رخصة القيادة - تصريح الإقامة';
 
   @override
@@ -1064,7 +1077,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get takeSelfie => 'التقط صورة شخصية';
 
   @override
-  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
+  String
+  get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
       'التقط صورة سيلفي بدون قبعة أو نظارة شمسية على العين لمقارنة صورتك في وثيقة الهوية';
 
   @override
@@ -1101,7 +1115,8 @@ class AppLocalizationsAr extends AppLocalizations {
       'الموفر غير نشط للمدينة المستقبلة';
 
   @override
-  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
+  String
+  get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
       'بمجرد تأكيد الدفع في نظامنا، سيتم إعلامك وستبدأ معالجة المعاملة خلال 24 ساعة';
 
   @override
@@ -1112,14 +1127,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get support => 'الدعم';
 
   @override
-  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
+  String
+  get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
       'لا يمكن إرسال هذه الحوالة بسبب تعديل أو حذف معلومات المستلم، يرجى إرسال حوالة جديدة';
 
   @override
   String get amanaSendSupportTeam => 'فريق دعم تطبيق امانة';
 
   @override
-  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
+  String
+  get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
       'عزيزي العميل، فريق دعم تطبيق امانة هنا لمساعدتك، لا تتردد في الاتصال بنا عبر ما يلي:';
 
   @override
@@ -1180,7 +1197,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verificationCodeWhatsApp => 'سيتم إرسال كود التحقق عبر الواتساب';
 
   @override
-  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
+  String
+  get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
       'التحقق من الحساب قيد المعالجة، بمجرد التحقق من الحساب، ستتمكن من تحويل الأموال حول العالم';
 
   @override
@@ -1188,7 +1206,8 @@ class AppLocalizationsAr extends AppLocalizations {
       'للتأكد من أنه يمكنك إرسال الأموال إلى جميع أنحاء العالم، يرجى التحقق من حسابك.';
 
   @override
-  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
+  String
+  get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
       'الرجاء القيام بدفع مبلغ التحويل في اقرب مركز للدفع معتمد لدى شركتنا خلال ثلاث ايام من تاريخ التحويل.';
 
   @override
