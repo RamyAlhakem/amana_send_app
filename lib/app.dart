@@ -6,6 +6,7 @@ import 'app/errors/error_screen.dart';
 import 'database/injector.dart';
 import 'global/variables.dart';
 import 'graphql/api/get_metadata.dart';
+import 'firebase/firebase.dart';
 
 Future<void> initlize() async {
   SystemChromeService.inject();
@@ -19,9 +20,9 @@ Future<void> initlize() async {
 
   ErrorWidget.builder = (FlutterErrorDetails err) => ErrorScreen('$err');
 
-  // FirebaseTool.getFirebaseToken().whenComplete(
-  //   () => FirebaseTool.setFirebaseTopics(),
-  // );
+  FirebaseTool.getFirebaseToken().whenComplete(
+    () => FirebaseTool.setFirebaseTopics(),
+  );
 
   // App listens to the [appSettings] for changes, then passes it further
   // down to the widget tree.

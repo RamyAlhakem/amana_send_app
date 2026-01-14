@@ -81,7 +81,7 @@ class FirebaseTool {
     });
 
     // FirebaseMessaging.onBackgroundMessage(_backgroundMessage);
-    // FirebaseMessaging.onMessage.listen((m) => _backgroundMessage(m));
+    FirebaseMessaging.onMessage.listen((m) => _backgroundMessage(m));
     FirebaseMessaging.onMessageOpenedApp.listen((m) => _backgroundMessage(m));
   }
 
