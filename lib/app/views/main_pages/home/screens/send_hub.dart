@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/home/screens/payment_method_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -147,6 +148,7 @@ class _SendHubState extends State<SendHub>
                 child: const SelectRecipient(),
               ),
             ),
+            const PaymentMethodDetails(),
             const CheckOutDetails(),
             const WalletAddress(),
           ],
@@ -177,12 +179,17 @@ class _SendHubState extends State<SendHub>
           break;
 
         case 1:
+          appBarTitle = "payment method details".toUpperCase();
+
+          buttons = PaymentMethodDetails.footer(context, _pageCtrl);
+          break;
+        case 2:
           appBarTitle = arb.reviewSendingInfo.toUpperCase();
 
           buttons = CheckOutDetails.footer(context, _pageCtrl);
           break;
 
-        case 2:
+        case 3:
           appBarTitle = arb.payment;
 
           buttons = const SizedBox.shrink();
