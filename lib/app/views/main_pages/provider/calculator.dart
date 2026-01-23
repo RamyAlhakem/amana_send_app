@@ -93,6 +93,16 @@ class Calculator with ChangeNotifier {
   bool get sendUSD => _sendUSD;
   bool get showAgents => _showAgents;
   double get exchangeRate => _exchangeRate;
+  Map<int, String> _providerFieldValues = {};
+  Map<int, String> get providerFieldValues => _providerFieldValues;
+
+  void setProviderFieldValue(int id, String value) {
+    _providerFieldValues[id] = value;
+  }
+
+  void clearProviderFieldValues() {
+    _providerFieldValues.clear();
+  }
 
   //** */
   //____________________________________________________________________________

@@ -175,7 +175,11 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                               "${calculator.providerFields[i].name} (fixed ${calculator.providerFields[i].characterCount} characters)"),
                           TextFieldX(
                             hint: "Enter ${calculator.providerFields[i].name}",
-                            controller: _walletController,
+                            controller: null,
+                            onChanged: (val) {
+                              calculator.setProviderFieldValue(
+                                  calculator.providerFields[i].id, val);
+                            },
                           ),
                         ],
                       ),

@@ -37,10 +37,7 @@ class Mutations {
     }
       ''';
 
-
-
-
-static const String calculateAmount = '''
+  static const String calculateAmount = '''
 mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$sendAmount: Float ,\$recipientAmount: Float) {
   calculateAmount(
     coCode: \$coCode
@@ -139,7 +136,7 @@ mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isRecei
   }
 
   static const String transfer = '''
-      mutation transfer(\$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$receivingCityId: Int!, \$recipientAmount: Float!, \$recipientId: Int!, \$sendAmount: Float!) {
+      mutation transfer(\$isReceiveInUSD: Boolean!, \$paymentMethodId: Int!, \$providerId: Int!, \$receivingCityId: Int!, \$recipientAmount: Float!, \$recipientId: Int!, \$sendAmount: Float!,\$providerFields:[ProviderFieldInput]) {
         transfer(
           isReceiveInUSD: \$isReceiveInUSD
           paymentMethodId: \$paymentMethodId
@@ -148,6 +145,7 @@ mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isRecei
           recipientAmount: \$recipientAmount
           recipientId: \$recipientId
           sendAmount: \$sendAmount
+          providerFields: \$providerFields
         ) {
           ${Explorer.transfer}
         }

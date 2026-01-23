@@ -27,6 +27,7 @@ class SendTransfer {
     required this.providerId,
     required this.paymentMethodId,
     required this.isReceiveInUSD,
+    this.fields = const {},
   });
 
   final BuildContext context;
@@ -34,6 +35,7 @@ class SendTransfer {
   final double recipientAmount, sendAmount;
   final int receivingCityId, providerId, paymentMethodId, recipientId;
   final bool isReceiveInUSD;
+  final Map<int, String> fields;
 
   static late AppLocalizations _arb;
   static late TransfersState _provider;
@@ -57,6 +59,9 @@ class SendTransfer {
       'paymentMethodId': paymentMethodId,
       'receivingCityId': receivingCityId,
       'providerId': providerId,
+      'providerFields': fields.entries
+          .map((e) => {'fieldId': e.key, 'value': e.value})
+          .toList(),
     };
 
     Helper.debugger('transfer');

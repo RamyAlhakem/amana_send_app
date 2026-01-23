@@ -45,6 +45,7 @@ class CheckOutDetails extends StatefulWidget {
             receivingCityId: calculator.receiverCity.id,
             providerId: calculator.receiverAgent.id,
             paymentMethodId: calculator.paymentMethodID,
+            fields: calculator.providerFieldValues,
           ).request();
         },
         height: 45,
@@ -152,31 +153,32 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             ),
                           ),
                         ]),
-                         const SizedBox(height: 8),
-                            RowSpaceBetween([
+                        const SizedBox(height: 8),
+                        RowSpaceBetween([
                           TextX(arb.mobileNumber),
                           const SizedBox(width: 15),
                           Flexible(
                             child: TextX(
                               isAR
-
-                              ?' ${state.selectedRecipient?.mobile} ${state.selectedRecipient!.country.phoneCode}+ '
-                                  .toUpperCase()
-                                  :"+${state.selectedRecipient!.country.phoneCode} ${state.selectedRecipient?.mobile} "
-                                  ,
-                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: MainColors.color3),
+                                  ? ' ${state.selectedRecipient?.mobile} ${state.selectedRecipient!.country.phoneCode}+ '
+                                      .toUpperCase()
+                                  : "+${state.selectedRecipient!.country.phoneCode} ${state.selectedRecipient?.mobile} ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: MainColors.color3),
                             ),
                           ),
-                        //   state.selectedRecipient!.country.coCode=="sy"
-                              
-                        // ? const SyrFlag()
-                        // : Flag.fromString(
-                        //     state.selectedRecipient!.country.coCode,
-                        //     height: 30,
-                        //     width: 30,
-                        //     fit: BoxFit.fill,
-                        //     borderRadius: 100,
-                        //   ),
+                          //   state.selectedRecipient!.country.coCode=="sy"
+
+                          // ? const SyrFlag()
+                          // : Flag.fromString(
+                          //     state.selectedRecipient!.country.coCode,
+                          //     height: 30,
+                          //     width: 30,
+                          //     fit: BoxFit.fill,
+                          //     borderRadius: 100,
+                          //   ),
                         ]),
                         const SizedBox(height: 8),
                         RowSpaceBetween([
@@ -251,7 +253,8 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: '${state.calculateAmount.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
+                                  text:
+                                      '${state.calculateAmount.totalAmount.toStringAsFixed(2).replaceFirst(RegExp(r'\.00$'), '')} ',
                                 ),
                                 TextSpan(text: state.paymentMethodName),
                               ],
@@ -312,7 +315,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     decoration: Decorations.note(context),
                     child: TextX(
-                     " ${arb.weOnlyAcceptInUSDT} ${state.paymentMethodName}",
+                      " ${arb.weOnlyAcceptInUSDT} ${state.paymentMethodName}",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: MainColors.red,
                             fontWeight: FontWeight.bold,
@@ -356,8 +359,6 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                       ),
                     ),
                   ),
-                
-                
                 ],
               ),
             ),
