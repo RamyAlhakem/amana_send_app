@@ -14,6 +14,7 @@ import 'package:amana_send/localization/app_localizations.dart';
 import 'package:amana_send/models/user.dart';
 import 'package:amana_send/router/app_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -135,8 +136,6 @@ class PaymentMethodDetails extends StatefulWidget {
 }
 
 class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
-  final TextEditingController _walletController = TextEditingController();
-  final TextEditingController _recipientIdController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final calculator = Provider.of<Calculator>(context);
@@ -176,6 +175,10 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                           TextFieldX(
                             hint: "Enter ${calculator.providerFields[i].name}",
                             controller: null,
+                            input: [
+                              LengthLimitingTextInputFormatter(
+                                  calculator.providerFields[i].characterCount)
+                            ],
                             onChanged: (val) {
                               calculator.setProviderFieldValue(
                                   calculator.providerFields[i].id, val);
