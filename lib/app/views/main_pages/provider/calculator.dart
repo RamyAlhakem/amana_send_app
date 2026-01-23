@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
+import 'package:amana_send/graphql/api/get_provider_fields.dart';
 import 'package:amana_send/graphql/api/get_providers.dart';
 import 'package:amana_send/graphql/api/get_sliders.dart';
 import 'package:amana_send/models/slider_model.dart';
@@ -18,6 +19,7 @@ import '/models/country.dart';
 import '/models/currency.dart';
 import '/models/metadata.dart';
 import '/models/payment_method.dart';
+import '/models/provider_field.dart';
 import '/models/recipient.dart';
 import '/models/transfer.dart';
 import '/models/user.dart';
@@ -53,6 +55,7 @@ class Calculator with ChangeNotifier {
   CountryModel _receiverCountry = CountryModel();
   CityModel _receiverCity = CityModel();
   AgentModel _receiverAgent = AgentModel();
+  List<ProviderFieldModel> _providerFields = [];
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
   CalculateAmountModel _calculateAmount = CalculateAmountModel();
@@ -84,6 +87,7 @@ class Calculator with ChangeNotifier {
   CountryModel get receiverCountry => _receiverCountry;
   CityModel get receiverCity => _receiverCity;
   AgentModel get receiverAgent => _receiverAgent;
+  List<ProviderFieldModel> get providerFields => _providerFields;
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
   bool get sendUSD => _sendUSD;
@@ -200,6 +204,11 @@ class Calculator with ChangeNotifier {
 
     _agents = providers;
     setAgent(providers.first);
+    notifyListeners();
+  }
+
+  void setProviderFields(List<ProviderFieldModel> fields) {
+    _providerFields = fields;
     notifyListeners();
   }
 
@@ -470,6 +479,11 @@ class Calculator with ChangeNotifier {
 
   setBorderColor(Color? color) {
     borderColor = color;
+    notifyListeners();
+  }
+
+  getFielsProvider() async {
+    await GetProviderFields(providerId: _receiverAgent.id).request();
     notifyListeners();
   }
 }

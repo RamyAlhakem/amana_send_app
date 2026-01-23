@@ -139,6 +139,8 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
   final TextEditingController _recipientIdController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final calculator = Provider.of<Calculator>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(
@@ -150,36 +152,81 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
-                    text: "Sham cash Wallet: ",
-                    style: TextStyle(
+                    text: "${calculator.receiverAgent.name}: ",
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
-                TextSpan(
+                const TextSpan(
                     text: "Required additional fields.",
                     style: TextStyle(fontSize: 16, color: Colors.black))
               ])),
               const SizedBox(
                 height: 20,
               ),
-              const Text("Wallet address (fixed 32 characters)"),
-              TextFieldX(
-                hint: "Enter sham cash wallet address",
-                controller: _walletController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text("Recipient ID (6 digits)"),
-              TextFieldX(
-                hint: "Enter recipient ID",
-                controller: _recipientIdController,
-              ),
+              ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, i) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              "${calculator.providerFields[i].name} (fixed ${calculator.providerFields[i].characterCount} characters)"),
+                          TextFieldX(
+                            hint: "Enter ${calculator.providerFields[i].name}",
+                            controller: _walletController,
+                          ),
+                        ],
+                      ),
+                  separatorBuilder: (context, i) => const SizedBox(
+                        height: 20,
+                      ),
+                  itemCount: calculator.providerFields.length),
+
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // const Text("Recipient ID (6 digits)"),
+              // TextFieldX(
+              //   hint: "Enter recipient ID",
+              //   controller: _recipientIdController,
+              // ),
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                    width: screenWidth,
+                    // height: 100,
+                    decoration: BoxDecoration(
+                        color: MainColors.color4,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: Colors.grey.withValues(alpha: 0.3)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withValues(alpha: 0.7),
+                            blurRadius: 2,
+                            offset: const Offset(0, 3),
+                          )
+                        ]),
+                    child: Text(
+                      calculator.providerFields[index].description,
+                      style: const TextStyle(
+                          backgroundColor: Colors.yellow,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
+              itemCount: calculator.providerFields.length),
+        )
       ],
     );
   }

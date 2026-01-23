@@ -50,6 +50,7 @@ class _SendHubState extends State<SendHub>
   void initState() {
     super.initState();
     _calculator = Provider.of<Calculator>(context, listen: false);
+    _calculator.getFielsProvider();
 
     _pageCtrl = PageController(initialPage: _index);
 

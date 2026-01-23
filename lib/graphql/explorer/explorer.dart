@@ -103,6 +103,15 @@ class Explorer {
       $country
       ''';
 
+  static const String providerField = '''
+      characterCount
+      description
+      id
+      name
+      providerId
+      status
+      ''';
+
   static const String transfer = '''
       askedAmount
       id

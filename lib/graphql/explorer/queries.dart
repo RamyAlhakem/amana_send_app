@@ -130,7 +130,7 @@ class Queries {
       }
     }
       ''';
-        static const String sliders = ''' 
+  static const String sliders = '''
   
   query MyQuery(\$type: Int = 10) {
   sliders(type: \$type) {
@@ -144,5 +144,13 @@ class Queries {
 }
   
   
+  ''';
+
+  static const String providerFields = '''
+    query providerFields(\$providerId: Int!) {
+      providerFields(providerId: \$providerId) {
+        ${Explorer.providerField}
+      }
+    }
   ''';
 }
