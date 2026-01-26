@@ -84,9 +84,13 @@ class PaymentMethodDetails extends StatefulWidget {
           if (calculator.receiverAgent.id == 0) {
             return Helper.bannerWarning(arb.pleaseSelectReceiveType);
           }
+          if (Global.formKey.currentState!.validate()) {
+            Global.snackKey.currentState?.hideCurrentMaterialBanner();
+            page.nextPage(duration: _duration, curve: Curves.easeIn);
+          }
 
-          Global.snackKey.currentState?.hideCurrentMaterialBanner();
-          page.nextPage(duration: _duration, curve: Curves.easeIn);
+          // Global.snackKey.currentState?.hideCurrentMaterialBanner();
+          // page.nextPage(duration: _duration, curve: Curves.easeIn);
         },
         height: 45,
         Row(
@@ -140,101 +144,118 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
   Widget build(BuildContext context) {
     final calculator = Provider.of<Calculator>(context);
     final screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: "${calculator.receiverAgent.name}: ",
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                const TextSpan(
-                    text: "Required additional fields.",
-                    style: TextStyle(fontSize: 16, color: Colors.black))
-              ])),
-              const SizedBox(
-                height: 20,
-              ),
-              ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, i) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              "${calculator.providerFields[i].name} (fixed ${calculator.providerFields[i].characterCount} characters)"),
-                          TextFieldX(
-                            hint: "Enter ${calculator.providerFields[i].name}",
-                            controller: null,
-                            input: [
-                              LengthLimitingTextInputFormatter(
-                                  calculator.providerFields[i].characterCount)
-                            ],
-                            onChanged: (val) {
-                              calculator.setProviderFieldValue(
-                                  calculator.providerFields[i].id, val);
-                            },
-                          ),
-                        ],
-                      ),
-                  separatorBuilder: (context, i) => const SizedBox(
-                        height: 20,
-                      ),
-                  itemCount: calculator.providerFields.length),
-
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // const Text("Recipient ID (6 digits)"),
-              // TextFieldX(
-              //   hint: "Enter recipient ID",
-              //   controller: _recipientIdController,
-              // ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) => Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                    width: screenWidth,
-                    // height: 100,
-                    decoration: BoxDecoration(
-                        color: MainColors.color4,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                            color: Colors.grey.withValues(alpha: 0.3)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withValues(alpha: 0.7),
-                            blurRadius: 2,
-                            offset: const Offset(0, 3),
-                          )
-                        ]),
-                    child: Text(
-                      calculator.providerFields[index].description,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: "${calculator.receiverAgent.name}: ",
                       style: const TextStyle(
-                          backgroundColor: Colors.yellow,
                           fontSize: 16,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  const TextSpan(
+                      text: "Required additional fields.",
+                      style: TextStyle(fontSize: 16, color: Colors.black))
+                ])),
+                const SizedBox(
+                  height: 20,
+                ),
+                Form(
+                  key: Global.formKey,
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, i) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${calculator.providerFields[i].name} (fixed ${calculator.providerFields[i].characterCount} characters)"),
+                              TextFieldX(
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Invalid input";
+                                  } else if (text.length <
+                                      calculator
+                                          .providerFields[i].characterCount) {
+                                    return "Please enter ${calculator.providerFields[i].characterCount} characters";
+                                  }
+                                  return null;
+                                },
+                                hint:
+                                    "Enter ${calculator.providerFields[i].name}",
+                                controller: null,
+                                input: [
+                                  LengthLimitingTextInputFormatter(calculator
+                                      .providerFields[i].characterCount)
+                                ],
+                                onChanged: (val) {
+                                  calculator.setProviderFieldValue(
+                                      calculator.providerFields[i].id, val);
+                                },
+                              ),
+                            ],
+                          ),
+                      separatorBuilder: (context, i) => const SizedBox(
+                            height: 20,
+                          ),
+                      itemCount: calculator.providerFields.length),
+                ),
+
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // const Text("Recipient ID (6 digits)"),
+                // TextFieldX(
+                //   hint: "Enter recipient ID",
+                //   controller: _recipientIdController,
+                // ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 7),
+                      width: screenWidth,
+                      // height: 100,
+                      decoration: BoxDecoration(
+                          color: MainColors.color4,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              color: Colors.grey.withValues(alpha: 0.3)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withValues(alpha: 0.7),
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
+                            )
+                          ]),
+                      child: Text(
+                        calculator.providerFields[index].description,
+                        style: const TextStyle(
+                            backgroundColor: Colors.yellow,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-              separatorBuilder: (context, index) => const SizedBox(height: 20),
-              itemCount: calculator.providerFields.length),
-        )
-      ],
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 20),
+                itemCount: calculator.providerFields.length),
+          )
+        ],
+      ),
     );
   }
 }

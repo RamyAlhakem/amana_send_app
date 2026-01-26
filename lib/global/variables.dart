@@ -11,6 +11,7 @@ class Global {
 
   static final GlobalKey<ScaffoldMessengerState> snackKey =
       GlobalKey<ScaffoldMessengerState>();
+  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   static final AppSettings appSettings = AppSettings();
   static PageController pageCtrl = PageController();
