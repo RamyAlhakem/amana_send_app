@@ -115,7 +115,7 @@ class _SendHubState extends State<SendHub>
               splashColor: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: _index == 2
+                children: _index == 2 && _calculator.providerFields.isNotEmpty
                     ? [
                         TextX(
                           arb.howToPay,
@@ -123,9 +123,20 @@ class _SendHubState extends State<SendHub>
                         ),
                         const SizedBox(width: 8),
                         const Icon(Icons.info_outlined, color: Colors.white),
-                        const SizedBox(width: 15),
+                        const SizedBox(width: 15)
                       ]
-                    : <Widget>[],
+                    : _index == 1
+                        ? [
+                            TextX(
+                              arb.howToPay,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.info_outlined,
+                                color: Colors.white),
+                            const SizedBox(width: 15)
+                          ]
+                        : <Widget>[],
               ),
             ),
           ],
@@ -149,7 +160,8 @@ class _SendHubState extends State<SendHub>
                 child: const SelectRecipient(),
               ),
             ),
-            const PaymentMethodDetails(),
+            if (_calculator.providerFields.isNotEmpty)
+              const PaymentMethodDetails(),
             const CheckOutDetails(),
             const WalletAddress(),
           ],
@@ -180,14 +192,20 @@ class _SendHubState extends State<SendHub>
           break;
 
         case 1:
-          appBarTitle = "payment method details".toUpperCase();
+          appBarTitle = _calculator.providerFields.isNotEmpty
+              ? "payment method details".toUpperCase()
+              : arb.reviewSendingInfo.toUpperCase();
 
           buttons = PaymentMethodDetails.footer(context, _pageCtrl);
           break;
         case 2:
-          appBarTitle = arb.reviewSendingInfo.toUpperCase();
+          appBarTitle = _calculator.providerFields.isNotEmpty
+              ? arb.reviewSendingInfo.toUpperCase()
+              : arb.payment;
 
-          buttons = CheckOutDetails.footer(context, _pageCtrl);
+          buttons = _calculator.providerFields.isNotEmpty
+              ? CheckOutDetails.footer(context, _pageCtrl)
+              : const SizedBox.shrink();
           break;
 
         case 3:

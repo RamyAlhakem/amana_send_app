@@ -159,7 +159,7 @@ class _SelectRecipientState extends State<SelectRecipient>
 
   @override
   Widget build(BuildContext context) {
-    final  arb = AppLocalizations.of(context)!;
+    final arb = AppLocalizations.of(context)!;
     super.build(context);
     return Consumer<RecipientsState>(builder: (_, recipients, child) {
       child = Visibility(
@@ -170,13 +170,15 @@ class _SelectRecipientState extends State<SelectRecipient>
         ),
         child: Column(
           children: [
-           const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             SearchWidget(
-                    hint: arb.search,
-                    onChange: (text){
-                       recipients.search(text);
-                    },
-                  ),
+              hint: arb.search,
+              onChange: (text) {
+                recipients.search(text);
+              },
+            ),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
@@ -184,17 +186,21 @@ class _SelectRecipientState extends State<SelectRecipient>
                 itemCount: recipients.receipients.length,
                 itemBuilder: (BuildContext context, int i) {
                   // Fill up select list once empty or when recipients list is changed.
-                  selection = Tools.setSelect(recipients.receipients, selection);
+                  selection =
+                      Tools.setSelect(recipients.receipients, selection);
                   return InkWell(
                     borderRadius: BorderRadius.circular(8),
                     onTap: () => setState(() {
                       // give selected recipient values for start send purpose
-                      _calc.recipientSend(recipients.receipients[i]).then((isOK) {
+                      _calc
+                          .recipientSend(recipients.receipients[i])
+                          .then((isOK) {
                         /// if all conditions met [isOK]:
                         if (isOK) {
                           // reset [selection] list to close all expanded recipients cards.
-                          selection = Tools.setSelect(recipients.receipients, <bool>[]);
-              
+                          selection =
+                              Tools.setSelect(recipients.receipients, <bool>[]);
+
                           // select recipient by expanding their card.
                           selection[i] = !selection[i];
                         }
