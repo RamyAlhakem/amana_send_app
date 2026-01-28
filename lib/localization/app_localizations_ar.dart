@@ -1244,4 +1244,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseChooseTheCity => 'الرجاء اختر المدينة';
+
+  @override
+  String get paymentMethodDetails => 'تفاصيل طريقة الدفع';
+
+  @override
+  String get requiredAdditionalFields => 'حقول إضافية مطلوبة.';
+
+  @override
+  String get fixed => 'ثابت';
+
+  @override
+  String get characters => 'أحرف';
+
+  @override
+  String get enter => 'أدخل';
+
+  @override
+  String get invalidInput => 'إدخال غير صالح';
 }

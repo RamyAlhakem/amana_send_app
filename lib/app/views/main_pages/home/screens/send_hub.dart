@@ -193,7 +193,7 @@ class _SendHubState extends State<SendHub>
 
         case 1:
           appBarTitle = _calculator.providerFields.isNotEmpty
-              ? "payment method details".toUpperCase()
+              ? arb.paymentMethodDetails.toUpperCase()
               : arb.reviewSendingInfo.toUpperCase();
 
           buttons = PaymentMethodDetails.footer(context, _pageCtrl);

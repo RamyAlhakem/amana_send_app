@@ -1248,4 +1248,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseChooseTheCity => 'Please choose the city';
+
+  @override
+  String get paymentMethodDetails => 'Payment method details';
+
+  @override
+  String get requiredAdditionalFields => 'Required additional fields.';
+
+  @override
+  String get fixed => 'Fixed';
+
+  @override
+  String get characters => 'Characters';
+
+  @override
+  String get enter => 'Enter';
+
+  @override
+  String get invalidInput => 'Invalid input';
 }

@@ -2441,6 +2441,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please choose the city'**
   String get pleaseChooseTheCity;
+
+  /// No description provided for @paymentMethodDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method details'**
+  String get paymentMethodDetails;
+
+  /// No description provided for @requiredAdditionalFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Required additional fields.'**
+  String get requiredAdditionalFields;
+
+  /// No description provided for @fixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get fixed;
+
+  /// No description provided for @characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Characters'**
+  String get characters;
+
+  /// No description provided for @enter.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get enter;
+
+  /// No description provided for @invalidInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid input'**
+  String get invalidInput;
 }
 
 class _AppLocalizationsDelegate

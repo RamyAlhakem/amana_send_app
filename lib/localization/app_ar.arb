@@ -386,5 +386,11 @@
    "optional":"اختياري",
    "suggestionsAndComplaints":"الاقتراحات والشكاوى",
     "chooseTheCity":"اختر المدينة",
-     "pleaseChooseTheCity":"الرجاء اختر المدينة"
+     "pleaseChooseTheCity":"الرجاء اختر المدينة",
+     "paymentMethodDetails": "تفاصيل طريقة الدفع",
+     "requiredAdditionalFields": "حقول إضافية مطلوبة.",
+     "fixed": "ثابت",
+     "characters": "أحرف",
+     "enter": "أدخل",
+     "invalidInput": "إدخال غير صالح"
 }

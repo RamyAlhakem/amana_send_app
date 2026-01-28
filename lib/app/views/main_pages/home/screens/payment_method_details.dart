@@ -166,9 +166,10 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
-                  const TextSpan(
-                      text: "Required additional fields.",
-                      style: TextStyle(fontSize: 16, color: Colors.black))
+                  TextSpan(
+                      text: AppLocalizations.of(context)!
+                          .requiredAdditionalFields,
+                      style: const TextStyle(fontSize: 16, color: Colors.black))
                 ])),
                 const SizedBox(
                   height: 20,
@@ -181,20 +182,21 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  "${calculator.providerFields[i].name} (fixed ${calculator.providerFields[i].characterCount} characters)"),
+                                  "${calculator.providerFields[i].name} (${AppLocalizations.of(context)!.fixed} ${calculator.providerFields[i].characterCount} ${AppLocalizations.of(context)!.characters})"),
                               TextFieldX(
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Invalid input";
+                                    return AppLocalizations.of(context)!
+                                        .invalidInput;
                                   } else if (text.length <
                                       calculator
                                           .providerFields[i].characterCount) {
-                                    return "Please enter ${calculator.providerFields[i].characterCount} characters";
+                                    return "${AppLocalizations.of(context)!.pleaseEnter} ${calculator.providerFields[i].characterCount} ${AppLocalizations.of(context)!.characters}";
                                   }
                                   return null;
                                 },
                                 hint:
-                                    "Enter ${calculator.providerFields[i].name}",
+                                    "${AppLocalizations.of(context)!.enter} ${calculator.providerFields[i].name}",
                                 controller: null,
                                 input: [
                                   LengthLimitingTextInputFormatter(calculator

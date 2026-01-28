@@ -387,5 +387,11 @@
    "optional":"Optional",
    "suggestionsAndComplaints":"Suggestions And Complaints",
    "chooseTheCity":"Choose the city",
-   "pleaseChooseTheCity":"Please choose the city"
+   "pleaseChooseTheCity":"Please choose the city",
+   "paymentMethodDetails": "Payment method details",
+   "requiredAdditionalFields": "Required additional fields.",
+   "fixed": "Fixed",
+   "characters": "Characters",
+   "enter": "Enter",
+   "invalidInput": "Invalid input"
 }
