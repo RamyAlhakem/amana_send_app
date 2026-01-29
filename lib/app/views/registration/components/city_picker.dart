@@ -149,14 +149,15 @@ class _CityPickerState extends State<CityPicker> {
                                           onTap: () {
                                             SettingsDialog.dismiss();
                                             widget.onChange(states[i]);
-                                            setState(() => selectedCity = city);
                                             calculatorState
-                                                .setReceiveCity(selectedCity!);
+                                                .setReceiveCity(city);
                                             calculator.setBorderColor(null);
                                           },
                                           child: City(
                                             city: city,
-                                            selected: selectedCity == city,
+                                            selected: calculatorState
+                                                    .receiverCity.id ==
+                                                city.id,
                                           ),
                                         ),
                                       )
@@ -183,7 +184,10 @@ class _CityPickerState extends State<CityPicker> {
         ).show();
       },
       hint: arb!.selectCity, // Expect arb update eventually
-      value: selectedCity?.name ?? arb.chooseTheCity,
+      value: (calculator.receiverCity.id != 0 &&
+              calculator.receiverCity.name.isNotEmpty)
+          ? calculator.receiverCity.name
+          : arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
       borderColor: calculator.borderColor,
