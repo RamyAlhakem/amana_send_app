@@ -3,8 +3,12 @@ import 'explorer.dart';
 class Queries {
   static String countries = '''
     query countries {
-      send: countries(type: send) ${Explorer.country.trim().substring('country '.length)}
-      receive: countries(type: receive) ${Explorer.country.trim().substring('country '.length)}
+      send: countries(type: send) {
+        ${Explorer.countryFields}
+      }
+      receive: countries(type: receive) {
+        ${Explorer.countryFields}
+      }
     }
       ''';
 

@@ -53,34 +53,49 @@ class Explorer {
       ''';
 
   static const String city = '''
-      id
+      areaNote
       coCode
-      name
       defaultMessage
-     
+      id
+      name
+      status
       ''';
 
-  static const String country = '''
-    country {
-      id
-      enName
+  static const String countryFields = '''
+      states {
+        cities {
+          $city
+        }
+        coCode
+        id
+        name
+        status
+      }
+      alpha3
       arName
       coCode
-      phoneCode
-      sendsFees
-      minimumSendsFees
       currency {
-        id
         ceil
         code
-        rate
+        id
         name
+        rate
         status
         symbol
       }
-      cities {
-        $city
-      }
+      currencyId
+      enName
+      id
+      minimumSendsFees
+      phoneCode
+      sendsFees
+      status
+      type
+''';
+
+  static const String country = '''
+    country {
+      $countryFields
     }
       ''';
 

@@ -1,4 +1,6 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
+import 'package:amana_send/models/city.dart';
+import 'package:amana_send/models/state.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:line_icons/line_icons.dart';
@@ -9,7 +11,6 @@ import '/app/widgets/dialogs/settings.dart';
 import '/app/widgets/divider.dart';
 import '/app/widgets/picker_form.dart';
 import '/helper/helper.dart';
-import '/models/city.dart';
 import '/models/country.dart';
 import '/services/lang_service.dart';
 
@@ -22,7 +23,7 @@ class CityPicker extends StatefulWidget {
   });
 
   final CountryModel country;
-  final Function(CityModel) onChange;
+  final Function(StateModel) onChange;
   final Color? fieldColor;
 
   @override
@@ -31,31 +32,16 @@ class CityPicker extends StatefulWidget {
 
 class _CityPickerState extends State<CityPicker> {
   CountryModel country = CountryModel();
-  CityModel? city;
-  late List<CityModel> cities;
-  late List<CityModel> allCities;
+  StateModel? selectedState;
+  List<StateModel> states = [];
+  List<StateModel> allStates = [];
+
   @override
   void initState() {
-//     country = widget.country;
-// cities=widget.country.cities;
-// allCities=cities;
-//     if (country.cities.isNotEmpty) city = country.cities.first;
-    // state.setReceiveCity(city),
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // final state=Provider.of<Calculator>(context,listen: false);
       country = widget.country;
-      cities = widget.country.cities;
-      allCities = cities;
-      if (country.cities.isNotEmpty) {
-        // city = country.cities.first;
-        // state.setIsLoad(true);
-
-//   Future.delayed(const Duration(seconds: 0),(){
-//  state.setReceiveCity(city!);
-//  state.setIsLoad(false);
-
-//  state.setShowAgent(true);
-        // });
+      if (country.states.isNotEmpty) {
+        // Handle init if needed
       }
     });
     super.initState();
@@ -63,14 +49,10 @@ class _CityPickerState extends State<CityPicker> {
 
   @override
   void didUpdateWidget(covariant CityPicker oldWidget) {
-    // final state=Provider.of<Calculator>(context,listen: false);
     if (oldWidget.country != widget.country) {
       country = widget.country;
-      if (widget.country.cities.isNotEmpty) {
-        // city = widget.country.cities.first;
-        city = null;
-
-// state.setReceiveCity(city!);
+      if (widget.country.states.isNotEmpty) {
+        selectedState = null;
       }
     }
     super.didUpdateWidget(oldWidget);
@@ -80,34 +62,32 @@ class _CityPickerState extends State<CityPicker> {
   Widget build(BuildContext context) {
     final AppLocalizations? arb = AppLocalizations.of(context);
     final bool isAr = LangService.isAR();
-    final state = Provider.of<Calculator>(context);
+    final calculator = Provider.of<Calculator>(context);
     return PickerForm(
       () {
-        cities = widget.country.cities;
-        allCities = widget.country.cities;
-        if (country.cities.isEmpty) {
+        states = widget.country.states;
+        allStates = states;
+        if (states.isEmpty) {
           return Helper.toast(arb.selectCountry);
         }
         SettingsDialog(
           onChanged: (text) {
             if (text.isNotEmpty) {
-              List<CityModel> foundCities = allCities
+              List<StateModel> foundStates = allStates
                   .where(
                       (e) => e.name.toLowerCase().contains(text.toLowerCase()))
                   .toList();
-              cities = foundCities;
-              state.updateUi();
-              Helper.log(
-                  "text =========>>>>$text  citites=======>>>>>>>$cities");
+              states = foundStates;
+              calculator.updateUi();
             } else {
-              cities = widget.country.cities;
-              state.updateUi();
+              states = allStates;
+              calculator.updateUi();
             }
           },
 
           onSubmit: null,
-          // title: arb.cities,
-          title: arb.selectCityFromTheListBelow,
+          title:
+              arb.selectCityFromTheListBelow, // Use generic title or update arb
           subTitle: "",
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
@@ -126,19 +106,24 @@ class _CityPickerState extends State<CityPicker> {
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.fromLTRB(
                         isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
-                    itemCount: cities.length,
+                    itemCount: states.length,
                     itemBuilder: (BuildContext _, int i) {
                       return InkWell(
                         borderRadius: BorderRadius.circular(100),
                         onTap: () {
                           SettingsDialog.dismiss();
-                          widget.onChange(cities[i]);
-                          setState(() => city = cities[i]);
-                          state.setBorderColor(null);
+                          widget.onChange(states[i]);
+                          setState(() => selectedState = states[i]);
+                          calculator.setBorderColor(null);
                         },
                         child: City(
-                          city: cities[i],
-                          selected: city == cities[i],
+                          city: CityModel(
+                            name: states[i].name,
+                            id: states[i].id,
+                            coCode: states[i].coCode,
+                            status: states[i].status,
+                          ),
+                          selected: selectedState == states[i],
                         ),
                       );
                     },
@@ -156,11 +141,11 @@ class _CityPickerState extends State<CityPicker> {
           ),
         ).show();
       },
-      hint: arb!.selectCity,
-      value: city?.name ?? arb.chooseTheCity,
+      hint: arb!.selectCity, // Expect arb update eventually
+      value: selectedState?.name ?? arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
-      borderColor: state.borderColor,
+      borderColor: calculator.borderColor,
     );
   }
 }

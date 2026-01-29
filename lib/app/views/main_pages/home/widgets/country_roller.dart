@@ -76,7 +76,9 @@ class CountryRoller extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       for (int i = 0; i < countries.length; i++)
-                        if (send || countries[i].cities.isNotEmpty)
+                        if (send || countries[i].states.isNotEmpty
+                            // countries[i].states.any((s) => s.cities.isNotEmpty)
+                            )
                           InkWell(
                             borderRadius: BorderRadius.circular(100),
                             onTap: () => setState(() {

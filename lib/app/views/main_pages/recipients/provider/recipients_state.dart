@@ -34,7 +34,7 @@ class RecipientsState extends ChangeNotifier {
 
   void getAll(List<RecipientModel> elements) {
     _all = elements;
-    receipients=_all;
+    receipients = _all;
     notifyListeners();
   }
 
@@ -53,7 +53,9 @@ class RecipientsState extends ChangeNotifier {
     context.read<RegistrationState>().setCountry(recipient.country);
     context.read<Calculator>().receiveCountries.any((c) {
       if (c.coCode == recipient.country.coCode) {
-        context.read<RegistrationState>().setCities(c.cities);
+        context
+            .read<RegistrationState>()
+            .setCities(c.states.expand((s) => s.cities).toList());
       }
       return c.coCode == recipient.country.coCode;
     });
@@ -77,14 +79,18 @@ class RecipientsState extends ChangeNotifier {
     _all.clear();
     notifyListeners();
   }
-  search(String text){
-    if(text.isNotEmpty){
-foundReceipients=all.where((e)=>(("${e.firstName} ${e.fatherName} ${e.lastName}").toLowerCase()).contains(text.toLowerCase())).toList();
-receipients=foundReceipients;
-notifyListeners();
-    }
-    else{
-      receipients=all;
+
+  search(String text) {
+    if (text.isNotEmpty) {
+      foundReceipients = all
+          .where((e) =>
+              (("${e.firstName} ${e.fatherName} ${e.lastName}").toLowerCase())
+                  .contains(text.toLowerCase()))
+          .toList();
+      receipients = foundReceipients;
+      notifyListeners();
+    } else {
+      receipients = all;
       notifyListeners();
     }
   }

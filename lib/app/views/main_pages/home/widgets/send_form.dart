@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:amana_send/app/widgets/loading_widget.dart';
+import 'package:amana_send/models/city.dart';
+import 'package:amana_send/models/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -112,6 +114,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                             key: isHome ? Tutorial.key1 : null,
                             title: arb.receiverCountries,
                             borderRadius: 11,
+                            send: false,
                           ),
                         ),
                       if (state.selectedRecipient == null)
@@ -122,7 +125,14 @@ class _SendFormFieldsState extends State<SendFormFields>
                         child: CityPicker(
                           key: isHome ? Tutorial.key2 : null,
                           country: state.receiverCountry,
-                          onChange: (city) => state.setReceiveCity(city),
+                          onChange: (statee) => state.setReceiveCity(
+                            CityModel(
+                              id: statee.id,
+                              name: statee.name,
+                              coCode: statee.coCode,
+                              status: statee.status,
+                            ),
+                          ),
                           fieldColor: Theme.of(context).cardColor,
                         ),
                       ),
@@ -218,7 +228,6 @@ class _SendFormFieldsState extends State<SendFormFields>
                     const SizedBox(width: 10),
                     Flexible(
                       child: FittedBox(
-                        
                         child: TextX(
                           '${state.sendCountry.currency.code} ${Tools.nicePrice(state.sendCountry.currency.rate * send)}',
                           style: Theme.of(context).textTheme.bodyLarge,
