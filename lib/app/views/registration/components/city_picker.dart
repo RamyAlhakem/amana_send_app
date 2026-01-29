@@ -33,8 +33,10 @@ class CityPicker extends StatefulWidget {
 class _CityPickerState extends State<CityPicker> {
   CountryModel country = CountryModel();
   StateModel? selectedState;
+  CityModel? selectedCity;
   List<StateModel> states = [];
   List<StateModel> allStates = [];
+  final Set<int> _expandedStates = {};
 
   @override
   void initState() {
@@ -84,20 +86,18 @@ class _CityPickerState extends State<CityPicker> {
               calculator.updateUi();
             }
           },
-
           onSubmit: null,
-          title:
-              arb.selectCityFromTheListBelow, // Use generic title or update arb
+          title: arb.selectCityFromTheListBelow,
           subTitle: "",
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
-          content: (state) => Scrollbar(
+          content: (dialogSetState) => Scrollbar(
             interactive: true,
             thumbVisibility: true,
             thickness: 5,
             radius: const Radius.circular(100),
             child: Consumer<Calculator>(
-              builder: (context, state, child) => ListView(
+              builder: (context, calculatorState, child) => ListView(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [
@@ -108,22 +108,63 @@ class _CityPickerState extends State<CityPicker> {
                         isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
                     itemCount: states.length,
                     itemBuilder: (BuildContext _, int i) {
+                      final bool isExpanded =
+                          _expandedStates.contains(states[i].id);
                       return InkWell(
                         borderRadius: BorderRadius.circular(100),
                         onTap: () {
-                          SettingsDialog.dismiss();
-                          widget.onChange(states[i]);
-                          setState(() => selectedState = states[i]);
-                          calculator.setBorderColor(null);
+                          dialogSetState(() {
+                            if (isExpanded) {
+                              _expandedStates.remove(states[i].id);
+                            } else {
+                              _expandedStates.add(states[i].id);
+                            }
+                          });
                         },
-                        child: City(
-                          city: CityModel(
-                            name: states[i].name,
-                            id: states[i].id,
-                            coCode: states[i].coCode,
-                            status: states[i].status,
-                          ),
-                          selected: selectedState == states[i],
+                        child: Column(
+                          children: [
+                            City(
+                              city: CityModel(
+                                name: states[i].name,
+                                id: states[i].id,
+                                coCode: states[i].coCode,
+                                status: states[i].status,
+                              ),
+                              selected: selectedState == states[i],
+                            ),
+                            Visibility(
+                              visible: isExpanded,
+                              child: Container(
+                                padding: EdgeInsets.all(
+                                    states[i].cities.isEmpty ? 0 : 15),
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.3),
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Column(
+                                  spacing: 10,
+                                  children: states[i]
+                                      .cities
+                                      .map(
+                                        (city) => InkWell(
+                                          onTap: () {
+                                            SettingsDialog.dismiss();
+                                            widget.onChange(states[i]);
+                                            setState(() => selectedCity = city);
+                                            calculatorState
+                                                .setReceiveCity(selectedCity!);
+                                            calculator.setBorderColor(null);
+                                          },
+                                          child: City(
+                                            city: city,
+                                            selected: selectedCity == city,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       );
                     },
@@ -142,7 +183,7 @@ class _CityPickerState extends State<CityPicker> {
         ).show();
       },
       hint: arb!.selectCity, // Expect arb update eventually
-      value: selectedState?.name ?? arb.chooseTheCity,
+      value: selectedCity?.name ?? arb.chooseTheCity,
       valueIcon: const Icon(LineIcons.city),
       color: Theme.of(context).cardColor,
       borderColor: calculator.borderColor,
