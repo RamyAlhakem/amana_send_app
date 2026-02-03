@@ -154,8 +154,7 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -163,14 +162,22 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                     text: TextSpan(children: [
                   TextSpan(
                       text: "${calculator.receiverAgent.name}: ",
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      )),
                   TextSpan(
                       text: AppLocalizations.of(context)!
                           .requiredAdditionalFields,
-                      style: const TextStyle(fontSize: 16, color: Colors.black))
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ))
                 ])),
                 const SizedBox(
                   height: 20,
