@@ -155,35 +155,38 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                      text: "${calculator.receiverAgent.name}: ",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                      )),
-                  TextSpan(
-                      text: AppLocalizations.of(context)!
-                          .requiredAdditionalFields,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ))
-                ])),
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(height: 300, child: PaymentMethodFields()),
-              ],
+            child: Form(
+              key: Global.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: "${calculator.receiverAgent.name}: ",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        )),
+                    TextSpan(
+                        text: AppLocalizations.of(context)!
+                            .requiredAdditionalFields,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ))
+                  ])),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const PaymentMethodFields(),
+                ],
+              ),
             ),
           ),
           const PaymentMethodDescriptions(),

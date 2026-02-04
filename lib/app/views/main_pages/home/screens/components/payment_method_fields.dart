@@ -13,43 +13,37 @@ class PaymentMethodFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Calculator>(
       builder: (context, calculator, child) {
-        return Form(
-          key: Global.formKey,
-          child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, i) {
-                final field = calculator.providerFields[i];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                        "${field.name} (${context.arb.fixed} ${field.characterCount} ${context.arb.characters})"),
-                    TextFieldX(
-                      validator: (text) {
-                        if (text!.isEmpty) {
-                          return context.arb.invalidInput;
-                        } else if (text.length < field.characterCount) {
-                          return "${context.arb.pleaseEnter} ${field.characterCount} ${context.arb.characters}";
-                        }
-                        return null;
-                      },
-                      hint: "${context.arb.enter} ${field.name}",
-                      controller: null,
-                      input: [
-                        LengthLimitingTextInputFormatter(field.characterCount)
-                      ],
-                      onChanged: (val) {
-                        calculator.setProviderFieldValue(field.id, val);
-                      },
-                    ),
-                  ],
-                );
-              },
-              separatorBuilder: (context, i) => const SizedBox(
-                    height: 20,
+        return Column(
+          children: calculator.providerFields.map((field) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      "${field.name} (${context.arb.fixed} ${field.characterCount} ${context.arb.characters})"),
+                  TextFieldX(
+                    validator: (text) {
+                      if (text!.isEmpty) {
+                        return context.arb.invalidInput;
+                      } else if (text.length < field.characterCount) {
+                        return "${context.arb.pleaseEnter} ${field.characterCount} ${context.arb.characters}";
+                      }
+                      return null;
+                    },
+                    hint: "${context.arb.enter} ${field.name}",
+                    controller: null,
+                    input: [
+                      LengthLimitingTextInputFormatter(field.characterCount)
+                    ],
+                    onChanged: (val) {
+                      calculator.setProviderFieldValue(field.id, val);
+                    },
                   ),
-              itemCount: calculator.providerFields.length),
+                ],
+              ),
+            );
+          }).toList(),
         );
       },
     );
