@@ -7,10 +7,15 @@ import '/models/city.dart';
 import '/services/lang_service.dart';
 
 class City extends StatelessWidget {
-  const City({required this.city, required this.selected, super.key});
+  const City(
+      {required this.city,
+      required this.selected,
+      super.key,
+      this.isExpanded = false});
 
   final CityModel city;
   final bool selected;
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,9 @@ class City extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(LineIcons.city, color: Colors.white),
+              isExpanded
+                  ? const Icon(Icons.arrow_drop_down, color: Colors.white)
+                  : const Icon(Icons.arrow_right, color: Colors.white),
               const SizedBox(width: 12),
               TextX(
                 LangService.isAR() ? city.name : city.name,

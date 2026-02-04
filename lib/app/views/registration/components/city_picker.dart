@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/home/widgets/area_widget.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/models/city.dart';
 import 'package:amana_send/models/state.dart';
@@ -124,6 +125,7 @@ class _CityPickerState extends State<CityPicker> {
                         child: Column(
                           children: [
                             City(
+                              isExpanded: isExpanded,
                               city: CityModel(
                                 name: states[i].name,
                                 id: states[i].id,
@@ -153,7 +155,7 @@ class _CityPickerState extends State<CityPicker> {
                                                 .setReceiveCity(city);
                                             calculator.setBorderColor(null);
                                           },
-                                          child: City(
+                                          child: AreaWidget(
                                             city: city,
                                             selected: calculatorState
                                                     .receiverCity.id ==
