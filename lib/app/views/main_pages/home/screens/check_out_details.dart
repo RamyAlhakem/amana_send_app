@@ -112,6 +112,7 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (_, state, child) {
       final rate = state.receiverAgent.tab;
+
       final bool usd = state.receiverAgent.usdAvailability == 2;
       child = Stack(
         clipBehavior: Clip.none,
@@ -237,6 +238,42 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                             ),
                           ),
                         ]),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        // Column(
+                        //   children: state.providerFieldValues.entries
+                        //       .map(
+                        //         (e) => RowSpaceBetween([
+                        //           TextX(e.key.toString()),
+                        //           TextX(e.value.toString()),
+                        //         ]),
+                        //       )
+                        //       .toList(),
+                        // )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8,
+                              children: state.providerFields
+                                  .map((field) => Text(field.name))
+                                  .toList(),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              spacing: 8,
+                              children: state.providerFields
+                                  .map((field) => Text(
+                                        state.providerFieldValues[field.id]
+                                                ?.toString() ??
+                                            '',
+                                      ))
+                                  .toList(),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
