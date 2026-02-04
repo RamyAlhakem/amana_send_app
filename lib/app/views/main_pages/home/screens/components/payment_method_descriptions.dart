@@ -13,8 +13,16 @@ class PaymentMethodDescriptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Calculator>(
       builder: (context, calculator, child) {
+        final visibleFields = calculator.providerFields
+            .where((element) => element.description.isNotEmpty)
+            .toList();
+
+        if (visibleFields.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -35,7 +43,7 @@ class PaymentMethodDescriptions extends StatelessWidget {
                           )
                         ]),
                     child: Text(
-                      calculator.providerFields[index].description,
+                      visibleFields[index].description,
                       style: const TextStyle(
                           backgroundColor: Colors.yellow,
                           fontSize: 16,
@@ -44,7 +52,7 @@ class PaymentMethodDescriptions extends StatelessWidget {
                     ),
                   ),
               separatorBuilder: (context, index) => const SizedBox(height: 20),
-              itemCount: calculator.providerFields.length),
+              itemCount: visibleFields.length),
         );
       },
     );

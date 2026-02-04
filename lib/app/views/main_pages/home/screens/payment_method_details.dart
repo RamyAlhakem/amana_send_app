@@ -180,9 +180,9 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
                       ))
                 ])),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
-                const PaymentMethodFields(),
+                const SizedBox(height: 300, child: PaymentMethodFields()),
               ],
             ),
           ),
