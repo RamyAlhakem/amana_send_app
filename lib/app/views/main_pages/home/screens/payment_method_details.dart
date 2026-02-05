@@ -192,22 +192,31 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
             ),
           ),
           // const PaymentMethodDescriptions(),
-          Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-              width: context.screenWidth,
-              decoration: BoxDecoration(
-                  color: MainColors.color4,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withValues(alpha: 0.7),
-                      blurRadius: 2,
-                      offset: const Offset(0, 3),
-                    )
-                  ]),
-              child: Html(data: calculator.receiverAgent.note)),
+          if (calculator.receiverAgent.note.isNotEmpty)
+            Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                width: context.screenWidth,
+                decoration: BoxDecoration(
+                    color: MainColors.color4,
+                    borderRadius: BorderRadius.circular(12),
+                    border:
+                        Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withValues(alpha: 0.7),
+                        blurRadius: 2,
+                        offset: const Offset(0, 3),
+                      )
+                    ]),
+                child: Html(
+                  data: calculator.receiverAgent.note,
+                  style: {
+                    "body": Style(color: Colors.black),
+                  },
+                )),
         ],
       ),
     );
