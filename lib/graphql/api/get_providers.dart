@@ -11,7 +11,10 @@ import '/helper/helper.dart';
 import '/models/agent.dart';
 
 class GetProviders {
-  GetProviders({required this.cityID, required this.paymentMethodID,required this.sendCountryCode});
+  GetProviders(
+      {required this.cityID,
+      required this.paymentMethodID,
+      required this.sendCountryCode});
   int cityID;
   int paymentMethodID;
   String sendCountryCode;
@@ -23,8 +26,9 @@ class GetProviders {
     Map<String, dynamic> variables = {
       'cityId': cityID,
       'paymentMethodId': paymentMethodID,
-      'sendCountryCode':sendCountryCode
+      'sendCountryCode': sendCountryCode
     };
+    Helper.log("variables for providers ====> $variables");
     Helper.debugger('providers');
 
     GraphQL.client()
@@ -48,12 +52,12 @@ class GetProviders {
   static void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('providers')) {
       if (data['providers'] is List && data['providers'].isNotEmpty) {
-        Helper.log("providers data ====> ${ data['providers']}");
+        Helper.log("providers data ====> ${data['providers']}");
         List<AgentModel> providers = List<AgentModel>.from(
           data['providers'].map((x) => AgentModel.fromJson(x)),
         );
-        _pr.providersNew=providers;
-          Helper.log("providers data leangth ====> ${providers.length}");
+        _pr.providersNew = providers;
+        Helper.log("providers data leangth ====> ${providers.length}");
         _pr.getAgents(providers);
       }
     }

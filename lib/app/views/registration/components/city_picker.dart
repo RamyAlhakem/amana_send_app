@@ -149,6 +149,8 @@ class _CityPickerState extends State<CityPicker> {
                                       .map(
                                         (city) => InkWell(
                                           onTap: () {
+                                            Helper.log(
+                                                "receiver city ${city.name} id:${city.id}");
                                             SettingsDialog.dismiss();
                                             widget.onChange(states[i]);
                                             calculatorState

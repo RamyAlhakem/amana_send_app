@@ -125,14 +125,16 @@ class _SendFormFieldsState extends State<SendFormFields>
                         child: CityPicker(
                           key: isHome ? Tutorial.key2 : null,
                           country: state.receiverCountry,
-                          onChange: (statee) => state.setReceiveCity(
-                            CityModel(
-                              id: statee.id,
-                              name: statee.name,
-                              coCode: statee.coCode,
-                              status: statee.status,
-                            ),
-                          ),
+                          onChange: (statee) {},
+                          //  =>
+                          //  state.setReceiveCity(
+                          //   CityModel(
+                          //     id: statee.id,
+                          //     name: statee.name,
+                          //     coCode: statee.coCode,
+                          //     status: statee.status,
+                          //   ),
+                          // ),
                           fieldColor: Theme.of(context).cardColor,
                         ),
                       ),
