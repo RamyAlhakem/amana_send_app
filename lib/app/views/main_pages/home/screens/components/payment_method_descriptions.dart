@@ -45,7 +45,7 @@ class PaymentMethodDescriptions extends StatelessWidget {
                     child: Text(
                       visibleFields[index].description,
                       style: const TextStyle(
-                          backgroundColor: Colors.yellow,
+                          // backgroundColor: Colors.yellow,
                           fontSize: 16,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),

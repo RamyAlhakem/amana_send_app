@@ -11,6 +11,7 @@ import 'package:amana_send/app/widgets/dialogs/contact_us.dart';
 import 'package:amana_send/app/widgets/text/text_x.dart';
 import 'package:amana_send/app/widgets/text_form_field/text_form.dart';
 import 'package:amana_send/database/injector.dart';
+import 'package:amana_send/extensions/context_extension.dart';
 import 'package:amana_send/global/variables.dart';
 import 'package:amana_send/helper/helper.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -18,6 +19,7 @@ import 'package:amana_send/models/user.dart';
 import 'package:amana_send/router/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -189,7 +191,23 @@ class _PaymentMethodDetailsState extends State<PaymentMethodDetails> {
               ),
             ),
           ),
-          const PaymentMethodDescriptions(),
+          // const PaymentMethodDescriptions(),
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+              width: context.screenWidth,
+              decoration: BoxDecoration(
+                  color: MainColors.color4,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withValues(alpha: 0.7),
+                      blurRadius: 2,
+                      offset: const Offset(0, 3),
+                    )
+                  ]),
+              child: Html(data: calculator.receiverAgent.note)),
         ],
       ),
     );

@@ -49,6 +49,7 @@ class Explorer {
       maxAmount
       defaultMessage
       description
+      note
       tab
       ''';
 
