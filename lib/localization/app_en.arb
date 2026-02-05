@@ -393,5 +393,6 @@
    "fixed": "Fixed",
    "characters": "Characters",
    "enter": "Enter",
-   "invalidInput": "Invalid input"
+   "invalidInput": "Invalid input",
+   "mandatoryInformation": "Mandatory Information"
 }

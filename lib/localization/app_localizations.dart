@@ -2477,6 +2477,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid input'**
   String get invalidInput;
+
+  /// No description provided for @mandatoryInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Mandatory Information'**
+  String get mandatoryInformation;
 }
 
 class _AppLocalizationsDelegate

@@ -392,5 +392,6 @@
      "fixed": "ثابت",
      "characters": "أحرف",
      "enter": "أدخل",
-     "invalidInput": "إدخال غير صالح"
+     "invalidInput": "إدخال غير صالح",
+     "mandatoryInformation": "معلومات إلزامية"
 }

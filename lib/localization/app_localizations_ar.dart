@@ -1262,4 +1262,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalidInput => 'إدخال غير صالح';
+
+  @override
+  String get mandatoryInformation => 'معلومات إلزامية';
 }
