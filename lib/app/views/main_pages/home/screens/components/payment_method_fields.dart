@@ -31,7 +31,7 @@ class PaymentMethodFields extends StatelessWidget {
                       }
                       return null;
                     },
-                    hint: "${context.arb.enter} ${field.name}",
+                    hint: field.description,
                     controller: null,
                     input: [
                       LengthLimitingTextInputFormatter(field.characterCount)
