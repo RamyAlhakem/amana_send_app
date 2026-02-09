@@ -452,16 +452,18 @@ class Calculator with ChangeNotifier {
 
   moveSlider() {
     timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (currentSlider + 1 < sliders.length) {
-        currentSlider++;
-        pageController.animateToPage(currentSlider,
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.easeInOut);
-        Helper.log("current sliders $currentSlider");
-      } else {
-        currentSlider = 0;
-        pageController.jumpTo(50);
-        Helper.log("current sliders  = 0 $currentSlider");
+      if (pageController.hasClients) {
+        if (currentSlider + 1 < sliders.length) {
+          currentSlider++;
+          pageController.animateToPage(currentSlider,
+              duration: const Duration(milliseconds: 700),
+              curve: Curves.easeInOut);
+          Helper.log("current sliders $currentSlider");
+        } else {
+          currentSlider = 0;
+          pageController.jumpTo(50);
+          Helper.log("current sliders  = 0 $currentSlider");
+        }
       }
     });
 // notifyListeners();

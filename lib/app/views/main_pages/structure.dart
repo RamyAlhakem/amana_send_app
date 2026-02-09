@@ -69,11 +69,14 @@ class _StructureState extends State<Structure> {
     _index = Pages.home.index;
     Global.pageCtrl = PageController(initialPage: _index);
     // getResources();
-    if (mounted) {
-      getPaymentMethod = Database().getPaymentMethod;
-      Provider.of<Calculator>(context, listen: false)
-          .setPaymentMethodID(getPaymentMethod);
-    }
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        getPaymentMethod = Database().getPaymentMethod;
+        Provider.of<Calculator>(context, listen: false)
+            .setPaymentMethodID(getPaymentMethod);
+      }
+    });
   }
 
   @override
