@@ -88,14 +88,45 @@ class _CityPickerState extends State<CityPicker> {
         SettingsDialog(
           onChanged: (text) {
             if (text.isNotEmpty) {
-              List<StateModel> foundStates = allStates
-                  .where(
-                      (e) => e.name.toLowerCase().contains(text.toLowerCase()))
-                  .toList();
+              String searchText = text.toLowerCase();
+              List<StateModel> foundStates = [];
+              
+              for (var state in allStates) {
+                // Check if state name matches
+                bool stateMatches = state.name.toLowerCase().contains(searchText);
+                
+                // Check if any city within this state matches
+                List<CityModel> matchingCities = state.cities
+                    .where((city) => city.name.toLowerCase().contains(searchText))
+                    .toList();
+                
+                if (stateMatches) {
+                  // If state matches, include it with all its cities
+                  foundStates.add(state);
+                  // Auto-expand if cities exist
+                  if (state.cities.isNotEmpty) {
+                    _expandedStates.add(state.id);
+                  }
+                } else if (matchingCities.isNotEmpty) {
+                  // If only cities match, create a filtered state with matching cities
+                  StateModel filteredState = StateModel(
+                    id: state.id,
+                    name: state.name,
+                    coCode: state.coCode,
+                    status: state.status,
+                    cities: matchingCities,
+                  );
+                  foundStates.add(filteredState);
+                  // Auto-expand to show matching cities
+                  _expandedStates.add(state.id);
+                }
+              }
+              
               states = foundStates;
               calculator.updateUi();
             } else {
               states = allStates;
+              _expandedStates.clear();
               calculator.updateUi();
             }
           },
