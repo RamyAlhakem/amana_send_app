@@ -90,16 +90,18 @@ class _CityPickerState extends State<CityPicker> {
             if (text.isNotEmpty) {
               String searchText = text.toLowerCase();
               List<StateModel> foundStates = [];
-              
+
               for (var state in allStates) {
                 // Check if state name matches
-                bool stateMatches = state.name.toLowerCase().contains(searchText);
-                
+                bool stateMatches =
+                    state.name.toLowerCase().contains(searchText);
+
                 // Check if any city within this state matches
                 List<CityModel> matchingCities = state.cities
-                    .where((city) => city.name.toLowerCase().contains(searchText))
+                    .where(
+                        (city) => city.name.toLowerCase().contains(searchText))
                     .toList();
-                
+
                 if (stateMatches) {
                   // If state matches, include it with all its cities
                   foundStates.add(state);
@@ -121,7 +123,7 @@ class _CityPickerState extends State<CityPicker> {
                   _expandedStates.add(state.id);
                 }
               }
-              
+
               states = foundStates;
               calculator.updateUi();
             } else {
@@ -199,26 +201,26 @@ class _CityPickerState extends State<CityPicker> {
                                     borderRadius: BorderRadius.circular(8)),
                                 child: Column(
                                   children: [
-                                    TextField(
-                                      controller: controller,
-                                      onChanged: (text) {
-                                        Helper.log(
-                                            "search for city with text $text");
-                                        calculatorState.updateUi();
-                                      },
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        hintText: arb.search,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    ),
+                                    // TextField(
+                                    //   controller: controller,
+                                    //   onChanged: (text) {
+                                    //     Helper.log(
+                                    //         "search for city with text $text");
+                                    //     calculatorState.updateUi();
+                                    //   },
+                                    //   decoration: InputDecoration(
+                                    //     filled: true,
+                                    //     hintText: arb.search,
+                                    //     enabledBorder: OutlineInputBorder(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //     ),
+                                    //     focusedBorder: OutlineInputBorder(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     Column(
                                       spacing: 10,
                                       children: foundCities
