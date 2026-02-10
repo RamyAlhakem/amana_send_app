@@ -258,14 +258,14 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               spacing: 8,
                               children: state.providerFields
-                                  .map((field) => Text(field.name))
+                                  .map((field) => TextX(field.name))
                                   .toList(),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               spacing: 8,
                               children: state.providerFields
-                                  .map((field) => Text(
+                                  .map((field) => TextX(
                                         state.providerFieldValues[field.id]
                                                 ?.toString() ??
                                             '',
