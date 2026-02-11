@@ -43,6 +43,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -55,19 +56,23 @@ android {
 
     defaultConfig {
         applicationId "com.amana_send"
-        minSdkVersion 22
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
     
     signingConfigs {
-        release {
+       release {
+        if (keystoreProperties['storeFile'] != null) {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile']) 
+            storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
+        } else {
+            println("Warning: Keystore file is missing. Release signing may fail.")
         }
+    }
     }
     buildTypes {
         release {
@@ -113,4 +118,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }

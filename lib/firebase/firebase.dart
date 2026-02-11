@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '/database/injector.dart';
-import '/firebase_options.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/firebase.dart';
@@ -18,17 +16,9 @@ class FirebaseTool {
     final FirebaseModel firebase = user.firebase;
 
     try {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      // Firebase is already initialized by NotificationService
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-      await firebaseMessaging.requestPermission();
-      firebaseMessaging.setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-
+      
       firebase.token = (await firebaseMessaging.getToken() ?? '');
       user.firebase = firebase;
       Database().setUserBase = user;
@@ -86,7 +76,7 @@ class FirebaseTool {
   }
 
   static Future<void> _backgroundMessage(RemoteMessage message) async {
-    final String route = message.data['route'].toString();
+    final String route = message.data['route']?.toString() ?? '';
     final String routeName = route.split('/').first;
     int id = 0;
 
@@ -94,8 +84,11 @@ class FirebaseTool {
     Helper.log('message body: ${message.notification?.body}');
 
     try {
-      final String routeId = route.split('/')[1];
-      id = int.parse(routeId);
+      final List<String> routeParts = route.split('/');
+      if (routeParts.length > 1) {
+        final String routeId = routeParts[1];
+        id = int.parse(routeId);
+      }
     } catch (e) {
       Helper.log('_backgroundMessage error: routeId $e');
     }

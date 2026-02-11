@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/services/system_chrome_service.dart';
+import '/services/notification_service.dart';
 import 'app/app.dart';
 import 'app/errors/error_screen.dart';
 import 'database/injector.dart';
@@ -14,11 +15,14 @@ Future<void> initlize() async {
   await Database.inject();
 
   GetMetadata.request();
-
+  await NotificationService.init();
   // Load the user's preferred theme while the splash screen is displayed.
   await Global.appSettings.loadSettings();
 
   ErrorWidget.builder = (FlutterErrorDetails err) => ErrorScreen('$err');
+
+  // Initialize notification service
+  await NotificationService.init();
 
   FirebaseTool.getFirebaseToken().whenComplete(
     () => FirebaseTool.setFirebaseTopics(),
