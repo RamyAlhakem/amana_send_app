@@ -263,6 +263,7 @@ class Calculator with ChangeNotifier {
   }
 
   void setAgent(AgentModel agent) {
+    clearProviderFieldValues();
     _receiverAgent = agent;
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
@@ -498,4 +499,17 @@ class Calculator with ChangeNotifier {
     await GetProviderFields(providerId: _receiverAgent.id).request();
     notifyListeners();
   }
+  // filterByCities(String text){
+  //     Helper.log("search for city with text $text");
+  //   if (text.isEmpty) {
+  //     foundCities = states[i].cities;
+  //     Helper.log("cites length ${foundCities.length}");
+  //   } else {
+  //     foundCities = states[i]
+  //         .cities
+  //         .where((city) => city.name.toLowerCase().contains(text.toLowerCase()))
+  //         .toList();
+  //     Helper.log("cites length ${foundCities.length}");
+  //   }
+  // }
 }

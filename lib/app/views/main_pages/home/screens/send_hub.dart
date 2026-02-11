@@ -79,105 +79,106 @@ class _SendHubState extends State<SendHub>
   Widget build(BuildContext context) {
     super.build(context);
     // final transfer = context.watch<TransfersState>().transfer;
-    return WillPopScope(
-      onWillPop: () async {
-        if (_index != 2) {
-          SubmitDialog(
-            () => context.pop(),
-            content: arb.areYouSureYouWantToCancelThisTransfer,
-          ).show();
-        }
-        return _index != 2 ? false : true;
-      },
-      child: Scaffold(
-        appBar: AutoAppBar(
-          title: appBarTitle,
-          bGColor: MainColors.color1,
-          iconColor: Colors.white,
-          titleStyle: const TextStyle(color: Colors.white, fontSize: 15),
-          subTitleStyle: const TextStyle(color: Colors.white70, fontSize: 11),
-          flexibleSpace: const SizedBox(),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarBrightness: Global.brightnessLight(),
-            statusBarIconBrightness: Global.brightnessLight(),
+    return
+        //  WillPopScope(
+        //   onWillPop: () async {
+        //     if (_index != 2) {
+        //       SubmitDialog(
+        //         () => context.pop(),
+        //         content: arb.areYouSureYouWantToCancelThisTransfer,
+        //       ).show();
+        //     }
+        //     return _index != 2 ? false : true;
+        //   },
+        //   child:
+        Scaffold(
+      appBar: AutoAppBar(
+        title: appBarTitle,
+        bGColor: MainColors.color1,
+        iconColor: Colors.white,
+        titleStyle: const TextStyle(color: Colors.white, fontSize: 15),
+        subTitleStyle: const TextStyle(color: Colors.white70, fontSize: 11),
+        flexibleSpace: const SizedBox(),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarBrightness: Global.brightnessLight(),
+          statusBarIconBrightness: Global.brightnessLight(),
+        ),
+        // onPressed: _index != 2
+        //     ? () => SubmitDialog(
+        //           () => context.pop(),
+        //           content: arb.areYouSureYouWantToCancelThisTransfer,
+        //         ).show()
+        //     : null,
+        actions: [
+          InkWell(
+            onTap: () => Helper.launchURL(AppMetadata.get.paymentTutorialUrl),
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: _index == 2 && _calculator.providerFields.isNotEmpty
+                  ? [
+                      TextX(
+                        arb.howToPay,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.info_outlined, color: Colors.white),
+                      const SizedBox(width: 15)
+                    ]
+                  : _index == 1
+                      ? [
+                          TextX(
+                            arb.howToPay,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.info_outlined, color: Colors.white),
+                          const SizedBox(width: 15)
+                        ]
+                      : <Widget>[],
+            ),
           ),
-          onPressed: _index != 2
-              ? () => SubmitDialog(
-                    () => context.pop(),
-                    content: arb.areYouSureYouWantToCancelThisTransfer,
-                  ).show()
-              : null,
-          actions: [
-            InkWell(
-              onTap: () => Helper.launchURL(AppMetadata.get.paymentTutorialUrl),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: _index == 2 && _calculator.providerFields.isNotEmpty
-                    ? [
-                        TextX(
-                          arb.howToPay,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.info_outlined, color: Colors.white),
-                        const SizedBox(width: 15)
-                      ]
-                    : _index == 1
-                        ? [
-                            TextX(
-                              arb.howToPay,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(width: 8),
-                            const Icon(Icons.info_outlined,
-                                color: Colors.white),
-                            const SizedBox(width: 15)
-                          ]
-                        : <Widget>[],
+        ],
+      ),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageCtrl,
+        onPageChanged: (int page) => setState(() {
+          _index = page;
+          _switchState(_index);
+        }),
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => Helper.unFocusCursor(context),
+            child: Visibility(
+              visible: !recipient,
+              replacement: const SingleChildScrollView(
+                padding: EdgeInsets.all(12.0),
+                child: SendFormFields(keepAlive: true),
               ),
+              child: const SelectRecipient(),
             ),
-          ],
-        ),
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageCtrl,
-          onPageChanged: (int page) => setState(() {
-            _index = page;
-            _switchState(_index);
-          }),
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => Helper.unFocusCursor(context),
-              child: Visibility(
-                visible: !recipient,
-                replacement: const SingleChildScrollView(
-                  padding: EdgeInsets.all(12.0),
-                  child: SendFormFields(keepAlive: true),
-                ),
-                child: const SelectRecipient(),
-              ),
-            ),
-            if (_calculator.providerFields.isNotEmpty)
-              const PaymentMethodDetails(),
-            const CheckOutDetails(),
-            const WalletAddress(),
-          ],
-        ),
-        bottomNavigationBar: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: AnimatedSwitcher(
-              duration: expandDuration,
-              reverseDuration: expandDuration,
-              child: Expander(expand: expand, child: buttons),
-            ),
+          ),
+          if (_calculator.providerFields.isNotEmpty)
+            const PaymentMethodDetails(),
+          const CheckOutDetails(),
+          const WalletAddress(),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: AnimatedSwitcher(
+            duration: expandDuration,
+            reverseDuration: expandDuration,
+            child: Expander(expand: expand, child: buttons),
           ),
         ),
       ),
     );
+    // );
   }
 
   Future<void> _switchState(int index) async {

@@ -1,5 +1,6 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/area_widget.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
+import 'package:amana_send/app/widgets/text/text_x.dart';
 import 'package:amana_send/models/city.dart';
 import 'package:amana_send/models/state.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,23 @@ class CityPicker extends StatefulWidget {
 }
 
 class _CityPickerState extends State<CityPicker> {
+  TextEditingController cityFilterController = TextEditingController();
   CountryModel country = CountryModel();
   StateModel? selectedState;
   CityModel? selectedCity;
   List<StateModel> states = [];
   List<StateModel> allStates = [];
+
   final Set<int> _expandedStates = {};
+  final Map<int, TextEditingController> _controllers = {};
+
+  @override
+  void dispose() {
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -78,16 +90,18 @@ class _CityPickerState extends State<CityPicker> {
             if (text.isNotEmpty) {
               String searchText = text.toLowerCase();
               List<StateModel> foundStates = [];
-              
+
               for (var state in allStates) {
                 // Check if state name matches
-                bool stateMatches = state.name.toLowerCase().contains(searchText);
-                
+                bool stateMatches =
+                    state.name.toLowerCase().contains(searchText);
+
                 // Check if any city within this state matches
                 List<CityModel> matchingCities = state.cities
-                    .where((city) => city.name.toLowerCase().contains(searchText))
+                    .where(
+                        (city) => city.name.toLowerCase().contains(searchText))
                     .toList();
-                
+
                 if (stateMatches) {
                   // If state matches, include it with all its cities
                   foundStates.add(state);
@@ -109,7 +123,7 @@ class _CityPickerState extends State<CityPicker> {
                   _expandedStates.add(state.id);
                 }
               }
-              
+
               states = foundStates;
               calculator.updateUi();
             } else {
@@ -142,6 +156,18 @@ class _CityPickerState extends State<CityPicker> {
                     itemBuilder: (BuildContext _, int i) {
                       final bool isExpanded =
                           _expandedStates.contains(states[i].id);
+                      final TextEditingController controller =
+                          _controllers.putIfAbsent(
+                              states[i].id, () => TextEditingController());
+                      List<CityModel> foundCities = controller.text.isEmpty
+                          ? states[i].cities
+                          : states[i]
+                              .cities
+                              .where((city) => city.name
+                                  .toLowerCase()
+                                  .contains(controller.text.toLowerCase()))
+                              .toList();
+
                       return InkWell(
                         borderRadius: BorderRadius.circular(100),
                         onTap: () {
@@ -174,29 +200,52 @@ class _CityPickerState extends State<CityPicker> {
                                     color: Colors.white.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(8)),
                                 child: Column(
-                                  spacing: 10,
-                                  children: states[i]
-                                      .cities
-                                      .map(
-                                        (city) => InkWell(
-                                          onTap: () {
-                                            Helper.log(
-                                                "receiver city ${city.name} id:${city.id}");
-                                            SettingsDialog.dismiss();
-                                            widget.onChange(states[i]);
-                                            calculatorState
-                                                .setReceiveCity(city);
-                                            calculator.setBorderColor(null);
-                                          },
-                                          child: AreaWidget(
-                                            city: city,
-                                            selected: calculatorState
-                                                    .receiverCity.id ==
-                                                city.id,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
+                                  children: [
+                                    // TextField(
+                                    //   controller: controller,
+                                    //   onChanged: (text) {
+                                    //     Helper.log(
+                                    //         "search for city with text $text");
+                                    //     calculatorState.updateUi();
+                                    //   },
+                                    //   decoration: InputDecoration(
+                                    //     filled: true,
+                                    //     hintText: arb.search,
+                                    //     enabledBorder: OutlineInputBorder(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //     ),
+                                    //     focusedBorder: OutlineInputBorder(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    Column(
+                                      spacing: 10,
+                                      children: foundCities
+                                          .map(
+                                            (city) => InkWell(
+                                              onTap: () {
+                                                Helper.log(
+                                                    "receiver city ${city.name} id:${city.id}");
+                                                SettingsDialog.dismiss();
+                                                widget.onChange(states[i]);
+                                                calculatorState
+                                                    .setReceiveCity(city);
+                                                calculator.setBorderColor(null);
+                                              },
+                                              child: AreaWidget(
+                                                city: city,
+                                                selected: calculatorState
+                                                        .receiverCity.id ==
+                                                    city.id,
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ],
                                 ),
                               ),
                             )
