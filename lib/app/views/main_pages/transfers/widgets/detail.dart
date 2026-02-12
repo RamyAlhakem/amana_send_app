@@ -193,7 +193,7 @@ class _TransferDetailState extends State<TransferDetail> {
                 ),
               ),
               RowSpaceBetween([
-                 TextX(arb.youAskedToSend),
+                TextX(arb.youAskedToSend),
                 Text.rich(
                   textScaler: TextScaler.noScaling,
                   TextSpan(
@@ -201,7 +201,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${Tools.nicePrice(transfer.askedAmount)} ',
                       ),
-                       TextSpan(text: transfer.paymentMethod?.name),
+                      TextSpan(text: transfer.paymentMethod?.name),
                     ],
                   ),
                 ),
@@ -216,7 +216,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${Tools.nicePrice(transfer.sendAmount)} ',
                       ),
-                       TextSpan(text: transfer.paymentMethod?.name),
+                      TextSpan(text: transfer.paymentMethod?.name),
                     ],
                   ),
                 ),
@@ -256,7 +256,8 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: '${isAr ? '' : '1'} ${transfer.paymentMethod?.name} ${isAr ? '1 ' : ''}= ',
+                        text:
+                            '${isAr ? '' : '1'} ${transfer.paymentMethod?.name} ${isAr ? '1 ' : ''}= ',
                       ),
                       TextSpan(
                         text: Tools.nicePrice(exchangeRate),
@@ -289,7 +290,7 @@ class _TransferDetailState extends State<TransferDetail> {
                         text:
                             '${Tools.nicePrice(transfer.provider.receiveFees)} ',
                       ),
-                       TextSpan(text: transfer.paymentMethod?.name)
+                      TextSpan(text: transfer.paymentMethod?.name)
                     ],
                   ),
                 ),
@@ -301,6 +302,16 @@ class _TransferDetailState extends State<TransferDetail> {
                   TextX(arb.provider),
                   TextX(transfer.provider.name),
                 ]),
+              const SizedBox(height: 4),
+              Column(
+                spacing: 4,
+                children: transfer.providerFields
+                    .map(
+                      (e) => RowSpaceBetween(
+                          [TextX(e.field.name), TextX(e.fieldValue)]),
+                    )
+                    .toList(),
+              ),
               const HDivider(height: 40),
               RowSpaceBetween([
                 TextX(arb.totalPaid),
@@ -311,7 +322,7 @@ class _TransferDetailState extends State<TransferDetail> {
                       TextSpan(
                         text: '${Tools.nicePrice(transfer.totalAmount)} ',
                       ),
-                       TextSpan(text: transfer.paymentMethod?.name),
+                      TextSpan(text: transfer.paymentMethod?.name),
                     ],
                   ),
                   style: Theme.of(context).textTheme.bodyLarge,

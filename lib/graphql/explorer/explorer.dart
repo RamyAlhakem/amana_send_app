@@ -158,6 +158,15 @@ class Explorer {
       provider {
         $provider
       }
+      providerFields {
+      fieldValue
+      id
+      transactionId
+      providerFieldId
+      field {
+        $providerField
+      }
+    }
       walletAddress {
         id
         address

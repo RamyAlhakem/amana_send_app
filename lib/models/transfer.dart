@@ -4,6 +4,7 @@ import '/helper/safety_model.dart';
 import '/models/city.dart';
 import '/models/recipient.dart';
 import '/models/wallet.dart';
+import '/models/transfer_provider_field.dart';
 import 'agent.dart';
 
 enum TransferStatus {
@@ -56,6 +57,7 @@ class TransferModel extends SafetyModel {
   CityModel city = CityModel();
   AgentModel provider = AgentModel();
   WalletModel wallet = WalletModel();
+  List<TransferProviderFieldModel> providerFields = [];
   TransferStatus status = TransferStatus.pending;
   PaymentMethodModel? paymentMethod = PaymentMethodModel();
 
@@ -111,9 +113,11 @@ class TransferModel extends SafetyModel {
     wallet = objectFromJson(
         json, 'walletAddress', (x) => WalletModel.fromJson(x),
         defaultValue: WalletModel());
-    paymentMethod =objectFromJson(
+    paymentMethod = objectFromJson(
         json, 'paymentMethod', (x) => PaymentMethodModel.fromJson(x),
         defaultValue: PaymentMethodModel());
+    providerFields = listFromJson(
+        json, 'providerFields', (x) => TransferProviderFieldModel.fromJson(x));
     super.fromJson(json);
   }
 
@@ -144,6 +148,7 @@ class TransferModel extends SafetyModel {
         'city': city.toJson(),
         'provider': provider.toJson(),
         'walletAddress': wallet.toJson(),
+        'providerFields': providerFields.map((e) => e.toJson()).toList(),
       };
 
   bool isEmpty() {
@@ -158,8 +163,7 @@ class TransferModel extends SafetyModel {
   }
 }
 
-
-  int getStatusIndex(TransferStatus status) {
+int getStatusIndex(TransferStatus status) {
   switch (status) {
     case TransferStatus.pending:
       return 0;
