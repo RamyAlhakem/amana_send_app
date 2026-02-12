@@ -221,29 +221,38 @@ class _CityPickerState extends State<CityPicker> {
                                     //     ),
                                     //   ),
                                     // ),
-                                    Column(
-                                      spacing: 10,
-                                      children: foundCities
-                                          .map(
-                                            (city) => InkWell(
-                                              onTap: () {
-                                                Helper.log(
-                                                    "receiver city ${city.name} id:${city.id}");
-                                                SettingsDialog.dismiss();
-                                                widget.onChange(states[i]);
-                                                calculatorState
-                                                    .setReceiveCity(city);
-                                                calculator.setBorderColor(null);
-                                              },
-                                              child: AreaWidget(
-                                                city: city,
-                                                selected: calculatorState
-                                                        .receiverCity.id ==
-                                                    city.id,
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      padding: EdgeInsets.zero,
+                                      itemCount: foundCities.length,
+                                      itemBuilder: (context, index) {
+                                        final city = foundCities[index];
+                                        return InkWell(
+                                          onTap: () {
+                                            Helper.log(
+                                                "receiver city ${city.name} id:${city.id}");
+                                            SettingsDialog.dismiss();
+                                            widget.onChange(states[i]);
+                                            calculatorState
+                                                .setReceiveCity(city);
+                                            calculator.setBorderColor(null);
+                                          },
+                                          child: AreaWidget(
+                                            city: city,
+                                            selected: calculatorState
+                                                    .receiverCity.id ==
+                                                city.id,
+                                          ),
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return HDivider(
+                                          color: Colors.white.withValues(alpha: 0.3),
+                                          height: 1,
+                                          thickness: 1,
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
