@@ -34,9 +34,9 @@ import Flutter
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
     if #available(iOS 14.0, *) {
-      completionHandler([.banner, .badge, .sound])
+      completionHandler([[.banner, .badge, .sound]])
     } else {
-      completionHandler([.alert, .badge, .sound])
+      completionHandler([[.alert, .badge, .sound]])
     }
   }
   
