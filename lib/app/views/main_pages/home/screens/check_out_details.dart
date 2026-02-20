@@ -32,7 +32,27 @@ class CheckOutDetails extends StatefulWidget {
       key: UniqueKey(),
       firstButton: ExpandButton(
         () {
-          if (Global.formKey.currentState!.validate()) {
+          if (Global.formKey.currentState != null) {
+            if (Global.formKey.currentState!.validate()) {
+              Global.snackKey.currentState?.hideCurrentMaterialBanner();
+              // page.nextPage(duration: _duration, curve: Curves.easeIn);
+              final calculator =
+                  Provider.of<Calculator>(context, listen: false);
+              SendTransfer(
+                context,
+                page,
+                recipientAmount: double.parse(calculator.receiver.text),
+                sendAmount: calculator.calculateAmount.totalAmount +
+                    calculator.calculateAmount.receiveFees,
+                recipientId: calculator.selectedRecipient!.id,
+                isReceiveInUSD: calculator.sendUSD,
+                receivingCityId: calculator.receiverCity.id,
+                providerId: calculator.receiverAgent.id,
+                paymentMethodId: calculator.paymentMethodID,
+                fields: calculator.providerFieldValues,
+              ).request();
+            }
+          } else {
             Global.snackKey.currentState?.hideCurrentMaterialBanner();
             // page.nextPage(duration: _duration, curve: Curves.easeIn);
             final calculator = Provider.of<Calculator>(context, listen: false);
