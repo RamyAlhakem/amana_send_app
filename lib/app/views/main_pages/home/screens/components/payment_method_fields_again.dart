@@ -38,7 +38,7 @@ class PaymentMethodFieldsAgain extends StatelessWidget {
                           field.field.characterCount)
                     ],
                     onChanged: (val) {
-                      calculator.setProviderFieldValue(field.id, val);
+                      field.fieldValue = val;
                     },
                   ),
                 ],
