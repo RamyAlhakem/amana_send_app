@@ -162,34 +162,34 @@ class _PaymentMethodTransferAgainState
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: Form(
               key: Global.formKey,
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                      text: TextSpan(children: [
-                    TextSpan(
-                        text: "${calculator.receiverAgent.name}: ",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        )),
-                    TextSpan(
-                        text: AppLocalizations.of(context)!
-                            .requiredAdditionalFields,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ))
-                  ])),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const PaymentMethodFieldsAgain(),
+                  // RichText(
+                  //     text: TextSpan(children: [
+                  //   TextSpan(
+                  //       text: "${calculator.receiverAgent.name}: ",
+                  //       style: TextStyle(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Theme.of(context).brightness == Brightness.dark
+                  //             ? Colors.white
+                  //             : Colors.black,
+                  //       )),
+                  //   TextSpan(
+                  //       text: AppLocalizations.of(context)!
+                  //           .requiredAdditionalFields,
+                  //       style: TextStyle(
+                  //         fontSize: 16,
+                  //         color: Theme.of(context).brightness == Brightness.dark
+                  //             ? Colors.white
+                  //             : Colors.black,
+                  //       ))
+                  // ])),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  PaymentMethodFieldsAgain(),
                 ],
               ),
             ),

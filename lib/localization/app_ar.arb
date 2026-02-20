@@ -390,7 +390,7 @@
      "paymentMethodDetails": "تفاصيل طريقة الدفع",
      "requiredAdditionalFields": "حقول إضافية مطلوبة.",
      "fixed": "ثابت",
-     "characters": "أحرف",
+     "characters": "حرف",
      "enter": "أدخل",
      "invalidInput": "إدخال غير صالح",
      "mandatoryInformation": "معلومات إلزامية"

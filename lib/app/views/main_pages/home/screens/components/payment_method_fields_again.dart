@@ -21,7 +21,7 @@ class PaymentMethodFieldsAgain extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      "${field.field.name} (${context.arb.fixed} ${field.field.characterCount} ${context.arb.characters})"),
+                      "${field.field.name} (${field.field.characterCount} ${context.arb.characters})"),
                   TextFieldX(
                     validator: (text) {
                       if (text!.isEmpty) {

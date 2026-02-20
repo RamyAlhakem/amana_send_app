@@ -1255,7 +1255,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fixed => 'ثابت';
 
   @override
-  String get characters => 'أحرف';
+  String get characters => 'حرف';
 
   @override
   String get enter => 'أدخل';
