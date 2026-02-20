@@ -273,6 +273,27 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                                   .toList(),
                             )
                           ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8,
+                              children: state.providerFieldsTransfer
+                                  .map((field) => TextX(field.field.name))
+                                  .toList(),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              spacing: 8,
+                              children: state.providerFieldsTransfer
+                                  .map((field) => TextX(
+                                        field.fieldValue,
+                                      ))
+                                  .toList(),
+                            )
+                          ],
                         )
                       ],
                     ),

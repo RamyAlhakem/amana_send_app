@@ -73,12 +73,12 @@ class _TransferMainState extends State<TransferMain>
 
     transfer = TransferModel.fromJson(jsonDecode(widget.transfer));
     // if (transfer.paymentMethod == null) {
-      GetTransfer(
-        context,
+    GetTransfer(
+      context,
       transfer.id,
-      ).request().then((value) => transfer = value).whenComplete(() {
-        setState(() => isLoading = false);
-      });
+    ).request().then((value) => transfer = value).whenComplete(() {
+      setState(() => isLoading = false);
+    });
     // } else {
     //   isLoading = false;
     // }
@@ -231,7 +231,9 @@ class _TransferMainState extends State<TransferMain>
                             }
                             final calculator =
                                 Provider.of<Calculator>(context, listen: false);
-                            calculator.setReceiverCountry(transfer.recipient.country);
+                            // calculator.providerFields = transfer.providerFields;
+                            calculator
+                                .setReceiverCountry(transfer.recipient.country);
                             // calculator.setReceiveCity(transfer.city);
                             // calculator.agentsVisibility(true);
                             calculator.recipientSend(
@@ -239,7 +241,6 @@ class _TransferMainState extends State<TransferMain>
                               transfer: transfer,
                               navigate: true,
                             );
-                        
                           },
                           height: 55,
                           width: MediaQuery.of(context).size.width,
@@ -257,8 +258,6 @@ class _TransferMainState extends State<TransferMain>
                 ),
               ),
             ],
-          
-          
           ),
         ),
       ),

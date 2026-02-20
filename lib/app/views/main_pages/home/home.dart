@@ -181,6 +181,7 @@ class _HomeState extends State<Home> {
                   padding: padding,
                   child: Button(
                     () {
+                      state.clearProviderFieldTransfer();
                       if (Global.appSettings.token.isEmpty) {
                         context.pushNamed('/${AppRoute.logIn}');
                         return;

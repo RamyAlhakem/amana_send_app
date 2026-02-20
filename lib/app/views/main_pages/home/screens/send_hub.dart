@@ -1,4 +1,5 @@
 import 'package:amana_send/app/views/main_pages/home/screens/payment_method_details.dart';
+import 'package:amana_send/app/views/main_pages/home/screens/payment_method_transfer_again.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -50,6 +51,7 @@ class _SendHubState extends State<SendHub>
   void initState() {
     super.initState();
     _calculator = Provider.of<Calculator>(context, listen: false);
+
     _calculator.getFielsProvider();
 
     _pageCtrl = PageController(initialPage: _index);
@@ -163,6 +165,8 @@ class _SendHubState extends State<SendHub>
           ),
           if (_calculator.providerFields.isNotEmpty)
             const PaymentMethodDetails(),
+          if (_calculator.providerFieldsTransfer.isNotEmpty)
+            const PaymentMethodTransferAgain(),
           const CheckOutDetails(),
           const WalletAddress(),
         ],

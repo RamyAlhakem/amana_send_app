@@ -59,9 +59,13 @@ class SendTransfer {
       'paymentMethodId': paymentMethodId,
       'receivingCityId': receivingCityId,
       'providerId': providerId,
-      'providerFields': fields.entries
-          .map((e) => {'fieldId': e.key, 'value': e.value})
-          .toList(),
+      'providerFields': fields.isNotEmpty
+          ? fields.entries
+              .map((e) => {'fieldId': e.key, 'value': e.value})
+              .toList()
+          : _calculator.providerFieldsTransfer
+              .map((e) => {'fieldId': e.field.id, 'value': e.fieldValue})
+              .toList(),
     };
 
     Helper.debugger('transfer');

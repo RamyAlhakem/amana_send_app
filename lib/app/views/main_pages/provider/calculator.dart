@@ -4,6 +4,7 @@ import 'package:amana_send/graphql/api/get_provider_fields.dart';
 import 'package:amana_send/graphql/api/get_providers.dart';
 import 'package:amana_send/graphql/api/get_sliders.dart';
 import 'package:amana_send/models/slider_model.dart';
+import 'package:amana_send/models/transfer_provider_field.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -56,6 +57,7 @@ class Calculator with ChangeNotifier {
   CityModel _receiverCity = CityModel();
   AgentModel _receiverAgent = AgentModel();
   List<ProviderFieldModel> _providerFields = [];
+  List<TransferProviderFieldModel> _providerFieldsTransfer = [];
   TextEditingController _sender = TextEditingController();
   TextEditingController _receiver = TextEditingController();
   CalculateAmountModel _calculateAmount = CalculateAmountModel();
@@ -88,6 +90,8 @@ class Calculator with ChangeNotifier {
   CityModel get receiverCity => _receiverCity;
   AgentModel get receiverAgent => _receiverAgent;
   List<ProviderFieldModel> get providerFields => _providerFields;
+  List<TransferProviderFieldModel> get providerFieldsTransfer =>
+      _providerFieldsTransfer;
   TextEditingController get sender => _sender;
   TextEditingController get receiver => _receiver;
   bool get sendUSD => _sendUSD;
@@ -102,6 +106,10 @@ class Calculator with ChangeNotifier {
 
   void clearProviderFieldValues() {
     _providerFieldValues.clear();
+  }
+
+  void clearProviderFieldTransfer() {
+    _providerFieldsTransfer.clear();
   }
 
   //** */
@@ -401,6 +409,7 @@ class Calculator with ChangeNotifier {
       notifyListeners();
       _sender.text = '${transfer.sendAmount}';
       _receiver.text = '${transfer.recipientAmount}';
+      _providerFieldsTransfer = transfer.providerFields;
       // setAgent(transfer.provider);
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
