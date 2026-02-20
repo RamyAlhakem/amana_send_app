@@ -32,21 +32,24 @@ class CheckOutDetails extends StatefulWidget {
       key: UniqueKey(),
       firstButton: ExpandButton(
         () {
-          Global.snackKey.currentState?.hideCurrentMaterialBanner();
-          final calculator = Provider.of<Calculator>(context, listen: false);
-          SendTransfer(
-            context,
-            page,
-            recipientAmount: double.parse(calculator.receiver.text),
-            sendAmount: calculator.calculateAmount.totalAmount +
-                calculator.calculateAmount.receiveFees,
-            recipientId: calculator.selectedRecipient!.id,
-            isReceiveInUSD: calculator.sendUSD,
-            receivingCityId: calculator.receiverCity.id,
-            providerId: calculator.receiverAgent.id,
-            paymentMethodId: calculator.paymentMethodID,
-            fields: calculator.providerFieldValues,
-          ).request();
+          if (Global.formKey.currentState!.validate()) {
+            Global.snackKey.currentState?.hideCurrentMaterialBanner();
+            // page.nextPage(duration: _duration, curve: Curves.easeIn);
+            final calculator = Provider.of<Calculator>(context, listen: false);
+            SendTransfer(
+              context,
+              page,
+              recipientAmount: double.parse(calculator.receiver.text),
+              sendAmount: calculator.calculateAmount.totalAmount +
+                  calculator.calculateAmount.receiveFees,
+              recipientId: calculator.selectedRecipient!.id,
+              isReceiveInUSD: calculator.sendUSD,
+              receivingCityId: calculator.receiverCity.id,
+              providerId: calculator.receiverAgent.id,
+              paymentMethodId: calculator.paymentMethodID,
+              fields: calculator.providerFieldValues,
+            ).request();
+          }
         },
         height: 45,
         color: MainColors.color2,
