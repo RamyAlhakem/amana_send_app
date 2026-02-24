@@ -1,6 +1,5 @@
 import 'package:amana_send/flavor.dart';
 
-
 class AppConfig {
   static String get baseUrl {
     switch (F.appFlavor) {
@@ -18,9 +17,9 @@ class AppConfig {
       case Flavor.production:
         return 'https://api.amanasend.com/graphql';
       case Flavor.staging:
-        return 'https://api.amanasend.com/staging/graphql';
+        return 'https://s.amanasend.com/graphql';
       default:
-        return 'https://api.amanasend.com/staging/graphql';
+        return 'https://s.amanasend.com/graphql';
     }
   }
 
@@ -29,21 +28,20 @@ class AppConfig {
       case Flavor.production:
         return 'https://api.amanasend.com/photo';
       case Flavor.staging:
-        return 'https://api.amanasend.com/staging/photo';
+        return 'https://s.amanasend.com/photo';
       default:
-        return 'https://api.amanasend.com/staging/photo';
+        return 'https://s.amanasend.com/photo';
     }
   }
-  static String get apiUrl{
-    switch(F.appFlavor){
+
+  static String get apiUrl {
+    switch (F.appFlavor) {
       case Flavor.production:
-      return 'https://api.amanasend.com/';
+        return 'https://api.amanasend.com/';
       case Flavor.staging:
-      return 'https://api.amanasend.com/staging/';
+        return 'https://s.amanasend.com/';
       default:
-      return 'https://api.amanasend.com/staging/';
+        return 'https://s.amanasend.com/';
     }
   }
 }
-
-
