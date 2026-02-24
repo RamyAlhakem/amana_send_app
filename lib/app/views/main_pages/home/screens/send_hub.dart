@@ -197,18 +197,21 @@ class _SendHubState extends State<SendHub>
           break;
 
         case 1:
-          appBarTitle = _calculator.providerFields.isNotEmpty
+          appBarTitle = _calculator.providerFields.isNotEmpty ||
+                  _calculator.providerFieldsTransfer.isNotEmpty
               ? arb.mandatoryInformation
               : arb.reviewSendingInfo.toUpperCase();
 
           buttons = PaymentMethodDetails.footer(context, _pageCtrl);
           break;
         case 2:
-          appBarTitle = _calculator.providerFields.isNotEmpty
+          appBarTitle = _calculator.providerFields.isNotEmpty ||
+                  _calculator.providerFieldsTransfer.isNotEmpty
               ? arb.reviewSendingInfo.toUpperCase()
               : arb.payment;
 
-          buttons = _calculator.providerFields.isNotEmpty
+          buttons = _calculator.providerFields.isNotEmpty ||
+                  _calculator.providerFieldsTransfer.isNotEmpty
               ? CheckOutDetails.footer(context, _pageCtrl)
               : const SizedBox.shrink();
           break;

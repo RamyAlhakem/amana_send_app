@@ -30,7 +30,8 @@ class PaymentMethodDetails extends StatefulWidget {
     final AppLocalizations? arb = AppLocalizations.of(context);
     final UserModel user = Database().getUser;
     final calculator = Provider.of<Calculator>(context, listen: false);
-    return calculator.providerFields.isNotEmpty
+    return calculator.providerFields.isNotEmpty ||
+            calculator.providerFieldsTransfer.isNotEmpty
         ? BottomButtons(
             firstButton: ExpandButton(
               () => context.pop(),

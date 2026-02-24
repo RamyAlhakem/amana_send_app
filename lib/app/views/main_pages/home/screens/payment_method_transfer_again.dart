@@ -31,6 +31,8 @@ class PaymentMethodTransferAgain extends StatefulWidget {
     final AppLocalizations? arb = AppLocalizations.of(context);
     final UserModel user = Database().getUser;
     final calculator = Provider.of<Calculator>(context, listen: false);
+    Helper.log(
+        "Provider fields transfer: ${calculator.providerFieldsTransfer.length}");
     return calculator.providerFieldsTransfer.isNotEmpty
         ? BottomButtons(
             firstButton: ExpandButton(
