@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/transfers/transfers.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:graphql/client.dart';
@@ -12,12 +13,13 @@ import '/helper/helper.dart';
 import '/models/transfer.dart';
 
 class GetTransfers {
-  GetTransfers({this.limit = 20, this.page = 1});
+  GetTransfers({this.limit = 20, this.page = 1, this.status = Status.pending});
   final int limit, page;
+  final Status status;
 
   static late TransfersState _provider;
   static late AppLocalizations? _arb;
-  static Map<String, dynamic> _variables = const <String, dynamic>{};  
+  static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<bool> request() async {
     bool isNotEmpty = false;
@@ -26,12 +28,14 @@ class GetTransfers {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);
     });
-    _variables = <String, dynamic>{'limit': limit, 'page': page};
+    _variables = <String, dynamic>{
+      'limit': limit,
+      'page': page,
+    };
     Helper.debugger('transactions');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
     await GraphQL.client()
-        .query(QueryOptions(
-            document: gql(Queries.transactions), variables: _variables))
+        .query(QueryOptions(document: gql(document()), variables: _variables))
         .then((result) async {
       if (result.data != null) {
         Helper.debug('transactions', '${result.data}');
@@ -88,6 +92,23 @@ class GetTransfers {
           Helper.toast(
               '${_arb!.somethingWentWrong} [${errors.first.extensions?['code']}]');
       }
+    }
+  }
+
+  String document() {
+    switch (status) {
+      case Status.pending:
+        return Queries.transactionsPending;
+      case Status.newTransfer:
+        return Queries.transactionsNew;
+      case Status.completed:
+        return Queries.transactionsCompleted;
+      case Status.processing:
+        return Queries.transactionsProcessed;
+      case Status.canceled:
+        return Queries.transactionsCanceled;
+      case Status.dispute:
+        return Queries.transactionsDispute;
     }
   }
 }

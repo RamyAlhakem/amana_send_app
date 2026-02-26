@@ -134,6 +134,57 @@ class Queries {
       }
     }
       ''';
+  static const String transactionsDispute = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+      dispute: transactions(limit: \$limit, page: \$page, status: dispute) {
+        ${Explorer.transfer}
+      }
+    }
+      ''';
+  static const String transactionsCompleted = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+     
+      completed: transactions(limit: \$limit, page: \$page, status: completed) {
+        ${Explorer.transfer}
+      }
+     
+    }
+      ''';
+  static const String transactionsCanceled = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+     
+      canceled: transactions(limit: \$limit, page: \$page, status: canceled) {
+        ${Explorer.transfer}
+      }
+    
+    }
+      ''';
+  static const String transactionsPending = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+      pending: transactions(limit: \$limit, page: \$page, status: pending) {
+        ${Explorer.transfer}
+      }
+    
+    }
+      ''';
+  static const String transactionsNew = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+     
+      new: transactions(limit: \$limit, page: \$page, status: new) {
+        ${Explorer.transfer}
+      }
+ 
+    }
+      ''';
+  static const String transactionsProcessed = '''
+    query transactions(\$limit: NonEmptyInteger!, \$page: NonEmptyInteger!) {
+     
+      processed: transactions(limit: \$limit, page: \$page, status: processed) {
+        ${Explorer.transfer}
+      }
+     
+    }
+      ''';
   static const String sliders = '''
   
   query MyQuery(\$type: Int = 10) {

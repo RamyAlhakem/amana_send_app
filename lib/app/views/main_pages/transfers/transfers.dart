@@ -78,7 +78,6 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
     animationRotate =
         Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
 
-
     scrollListener(scrollCtrl1);
     scrollListener(scrollCtrl2);
     scrollListener(scrollCtrl3);
@@ -91,7 +90,7 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
   void didChangeDependencies() {
     arb = AppLocalizations.of(context)!;
     super.didChangeDependencies();
-        GetTransfers().request();
+    GetTransfers().request();
   }
 
   @override
@@ -114,8 +113,7 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
       builder: (_, state, child) {
         child = DefaultTabController(
           length: TransferStatus.values.length,
-           initialIndex: getStatusIndex(state.transfer.status),
-            
+          initialIndex: getStatusIndex(state.transfer.status),
           child: Scaffold(
             appBar: AppBar(
               title: Column(
@@ -180,17 +178,51 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
               child: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  _transfers(state.pendingTransfers, scrollCtrl1),
-                  _transfers(state.newTransfers, scrollCtrl2),
-                  _transfers(state.processingTransfers, scrollCtrl3),
-                  _transfers(state.completedTransfers, scrollCtrl4),
-                  _transfers(state.canceledTransfers, scrollCtrl5),
-                  _transfers(state.disputeTransfers, scrollCtrl6),
+                  _TranfersTab(
+                    transfers: state.pendingTransfers,
+                    ctrl: scrollCtrl1,
+                    status: Status.pending,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
+                  _TranfersTab(
+                    transfers: state.newTransfers,
+                    ctrl: scrollCtrl2,
+                    status: Status.newTransfer,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
+                  _TranfersTab(
+                    transfers: state.processingTransfers,
+                    ctrl: scrollCtrl3,
+                    status: Status.processing,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
+                  _TranfersTab(
+                    transfers: state.completedTransfers,
+                    ctrl: scrollCtrl4,
+                    status: Status.completed,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
+                  _TranfersTab(
+                    transfers: state.canceledTransfers,
+                    ctrl: scrollCtrl5,
+                    status: Status.canceled,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
+                  _TranfersTab(
+                    transfers: state.disputeTransfers,
+                    ctrl: scrollCtrl6,
+                    status: Status.dispute,
+                    page: page,
+                    isPaging: isPaging,
+                  ),
                 ],
               ),
             ),
-         
-         
           ),
         );
         return child;
@@ -198,11 +230,13 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
     );
   }
 
-  Widget _transfers(List<TransferModel> transfers, ScrollController ctrl) {
+  Widget _transfers(
+      List<TransferModel> transfers, ScrollController ctrl, Status status) {
     return Stack(
       children: [
         RefreshIndicator(
-          onRefresh: () async => await GetTransfers(page: page).request(),
+          onRefresh: () async =>
+              await GetTransfers(page: page, status: status).request(),
           child: Visibility(
             visible: transfers.isNotEmpty,
             replacement: FadeSwitcher(
@@ -225,6 +259,76 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
           ),
         ),
         if (isPaging)
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: Lottie.asset(
+              'assets/json/arrows_down.json',
+              height: 150,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+enum Status { pending, newTransfer, processing, completed, canceled, dispute }
+
+class _TranfersTab extends StatefulWidget {
+  final List<TransferModel> transfers;
+  final ScrollController ctrl;
+  final Status status;
+  final bool isPaging;
+  final int page;
+  const _TranfersTab({
+    required this.transfers,
+    required this.ctrl,
+    required this.status,
+    required this.isPaging,
+    required this.page,
+  });
+
+  @override
+  State<_TranfersTab> createState() => __TranfersTabState();
+}
+
+class __TranfersTabState extends State<_TranfersTab> {
+  @override
+  void initState() {
+    GetTransfers(page: widget.page, status: widget.status).request();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final arb = AppLocalizations.of(context)!;
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: () async =>
+              await GetTransfers(page: widget.page, status: widget.status)
+                  .request(),
+          child: Visibility(
+            visible: widget.transfers.isNotEmpty,
+            replacement: FadeSwitcher(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                      'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
+                  TextX(arb.noTransfersFoundYet),
+                ],
+              ),
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: widget.ctrl,
+              itemCount: widget.transfers.length,
+              padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
+              itemBuilder: (_, i) => TransferRecent(widget.transfers[i]),
+            ),
+          ),
+        ),
+        if (widget.isPaging)
           Align(
             alignment: FractionalOffset.bottomCenter,
             child: Lottie.asset(
