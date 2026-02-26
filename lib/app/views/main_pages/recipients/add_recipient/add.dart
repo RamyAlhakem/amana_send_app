@@ -73,9 +73,9 @@ class _AddRecipientState extends State<AddRecipient> {
       _fatherName = TextEditingController(text: _recipient?.arFatherName);
       _whatsApp = TextEditingController(text: _recipient?.whatsappNumber);
       notes = TextEditingController(text: _recipient?.note);
-      enName=TextEditingController(text:_recipient?.enFirstName );
-      enLast=TextEditingController(text: _recipient?.enLastName);
-      enFather=TextEditingController(text: _recipient?.enFatherName);
+      enName = TextEditingController(text: _recipient?.enFirstName);
+      enLast = TextEditingController(text: _recipient?.enLastName);
+      enFather = TextEditingController(text: _recipient?.enFatherName);
 
       if (widget.query.isNotEmpty) {
         if (widget.query['keepSendProcess'] == 'true') keepSendProcess = true;
@@ -178,17 +178,18 @@ class _AddRecipientState extends State<AddRecipient> {
               ),
               // isAR
               // ?Container()
-              // :    
-                Column(
+              // :
+              Column(
                 children: [
                   Row(children: [
                     Expanded(
                       child: TextFieldX(
-                             validator: (String){
-                      return null;
-                    },
+                        validator: (String) {
+                          return null;
+                        },
                         controller: enName,
-                        hint:"${ arb.firstName}(${arb.english}-${arb.optional})",
+                        hint:
+                            "${arb.firstName}(${arb.english}-${arb.optional})",
                         type: TextInputType.name,
                         onChanged: (_) {
                           TextFieldValidator.latin(context, enName);
@@ -198,11 +199,11 @@ class _AddRecipientState extends State<AddRecipient> {
                     const SizedBox(width: 13),
                     Expanded(
                       child: TextFieldX(
-                                   validator: (String){
-                      return null;
-                    },
+                        validator: (String) {
+                          return null;
+                        },
                         controller: enLast,
-                        hint: "${ arb.lastName}(${arb.english}-${arb.optional})",
+                        hint: "${arb.lastName}(${arb.english}-${arb.optional})",
                         type: TextInputType.name,
                         onChanged: (_) {
                           TextFieldValidator.latin(context, enLast);
@@ -210,21 +211,21 @@ class _AddRecipientState extends State<AddRecipient> {
                       ),
                     ),
                   ]),
-                      TextFieldX(
-                           validator: (String){
-                  return null;
-                },
-                controller: enFather,
-                hint: "${ arb.fatherName}(${arb.english}-${arb.optional})",
-                type: TextInputType.name,
-                onChanged: (_) {
-                  TextFieldValidator.latin(context, enFather);
-                },
-                onSubmitted: (_) => _submit(),
-              ),
+                  TextFieldX(
+                    validator: (String) {
+                      return null;
+                    },
+                    controller: enFather,
+                    hint: "${arb.fatherName}(${arb.english}-${arb.optional})",
+                    type: TextInputType.name,
+                    onChanged: (_) {
+                      TextFieldValidator.latin(context, enFather);
+                    },
+                    onSubmitted: (_) => _submit(),
+                  ),
                 ],
               ),
-          
+
               // TextFieldX(
               //     validator: (String){
               //     return null;
@@ -239,7 +240,7 @@ class _AddRecipientState extends State<AddRecipient> {
               // ),
               TextFieldX(
                 // ignore: avoid_types_as_parameter_names
-                validator: (String){
+                validator: (String) {
                   return null;
                 },
                 controller: notes,
@@ -333,13 +334,15 @@ class _AddRecipientState extends State<AddRecipient> {
       mobile: _registerState.mobile.text,
       whatsApp: _whatsApp.text,
       arFatherName: _fatherName.text,
-      arFirstName:_firstName.text ,
-      arLastName:_lastName.text ,
+      arFirstName: _firstName.text,
+      arLastName: _lastName.text,
       note: notes.text,
       id: widget.recipient != 'null' ? _recipient!.id : 0,
     ).request().whenComplete(() {
       if (_recipientProvider.isEditRecipient) {
+        _recipientProvider.resetPage();
         _recipientProvider.offEditRecipient();
+
         if (!keepSendProcess) context.pop();
       }
     });

@@ -31,6 +31,10 @@ class _RecipientsState extends State<Recipients> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final recipient = Provider.of<RecipientsState>(context, listen: false);
+      recipient.resetPage();
+    });
     super.initState();
     GetRecipients.request();
   }
@@ -60,14 +64,15 @@ class _RecipientsState extends State<Recipients> {
                 },
                 child: Column(
                   children: [
-                  const  SizedBox(height: 20,),
-                  SearchWidget(
-                    hint: _arb!.search,
-                    onChange: (text){
-                       recipients.search(text);
-                    },
-                  ),
-                
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SearchWidget(
+                      hint: _arb!.search,
+                      onChange: (text) {
+                        recipients.search(text);
+                      },
+                    ),
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -81,13 +86,16 @@ class _RecipientsState extends State<Recipients> {
                               onTap: () => context.pushNamed(
                                 AppRoute.recipient,
                                 pathParameters: <String, String>{
-                                  'recipient': jsonEncode(recipients.receipients[i]),
+                                  'recipient':
+                                      jsonEncode(recipients.receipients[i]),
                                 },
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                                padding:
+                                    const EdgeInsets.fromLTRB(12, 10, 12, 10),
                                 child: RowSpaceBetween([
-                                  RecipientIconDetail(recipient: recipients.receipients[i]),
+                                  RecipientIconDetail(
+                                      recipient: recipients.receipients[i]),
                                   Button(
                                     () {
                                       if (AppMetadata.get.maintenanceMode) {
@@ -95,17 +103,19 @@ class _RecipientsState extends State<Recipients> {
                                           '\n${AppMetadata.get.maintenanceMessage}\n',
                                         );
                                       }
-                                      final calculator = Provider.of<Calculator>(
+                                      final calculator =
+                                          Provider.of<Calculator>(
                                         context,
                                         listen: false,
                                       );
-                                      calculator.setReceiverCountry(recipients.receipients[i].country);
+                                      calculator.setReceiverCountry(
+                                          recipients.receipients[i].country);
                                       calculator.agentsVisibility(true);
                                       // calculator.setIsLoad(true);
                                       calculator.recipientSend(
                                         recipients.receipients[i],
                                         navigate: true,
-                                      ); 
+                                      );
                                     },
                                     height: 38,
                                     padding: EdgeInsets.zero,
@@ -129,6 +139,24 @@ class _RecipientsState extends State<Recipients> {
                         },
                       ),
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          recipients.increasePage();
+                          Helper.log("page ${recipients.page}");
+                          GetRecipients.request(page: recipients.page);
+                          recipients.updateUi();
+                        },
+                        child: recipients.isLoadingBtn
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                              )
+                            : const Text("Load More")),
+                    const SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
               ),

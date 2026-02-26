@@ -1,7 +1,9 @@
+import 'package:amana_send/app/views/main_pages/recipients/provider/recipients_state.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';
+import 'package:provider/provider.dart';
 
 import '/app/widgets/dialogs/loading.dart';
 import '/global/variables.dart';
@@ -26,13 +28,19 @@ class AddEditRecipientAPI {
     this.id = 0,
   });
 
-  final String firstName, lastName, fatherName,arFatherName,arFirstName,arLastName;
-  final String countryCode, mobile, whatsApp,note;
+  final String firstName,
+      lastName,
+      fatherName,
+      arFatherName,
+      arFirstName,
+      arLastName;
+  final String countryCode, mobile, whatsApp, note;
   final int id;
 
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   static final BuildContext _context = Global.key.currentContext!;
+
   Future<void> request() async {
     final String json = id != 0 ? 'recipientEdit' : 'recipientAdd';
     LoadingDialog().show();
@@ -45,12 +53,10 @@ class AddEditRecipientAPI {
       'countryCode': countryCode,
       'mobile': mobile,
       'whatsappNumber': whatsApp,
-      'arFatherName':arFatherName,
-      'arFirstName':arFirstName,
-      'arLastName':arLastName,
-      'note':note
-
-      
+      'arFatherName': arFatherName,
+      'arFirstName': arFirstName,
+      'arLastName': arLastName,
+      'note': note
     };
 
     Helper.debugger(json);
@@ -77,10 +83,11 @@ class AddEditRecipientAPI {
   }
 
   void _result(Map<String, dynamic> data, String json) async {
+    final recipient = Provider.of<RecipientsState>(_context, listen: false);
     if (data.isNotEmpty && data.containsKey(json)) {
       LoadingDialog().show();
 
-      await GetRecipients.request().whenComplete(() {
+      await GetRecipients.request(page: recipient.page).whenComplete(() {
         LoadingDialog.dismiss();
         _context.pop();
       });

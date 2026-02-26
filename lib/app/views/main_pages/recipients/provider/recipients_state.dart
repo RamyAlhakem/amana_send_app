@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:amana_send/helper/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,8 @@ import '/router/app_route.dart';
 
 class RecipientsState extends ChangeNotifier {
   bool _isLoading = true;
+  bool _isLoadingBtn = false;
+  int _page = 1;
 
   bool _isEditRecipient = false;
 
@@ -20,6 +23,8 @@ class RecipientsState extends ChangeNotifier {
   RecipientModel _recipient = RecipientModel();
 
   bool get isLoading => _isLoading;
+  int get page => _page;
+  bool get isLoadingBtn => _isLoadingBtn;
 
   bool get isEditRecipient => _isEditRecipient;
 
@@ -32,9 +37,17 @@ class RecipientsState extends ChangeNotifier {
     if (!loading) notifyListeners();
   }
 
-  void getAll(List<RecipientModel> elements) {
-    _all = elements;
-    receipients = _all;
+  void getAll(List<RecipientModel> elements, {int page = 1}) {
+    if (page == 1) {
+      _all = elements;
+      receipients = _all;
+      Helper.log("add $page ");
+    } else {
+      _all.addAll(elements);
+      receipients.addAll(elements);
+      Helper.log("add all");
+    }
+
     notifyListeners();
   }
 
@@ -93,5 +106,25 @@ class RecipientsState extends ChangeNotifier {
       receipients = all;
       notifyListeners();
     }
+  }
+
+  updateUi() {
+    notifyListeners();
+  }
+
+  changeLoadBtn(bool load) {
+    _isLoadingBtn = load;
+    // notifyListeners();
+  }
+
+  increasePage() {
+    _page++;
+    notifyListeners();
+  }
+
+  resetPage() {
+    _page = 1;
+    Helper.log("reset page $_page");
+    notifyListeners();
   }
 }

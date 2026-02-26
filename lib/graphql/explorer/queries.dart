@@ -81,8 +81,8 @@ class Queries {
       ''';
 
   static const String recipients = '''
-    query recipients {
-      recipients {
+    query recipients(\$page:NonEmptyInteger,\$limit:NonEmptyInteger) {
+      recipients(page:\$page,limit:\$limit) {
         ${Explorer.recipient}
       }
     }
