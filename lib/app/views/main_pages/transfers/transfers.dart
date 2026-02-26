@@ -230,45 +230,45 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
     );
   }
 
-  Widget _transfers(
-      List<TransferModel> transfers, ScrollController ctrl, Status status) {
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: () async =>
-              await GetTransfers(page: page, status: status).request(),
-          child: Visibility(
-            visible: transfers.isNotEmpty,
-            replacement: FadeSwitcher(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                      'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
-                  TextX(arb.noTransfersFoundYet),
-                ],
-              ),
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              controller: ctrl,
-              itemCount: transfers.length,
-              padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
-              itemBuilder: (_, i) => TransferRecent(transfers[i]),
-            ),
-          ),
-        ),
-        if (isPaging)
-          Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: Lottie.asset(
-              'assets/json/arrows_down.json',
-              height: 150,
-            ),
-          ),
-      ],
-    );
-  }
+  // Widget _transfers(
+  //     List<TransferModel> transfers, ScrollController ctrl, Status status) {
+  //   return Stack(
+  //     children: [
+  //       RefreshIndicator(
+  //         onRefresh: () async =>
+  //             await GetTransfers(page: page, status: status).request(),
+  //         child: Visibility(
+  //           visible: transfers.isNotEmpty,
+  //           replacement: FadeSwitcher(
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Lottie.asset(
+  //                     'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
+  //                 TextX(arb.noTransfersFoundYet),
+  //               ],
+  //             ),
+  //           ),
+  //           child: ListView.builder(
+  //             shrinkWrap: true,
+  //             controller: ctrl,
+  //             itemCount: transfers.length,
+  //             padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
+  //             itemBuilder: (_, i) => TransferRecent(transfers[i]),
+  //           ),
+  //         ),
+  //       ),
+  //       if (isPaging)
+  //         Align(
+  //           alignment: FractionalOffset.bottomCenter,
+  //           child: Lottie.asset(
+  //             'assets/json/arrows_down.json',
+  //             height: 150,
+  //           ),
+  //         ),
+  //     ],
+  //   );
+  // }
 }
 
 enum Status { pending, newTransfer, processing, completed, canceled, dispute }
