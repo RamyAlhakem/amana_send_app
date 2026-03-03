@@ -125,6 +125,6 @@ class RecipientsState extends ChangeNotifier {
   resetPage() {
     _page = 1;
     Helper.log("reset page $_page");
-    notifyListeners();
+    // notifyListeners();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amana_send/app/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -147,13 +149,17 @@ class _SelectRecipientState extends State<SelectRecipient>
   bool get wantKeepAlive => true;
 
   late Calculator _calc;
+  late RecipientsState _recipients;
 
   List<bool> selection = <bool>[];
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _calc = Provider.of<Calculator>(context, listen: false);
+    _recipients = Provider.of<RecipientsState>(context, listen: false);
+    _recipients.resetPage();
     GetRecipients.request();
   }
 
@@ -176,7 +182,12 @@ class _SelectRecipientState extends State<SelectRecipient>
             SearchWidget(
               hint: arb.search,
               onChange: (text) {
-                recipients.search(text);
+                // recipients.search(text);
+                if (_timer != null) _timer!.cancel();
+
+                _timer = Timer(const Duration(milliseconds: 500), () {
+                  GetRecipients.request(search: text);
+                });
               },
             ),
             Expanded(
@@ -214,6 +225,26 @@ class _SelectRecipientState extends State<SelectRecipient>
                 },
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  recipients.increasePage();
+                  Helper.log("page ${recipients.page}");
+                  GetRecipients.request(page: recipients.page);
+                  recipients.updateUi();
+                },
+                child: recipients.isLoadingBtn
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : const Text("Load More")),
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       );
