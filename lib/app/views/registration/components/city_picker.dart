@@ -176,6 +176,13 @@ class _CityPickerState extends State<CityPicker> {
                               _expandedStates.remove(states[i].id);
                             } else {
                               _expandedStates.add(states[i].id);
+                              if (states[i].cities.length == 1) {
+                                SettingsDialog.dismiss();
+                                widget.onChange(states[i]);
+                                calculatorState
+                                    .setReceiveCity(states[i].cities.first);
+                                calculator.setBorderColor(null);
+                              }
                             }
                           });
                         },
@@ -197,7 +204,7 @@ class _CityPickerState extends State<CityPicker> {
                                 padding: EdgeInsets.all(
                                     states[i].cities.isEmpty ? 0 : 15),
                                 decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.3),
+                                    // color: Colors.white.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(8)),
                                 child: Column(
                                   children: [
@@ -223,7 +230,8 @@ class _CityPickerState extends State<CityPicker> {
                                     // ),
                                     ListView.separated(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       padding: EdgeInsets.zero,
                                       itemCount: foundCities.length,
                                       itemBuilder: (context, index) {
@@ -248,7 +256,8 @@ class _CityPickerState extends State<CityPicker> {
                                       },
                                       separatorBuilder: (context, index) {
                                         return HDivider(
-                                          color: Colors.white.withValues(alpha: 0.3),
+                                          color: Colors.white
+                                              .withValues(alpha: 0.3),
                                           height: 1,
                                           thickness: 1,
                                         );
