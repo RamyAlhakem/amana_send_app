@@ -63,7 +63,7 @@ class _RecipientsState extends State<Recipients> {
             children: [
               RefreshIndicator(
                 onRefresh: () async {
-                  await GetRecipients.request();
+                  await GetRecipients.request(page: recipients.page);
                 },
                 child: Column(
                   children: [
