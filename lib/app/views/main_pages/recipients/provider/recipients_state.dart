@@ -43,8 +43,12 @@ class RecipientsState extends ChangeNotifier {
       receipients = _all;
       Helper.log("add $page ");
     } else {
-      _all.addAll(elements);
-      receipients.addAll(elements);
+      for (var element in elements) {
+        if (!_all.any((item) => item.id == element.id)) {
+          _all.add(element);
+        }
+      }
+
       Helper.log("add all");
     }
 

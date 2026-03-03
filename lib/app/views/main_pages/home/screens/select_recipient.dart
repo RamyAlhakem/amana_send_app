@@ -225,7 +225,7 @@ class _SelectRecipientState extends State<SelectRecipient>
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(
