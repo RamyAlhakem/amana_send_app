@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:amana_send/app/widgets/search_widget.dart';
@@ -28,6 +29,7 @@ class Recipients extends StatefulWidget {
 
 class _RecipientsState extends State<Recipients> {
   late AppLocalizations? _arb;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _RecipientsState extends State<Recipients> {
       final recipient = Provider.of<RecipientsState>(context, listen: false);
       recipient.resetPage();
     });
+
     super.initState();
     GetRecipients.request();
   }
@@ -70,7 +73,12 @@ class _RecipientsState extends State<Recipients> {
                     SearchWidget(
                       hint: _arb!.search,
                       onChange: (text) {
-                        recipients.search(text);
+                        // recipients.search(text);
+                        if (_timer != null) _timer!.cancel();
+
+                        _timer = Timer(const Duration(milliseconds: 500), () {
+                          GetRecipients.request(search: text);
+                        });
                       },
                     ),
                     Expanded(

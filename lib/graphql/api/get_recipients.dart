@@ -16,7 +16,8 @@ class GetRecipients {
   static late RecipientsState _recipients;
   static late AppLocalizations? _arb;
 
-  static Future<void> request({int limit = 10, int page = 1}) async {
+  static Future<void> request(
+      {int limit = 10, int page = 1, String search = ""}) async {
     _recipients = Provider.of<RecipientsState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);
@@ -28,6 +29,7 @@ class GetRecipients {
     Map<String, dynamic> variables = {
       'limit': limit,
       'page': page,
+      'search': search
     };
     await GraphQL.client()
         .query(QueryOptions(
