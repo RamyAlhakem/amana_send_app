@@ -241,7 +241,7 @@ class _SelectRecipientState extends State<SelectRecipient>
                         width: 20,
                         child: CircularProgressIndicator(color: Colors.white),
                       )
-                    : const Text("Load More")),
+                    : Text(arb.loadMore)),
             const SizedBox(
               height: 10,
             )

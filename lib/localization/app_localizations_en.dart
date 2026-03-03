@@ -1269,4 +1269,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mandatoryInformation => 'Mandatory Information';
+
+  @override
+  String get loadMore => 'Load More';
 }

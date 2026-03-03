@@ -1265,4 +1265,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mandatoryInformation => 'معلومات إلزامية';
+
+  @override
+  String get loadMore => 'تحميل المزيد';
 }

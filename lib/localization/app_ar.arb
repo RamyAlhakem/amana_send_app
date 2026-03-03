@@ -393,5 +393,6 @@
      "characters": "حرف",
      "enter": "أدخل",
      "invalidInput": "إدخال غير صالح",
-     "mandatoryInformation": "معلومات إلزامية"
+     "mandatoryInformation": "معلومات إلزامية",
+     "loadMore": "تحميل المزيد"
 }

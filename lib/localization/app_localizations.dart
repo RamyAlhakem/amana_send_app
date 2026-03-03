@@ -2483,6 +2483,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mandatory Information'**
   String get mandatoryInformation;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More'**
+  String get loadMore;
 }
 
 class _AppLocalizationsDelegate

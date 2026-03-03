@@ -394,5 +394,6 @@
    "characters": "Characters",
    "enter": "Enter",
    "invalidInput": "Invalid input",
-   "mandatoryInformation": "Mandatory Information"
+   "mandatoryInformation": "Mandatory Information",
+   "loadMore": "Load More"
 }
