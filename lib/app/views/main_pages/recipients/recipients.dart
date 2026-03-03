@@ -161,7 +161,7 @@ class _RecipientsState extends State<Recipients> {
                                 child: CircularProgressIndicator(
                                     color: Colors.white),
                               )
-                            : const Text("Load More")),
+                            : Text(_arb!.loadMore)),
                     const SizedBox(
                       height: 20,
                     )
