@@ -147,21 +147,23 @@ class _RecipientsState extends State<Recipients> {
                         },
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          recipients.increasePage();
-                          Helper.log("page ${recipients.page}");
-                          GetRecipients.request(page: recipients.page);
-                          recipients.updateUi();
-                        },
-                        child: recipients.isLoadingBtn
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                    color: Colors.white),
-                              )
-                            : Text(_arb!.loadMore)),
+                    recipients.isFinish
+                        ? const SizedBox()
+                        : ElevatedButton(
+                            onPressed: () {
+                              recipients.increasePage();
+                              Helper.log("page ${recipients.page}");
+                              GetRecipients.request(page: recipients.page);
+                              recipients.updateUi();
+                            },
+                            child: recipients.isLoadingBtn
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white),
+                                  )
+                                : Text(_arb!.loadMore)),
                     const SizedBox(
                       height: 20,
                     )

@@ -14,6 +14,7 @@ class RecipientsState extends ChangeNotifier {
   bool _isLoading = true;
   bool _isLoadingBtn = false;
   int _page = 1;
+  bool _isFinish = false;
 
   bool _isEditRecipient = false;
 
@@ -37,6 +38,8 @@ class RecipientsState extends ChangeNotifier {
     if (!loading) notifyListeners();
   }
 
+  bool get isFinish => _isFinish;
+
   void getAll(List<RecipientModel> elements, {int page = 1}) {
     if (page == 1) {
       _all = elements;
@@ -50,6 +53,11 @@ class RecipientsState extends ChangeNotifier {
       }
 
       Helper.log("add all");
+    }
+    if (elements.isEmpty) {
+      _isFinish = true;
+    } else {
+      _isFinish = false;
     }
 
     notifyListeners();
