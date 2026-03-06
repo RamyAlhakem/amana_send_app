@@ -27,20 +27,22 @@ class AreaWidget extends StatelessWidget {
           Row(
             children: [
               Icon(LineIcons.city,
-                  color: selected
-                      ? context.isDarkMode
-                          ? Colors.white
-                          : Colors.black
-                      : Colors.white),
+                  color:
+                      // selected
+                      //     ?
+                      context.isDarkMode ? Colors.white : Colors.black
+                  // : Colors.white
+                  ),
               const SizedBox(width: 12),
               TextX(
                 LangService.isAR() ? city.name : city.name,
                 style: TextStyle(
-                    color: selected
-                        ? context.isDarkMode
-                            ? Colors.white
-                            : Colors.black
-                        : Colors.white),
+                    color:
+                        //  selected
+                        //     ?
+                        context.isDarkMode ? Colors.white : Colors.black
+                    // : Colors.white
+                    ),
               ),
             ],
           ),

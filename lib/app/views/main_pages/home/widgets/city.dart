@@ -1,3 +1,4 @@
+import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:line_icons/line_icons.dart';
@@ -27,12 +28,15 @@ class City extends StatelessWidget {
           Row(
             children: [
               isExpanded
-                  ? const Icon(Icons.arrow_drop_down, color: Colors.white)
-                  : const Icon(Icons.arrow_right, color: Colors.white),
+                  ? Icon(Icons.arrow_drop_down,
+                      color: context.isDarkMode ? Colors.white : Colors.black)
+                  : Icon(Icons.arrow_right,
+                      color: context.isDarkMode ? Colors.white : Colors.black),
               const SizedBox(width: 12),
               TextX(
                 LangService.isAR() ? city.name : city.name,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: context.isDarkMode ? Colors.white : Colors.black),
               ),
             ],
           ),
