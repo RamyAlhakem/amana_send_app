@@ -54,7 +54,7 @@ class RecipientsState extends ChangeNotifier {
 
       Helper.log("add all");
     }
-    if (elements.isEmpty) {
+    if (elements.isEmpty || elements.length < 10) {
       _isFinish = true;
     } else {
       _isFinish = false;
