@@ -73,6 +73,7 @@ class _RecipientsState extends State<Recipients> {
                     SearchWidget(
                       hint: _arb!.search,
                       onChange: (text) {
+                        recipients.resetPage();
                         // recipients.search(text);
                         if (_timer != null) _timer!.cancel();
 
