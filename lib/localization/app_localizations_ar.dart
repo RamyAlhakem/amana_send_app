@@ -1267,5 +1267,5 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mandatoryInformation => 'معلومات إلزامية';
 
   @override
-  String get loadMore => 'تحميل المزيد';
+  String get loadMore => 'إظهار المزيد';
 }

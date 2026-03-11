@@ -1,3 +1,4 @@
+import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/views/main_pages/home/widgets/area_widget.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/app/widgets/text/text_x.dart';
@@ -147,6 +148,9 @@ class _CityPickerState extends State<CityPicker> {
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -202,7 +206,7 @@ class _CityPickerState extends State<CityPicker> {
                               visible: isExpanded,
                               child: Container(
                                 padding: EdgeInsets.all(
-                                    states[i].cities.isEmpty ? 0 : 15),
+                                    states[i].cities.isEmpty ? 0 : 0),
                                 decoration: BoxDecoration(
                                     // color: Colors.white.withValues(alpha: 0.3),
                                     borderRadius: BorderRadius.circular(8)),
@@ -228,40 +232,74 @@ class _CityPickerState extends State<CityPicker> {
                                     //     ),
                                     //   ),
                                     // ),
-                                    ListView.separated(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: EdgeInsets.zero,
-                                      itemCount: foundCities.length,
-                                      itemBuilder: (context, index) {
-                                        final city = foundCities[index];
-                                        return InkWell(
-                                          onTap: () {
-                                            Helper.log(
-                                                "receiver city ${city.name} id:${city.id}");
-                                            SettingsDialog.dismiss();
-                                            widget.onChange(states[i]);
-                                            calculatorState
-                                                .setReceiveCity(city);
-                                            calculator.setBorderColor(null);
-                                          },
-                                          child: AreaWidget(
-                                            city: city,
-                                            selected: calculatorState
-                                                    .receiverCity.id ==
-                                                city.id,
-                                          ),
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) {
-                                        return HDivider(
-                                          color: Colors.white
-                                              .withValues(alpha: 0.3),
-                                          height: 1,
-                                          thickness: 1,
-                                        );
-                                      },
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white.withValues(
+                                              alpha: context.isDarkMode
+                                                  ? 0.4
+                                                  : 0.7),
+                                          borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(10),
+                                              topLeft: Radius.circular(10))),
+                                      child: ListView.separated(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount: foundCities.length,
+                                        itemBuilder: (context, index) {
+                                          final city = foundCities[index];
+                                          final selected =
+                                              calculatorState.receiverCity.id ==
+                                                  city.id;
+                                          return InkWell(
+                                            onTap: () {
+                                              Helper.log(
+                                                  "receiver city ${city.name} id:${city.id}");
+                                              SettingsDialog.dismiss();
+                                              widget.onChange(states[i]);
+                                              calculatorState
+                                                  .setReceiveCity(city);
+                                              calculator.setBorderColor(null);
+                                            },
+                                            child: AreaWidget(
+                                              borderRadius: city ==
+                                                      foundCities.first
+                                                  ? const BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(10),
+                                                      topLeft:
+                                                          Radius.circular(10))
+                                                  : null,
+                                              city: city,
+                                              selected: selected,
+                                            ),
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          final city = foundCities[index];
+                                          final selected =
+                                              calculatorState.receiverCity.id ==
+                                                  city.id;
+                                          return
+                                              // const SizedBox(
+                                              //   height: 10,
+                                              // );
+                                              HDivider(
+                                            color: selected
+                                                ? Colors.transparent
+                                                : context.isDarkMode
+                                                    ? Colors.white
+                                                        .withValues(alpha: 0.3)
+                                                    : Colors.black
+                                                        .withValues(alpha: 0.1),
+                                            height: 1,
+                                            thickness: 1,
+                                            indent: 20,
+                                            endIndent: 20,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),

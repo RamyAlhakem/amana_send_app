@@ -5,10 +5,12 @@ class HDivider extends StatelessWidget {
     this.height = 12,
     this.thickness = 0.8,
     this.color,
+    this.endIndent,
+    this.indent,
     super.key,
   });
 
-  final double? height, thickness;
+  final double? height, thickness, indent, endIndent;
   final Color? color;
 
   @override
@@ -17,6 +19,8 @@ class HDivider extends StatelessWidget {
       height: height,
       thickness: thickness,
       color: color ?? Theme.of(context).dividerColor,
+      indent: indent,
+      endIndent: endIndent,
     );
   }
 }

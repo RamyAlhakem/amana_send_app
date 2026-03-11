@@ -21,6 +21,12 @@ class City extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      // color: context.isDarkMode
+      //     ? Colors.black.withValues(alpha: 0.6)
+      //     : Colors.white70.withValues(alpha: 0.8)),
       padding: const EdgeInsets.fromLTRB(8, 14, 8, 14),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
