@@ -1,3 +1,4 @@
+import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/database/injector.dart';
 import 'package:amana_send/models/payment_method.dart';
@@ -45,19 +46,23 @@ class SettingsDialog {
       barrierDismissible: barrierDismissible,
       barrierColor: Colors.black26,
       useSafeArea: false,
-      builder: (BuildContext _) {
+      builder: (BuildContext dialogContext) {
         return StatefulBuilder(builder: (__, state) {
           return BlurryContainer(
             child: AlertDialog(
               elevation: 0,
-              backgroundColor: backgroundColor ?? Colors.transparent,
+              backgroundColor: backgroundColor ??
+                  (dialogContext.isDarkMode
+                      ? Colors.transparent
+                      : Colors.white.withValues(alpha: 0.6)),
               title: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextX(
                     title,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Colors.white,
+                          color:
+                              context.isDarkMode ? Colors.white : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                   ),

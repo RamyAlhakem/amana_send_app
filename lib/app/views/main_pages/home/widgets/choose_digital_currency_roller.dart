@@ -69,6 +69,7 @@ Future<void> showDigitalCurrencies(BuildContext context) {
   final AppLocalizations? arb = AppLocalizations.of(context);
   final Calculator state = Provider.of<Calculator>(context, listen: false);
   return SettingsDialog(
+    backgroundColor: Colors.transparent,
     onSubmit: null,
     // title: arb?.typeOfCurrency ?? '',
     title: "",

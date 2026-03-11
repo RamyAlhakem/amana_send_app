@@ -310,8 +310,8 @@ class _CityPickerState extends State<CityPicker> {
                       );
                     },
                     separatorBuilder: (__, ___) {
-                      return const HDivider(
-                        color: Colors.white,
+                      return HDivider(
+                        color: context.isDarkMode ? Colors.white : Colors.black,
                         height: 8,
                         thickness: 0.1,
                       );

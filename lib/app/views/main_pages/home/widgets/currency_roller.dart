@@ -31,6 +31,7 @@ class CurrencyRoller extends StatelessWidget {
           // if [usdAvailability] is optional which is equal 1:
           if (state.receiverAgent.usdAvailability == 1) {
             SettingsDialog(
+              backgroundColor: Colors.transparent,
               onSubmit: null,
               title: arb!.selectCurrency,
               subTitle: arb.selectReceiveCurrencyForThisCountry,

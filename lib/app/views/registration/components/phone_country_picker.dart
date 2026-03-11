@@ -88,6 +88,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                   ? _calculator.sendCountries
                   : _calculator.receiveCountries;
               SettingsDialog(
+                backgroundColor: Colors.transparent,
                 onChanged: (text) {
                   if (text.isNotEmpty) {
                     List<CountryModel> foundCountries = allCountries

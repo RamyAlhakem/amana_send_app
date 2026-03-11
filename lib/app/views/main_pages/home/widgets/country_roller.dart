@@ -39,6 +39,7 @@ class CountryRoller extends StatelessWidget {
           send ? state.sendCountries : state.receiveCountries;
       child = PickerForm(
         () => SettingsDialog(
+          backgroundColor: Colors.transparent,
           onChanged: (text) {
             if (text.isNotEmpty) {
               final List<CountryModel> foundContries = allContries
