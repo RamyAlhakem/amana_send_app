@@ -321,9 +321,12 @@ class __TranfersTabState extends State<_TranfersTab> {
                   ),
                 )
               : RefreshIndicator(
-                  onRefresh: () async => await GetTransfers(
-                          page: provider.page, status: widget.status)
-                      .request(),
+                  onRefresh: () async {
+                    state.resetPage();
+                    await GetTransfers(
+                            page: provider.page, status: widget.status)
+                        .request();
+                  },
                   child: Visibility(
                     visible: widget.transfers.isNotEmpty,
                     replacement: FadeSwitcher(
