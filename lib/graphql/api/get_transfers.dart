@@ -34,6 +34,10 @@ class GetTransfers {
     };
     Helper.debugger('transactions');
     Helper.log('PARAMETERS: $_variables', color: DebugColor.white);
+    if (page == 1) {
+      _provider.isRequestLoading(true);
+    }
+
     await GraphQL.client()
         .query(QueryOptions(document: gql(document()), variables: _variables))
         .then((result) async {
@@ -72,12 +76,13 @@ class GetTransfers {
 
     bool isNotEmpty = false;
 
-    isNotEmpty = _set(data, TransferStatus.pending.name);
-    isNotEmpty = _set(data, TransferStatus.nEW.name.toLowerCase()); // new.
-    isNotEmpty = _set(data, TransferStatus.processed.name);
-    isNotEmpty = _set(data, TransferStatus.completed.name);
-    isNotEmpty = _set(data, TransferStatus.canceled.name);
-    isNotEmpty = _set(data, TransferStatus.dispute.name);
+    isNotEmpty = _set(data, TransferStatus.pending.name) || isNotEmpty;
+    isNotEmpty =
+        _set(data, TransferStatus.nEW.name.toLowerCase()) || isNotEmpty; // new.
+    isNotEmpty = _set(data, TransferStatus.processed.name) || isNotEmpty;
+    isNotEmpty = _set(data, TransferStatus.completed.name) || isNotEmpty;
+    isNotEmpty = _set(data, TransferStatus.canceled.name) || isNotEmpty;
+    isNotEmpty = _set(data, TransferStatus.dispute.name) || isNotEmpty;
 
     return isNotEmpty;
   }

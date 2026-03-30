@@ -4,7 +4,8 @@ import '/models/transfer.dart';
 
 class TransfersState extends ChangeNotifier {
   bool _isLoading = true;
-
+  int _page = 1;
+  int get page => _page;
   final List<TransferModel> _pendingTransfers = <TransferModel>[];
   final List<TransferModel> _newTransfers = <TransferModel>[];
   final List<TransferModel> _processingTransfers = <TransferModel>[];
@@ -50,6 +51,7 @@ class TransfersState extends ChangeNotifier {
         break;
       case 'canceled':
         _canceledTransfers.addAll(elements);
+        break;
       case 'dispute':
         _disputeTransfers.addAll(elements);
         break;
@@ -70,5 +72,14 @@ class TransfersState extends ChangeNotifier {
     _completedTransfers.clear();
     _canceledTransfers.clear();
     _disputeTransfers.clear();
+  }
+
+  incresePage() {
+    _page++;
+    notifyListeners();
+  }
+
+  resetPage() {
+    _page = 1;
   }
 }

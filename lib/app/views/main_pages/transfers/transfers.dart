@@ -43,16 +43,18 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
   bool isPaging = false;
   int page = 1;
 
-  void scrollListener(ScrollController ctrl) {
+  void scrollListener(ScrollController ctrl, Status status) {
     ctrl.addListener(() {
       if (!isPaging && ctrl.position.pixels == ctrl.position.maxScrollExtent) {
-        page++;
+        provider.incresePage();
 
         setState(() => isPaging = true);
-        GetTransfers(page: page).request().then((isNotEmpty) {
+        GetTransfers(page: provider.page, status: status)
+            .request()
+            .then((isNotEmpty) {
           setState(() => isPaging = false);
 
-          if (isNotEmpty && page > 1 && ctrl.hasClients) {
+          if (isNotEmpty && provider.page > 1 && ctrl.hasClients) {
             ctrl.animateTo(
               ctrl.position.pixels + kTextTabBarHeight * 6,
               duration: const Duration(milliseconds: 600),
@@ -78,12 +80,12 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
     animationRotate =
         Tween<double>(begin: 0.0, end: 360.0).animate(animationCtrl);
 
-    scrollListener(scrollCtrl1);
-    scrollListener(scrollCtrl2);
-    scrollListener(scrollCtrl3);
-    scrollListener(scrollCtrl4);
-    scrollListener(scrollCtrl5);
-    scrollListener(scrollCtrl6);
+    scrollListener(scrollCtrl1, Status.pending);
+    scrollListener(scrollCtrl2, Status.newTransfer);
+    scrollListener(scrollCtrl3, Status.processing);
+    scrollListener(scrollCtrl4, Status.completed);
+    scrollListener(scrollCtrl5, Status.canceled);
+    scrollListener(scrollCtrl6, Status.dispute);
   }
 
   @override
@@ -292,9 +294,12 @@ class _TranfersTab extends StatefulWidget {
 }
 
 class __TranfersTabState extends State<_TranfersTab> {
+  late TransfersState provider;
   @override
   void initState() {
-    GetTransfers(page: widget.page, status: widget.status).request();
+    provider = Provider.of<TransfersState>(context, listen: false);
+    provider.resetPage();
+    GetTransfers(page: provider.page, status: widget.status).request();
     super.initState();
   }
 
@@ -303,30 +308,39 @@ class __TranfersTabState extends State<_TranfersTab> {
     final arb = AppLocalizations.of(context)!;
     return Stack(
       children: [
-        RefreshIndicator(
-          onRefresh: () async =>
-              await GetTransfers(page: widget.page, status: widget.status)
-                  .request(),
-          child: Visibility(
-            visible: widget.transfers.isNotEmpty,
-            replacement: FadeSwitcher(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                      'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
-                  TextX(arb.noTransfersFoundYet),
-                ],
-              ),
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              controller: widget.ctrl,
-              itemCount: widget.transfers.length,
-              padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
-              itemBuilder: (_, i) => TransferRecent(widget.transfers[i]),
-            ),
-          ),
+        Consumer<TransfersState>(
+          builder: (context, state, child) => state.isLoading && state.page == 1
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: MainColors.color1,
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: () async => await GetTransfers(
+                          page: provider.page, status: widget.status)
+                      .request(),
+                  child: Visibility(
+                    visible: widget.transfers.isNotEmpty,
+                    replacement: FadeSwitcher(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset(
+                              'assets/json/empty_${context.isDarkMode ? 'dark' : 'light'}.json'),
+                          TextX(arb.noTransfersFoundYet),
+                        ],
+                      ),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: widget.ctrl,
+                      itemCount: widget.transfers.length,
+                      padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),
+                      itemBuilder: (_, i) =>
+                          TransferRecent(widget.transfers[i]),
+                    ),
+                  ),
+                ),
         ),
         if (widget.isPaging)
           Align(
