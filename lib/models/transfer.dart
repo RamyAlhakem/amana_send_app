@@ -177,7 +177,5 @@ int getStatusIndex(TransferStatus status) {
       return 4;
     case TransferStatus.dispute:
       return 5;
-    default:
-      return 0;
   }
 }

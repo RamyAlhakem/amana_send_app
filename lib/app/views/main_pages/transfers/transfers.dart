@@ -142,7 +142,10 @@ class _TransfersState extends State<Transfers> with TickerProviderStateMixin {
                     animation: animationRotate,
                     callback: () async {
                       animationCtrl.forward();
-                      await GetTransfers().request();
+                      state.resetPage();
+                      await GetTransfers(
+                              page: state.page, status: state.getStatusName())
+                          .request();
                       animationCtrl.reset();
                     },
                   ),
@@ -299,6 +302,8 @@ class __TranfersTabState extends State<_TranfersTab> {
   void initState() {
     provider = Provider.of<TransfersState>(context, listen: false);
     provider.resetPage();
+    provider.setIndex(widget.status);
+
     GetTransfers(page: provider.page, status: widget.status).request();
     super.initState();
   }

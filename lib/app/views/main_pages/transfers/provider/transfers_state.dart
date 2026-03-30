@@ -1,3 +1,4 @@
+import 'package:amana_send/app/views/main_pages/transfers/transfers.dart';
 import 'package:flutter/material.dart';
 
 import '/models/transfer.dart';
@@ -6,6 +7,8 @@ class TransfersState extends ChangeNotifier {
   bool _isLoading = true;
   int _page = 1;
   int get page => _page;
+  int _index = 0;
+  int get index => _index;
   final List<TransferModel> _pendingTransfers = <TransferModel>[];
   final List<TransferModel> _newTransfers = <TransferModel>[];
   final List<TransferModel> _processingTransfers = <TransferModel>[];
@@ -81,5 +84,45 @@ class TransfersState extends ChangeNotifier {
 
   resetPage() {
     _page = 1;
+  }
+
+  int getStatusIndex(Status status) {
+    switch (status) {
+      case Status.pending:
+        return 0;
+      case Status.newTransfer:
+        return 1;
+      case Status.processing:
+        return 2;
+      case Status.completed:
+        return 3;
+      case Status.canceled:
+        return 4;
+      case Status.dispute:
+        return 5;
+    }
+  }
+
+  setIndex(Status status) {
+    _index = getStatusIndex(status);
+  }
+
+  Status getStatusName() {
+    switch (_index) {
+      case 0:
+        return Status.pending;
+      case 1:
+        return Status.newTransfer;
+      case 2:
+        return Status.processing;
+      case 3:
+        return Status.completed;
+      case 4:
+        return Status.canceled;
+      case 5:
+        return Status.dispute;
+      default:
+        return Status.pending;
+    }
   }
 }
