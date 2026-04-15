@@ -29,10 +29,12 @@ class Recipients extends StatefulWidget {
 
 class _RecipientsState extends State<Recipients> {
   late AppLocalizations? _arb;
+  late TextEditingController _searchController;
   Timer? _timer;
 
   @override
   void initState() {
+    _searchController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final recipient = Provider.of<RecipientsState>(context, listen: false);
       recipient.resetPage();
@@ -71,6 +73,7 @@ class _RecipientsState extends State<Recipients> {
                       height: 20,
                     ),
                     SearchWidget(
+                      controller: _searchController,
                       hint: _arb!.search,
                       onChange: (text) {
                         recipients.resetPage();
@@ -154,7 +157,9 @@ class _RecipientsState extends State<Recipients> {
                             onPressed: () {
                               recipients.increasePage();
                               Helper.log("page ${recipients.page}");
-                              GetRecipients.request(page: recipients.page);
+                              GetRecipients.request(
+                                  page: recipients.page,
+                                  search: _searchController.text);
                               recipients.updateUi();
                             },
                             child: recipients.isLoadingBtn

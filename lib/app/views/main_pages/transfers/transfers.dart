@@ -327,6 +327,8 @@ class __TranfersTabState extends State<_TranfersTab> {
                             page: provider.page, status: widget.status)
                         .request();
                   },
+
+                  
                   child: Visibility(
                     visible: widget.transfers.isNotEmpty,
                     replacement: FadeSwitcher(

@@ -31,6 +31,7 @@ class GetRecipients {
       'page': page,
       'search': search
     };
+    Helper.log("My query search $variables");
     await GraphQL.client()
         .query(QueryOptions(
             document: gql(Queries.recipients), variables: variables))
