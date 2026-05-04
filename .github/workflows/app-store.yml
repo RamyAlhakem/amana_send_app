@@ -18,92 +18,92 @@ jobs:
 
     steps:
       - run: echo "Release triggered for ${{ env.FLAVOR }} flavor"
-      # - name: Checkout the code
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
+      - name: Checkout the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # - name: Import certs
-      #   uses: apple-actions/import-codesign-certs@v5
-      #   with:
-      #     p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
-      #     p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
+      - name: Import certs
+        uses: apple-actions/import-codesign-certs@v5
+        with:
+          p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
+          p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
 
-      # - name: Download provisioning profiles
-      #   uses: apple-actions/download-provisioning-profiles@v4
-      #   with:
-      #     bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
-      #     issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
-      #     api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-      #     api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+      - name: Download provisioning profiles
+        uses: apple-actions/download-provisioning-profiles@v4
+        with:
+          bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
+          issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
-      # - name: Select Xcode 26
-      #   run: sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
+      - name: Select Xcode 26
+        run: sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
 
-      # - name: Setup Flutter
-      #   uses: subosito/flutter-action@v2
-      #   with:
-      #     flutter-version: ${{ env.FLUTTER_VERSION }}
-      #     cache: true
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
-      # - name: Install dependencies
-      #   run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-      # - name: Cache Pods
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       ios/Pods
-      #       ios/Podfile.lock
-      #     key: ${{ runner.os }}-pods-${{ hashFiles('pubspec.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pods-
+      - name: Cache Pods
+        uses: actions/cache@v4
+        with:
+          path: |
+            ios/Pods
+            ios/Podfile.lock
+          key: ${{ runner.os }}-pods-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-      # - name: pod install
-      #   run: |
-      #     cd ios
-      #     pod install --repo-update
-      #     cd ..
+      - name: pod install
+        run: |
+          cd ios
+          pod install --repo-update
+          cd ..
 
-      # - name: Update Firebase/CoreOnly pod
-      #   run: |
-      #     cd ios
-      #     pod update Firebase/CoreOnly
-      #     cd ..
+      - name: Update Firebase/CoreOnly pod
+        run: |
+          cd ios
+          pod update Firebase/CoreOnly
+          cd ..
 
-      # - name: Update Provisioning Profile
-      #   run: |
-      #     PROFILE_NAME="${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}"
-      #     sed -i '' "s/PROVISIONING_PROFILE_SPECIFIER = \"deploy all\";/PROVISIONING_PROFILE_SPECIFIER = \"$PROFILE_NAME\";/g" ios/Runner.xcodeproj/project.pbxproj
-      #     sed -i '' "s/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g" ios/Runner.xcodeproj/project.pbxproj
-      #     sed -i '' "s/DEVELOPMENT_TEAM = [A-Z0-9]*;/DEVELOPMENT_TEAM = ${{ secrets.APPSTORE_TEAM_ID }};/g" ios/Runner.xcodeproj/project.pbxproj
+      - name: Update Provisioning Profile
+        run: |
+          PROFILE_NAME="${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}"
+          sed -i '' "s/PROVISIONING_PROFILE_SPECIFIER = \"deploy all\";/PROVISIONING_PROFILE_SPECIFIER = \"$PROFILE_NAME\";/g" ios/Runner.xcodeproj/project.pbxproj
+          sed -i '' "s/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g" ios/Runner.xcodeproj/project.pbxproj
+          sed -i '' "s/DEVELOPMENT_TEAM = [A-Z0-9]*;/DEVELOPMENT_TEAM = ${{ secrets.APPSTORE_TEAM_ID }};/g" ios/Runner.xcodeproj/project.pbxproj
 
-      # # - name: Analyze to check for bad Dart/Flutter practices
-      # #   run: flutter analyze
+      # - name: Analyze to check for bad Dart/Flutter practices
+      #   run: flutter analyze
 
-      # - name: Generate ExportOptions
-      #   run: |
-      #     cat <<EOF > ios/ExportOptions.plist
-      #     <?xml version="1.0" encoding="UTF-8"?>
-      #     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      #     <plist version="1.0">
-      #     <dict>
-      #         <key>method</key>
-      #         <string>app-store-connect</string>
-      #         <key>teamID</key>
-      #         <string>${{ secrets.APPSTORE_TEAM_ID }}</string>
-      #         <key>signingStyle</key>
-      #         <string>manual</string>
-      #         <key>provisioningProfiles</key>
-      #         <dict>
-      #       <key>${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}</key>
-      #       <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}</string>
-      #         </dict>
-      #     </dict>
-      #     </plist>
-      #     EOF
-      # - name: Debug provisioning profile in pbxproj
-      #   run: grep "PROVISIONING_PROFILE_SPECIFIER\|PRODUCT_BUNDLE_IDENTIFIER" ios/Runner.xcodeproj/project.pbxproj
+      - name: Generate ExportOptions
+        run: |
+          cat <<EOF > ios/ExportOptions.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>app-store-connect</string>
+              <key>teamID</key>
+              <string>${{ secrets.APPSTORE_TEAM_ID }}</string>
+              <key>signingStyle</key>
+              <string>manual</string>
+              <key>provisioningProfiles</key>
+              <dict>
+            <key>${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}</key>
+            <string>${{ secrets.APPSTORE_PROVISIONING_PROFILE_NAME }}${{ env.FLAVOR == 'staging' && ' staging' || '' }}</string>
+              </dict>
+          </dict>
+          </plist>
+          EOF
+      - name: Debug provisioning profile in pbxproj
+        run: grep "PROVISIONING_PROFILE_SPECIFIER\|PRODUCT_BUNDLE_IDENTIFIER" ios/Runner.xcodeproj/project.pbxproj
       # - name: Build App
       #   run: |
       #     flutter build ipa \
