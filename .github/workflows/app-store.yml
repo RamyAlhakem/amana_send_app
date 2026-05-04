@@ -22,6 +22,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fix git dubious ownership
+        run: git config --global --add safe.directory '*'
+
       - name: Import certs
         uses: apple-actions/import-codesign-certs@v5
         with:
