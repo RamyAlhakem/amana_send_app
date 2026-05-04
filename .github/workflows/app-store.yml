@@ -17,28 +17,27 @@ jobs:
       FLAVOR: ${{ contains(github.ref_name, 'staging') && 'staging' || 'production' }}
 
     steps:
-      - run: echo "Release triggered for ${{ env.FLAVOR }} flavor"
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Import certs
-        uses: apple-actions/import-codesign-certs@v5
+        uses: apple-actions/import-codesign-certs@v7
         with:
           p12-file-base64: ${{ secrets.APPSTORE_CERTIFICATES_FILE_BASE64 }}
           p12-password: ${{ secrets.APPSTORE_CERTIFICATES_PASSWORD }}
 
       - name: Download provisioning profiles
-        uses: apple-actions/download-provisioning-profiles@v4
+        uses: apple-actions/download-provisioning-profiles@v6
         with:
           bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
           issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
-      - name: Select Xcode 26
-        run: sudo xcode-select -s /Applications/Xcode_26.0.app/Contents/Developer
+      - name: Select Xcode 16.3
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app/Contents/Developer
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -50,7 +49,7 @@ jobs:
         run: flutter pub get
 
       - name: Cache Pods
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ios/Pods
@@ -102,47 +101,46 @@ jobs:
           </dict>
           </plist>
           EOF
-      - name: Debug provisioning profile in pbxproj
-        run: grep "PROVISIONING_PROFILE_SPECIFIER\|PRODUCT_BUNDLE_IDENTIFIER" ios/Runner.xcodeproj/project.pbxproj
-      # - name: Build App
-      #   run: |
-      #     flutter build ipa \
-      #     --release \
-      #     --export-options-plist=ios/ExportOptions.plist \
-      #     --flavor ${{ env.FLAVOR }} \
-      #     -t lib/main_${{ env.FLAVOR }}.dart
-      #     echo "APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))" >> $GITHUB_ENV
 
-      # - name: Upload generated ipa to the artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ env.APP_FILE }}
-      #     path: build/ios/ipa/${{ env.APP_FILE }}
-      #     retention-days: 3
+      - name: Build App
+        run: |
+          flutter build ipa \
+          --release \
+          --export-options-plist=ios/ExportOptions.plist \
+          --flavor ${{ env.FLAVOR }} \
+          -t lib/main_${{ env.FLAVOR }}.dart
+          echo "APP_FILE=$(basename $(ls build/ios/ipa/*.ipa))" >> $GITHUB_ENV
 
-      # - name: Decode App Store API key
-      #   run: |
-      #     mkdir private_keys
-      #     echo "${{ secrets.APPSTORE_API_PRIVATE_KEY }}" > private_keys/AuthKey_${{ secrets.APPSTORE_API_KEY_ID }}.p8
+      - name: Upload generated ipa to the artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.APP_FILE }}
+          path: build/ios/ipa/${{ env.APP_FILE }}
+          retention-days: 3
 
-      # - name: Upload app to TestFlight
-      #   run: |
-      #     xcrun altool --upload-app \
-      #     --output-format json \
-      #     --file build/ios/ipa/${{ env.APP_FILE }} \
-      #     --type ios \
-      #     --apiKey ${{ secrets.APPSTORE_API_KEY_ID }} \
-      #     --apiIssuer ${{ secrets.APPSTORE_API_ISSUER_ID }}
+      - name: Decode App Store API key
+        run: |
+          mkdir private_keys
+          echo "${{ secrets.APPSTORE_API_PRIVATE_KEY }}" > private_keys/AuthKey_${{ secrets.APPSTORE_API_KEY_ID }}.p8
 
-      # - name: Extract App Version
-      #   run: |
-      #     VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-      #     echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Upload app to TestFlight
+        run: |
+          xcrun altool --upload-app \
+          --output-format json \
+          --file build/ios/ipa/${{ env.APP_FILE }} \
+          --type ios \
+          --apiKey ${{ secrets.APPSTORE_API_KEY_ID }} \
+          --apiIssuer ${{ secrets.APPSTORE_API_ISSUER_ID }}
 
-      # - name: Send ClickUp Notification
-      #   uses: architweb/ClickUpNotification@v3.1.0
-      #   with:
-      #     clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
-      #     clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
-      #     clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
-      #     clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_APP_STORE }} - _v${{ env.APP_VERSION }}_"
+      - name: Extract App Version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Send ClickUp Notification
+        uses: architweb/ClickUpNotification@v3.1.0
+        with:
+          clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
+          clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
+          clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
+          clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_APP_STORE }} - _v${{ env.APP_VERSION }}_"
