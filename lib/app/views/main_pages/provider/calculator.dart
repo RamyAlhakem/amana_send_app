@@ -273,6 +273,7 @@ class Calculator with ChangeNotifier {
   void setAgent(AgentModel agent) {
     clearProviderFieldValues();
     _receiverAgent = agent;
+    getFielsProvider();
     Global.snackKey.currentState?.hideCurrentSnackBar();
     setPrice(sender.text);
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
