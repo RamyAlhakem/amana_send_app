@@ -336,13 +336,25 @@ class Calculator with ChangeNotifier {
     WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
-  bool checkRecipientAvailability(RecipientModel recipient) {
+  bool checkRecipientAvailability(
+    RecipientModel recipient, {
+    bool isResend = false,
+  }) {
     bool check = true;
 
     // Check if selected recipient country is available:
     final recipients = Provider.of<RecipientsState>(context, listen: false);
-    if (recipients.all.any((e) => e.id == recipient.id)) {
-      // Check if selected recipient has been modified or deleted
+
+    // When re-sending from a transfer, the recipient data is embedded in the
+    // transfer object and comes directly from the server. Bypass the local
+    // recipients list check to avoid a false-positive "modified or deleted"
+    // error caused by the list not being loaded yet (pagination race condition)
+    // or the recipient not being present in the current paginated view.
+    final bool recipientExists =
+        isResend || recipients.all.any((e) => e.id == recipient.id);
+
+    if (recipientExists) {
+      // Check if selected recipient country is still available:
       if (receiveCountries.any((e) => e.coCode == recipient.country.coCode)) {
         selectRecipient(recipient);
         if (receiver.text.isNotEmpty) {
@@ -374,7 +386,8 @@ class Calculator with ChangeNotifier {
     _arb = AppLocalizations.of(context);
     bool canSend = true;
 
-    canSend = checkRecipientAvailability(recipient);
+    final bool isResend = transfer != null;
+    canSend = checkRecipientAvailability(recipient, isResend: isResend);
 
     if (transfer != null) {
       isLoad = true;
