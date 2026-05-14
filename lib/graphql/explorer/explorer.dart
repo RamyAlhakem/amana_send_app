@@ -123,6 +123,7 @@ class Explorer {
       characterCount
       description
       id
+      isFlexibleLength
       name
       providerId
       status

@@ -4,6 +4,7 @@ class ProviderFieldModel extends SafetyModel {
   int id = 0;
   String name = '';
   String description = '';
+  bool isFlexibleLength = false;
   int characterCount = 0;
   int providerId = 0;
   int status = 0;
@@ -12,6 +13,7 @@ class ProviderFieldModel extends SafetyModel {
     this.id = 0,
     this.name = '',
     this.description = '',
+    this.isFlexibleLength = false,
     this.characterCount = 0,
     this.providerId = 0,
     this.status = 0,
@@ -21,6 +23,7 @@ class ProviderFieldModel extends SafetyModel {
     id = intFromJson(json, 'id');
     name = stringFromJson(json, 'name');
     description = stringFromJson(json, 'description');
+    isFlexibleLength = boolFromJson(json, 'isFlexibleLength');
     characterCount = intFromJson(json, 'characterCount');
     providerId = intFromJson(json, 'providerId');
     status = intFromJson(json, 'status');
