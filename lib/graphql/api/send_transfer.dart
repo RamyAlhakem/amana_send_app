@@ -162,6 +162,12 @@ class SendTransfer {
           Helper.bannerWarning(_arb.providerIsInactiveForTheReceivingCity);
           break;
 
+        case 493:
+          Helper.bannerWarning(
+              error.graphqlErrors.first.extensions?['message'] ??
+                  _arb.somethingWentWrong);
+          break;
+
         default:
           Helper.toast(
               '${_arb.somethingWentWrong} [${error.graphqlErrors.first.extensions?['code']}]');
