@@ -34,6 +34,7 @@ class PaymentMethodFields extends StatelessWidget {
                     },
                     hint: field.description,
                     controller: null,
+                    initialValue: calculator.providerFieldValues[field.id],
                     input: [
                       // if (field.isFlexibleLength && field.characterCount > 1)
                       //   LengthLimitingTextInputFormatter(
