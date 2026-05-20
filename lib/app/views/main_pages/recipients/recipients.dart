@@ -120,6 +120,7 @@ class _RecipientsState extends State<Recipients> {
                                         context,
                                         listen: false,
                                       );
+                                      calculator.clearProviderFieldTransfer();
                                       calculator.setReceiverCountry(
                                           recipients.receipients[i].country);
                                       calculator.agentsVisibility(true);

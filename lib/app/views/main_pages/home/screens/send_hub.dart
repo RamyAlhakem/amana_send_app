@@ -163,7 +163,8 @@ class _SendHubState extends State<SendHub>
               child: const SelectRecipient(),
             ),
           ),
-          if (_calculator.providerFields.isNotEmpty)
+          if (_calculator.providerFields.isNotEmpty &&
+              _calculator.providerFieldsTransfer.isEmpty)
             const PaymentMethodDetails(),
           if (_calculator.providerFieldsTransfer.isNotEmpty)
             const PaymentMethodTransferAgain(),

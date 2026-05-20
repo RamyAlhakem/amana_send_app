@@ -274,50 +274,52 @@ class _CheckOutDetailsState extends State<CheckOutDetails> {
                         //       )
                         //       .toList(),
                         // )
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 8,
-                              children: state.providerFields
-                                  .map((field) => TextX(field.name))
-                                  .toList(),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              spacing: 8,
-                              children: state.providerFields
-                                  .map((field) => TextX(
-                                        state.providerFieldValues[field.id]
-                                                ?.toString() ??
-                                            '',
-                                      ))
-                                  .toList(),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 8,
-                              children: state.providerFieldsTransfer
-                                  .map((field) => TextX(field.field.name))
-                                  .toList(),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              spacing: 8,
-                              children: state.providerFieldsTransfer
-                                  .map((field) => TextX(
-                                        field.fieldValue,
-                                      ))
-                                  .toList(),
-                            )
-                          ],
-                        )
+                        if (state.providerFieldValues.isNotEmpty)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 8,
+                                children: state.providerFields
+                                    .map((field) => TextX(field.name))
+                                    .toList(),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                spacing: 8,
+                                children: state.providerFields
+                                    .map((field) => TextX(
+                                          state.providerFieldValues[field.id]
+                                                  ?.toString() ??
+                                              '',
+                                        ))
+                                    .toList(),
+                              )
+                            ],
+                          ),
+                        if (state.providerFieldsTransfer.isNotEmpty)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 8,
+                                children: state.providerFieldsTransfer
+                                    .map((field) => TextX(field.field.name))
+                                    .toList(),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                spacing: 8,
+                                children: state.providerFieldsTransfer
+                                    .map((field) => TextX(
+                                          field.fieldValue,
+                                        ))
+                                    .toList(),
+                              )
+                            ],
+                          )
                       ],
                     ),
                   ),

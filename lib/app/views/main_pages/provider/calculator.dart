@@ -3,6 +3,7 @@ import 'package:amana_send/graphql/api/calculate_transfer_money.dart';
 import 'package:amana_send/graphql/api/get_provider_fields.dart';
 import 'package:amana_send/graphql/api/get_providers.dart';
 import 'package:amana_send/graphql/api/get_sliders.dart';
+import 'package:amana_send/helper/debug_colors.dart';
 import 'package:amana_send/models/slider_model.dart';
 import 'package:amana_send/models/transfer_provider_field.dart';
 import 'package:flutter/material.dart';
@@ -424,6 +425,8 @@ class Calculator with ChangeNotifier {
       _sender.text = '${transfer.sendAmount}';
       _receiver.text = '${transfer.recipientAmount}';
       _providerFieldsTransfer = transfer.providerFields;
+      Helper.log("provider fields transfer $_providerFieldsTransfer",
+          color: DebugColor.yellow);
       // setAgent(transfer.provider);
       setReceiverCountry(transfer.recipient.country);
       if (transfer.provider.usdAvailability == 2) {
