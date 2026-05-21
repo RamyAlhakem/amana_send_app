@@ -26,8 +26,9 @@ class PaymentMethodFieldsAgain extends StatelessWidget {
                     validator: (text) {
                       if (text!.isEmpty) {
                         return context.arb.invalidInput;
-                      } else if (text.length < field.field.characterCount &&
-                          !field.field.isFlexibleLength) {
+                      } else if ((text.length < field.field.characterCount &&
+                              !field.field.isFlexibleLength) ||
+                          (text.length > field.field.characterCount)) {
                         return "${context.arb.pleaseEnter} ${field.field.characterCount} ${context.arb.characters}";
                       }
                       return null;
