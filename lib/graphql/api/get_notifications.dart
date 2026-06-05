@@ -12,11 +12,11 @@ import '/helper/helper.dart';
 import '/models/notification.dart';
 
 class GetNotifications {
-  static final BuildContext context = Global.key.currentContext!;
   static late NotificationsState _state;
   static late AppLocalizations? _arb;
 
   static Future<void> request() async {
+    final BuildContext context = Global.key.currentContext!;
     _state = Provider.of<NotificationsState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);

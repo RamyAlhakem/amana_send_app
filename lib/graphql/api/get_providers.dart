@@ -18,10 +18,10 @@ class GetProviders {
   int cityID;
   int paymentMethodID;
   String sendCountryCode;
-  static final BuildContext context = Global.key.currentContext!;
   static late Calculator _pr;
 
   Future<void> request() async {
+    final BuildContext context = Global.key.currentContext!;
     _pr = Provider.of<Calculator>(context, listen: false);
     Map<String, dynamic> variables = {
       'cityId': cityID,

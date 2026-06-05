@@ -30,7 +30,6 @@ class LogInAPI {
   final LoadingButtonController buttonCtrl;
 
   late AppLocalizations? _arb;
-  static final BuildContext _context = Global.key.currentContext!;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
   Future<void> request() async {
@@ -65,7 +64,7 @@ class LogInAPI {
   void _result(Map<String, dynamic> data) async {
     if (data.isNotEmpty && data.containsKey('userSignIn')) {
       // Clear country after registration complete.
-      _context.read<RegistrationState>().setCountry(null);
+      Global.key.currentContext!.read<RegistrationState>().setCountry(null);
 
       UserModel.get = UserModel.fromJson(data['userSignIn']);
 
@@ -73,7 +72,7 @@ class LogInAPI {
       await Future.delayed(const Duration(milliseconds: 600), () {
         // await 600 milliseconds to show success button animation.
         // Then pop login page to dispose keys.
-        _context.pop();
+        Global.key.currentContext!.pop();
       });
 
       await Future.delayed(const Duration(milliseconds: 100), () async {
@@ -96,7 +95,7 @@ class LogInAPI {
   }
 
   void _error(List<GraphQLError> errors) async {
-    _arb = AppLocalizations.of(_context);
+    _arb = AppLocalizations.of(Global.key.currentContext!);
 
     if (errors.isNotEmpty) {
       switch (errors.first.extensions?['code']) {
@@ -109,7 +108,7 @@ class LogInAPI {
           break;
 
         case 422:
-          _context.pushReplacementNamed(
+          Global.key.currentContext!.pushReplacementNamed(
             '/${AppRoute.accountActivation}',
             pathParameters: <String, String>{'mobile': mobile},
             queryParameters: <String, String>{'reSendOTP': 'true'},

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +32,7 @@ class Global {
   }
 
   static Brightness brightnessLight() {
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       return Brightness.light;
     } else {
       return Brightness.dark;
@@ -39,7 +40,7 @@ class Global {
   }
 
   static Brightness brightnessDark() {
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       return Brightness.dark;
     } else {
       return Brightness.light;

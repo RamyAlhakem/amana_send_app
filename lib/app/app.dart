@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,7 @@ class AmanaSend extends StatelessWidget {
         builder: (BuildContext context, Widget? main) {
           main = MaterialApp.router(
             // debugShowMaterialGrid: true,
-            
+
             routerConfig: AppRoute.routes,
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'amana_send',
@@ -46,6 +47,14 @@ class AmanaSend extends StatelessWidget {
             supportedLocales: L10n.all.keys,
             onGenerateTitle: (BuildContext context) =>
                 AppLocalizations.of(context)!.appTitle,
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.unknown,
+              },
+            ),
             theme: Themes.light(),
             darkTheme: Themes.dark(),
             themeMode: Global.appSettings.themeMode,

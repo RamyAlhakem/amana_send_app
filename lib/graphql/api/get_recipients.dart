@@ -12,12 +12,12 @@ import '/helper/helper.dart';
 import '/models/recipient.dart';
 
 class GetRecipients {
-  static final BuildContext context = Global.key.currentContext!;
   static late RecipientsState _recipients;
   static late AppLocalizations? _arb;
 
   static Future<void> request(
       {int limit = 10, int page = 1, String search = ""}) async {
+    final BuildContext context = Global.key.currentContext!;
     _recipients = Provider.of<RecipientsState>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _arb = AppLocalizations.of(context);

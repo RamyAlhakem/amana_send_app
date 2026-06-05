@@ -39,8 +39,6 @@ class AddEditRecipientAPI {
 
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
-  static final BuildContext _context = Global.key.currentContext!;
-
   Future<void> request() async {
     final String json = id != 0 ? 'recipientEdit' : 'recipientAdd';
     LoadingDialog().show();
@@ -83,19 +81,21 @@ class AddEditRecipientAPI {
   }
 
   void _result(Map<String, dynamic> data, String json) async {
-    final recipient = Provider.of<RecipientsState>(_context, listen: false);
+    final recipient =
+        Provider.of<RecipientsState>(Global.key.currentContext!, listen: false);
     if (data.isNotEmpty && data.containsKey(json)) {
       LoadingDialog().show();
 
       await GetRecipients.request(page: recipient.page).whenComplete(() {
         LoadingDialog.dismiss();
-        _context.pop();
+        Global.key.currentContext!.pop();
       });
     }
   }
 
   void _error(OperationException error) async {
-    final AppLocalizations? arb = AppLocalizations.of(_context);
+    final AppLocalizations? arb =
+        AppLocalizations.of(Global.key.currentContext!);
 
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {

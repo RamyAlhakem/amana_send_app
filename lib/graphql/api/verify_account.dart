@@ -33,9 +33,8 @@ class VerifyAccountAPI {
   static late AppLocalizations _arb;
   static Map<String, dynamic> _variables = const <String, dynamic>{};
 
-  static final BuildContext _context = Global.key.currentContext!;
   Future<void> request() async {
-    _arb = AppLocalizations.of(_context)!;
+    _arb = AppLocalizations.of(Global.key.currentContext!)!;
 
     final UserModel user = Database().getUser;
 
@@ -57,7 +56,7 @@ class VerifyAccountAPI {
     if (buttonCtrl.currentState == ButtonState.error) return;
     if (buttonCtrl.currentState == ButtonState.success) return;
 
-    FocusScope.of(_context).unfocus();
+    FocusScope.of(Global.key.currentContext!).unfocus();
 
     buttonCtrl.start();
 
@@ -97,7 +96,7 @@ class VerifyAccountAPI {
       UserModel.get = UserModel.fromJson(data['userVerifyAccount']);
       await Future.delayed(
         const Duration(milliseconds: 800),
-        () => _context.pop(),
+        () => Global.key.currentContext!.pop(),
       ).whenComplete(() {
         // Show verify in process message
         Helper.userVerify(0, returnSnack: true);
@@ -109,7 +108,7 @@ class VerifyAccountAPI {
   }
 
   void _error(OperationException error) async {
-    _arb = AppLocalizations.of(_context)!;
+    _arb = AppLocalizations.of(Global.key.currentContext!)!;
 
     if (error.graphqlErrors.isNotEmpty) {
       switch (error.graphqlErrors.first.extensions?['code']) {

@@ -16,7 +16,7 @@ class ErrorScreen extends StatelessWidget {
     final AppLocalizations? arb = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AutoAppBar(title: '${arb!.error} ⚠'),
+      appBar: AutoAppBar(title: '${arb?.error ?? 'Error'} ⚠'),
       body: SingleChildScrollView(
         child: Visibility(
           visible: kDebugMode,
@@ -26,7 +26,7 @@ class ErrorScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextX('${arb.oops} 😥'),
+                TextX('${arb?.oops ?? 'Oops'} 😥'),
                 SizedBox(
                   height: 120,
                   width: 120,

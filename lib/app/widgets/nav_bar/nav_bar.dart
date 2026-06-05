@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '/app/theme/colors/main_colors.dart';
 import '/app/widgets/text/text_x.dart';
@@ -100,7 +99,8 @@ class NavBar extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        height: containerHeight ?? (Platform.isIOS ? 85 : 75),
+        height: containerHeight ??
+            (defaultTargetPlatform == TargetPlatform.iOS ? 85 : 75),
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
         child: Row(
           mainAxisAlignment: mainAxisAlignment,

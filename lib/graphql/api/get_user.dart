@@ -10,7 +10,6 @@ import '/models/user.dart';
 import '/services/user_service.dart';
 
 class GetUserMeta {
-  static final BuildContext context = Global.key.currentContext!;
   static Future<void> request() async {
     Helper.debugger('user');
     await GraphQL.client()
@@ -41,7 +40,7 @@ class GetUserMeta {
     if (errors.isNotEmpty) {
       switch (errors.first.extensions?['code']) {
         case 401:
-          UserService.clearUser(context);
+          UserService.clearUser(Global.key.currentContext!);
           break;
       }
     }

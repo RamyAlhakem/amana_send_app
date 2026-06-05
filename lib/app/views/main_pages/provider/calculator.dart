@@ -28,7 +28,6 @@ import '/models/user.dart';
 import '/router/app_route.dart';
 
 class Calculator with ChangeNotifier {
-  static final BuildContext context = Global.key.currentContext!;
   static late AppLocalizations? _arb;
   List<SlidersModel> sliders = [];
   List<AgentModel> providersNew = [];
@@ -318,7 +317,7 @@ class Calculator with ChangeNotifier {
       sendCountryCode = Database().getUser.country.coCode;
     }
 
-    await CalculateTransferMoney(context,
+    await CalculateTransferMoney(Global.key.currentContext!,
             coCode: receiverCountry.coCode,
             sendCountryCode: sendCountryCode,
             providerId: receiverAgent.id,
@@ -373,7 +372,8 @@ class Calculator with ChangeNotifier {
     bool check = true;
 
     // Check if selected recipient country is available:
-    final recipients = Provider.of<RecipientsState>(context, listen: false);
+    final recipients =
+        Provider.of<RecipientsState>(Global.key.currentContext!, listen: false);
 
     // When re-sending from a transfer, the recipient data is embedded in the
     // transfer object and comes directly from the server. Bypass the local
@@ -413,7 +413,7 @@ class Calculator with ChangeNotifier {
     bool navigate = false,
     TransferModel? transfer,
   }) async {
-    _arb = AppLocalizations.of(context);
+    _arb = AppLocalizations.of(Global.key.currentContext!);
     bool canSend = true;
 
     final bool isResend = transfer != null;
@@ -459,7 +459,7 @@ class Calculator with ChangeNotifier {
     // Check if user wants to send from recipient/recipients page.
     // if (showAgents) setReceiverCountry(recipient.country);
     if (canSend && navigate) {
-      context.pushNamed(
+      Global.key.currentContext!.pushNamed(
         AppRoute.sendHub,
         pathParameters: <String, String>{'recipient': 'true'},
       );

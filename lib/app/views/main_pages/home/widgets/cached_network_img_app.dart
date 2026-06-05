@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'platform_image.dart';
 
 class CachedNetworkImageApp extends StatelessWidget {
   final String? urlImg;
@@ -7,12 +7,6 @@ class CachedNetworkImageApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: urlImg??"",
-      fit: BoxFit.fill,
-      placeholder: (context, url) =>
-          const Center(child: CircularProgressIndicator()),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
+    return createPlatformImage(urlImg, fit: BoxFit.fill);
   }
 }

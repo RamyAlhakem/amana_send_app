@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import '/app/views/main_pages/home/widgets/platform_image.dart';
 
 class ImageWidget extends StatelessWidget {
   const ImageWidget(
@@ -21,36 +21,19 @@ class ImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: url.isNotEmpty,
-      replacement: ClipRRect(
+    if (url.isEmpty) {
+      return ClipRRect(
         borderRadius: BorderRadius.circular(radius),
         child: Image.asset(asset, height: height, width: width, fit: fit),
-      ),
-      child: CachedNetworkImage(
-        imageUrl: url,
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: SizedBox(
         height: height,
         width: width,
-        imageBuilder: (BuildContext _, imageProvider) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: Image(
-              image: imageProvider,
-              fit: fit,
-              height: height,
-              width: width,
-            ),
-          );
-        },
-        placeholder: (BuildContext __, url) {
-          return Opacity(opacity: 0.1, child: Image.asset(asset, fit: fit));
-        },
-        errorWidget: (BuildContext ___, String url, error) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: Image.asset(asset, height: height, width: width, fit: fit),
-          );
-        },
+        child: createPlatformImage(url, fit: fit),
       ),
     );
   }

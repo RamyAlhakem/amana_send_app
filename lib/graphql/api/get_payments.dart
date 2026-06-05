@@ -11,10 +11,10 @@ import '/helper/helper.dart';
 import '/models/payment_method.dart';
 
 class GetPaymentMethods {
- static final BuildContext context = Global.key.currentContext!;
-static late Calculator _pr;
- static Future<void> request() async {
-     _pr = Provider.of<Calculator>(context, listen: false);
+  static late Calculator _pr;
+  static Future<void> request() async {
+    final BuildContext context = Global.key.currentContext!;
+    _pr = Provider.of<Calculator>(context, listen: false);
     Helper.debugger('paymentMethods');
     GraphQL.client()
         .query(QueryOptions(document: gql(Queries.paymentMethods)))
@@ -31,25 +31,25 @@ static late Calculator _pr;
     });
   }
 
- static void _result(Map<String, dynamic> data) async {
-  if (data.isNotEmpty && data.containsKey('paymentMethods')) {
-    if (data['paymentMethods'] is List && data['paymentMethods'].isNotEmpty) {
-      List<PaymentMethodModel> payments = List<PaymentMethodModel>.from(
-        data['paymentMethods'].map((x) => PaymentMethodModel.fromJson(x)).toList(),
-      );
+  static void _result(Map<String, dynamic> data) async {
+    if (data.isNotEmpty && data.containsKey('paymentMethods')) {
+      if (data['paymentMethods'] is List && data['paymentMethods'].isNotEmpty) {
+        List<PaymentMethodModel> payments = List<PaymentMethodModel>.from(
+          data['paymentMethods']
+              .map((x) => PaymentMethodModel.fromJson(x))
+              .toList(),
+        );
 
-      _pr.getPayments(payments);
+        _pr.getPayments(payments);
+      }
     }
   }
-}
 
-
- static void _error(List<GraphQLError> errors) async {
+  static void _error(List<GraphQLError> errors) async {
     if (errors.isNotEmpty) {
       switch (errors.first.extensions?['code']) {
         default:
-          Helper.toast(
-              '${errors.first.extensions?['code']}');
+          Helper.toast('${errors.first.extensions?['code']}');
       }
     }
   }

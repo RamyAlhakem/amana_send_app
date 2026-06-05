@@ -16,8 +16,8 @@ class GetCountriesAPI {
   static late Calculator _p;
   static late AppLocalizations _arb;
 
-  static final BuildContext context = Global.key.currentContext!;
   static Future<void> request() async {
+    final BuildContext context = Global.key.currentContext!;
     _p = Provider.of<Calculator>(context, listen: false);
     _arb = AppLocalizations.of(context)!;
 
