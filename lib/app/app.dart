@@ -31,8 +31,6 @@ class AmanaSend extends StatelessWidget {
         animation: Global.appSettings,
         builder: (BuildContext context, Widget? main) {
           main = MaterialApp.router(
-            // debugShowMaterialGrid: true,
-
             routerConfig: AppRoute.routes,
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'amana_send',
@@ -58,9 +56,38 @@ class AmanaSend extends StatelessWidget {
             theme: Themes.light(),
             darkTheme: Themes.dark(),
             themeMode: Global.appSettings.themeMode,
+            builder: (context, child) => _ResponsiveShell(child: child),
           );
           return main;
         },
+      ),
+    );
+  }
+}
+
+class _ResponsiveShell extends StatelessWidget {
+  const _ResponsiveShell({required this.child});
+  final Widget? child;
+
+  static const double _maxWidth = 480;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+    if (width <= _maxWidth) {
+      return ColoredBox(
+        color: theme.scaffoldBackgroundColor,
+        child: child,
+      );
+    }
+    return ColoredBox(
+      color: theme.scaffoldBackgroundColor,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: _maxWidth),
+          child: child,
+        ),
       ),
     );
   }
