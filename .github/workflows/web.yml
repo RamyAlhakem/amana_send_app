@@ -1,0 +1,74 @@
+name: 🌐 Web Release
+
+on:
+  release:
+    types: [published]
+
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      actions: read
+
+    env:
+      FLUTTER_VERSION: 3.32.8
+      FLAVOR: ${{ contains(github.ref_name, 'staging') && 'staging' || 'production' }}
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Analyze to check for bad Dart/Flutter practices
+      #   run: flutter analyze
+
+      - name: Build Web
+        run: |
+          flutter build web \
+          --release \
+          --base-href / \
+          --flavor ${{ env.FLAVOR }} \
+          -t lib/main_${{ env.FLAVOR }}.dart
+
+      - name: Create SPA _redirects file
+        run: |
+          echo "/*    /index.html   200" > build/web/_redirects
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy ./build/web
+            --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+            --branch=${{ github.ref_name }}
+            --commit-dirty=true
+
+      - name: Extract App Version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Send ClickUp Notification
+        if: always()
+        uses: architweb/ClickUpNotification@v3.2.0
+        with:
+          clickup_api_token: ${{ secrets.CLICKUP_API_TOKEN }}
+          clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
+          clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
+          clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_WEB }} - _v${{ env.APP_VERSION }}_"
