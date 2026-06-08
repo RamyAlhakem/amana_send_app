@@ -47,7 +47,7 @@ class _ImagePickState extends State<ImagePick>
   late String direction;
 
   final ImagePicker _picker = ImagePicker();
-  File? file;
+  XFile? _xFile;
 
   final double imageRadius = 15;
   String imageTitle = '';
@@ -64,9 +64,9 @@ class _ImagePickState extends State<ImagePick>
   @override
   void didChangeDependencies() {
     _arb = AppLocalizations.of(context);
-    if (file != null || widget.url.isNotEmpty) {
+    if (_xFile != null || widget.url.isNotEmpty) {
       imageTitle = _arb!.changeImage;
-    } else if (widget.url.isEmpty || file == null) {
+    } else if (widget.url.isEmpty || _xFile == null) {
       imageTitle = _arb!.uploadImage;
     }
     super.didChangeDependencies();
@@ -102,11 +102,11 @@ class _ImagePickState extends State<ImagePick>
         const SizedBox(height: 12),
         InkWell(
           onTap: () {
-            if (widget.url.isNotEmpty || file != null) {
+            if (widget.url.isNotEmpty || _xFile != null) {
               AttachmentTools.openImage(
                 context,
-                fil: file,
-                url: widget.url,
+                fil: (!kIsWeb && _xFile != null) ? File(_xFile!.path) : null,
+                url: (kIsWeb && _xFile != null) ? _xFile!.path : widget.url,
                 overlay: overlayView,
               );
             } else {
@@ -121,18 +121,18 @@ class _ImagePickState extends State<ImagePick>
             dashPattern: const [8, 8],
             color: Theme.of(context).dividerColor,
             child: Visibility(
-              visible: file == null,
+              visible: _xFile == null,
               replacement: ClipRRect(
                 borderRadius: BorderRadius.circular(imageRadius),
                 child: kIsWeb
                     ? Image.network(
-                        file?.path ?? '',
+                        _xFile!.path,
                         height: widget.height ?? 180,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                       )
                     : Image.file(
-                        file ?? File('path'),
+                        File(_xFile!.path),
                         height: widget.height ?? 180,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
@@ -182,7 +182,7 @@ class _ImagePickState extends State<ImagePick>
   Future<void> uploadImage(XFile? image, XFile fileView) async {
     if (image == null) return;
 
-    setState(() => file = File(fileView.path));
+    setState(() => _xFile = fileView);
     await UploadPhoto(
       files: <String, XFile>{'photo': image},
     ).request().then((id) {
@@ -192,14 +192,17 @@ class _ImagePickState extends State<ImagePick>
           imageTitle = _arb!.changeImage;
         } else {
           Helper.toast(_arb!.oops);
-          setState(() => file = null);
+          setState(() => _xFile = null);
         }
       });
     });
   }
 
   void _pickSource() {
-    if (widget.direction == 'front') {
+    if (kIsWeb) {
+      // On web, use the browser's file/camera picker via image_picker
+      imagePicker();
+    } else if (widget.direction == 'front') {
       openCamera(); // selfie
     } else {
       ImagePickSource.select(

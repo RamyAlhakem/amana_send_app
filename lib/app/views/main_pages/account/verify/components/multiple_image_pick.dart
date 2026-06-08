@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,7 +30,7 @@ class _MultipleImagePickState extends State<MultipleImagePick>
     with AutomaticKeepAliveClientMixin {
   final ImagePicker _picker = ImagePicker();
 
-  List<File?> files = <File?>[];
+  List<XFile?> files = <XFile?>[];
 
   int serverId = 0;
   int length = 0;
@@ -77,12 +78,19 @@ class _MultipleImagePickState extends State<MultipleImagePick>
                             visible: files[i] == null,
                             replacement: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
-                              child: Image.file(
-                                files[i] ?? File('path'),
-                                height: 75,
-                                width: 75,
-                                fit: BoxFit.cover,
-                              ),
+                              child: kIsWeb
+                                  ? Image.network(
+                                      files[i]!.path,
+                                      height: 75,
+                                      width: 75,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(files[i]!.path),
+                                      height: 75,
+                                      width: 75,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                             child: ImageWidget(
                               widget.urls[i],
@@ -143,7 +151,7 @@ class _MultipleImagePickState extends State<MultipleImagePick>
     if (image == null) return LoadingDialog.dismiss();
 
     setState(() {
-      files.add(File(image.path));
+      files.add(image);
       widget.urls.add('');
       length += 1;
     });

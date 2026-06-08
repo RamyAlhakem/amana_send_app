@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -108,7 +109,7 @@ class _AccountState extends State<Account> {
                 ),
                 AccountSetting(
                   onTap: () {
-                    if (Platform.isAndroid) {
+                    if (!kIsWeb && Platform.isAndroid) {
                       Share.share(Configs.googleStore);
                     } else {
                       final box = context.findRenderObject() as RenderBox?;
