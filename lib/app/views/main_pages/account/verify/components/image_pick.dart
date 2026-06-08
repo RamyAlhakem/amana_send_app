@@ -27,6 +27,7 @@ class ImagePick extends StatefulWidget {
     this.height,
     this.asset,
     this.direction = 'back',
+    this.onlyCamera = false,
   });
 
   final String url;
@@ -36,6 +37,7 @@ class ImagePick extends StatefulWidget {
   final double? height;
   final String? asset;
   final String direction;
+  final bool onlyCamera;
 
   @override
   State<ImagePick> createState() => _ImagePickState();
@@ -120,33 +122,31 @@ class _ImagePickState extends State<ImagePick>
             padding: const EdgeInsets.all(8),
             dashPattern: const [8, 8],
             color: Theme.of(context).dividerColor,
-            child: Visibility(
-              visible: _xFile == null,
-              replacement: ClipRRect(
-                borderRadius: BorderRadius.circular(imageRadius),
-                child: kIsWeb
-                    ? Image.network(
-                        _xFile!.path,
-                        height: widget.height ?? 180,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.file(
-                        File(_xFile!.path),
-                        height: widget.height ?? 180,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              child: ImageWidget(
-                widget.url,
-                asset: widget.asset ?? 'assets/images/id_icon.png',
-                height: widget.height ?? 180,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-                radius: imageRadius,
-              ),
-            ),
+            child: _xFile == null
+                ? ImageWidget(
+                    widget.url,
+                    asset: widget.asset ?? 'assets/images/id_icon.png',
+                    height: widget.height ?? 180,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    radius: imageRadius,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(imageRadius),
+                    child: kIsWeb
+                        ? Image.network(
+                            _xFile!.path,
+                            height: widget.height ?? 180,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_xFile!.path),
+                            height: widget.height ?? 180,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
           ),
         ),
       ],
@@ -165,12 +165,14 @@ class _ImagePickState extends State<ImagePick>
     }).whenComplete(() => setState(() => overlayView = overlay));
   }
 
-  Future<void> imagePicker() async {
+  Future<void> imagePicker({ImageSource source = ImageSource.gallery}) async {
     LoadingDialog().show();
 
     final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       imageQuality: 30,
+      preferredCameraDevice:
+          direction == 'front' ? CameraDevice.front : CameraDevice.rear,
     );
 
     if (image == null) return LoadingDialog.dismiss();
@@ -199,16 +201,13 @@ class _ImagePickState extends State<ImagePick>
   }
 
   void _pickSource() {
-    if (kIsWeb) {
-      // On web, use the browser's file/camera picker via image_picker
-      imagePicker();
-    } else if (widget.direction == 'front') {
-      openCamera(); // selfie
-    } else {
-      ImagePickSource.select(
-        camera: () => openCamera(),
-        gallery: () => imagePicker(),
-      );
+    if (widget.onlyCamera) {
+      openCamera();
+      return;
     }
+    ImagePickSource.select(
+      camera: () => openCamera(),
+      gallery: () => imagePicker(source: ImageSource.gallery),
+    );
   }
 }

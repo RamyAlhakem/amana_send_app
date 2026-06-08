@@ -181,6 +181,7 @@ class VerifyAccountState extends State<VerifyAccount> {
               title: arb.takeSelfie,
               asset: 'assets/images/selfie_icon.png',
               direction: 'front',
+              onlyCamera: true,
               onChange: (id) => selfiePicId = id,
             ),
 
