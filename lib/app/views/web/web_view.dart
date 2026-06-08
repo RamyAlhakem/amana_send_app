@@ -75,8 +75,7 @@ class _WebViewState extends State<WebView> {
           children: [
             InAppWebView(
               key: webViewKey,
-              initialData: InAppWebViewInitialData(data: pageUrl),
-              // initialUrlRequest: URLRequest(url: Uri.parse(pageUrl)),
+              initialUrlRequest: URLRequest(url: WebUri(pageUrl)),
               initialSettings: InAppWebViewSettings(
                 mediaPlaybackRequiresUserGesture: false,
                 useOnDownloadStart: true,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
@@ -53,7 +54,7 @@ class PinForm extends StatelessWidget {
             LengthLimitingTextInputFormatter(4),
             FilteringTextInputFormatter.digitsOnly,
           ],
-          onClipboardFound: (value) => pin.setText(value),
+          onClipboardFound: kIsWeb ? null : (value) => pin.setText(value),
           hapticFeedbackType: HapticFeedbackType.heavyImpact,
           cursor: GeneralWidgets.cursor,
           separatorBuilder: (_) => const SizedBox(width: 16),

@@ -20,16 +20,22 @@ class FirebaseTool {
     try {
       // Firebase is already initialized by NotificationService
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-      
+
       firebase.token = (await firebaseMessaging.getToken() ?? '');
       user.firebase = firebase;
       Database().setUserBase = user;
     } catch (e) {
-      if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+      if (kIsWeb && e.runtimeType.toString().contains('JavaScriptObject')) {
         Helper.log('firebase web error (JS interop): $e');
       } else if (e is FirebaseException) {
         Helper.log('firebase error: ${e.message}');
       } else {
+        try {
+          if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+            Helper.log('firebase web error (JS interop): $e');
+            return;
+          }
+        } catch (_) {}
         Helper.log('firebase error: $e');
       }
     }
@@ -73,11 +79,17 @@ class FirebaseTool {
 
       _notificationListener();
     } catch (e) {
-      if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+      if (kIsWeb && e.runtimeType.toString().contains('JavaScriptObject')) {
         Helper.log('firebase topics web error (JS interop): $e');
       } else if (e is FirebaseException) {
         Helper.log('firebase topics error: ${e.message}');
       } else {
+        try {
+          if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+            Helper.log('firebase topics web error (JS interop): $e');
+            return;
+          }
+        } catch (_) {}
         Helper.log('firebase topics error: $e');
       }
     }
