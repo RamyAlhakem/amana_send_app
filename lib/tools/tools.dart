@@ -50,10 +50,15 @@ class Tools {
   }
 
   static void removeSpaceFromClipboard(TextEditingController controller) async {
-    ClipboardData? content = await Clipboard.getData('text/plain');
-    if (content != null) {
-      String cleanContent = (content.text ?? '').replaceAll(RegExp(r'\D+'), '');
-      if (controller.text.isEmpty) controller.text = cleanContent;
+    try {
+      ClipboardData? content = await Clipboard.getData('text/plain');
+      if (content != null) {
+        String cleanContent =
+            (content.text ?? '').replaceAll(RegExp(r'\D+'), '');
+        if (controller.text.isEmpty) controller.text = cleanContent;
+      }
+    } catch (e) {
+      debugPrint('Clipboard paste error: $e');
     }
   }
 

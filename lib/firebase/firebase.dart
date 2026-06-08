@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
 import '/database/injector.dart';
 import '/global/variables.dart';
@@ -18,51 +20,79 @@ class FirebaseTool {
     try {
       // Firebase is already initialized by NotificationService
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-      
+
       firebase.token = (await firebaseMessaging.getToken() ?? '');
       user.firebase = firebase;
       Database().setUserBase = user;
     } catch (e) {
-      Helper.log('firebase error: $e');
+      if (kIsWeb && e.runtimeType.toString().contains('JavaScriptObject')) {
+        Helper.log('firebase web error (JS interop): $e');
+      } else if (e is FirebaseException) {
+        Helper.log('firebase error: ${e.message}');
+      } else {
+        try {
+          if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+            Helper.log('firebase web error (JS interop): $e');
+            return;
+          }
+        } catch (_) {}
+        Helper.log('firebase error: $e');
+      }
     }
     Helper.log('firebaseToken: ${firebase.token}');
   }
 
   static Future<void> setFirebaseTopics() async {
-    final UserBase user = Database().getUserBase;
-    final FirebaseModel firebase = user.firebase;
+    try {
+      final UserBase user = Database().getUserBase;
+      final FirebaseModel firebase = user.firebase;
 
-    if (!firebase.topics.contains('all')) {
-      await FirebaseMessaging.instance.subscribeToTopic('all');
-      firebase.topics.add('all');
+      if (!firebase.topics.contains('all')) {
+        await FirebaseMessaging.instance.subscribeToTopic('all');
+        firebase.topics.add('all');
+      }
+
+      if (Global.appSettings.token.isEmpty) {
+        if (!firebase.topics.contains('visitors')) {
+          await FirebaseMessaging.instance.subscribeToTopic('visitors');
+          firebase.topics.add('visitors');
+        }
+        if (firebase.topics.contains('users')) {
+          await FirebaseMessaging.instance.unsubscribeFromTopic('users');
+          firebase.topics.remove('users');
+        }
+      } else {
+        if (!firebase.topics.contains('users')) {
+          await FirebaseMessaging.instance.subscribeToTopic('users');
+          firebase.topics.add('users');
+        }
+
+        if (firebase.topics.contains('visitors')) {
+          await FirebaseMessaging.instance.unsubscribeFromTopic('visitors');
+          firebase.topics.remove('visitors');
+        }
+      }
+      user.firebase = firebase;
+      Database().setUserBase = user;
+
+      Helper.log('firebaseTopics: ${firebase.topics}');
+
+      _notificationListener();
+    } catch (e) {
+      if (kIsWeb && e.runtimeType.toString().contains('JavaScriptObject')) {
+        Helper.log('firebase topics web error (JS interop): $e');
+      } else if (e is FirebaseException) {
+        Helper.log('firebase topics error: ${e.message}');
+      } else {
+        try {
+          if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+            Helper.log('firebase topics web error (JS interop): $e');
+            return;
+          }
+        } catch (_) {}
+        Helper.log('firebase topics error: $e');
+      }
     }
-
-    if (Global.appSettings.token.isEmpty) {
-      if (!firebase.topics.contains('visitors')) {
-        await FirebaseMessaging.instance.subscribeToTopic('visitors');
-        firebase.topics.add('visitors');
-      }
-      if (firebase.topics.contains('users')) {
-        await FirebaseMessaging.instance.unsubscribeFromTopic('users');
-        firebase.topics.remove('users');
-      }
-    } else {
-      if (!firebase.topics.contains('users')) {
-        await FirebaseMessaging.instance.subscribeToTopic('users');
-        firebase.topics.add('users');
-      }
-
-      if (firebase.topics.contains('visitors')) {
-        await FirebaseMessaging.instance.unsubscribeFromTopic('visitors');
-        firebase.topics.remove('visitors');
-      }
-    }
-    user.firebase = firebase;
-    Database().setUserBase = user;
-
-    Helper.log('firebaseTopics: ${firebase.topics}');
-
-    _notificationListener();
   }
 
   static void _notificationListener() {
