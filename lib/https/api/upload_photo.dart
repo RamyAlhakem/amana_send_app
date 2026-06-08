@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 import '/configs/configs.dart';
 import '/global/variables.dart';
@@ -29,13 +28,10 @@ class UploadPhoto {
     );
 
     for (final entry in files.entries) {
-      final bytes = await entry.value.readAsBytes();
+      final file = entry.value;
+      final bytes = await file.readAsBytes();
       request.files.add(
-        http.MultipartFile.fromBytes(
-          entry.key,
-          bytes,
-          filename: basename(entry.value.path),
-        ),
+        http.MultipartFile.fromBytes(entry.key, bytes, filename: file.name),
       );
     }
 
