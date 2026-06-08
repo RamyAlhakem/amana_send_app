@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -34,8 +35,13 @@ class NotificationService {
       await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform);
       fcmToken = await FirebaseMessaging.instance.getToken();
-      // getIt<LocalStorage>().setValue(storageKeys: StorageKeys.fcmToken, value: fcmToken ?? 'Device Token'); //TOOD HANDEL IT IN ANOTHER WAY
       log(fcmToken ?? 'no FCM Token', name: 'FCM token');
+
+      // On web, skip local notifications setup (not supported)
+      if (kIsWeb) {
+        _startListening();
+        return;
+      }
 
       const AndroidInitializationSettings initializationSettingsAndroid =
           AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -66,7 +72,15 @@ class NotificationService {
               alert: true, badge: true, sound: true);
 
       _startListening();
-    } catch (e) {}
+    } catch (e) {
+      if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+        log('Web Firebase error (JS interop): $e', name: 'NotificationService');
+      } else if (e is FirebaseException) {
+        log('Firebase error: ${e.message}', name: 'NotificationService');
+      } else {
+        log('NotificationService init error: $e', name: 'NotificationService');
+      }
+    }
   }
 
   static Future<void> periodicallyShowNotification({
@@ -121,6 +135,7 @@ class NotificationService {
       FirebaseMessaging.onMessage.listen(_showNotification);
 
   static Future<void> _requestPermission() async {
+    if (kIsWeb) return;
     if (Platform.isAndroid) {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
@@ -181,6 +196,9 @@ class NotificationService {
   }
 
   static void _showNotification(RemoteMessage message) {
+    // On web, local notifications plugin is not initialized
+    if (kIsWeb) return;
+
     Map notification = message.data;
     
     // Get title and body from notification or data
