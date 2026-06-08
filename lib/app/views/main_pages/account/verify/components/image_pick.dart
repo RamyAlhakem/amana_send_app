@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -123,12 +124,19 @@ class _ImagePickState extends State<ImagePick>
               visible: file == null,
               replacement: ClipRRect(
                 borderRadius: BorderRadius.circular(imageRadius),
-                child: Image.file(
-                  file ?? File('path'),
-                  height: widget.height ?? 180,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
+                child: kIsWeb
+                    ? Image.network(
+                        file?.path ?? '',
+                        height: widget.height ?? 180,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        file ?? File('path'),
+                        height: widget.height ?? 180,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
               ),
               child: ImageWidget(
                 widget.url,
@@ -176,7 +184,7 @@ class _ImagePickState extends State<ImagePick>
 
     setState(() => file = File(fileView.path));
     await UploadPhoto(
-      files: <String, String>{'photo': image.path},
+      files: <String, XFile>{'photo': image},
     ).request().then((id) {
       setState(() {
         if (id != 0) {

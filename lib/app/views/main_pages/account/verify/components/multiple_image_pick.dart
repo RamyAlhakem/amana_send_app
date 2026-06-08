@@ -149,7 +149,7 @@ class _MultipleImagePickState extends State<MultipleImagePick>
     });
 
     UploadPhoto(
-      files: <String, String>{'photo': image.path},
+      files: <String, XFile>{'photo': image},
     ).request().then((id) {
       if (id != 0) {
         serverId = id;
