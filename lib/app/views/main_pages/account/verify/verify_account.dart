@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 
@@ -159,6 +160,7 @@ class VerifyAccountState extends State<VerifyAccount> {
 
             // Identity image
             ImagePick(
+              height: kIsWeb ? 500 : null,
               url: mainIdPic,
               onChange: (id) => mainIdPicId = id,
             ),
@@ -177,6 +179,7 @@ class VerifyAccountState extends State<VerifyAccount> {
 
             // Take a selfie
             ImagePick(
+              height: kIsWeb ? 500 : null,
               url: selfiePic,
               title: arb.takeSelfie,
               asset: 'assets/images/selfie_icon.png',
