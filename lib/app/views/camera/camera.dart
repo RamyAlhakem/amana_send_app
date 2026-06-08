@@ -51,12 +51,20 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             debugPrint('error while initializing camera: $e');
         }
       }
-    }).whenComplete(() {
+    }).whenComplete(() async {
       if (direction == CameraLensDirection.back) {
         if (cameraCtrl != null && cameraCtrl!.value.isInitialized) {
-          cameraCtrl?.setFlashMode(currentFlashMode).catchError((e) {
+          try {
+            await cameraCtrl!.setFlashMode(currentFlashMode);
+          } catch (e) {
             debugPrint('setFlashMode error: $e');
-          });
+            currentFlashMode = FlashMode.off;
+            try {
+              await cameraCtrl!.setFlashMode(FlashMode.off);
+            } catch (e2) {
+              debugPrint('setFlashMode fallback error: $e2');
+            }
+          }
         }
       }
       if (mounted) setState(() {}); // refresh UI.
@@ -259,8 +267,17 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     try {
       XFile file = await cameraController.takePicture();
       return file;
-    } on CameraException catch (e) {
+    } catch (e) {
       debugPrint('Error occurred while taking picture: $e');
+      if (e.toString().contains('torchModeNotSupported')) {
+        try {
+          await cameraController.setFlashMode(FlashMode.off);
+          XFile file = await cameraController.takePicture();
+          return file;
+        } catch (e2) {
+          debugPrint('Error occurred while taking picture fallback: $e2');
+        }
+      }
       return null;
     }
   }
