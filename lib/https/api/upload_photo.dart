@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
 import '/configs/configs.dart';
@@ -11,7 +12,7 @@ class UploadPhoto {
 
   UploadPhoto({required this.files});
 
-  final Map<String, String> files;
+  final Map<String, XFile> files;
 
   static String _auth() {
     String authorization = '';
@@ -27,11 +28,16 @@ class UploadPhoto {
       Uri.parse(Configs.apiRestPhoto),
     );
 
-    files.forEach((String k, dynamic v) async {
+    for (final entry in files.entries) {
+      final bytes = await entry.value.readAsBytes();
       request.files.add(
-        await http.MultipartFile.fromPath(k, v, filename: basename(v)),
+        http.MultipartFile.fromBytes(
+          entry.key,
+          bytes,
+          filename: basename(entry.value.path),
+        ),
       );
-    });
+    }
 
     request.headers.addAll({'Content-Type': 'multipart/form-data'});
     if (Global.appSettings.token.isNotEmpty) {
