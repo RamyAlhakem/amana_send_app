@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -74,32 +75,18 @@ class _WebViewState extends State<WebView> {
           children: [
             InAppWebView(
               key: webViewKey,
-              initialData: InAppWebViewInitialData(data: pageUrl),
-              // initialUrlRequest: URLRequest(url: Uri.parse(pageUrl)),
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                  mediaPlaybackRequiresUserGesture: false,
-                  useOnDownloadStart: true,
-                  useShouldOverrideUrlLoading: true,
-                  javaScriptEnabled: true,
-                  userAgent:
-                      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0',
-                  cacheEnabled: true,
-                  javaScriptCanOpenWindowsAutomatically: true,
-                ),
-                ios: IOSInAppWebViewOptions(
-                  useOnNavigationResponse: true,
-                  allowsInlineMediaPlayback: true,
-                ),
-                android: AndroidInAppWebViewOptions(
-                  domStorageEnabled: true,
-                  databaseEnabled: true,
-                  clearSessionCache: true,
-                  thirdPartyCookiesEnabled: true,
-                  allowFileAccess: true,
-                  allowContentAccess: true,
-                  useHybridComposition: true,
-                ),
+              initialUrlRequest: URLRequest(url: WebUri(pageUrl)),
+              initialSettings: InAppWebViewSettings(
+                mediaPlaybackRequiresUserGesture: false,
+                useOnDownloadStart: true,
+                useShouldOverrideUrlLoading: true,
+                javaScriptEnabled: true,
+                userAgent:
+                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0',
+                cacheEnabled: true,
+                javaScriptCanOpenWindowsAutomatically: true,
+                allowsInlineMediaPlayback: true,
+                iframeAllowFullscreen: true,
               ),
               onProgressChanged: (InAppWebViewController ctrl, int progress) {
                 if (mounted) setState(() => _progress = progress / 100);
@@ -140,10 +127,10 @@ class _WebViewState extends State<WebView> {
                   }
                 }
               },
-              androidOnPermissionRequest: (ctrl, origin, resources) async {
-                return PermissionRequestResponse(
-                  resources: resources,
-                  action: PermissionRequestResponseAction.GRANT,
+              onPermissionRequest: (ctrl, request) async {
+                return PermissionResponse(
+                  resources: request.resources,
+                  action: PermissionResponseAction.GRANT,
                 );
               },
             ),

@@ -69,6 +69,7 @@ dependencies:
   archive: ^3.6.1
   win32: ^5.8.0
   carousel_slider: ^5.1.1
+  flutter_inappwebview_web: ^1.1.2
 
 dev_dependencies:
   flutter_test:
