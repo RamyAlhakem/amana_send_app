@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart' as html;
+
+import 'captcha_stub.dart' if (dart.library.html) 'captcha_web.dart';
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
@@ -20,18 +25,24 @@ class CaptchaDialog {
     double progress = 0;
 
     String? webHtmlData;
+    StreamSubscription<html.MessageEvent>? messageSubscription;
+
     if (kIsWeb) {
-      try {
-        final response = await http.get(Uri.parse('${Configs.apiUrl}captcha'));
-        if (response.statusCode == 200) {
-          webHtmlData = response.body.replaceAll(
-            "window.flutter_inappwebview.callHandler('callHandler', response);",
-            "window.parent.postMessage('captcha:' + response, '*'); console.log('captcha:' + response); window.location.href = '${Configs.apiUrl}captcha-success?token=' + response;",
-          );
+      // On Web, we must pass the actual URL to the iframe to bypass ReCAPTCHA domain restrictions
+      registerCaptchaView('captcha-iframe', '${Configs.apiUrl}captcha');
+      progress = 1.0;
+
+      messageSubscription = html.window.onMessage.listen((event) async {
+        final data = event.data.toString();
+        if (data.startsWith('captcha:')) {
+          final token = data.replaceFirst('captcha:', '');
+          if (token.isNotEmpty) {
+            messageSubscription?.cancel();
+            dismiss();
+            await onSubmit(token);
+          }
         }
-      } catch (e) {
-        debugPrint('Error fetching captcha HTML: $e');
-      }
+      });
     }
 
     await showModalBottomSheet(
@@ -87,60 +98,59 @@ class CaptchaDialog {
                     width: MediaQuery.of(context).size.width,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: InAppWebView(
-                        initialUrlRequest: webHtmlData == null
-                            ? URLRequest(
+                      child: kIsWeb
+                          ? const HtmlElementView(viewType: 'captcha-iframe')
+                          : InAppWebView(
+                              initialUrlRequest: URLRequest(
                                 url: WebUri('${Configs.apiUrl}captcha'),
-                              )
-                            : null,
-                        initialData: webHtmlData != null
-                            ? InAppWebViewInitialData(
-                                data: webHtmlData!,
-                                baseUrl: WebUri(Configs.apiUrl),
-                              )
-                            : null,
-                        onConsoleMessage: (controller, consoleMessage) async {
-                          if (kIsWeb &&
-                              consoleMessage.message.startsWith('captcha:')) {
-                            final token = consoleMessage.message
-                                .replaceFirst('captcha:', '');
-                            if (token.isNotEmpty) {
-                              dismiss();
-                              await onSubmit(token);
-                            }
-                          }
-                        },
-                        onProgressChanged: (InAppWebViewController _, int p) {
-                          set(() => progress = p / 100);
-                        },
-                        onLoadStart:
-                            (InAppWebViewController ctrl, Uri? url) async {
-                          if (kIsWeb &&
-                              url != null &&
-                              url
-                                  .toString()
-                                  .contains('captcha-success?token=')) {
-                            final token = url.queryParameters['token'] ?? '';
-                            if (token.isNotEmpty) {
-                              dismiss();
-                              await onSubmit(token);
-                            }
-                            return;
-                          }
-
-                          if (!kIsWeb) {
-                            ctrl.addJavaScriptHandler(
-                              handlerName: 'callHandler',
-                              callback: (List<dynamic> args) async {
-                                if (args.first.toString().isNotEmpty) {
-                                  dismiss();
-                                  await onSubmit(args.first);
+                              ),
+                              initialData: null,
+                              onConsoleMessage:
+                                  (controller, consoleMessage) async {
+                                if (kIsWeb &&
+                                    consoleMessage.message
+                                        .startsWith('captcha:')) {
+                                  final token = consoleMessage.message
+                                      .replaceFirst('captcha:', '');
+                                  if (token.isNotEmpty) {
+                                    dismiss();
+                                    await onSubmit(token);
+                                  }
                                 }
                               },
-                            );
-                          }
-                        },
-                      ),
+                              onProgressChanged:
+                                  (InAppWebViewController _, int p) {
+                                set(() => progress = p / 100);
+                              },
+                              onLoadStart: (InAppWebViewController ctrl,
+                                  WebUri? url) async {
+                                if (kIsWeb &&
+                                    url != null &&
+                                    url
+                                        .toString()
+                                        .contains('captcha-success?token=')) {
+                                  final token =
+                                      url.queryParameters['token'] ?? '';
+                                  if (token.isNotEmpty) {
+                                    dismiss();
+                                    await onSubmit(token);
+                                  }
+                                  return;
+                                }
+
+                                if (!kIsWeb) {
+                                  ctrl.addJavaScriptHandler(
+                                    handlerName: 'callHandler',
+                                    callback: (List<dynamic> args) async {
+                                      if (args.first.toString().isNotEmpty) {
+                                        dismiss();
+                                        await onSubmit(args.first);
+                                      }
+                                    },
+                                  );
+                                }
+                              },
+                            ),
                     ),
                   ),
                 ],
@@ -150,6 +160,8 @@ class CaptchaDialog {
         );
       },
     );
+
+    messageSubscription?.cancel();
   }
 
   static void dismiss() => Navigator.pop(Global.key.currentContext!);
