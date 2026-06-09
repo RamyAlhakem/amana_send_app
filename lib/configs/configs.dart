@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:amana_send/app_config.dart';
 
 class Configs {
@@ -15,7 +16,7 @@ class Configs {
   static  String apiRestPhoto = AppConfig.apiRestPhoto;
   static  String apiUrl = AppConfig.apiUrl;
 
-  static String storeUrl = Platform.isIOS ? appleStore : googleStore;
+  static String storeUrl = !kIsWeb && Platform.isIOS ? appleStore : googleStore;
   static String appleStore = 'https://apps.apple.com/app/id6474017595';
   static String googleStore =
       'https://play.google.com/store/apps/details?id=com.amana_send';

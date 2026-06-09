@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 
 class CropImage {
   static int targetWidth = 380;
@@ -10,7 +7,8 @@ class CropImage {
 
   static Future<XFile> crop(XFile rawImage) async {
     XFile croppedXFile = rawImage;
-    img.Image? image = img.decodeImage(File(rawImage.path).readAsBytesSync());
+    final bytes = await rawImage.readAsBytes();
+    img.Image? image = img.decodeImage(bytes);
     if (image != null) {
       // Calculate the starting coordinates for cropping
       int startX = (image.width - image.width * .9) ~/ 2;
@@ -23,17 +21,12 @@ class CropImage {
         height: (image.height * .7).toInt(),
       );
 
-      // Get the app's writable directory
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
-
-      // Generate a unique filename for the resized image
-      String resizedImagePath = '$appDocPath/resized_image.jpg';
-
-      File tempFile = File(resizedImagePath);
-      tempFile.writeAsBytesSync(img.encodeJpg(resizedImage));
-
-      croppedXFile = XFile(tempFile.path);
+      // Generate an XFile from the cropped bytes (works on web and mobile)
+      croppedXFile = XFile.fromData(
+        img.encodeJpg(resizedImage),
+        name: 'resized_image.jpg',
+        mimeType: 'image/jpeg',
+      );
     }
 
     return croppedXFile;

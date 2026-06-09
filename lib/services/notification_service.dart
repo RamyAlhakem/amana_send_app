@@ -34,7 +34,6 @@ class NotificationService {
       await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform);
       fcmToken = await FirebaseMessaging.instance.getToken();
-      // getIt<LocalStorage>().setValue(storageKeys: StorageKeys.fcmToken, value: fcmToken ?? 'Device Token'); //TOOD HANDEL IT IN ANOTHER WAY
       log(fcmToken ?? 'no FCM Token', name: 'FCM token');
 
       await _requestPermission();
@@ -67,7 +66,13 @@ class NotificationService {
 
       _startListening();
     } catch (e) {
-      log('NotificationService.init error: $e', name: 'NotificationService');
+      if (kIsWeb && e.toString().contains('JavaScriptObject')) {
+        log('Web Firebase error (JS interop): $e', name: 'NotificationService');
+      } else if (e is FirebaseException) {
+        log('Firebase error: ${e.message}', name: 'NotificationService');
+      } else {
+        log('NotificationService init error: $e', name: 'NotificationService');
+      }
     }
   }
 
@@ -196,10 +201,9 @@ class NotificationService {
   }
 
   static void _showNotification(RemoteMessage message) {
+    // On web, local notifications plugin is not initialized;
+    // background messages are handled by the Firebase service worker.
     if (kIsWeb) {
-      // On web, Firebase handles notification display via the service worker
-      // for background messages. Foreground messages are handled here but the
-      // browser's Notification API is used automatically by firebase_messaging.
       log(
         'Foreground message received: ${message.notification?.title}',
         name: 'NotificationService',

@@ -19,7 +19,19 @@ Future<void> initlize() async {
   // Load the user's preferred theme while the splash screen is displayed.
   await Global.appSettings.loadSettings();
 
-  ErrorWidget.builder = (FlutterErrorDetails err) => ErrorScreen('$err');
+  ErrorWidget.builder = (FlutterErrorDetails err) {
+    return Material(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            err.exceptionAsString(),
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+      ),
+    );
+  };
 
   FirebaseTool.getFirebaseToken().whenComplete(
     () => FirebaseTool.setFirebaseTopics(),

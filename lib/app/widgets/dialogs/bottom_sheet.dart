@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:http/http.dart' as http;
 
 import '/app/extensions/dark_mode.dart';
 import '/app/theme/colors/main_colors.dart';
@@ -20,6 +22,22 @@ class BottomSheeter {
   Future<void> show() async {
     final BuildContext context = Global.key.currentContext!;
     double progress = 0;
+
+    String? webHtmlData;
+    if (kIsWeb) {
+      try {
+        final response = await http.get(Uri.parse('${Configs.apiUrl}captcha'));
+        if (response.statusCode == 200) {
+          webHtmlData = response.body.replaceAll(
+            "window.flutter_inappwebview.callHandler('callHandler', response);",
+            "window.parent.postMessage('captcha:' + response, '*'); console.log('captcha:' + response); window.location.href = '${Configs.apiUrl}captcha-success?token=' + response;",
+          );
+        }
+      } catch (e) {
+        debugPrint('Error fetching captcha HTML: $e');
+      }
+    }
+
     await showModalBottomSheet(
       context: context,
       useRootNavigator: false,
@@ -55,22 +73,57 @@ class BottomSheeter {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: InAppWebView(
-                          initialUrlRequest: URLRequest(
-                            url: WebUri('${Configs.apiUrl}captcha'),
-                          ),
+                          initialUrlRequest: webHtmlData == null
+                              ? URLRequest(
+                                  url: WebUri('${Configs.apiUrl}captcha'),
+                                )
+                              : null,
+                          initialData: webHtmlData != null
+                              ? InAppWebViewInitialData(
+                                  data: webHtmlData!,
+                                  baseUrl: WebUri(Configs.apiUrl),
+                                )
+                              : null,
+                          onConsoleMessage: (controller, consoleMessage) async {
+                            if (kIsWeb &&
+                                consoleMessage.message.startsWith('captcha:')) {
+                              final token = consoleMessage.message
+                                  .replaceFirst('captcha:', '');
+                              if (token.isNotEmpty) {
+                                dismiss();
+                                await onSubmit(token);
+                              }
+                            }
+                          },
                           onProgressChanged: (InAppWebViewController _, int p) {
                             set(() => progress = p / 100);
                           },
-                          onLoadStart: (InAppWebViewController ctrl, Uri? _) {
-                            ctrl.addJavaScriptHandler(
-                              handlerName: 'callHandler',
-                              callback: (List<dynamic> args) async {
-                                if (args.first.toString().isNotEmpty) {
-                                  dismiss();
-                                  await onSubmit(args.first);
-                                }
-                              },
-                            );
+                          onLoadStart:
+                              (InAppWebViewController ctrl, Uri? url) async {
+                            if (kIsWeb &&
+                                url != null &&
+                                url
+                                    .toString()
+                                    .contains('captcha-success?token=')) {
+                              final token = url.queryParameters['token'] ?? '';
+                              if (token.isNotEmpty) {
+                                dismiss();
+                                await onSubmit(token);
+                              }
+                              return;
+                            }
+
+                            if (!kIsWeb) {
+                              ctrl.addJavaScriptHandler(
+                                handlerName: 'callHandler',
+                                callback: (List<dynamic> args) async {
+                                  if (args.first.toString().isNotEmpty) {
+                                    dismiss();
+                                    await onSubmit(args.first);
+                                  }
+                                },
+                              );
+                            }
                           },
                         ),
                       ),

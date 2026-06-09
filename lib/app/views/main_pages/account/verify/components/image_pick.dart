@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +27,7 @@ class ImagePick extends StatefulWidget {
     this.height,
     this.asset,
     this.direction = 'back',
+    this.onlyCamera = false,
   });
 
   final String url;
@@ -35,6 +37,7 @@ class ImagePick extends StatefulWidget {
   final double? height;
   final String? asset;
   final String direction;
+  final bool onlyCamera;
 
   @override
   State<ImagePick> createState() => _ImagePickState();
@@ -46,7 +49,7 @@ class _ImagePickState extends State<ImagePick>
   late String direction;
 
   final ImagePicker _picker = ImagePicker();
-  File? file;
+  XFile? _xFile;
 
   final double imageRadius = 15;
   String imageTitle = '';
@@ -63,9 +66,9 @@ class _ImagePickState extends State<ImagePick>
   @override
   void didChangeDependencies() {
     _arb = AppLocalizations.of(context);
-    if (file != null || widget.url.isNotEmpty) {
+    if (_xFile != null || widget.url.isNotEmpty) {
       imageTitle = _arb!.changeImage;
-    } else if (widget.url.isEmpty || file == null) {
+    } else if (widget.url.isEmpty || _xFile == null) {
       imageTitle = _arb!.uploadImage;
     }
     super.didChangeDependencies();
@@ -101,11 +104,11 @@ class _ImagePickState extends State<ImagePick>
         const SizedBox(height: 12),
         InkWell(
           onTap: () {
-            if (widget.url.isNotEmpty || file != null) {
+            if (widget.url.isNotEmpty || _xFile != null) {
               AttachmentTools.openImage(
                 context,
-                fil: file,
-                url: widget.url,
+                fil: (!kIsWeb && _xFile != null) ? File(_xFile!.path) : null,
+                url: (kIsWeb && _xFile != null) ? _xFile!.path : widget.url,
                 overlay: overlayView,
               );
             } else {
@@ -119,26 +122,31 @@ class _ImagePickState extends State<ImagePick>
             padding: const EdgeInsets.all(8),
             dashPattern: const [8, 8],
             color: Theme.of(context).dividerColor,
-            child: Visibility(
-              visible: file == null,
-              replacement: ClipRRect(
-                borderRadius: BorderRadius.circular(imageRadius),
-                child: Image.file(
-                  file ?? File('path'),
-                  height: widget.height ?? 180,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: ImageWidget(
-                widget.url,
-                asset: widget.asset ?? 'assets/images/id_icon.png',
-                height: widget.height ?? 180,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-                radius: imageRadius,
-              ),
-            ),
+            child: _xFile == null
+                ? ImageWidget(
+                    widget.url,
+                    asset: widget.asset ?? 'assets/images/id_icon.png',
+                    height: widget.height ?? 180,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    radius: imageRadius,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(imageRadius),
+                    child: kIsWeb
+                        ? Image.network(
+                            _xFile!.path,
+                            height: widget.height ?? 180,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_xFile!.path),
+                            height: widget.height ?? 180,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
           ),
         ),
       ],
@@ -157,12 +165,14 @@ class _ImagePickState extends State<ImagePick>
     }).whenComplete(() => setState(() => overlayView = overlay));
   }
 
-  Future<void> imagePicker() async {
+  Future<void> imagePicker({ImageSource source = ImageSource.gallery}) async {
     LoadingDialog().show();
 
     final XFile? image = await _picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       imageQuality: 30,
+      preferredCameraDevice:
+          direction == 'front' ? CameraDevice.front : CameraDevice.rear,
     );
 
     if (image == null) return LoadingDialog.dismiss();
@@ -174,9 +184,9 @@ class _ImagePickState extends State<ImagePick>
   Future<void> uploadImage(XFile? image, XFile fileView) async {
     if (image == null) return;
 
-    setState(() => file = File(fileView.path));
+    setState(() => _xFile = fileView);
     await UploadPhoto(
-      files: <String, String>{'photo': image.path},
+      files: <String, XFile>{'photo': image},
     ).request().then((id) {
       setState(() {
         if (id != 0) {
@@ -184,20 +194,20 @@ class _ImagePickState extends State<ImagePick>
           imageTitle = _arb!.changeImage;
         } else {
           Helper.toast(_arb!.oops);
-          setState(() => file = null);
+          setState(() => _xFile = null);
         }
       });
     });
   }
 
   void _pickSource() {
-    if (widget.direction == 'front') {
-      openCamera(); // selfie
-    } else {
-      ImagePickSource.select(
-        camera: () => openCamera(),
-        gallery: () => imagePicker(),
-      );
+    if (widget.onlyCamera) {
+      openCamera();
+      return;
     }
+    ImagePickSource.select(
+      camera: () => openCamera(),
+      gallery: () => imagePicker(source: ImageSource.gallery),
+    );
   }
 }

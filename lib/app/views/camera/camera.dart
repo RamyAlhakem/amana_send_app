@@ -29,7 +29,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   CameraLensDirection direction = CameraLensDirection.back;
 
   late List<CameraDescription> cameras;
-  late CameraDescription selectedCamera;
+  CameraDescription? selectedCamera;
   CameraController? cameraCtrl;
   FlashMode currentFlashMode = FlashMode.auto;
 
@@ -51,10 +51,20 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             debugPrint('error while initializing camera: $e');
         }
       }
-    }).whenComplete(() {
+    }).whenComplete(() async {
       if (direction == CameraLensDirection.back) {
         if (cameraCtrl != null && cameraCtrl!.value.isInitialized) {
-          cameraCtrl?.setFlashMode(currentFlashMode);
+          try {
+            await cameraCtrl!.setFlashMode(currentFlashMode);
+          } catch (e) {
+            debugPrint('setFlashMode error: $e');
+            currentFlashMode = FlashMode.off;
+            try {
+              await cameraCtrl!.setFlashMode(FlashMode.off);
+            } catch (e2) {
+              debugPrint('setFlashMode fallback error: $e2');
+            }
+          }
         }
       }
       if (mounted) setState(() {}); // refresh UI.
@@ -63,10 +73,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
+    if (cameras.isEmpty) return;
+
     selectedCamera = cameras.firstWhere(
       (CameraDescription camera) => camera.lensDirection == direction,
+      orElse: () => cameras.first,
     );
-    _setCameraCtrl(selectedCamera);
+    if (selectedCamera != null) {
+      _setCameraCtrl(selectedCamera!);
+    }
   }
 
   @override
@@ -90,15 +105,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     if (permissionStatus.isGranted) {
       if (cameraCtrl == null || !cameraCtrl!.value.isInitialized) {
         Global.snackKey.currentState?.hideCurrentMaterialBanner();
-        if (mounted) _setCameraCtrl(selectedCamera);
+        if (mounted && selectedCamera != null) _setCameraCtrl(selectedCamera!);
       }
     }
   }
 
   @override
   void dispose() {
-    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     cameraCtrl?.dispose();
+    super.dispose();
   }
 
   @override
@@ -123,14 +139,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               child: CameraPreview(cameraCtrl!),
             ),
           ),
-          Positioned.fill(
-            child: IgnorePointer(
-              child: Image.asset(
-                'assets/images/$imageOverlay.png',
-                fit: BoxFit.fill,
+          if (imageOverlay.isNotEmpty)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Image.asset(
+                  'assets/images/$imageOverlay.png',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          ),
           Positioned(
             bottom: 20,
             child: Column(
@@ -150,13 +167,13 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                     LoadingDialog.dismiss();
                     if (context.mounted) context.pop(image);
                   },
+                  const SizedBox.shrink(),
                   height: 80,
                   width: 80,
                   borderRadius: 100,
                   color: Colors.white38,
                   borderColor: Colors.white,
                   borderWidth: 6,
-                  const SizedBox.shrink(),
                 ),
                 const SizedBox(height: 20),
                 // if (direction == CameraLensDirection.back)
@@ -229,7 +246,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     } else {
       return Center(
         child: Button(
-          () => openAppSettings(),
+          () {
+            openAppSettings();
+          },
           Text(
             arb.cameraPermission,
             style: const TextStyle(color: Colors.white, fontSize: 20),
@@ -248,8 +267,17 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     try {
       XFile file = await cameraController.takePicture();
       return file;
-    } on CameraException catch (e) {
+    } catch (e) {
       debugPrint('Error occurred while taking picture: $e');
+      if (e.toString().contains('torchModeNotSupported')) {
+        try {
+          await cameraController.setFlashMode(FlashMode.off);
+          XFile file = await cameraController.takePicture();
+          return file;
+        } catch (e2) {
+          debugPrint('Error occurred while taking picture fallback: $e2');
+        }
+      }
       return null;
     }
   }
