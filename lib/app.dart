@@ -33,9 +33,6 @@ Future<void> initlize() async {
     );
   };
 
-  // Initialize notification service
-  await NotificationService.init();
-
   FirebaseTool.getFirebaseToken().whenComplete(
     () => FirebaseTool.setFirebaseTopics(),
   );
