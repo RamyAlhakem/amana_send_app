@@ -1,8 +1,8 @@
 // 🎯 Dart imports:
 import 'dart:developer';
-import 'dart:io';
 
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -37,36 +37,38 @@ class NotificationService {
       // getIt<LocalStorage>().setValue(storageKeys: StorageKeys.fcmToken, value: fcmToken ?? 'Device Token'); //TOOD HANDEL IT IN ANOTHER WAY
       log(fcmToken ?? 'no FCM Token', name: 'FCM token');
 
-      const AndroidInitializationSettings initializationSettingsAndroid =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
-
-      const DarwinInitializationSettings initializationSettingsDarwin =
-          DarwinInitializationSettings();
-
-      const InitializationSettings initializationSettings =
-          InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsDarwin,
-      );
-
-      _isFlutterLocalNotificationsInitialized = false;
-      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin()
-        ..initialize(initializationSettings);
-
       await _requestPermission();
-      await _setupFlutterNotifications();
 
-      final token = await FirebaseMessaging.instance.getToken();
-      log(token ?? '', name: 'FCM Token');
+      if (!kIsWeb) {
+        const AndroidInitializationSettings initializationSettingsAndroid =
+            AndroidInitializationSettings('@mipmap/ic_launcher');
 
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
-      await FirebaseMessaging.instance
-          .setForegroundNotificationPresentationOptions(
-              alert: true, badge: true, sound: true);
+        const DarwinInitializationSettings initializationSettingsDarwin =
+            DarwinInitializationSettings();
+
+        const InitializationSettings initializationSettings =
+            InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsDarwin,
+        );
+
+        _isFlutterLocalNotificationsInitialized = false;
+        _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin()
+          ..initialize(initializationSettings);
+
+        await _setupFlutterNotifications();
+
+        FirebaseMessaging.onBackgroundMessage(
+            _firebaseMessagingBackgroundHandler);
+        await FirebaseMessaging.instance
+            .setForegroundNotificationPresentationOptions(
+                alert: true, badge: true, sound: true);
+      }
 
       _startListening();
-    } catch (e) {}
+    } catch (e) {
+      log('NotificationService.init error: $e', name: 'NotificationService');
+    }
   }
 
   static Future<void> periodicallyShowNotification({
@@ -78,6 +80,7 @@ class NotificationService {
     String? customSound,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
+    if (kIsWeb) return;
     await _flutterLocalNotificationsPlugin.periodicallyShow(
       id,
       title,
@@ -103,6 +106,7 @@ class NotificationService {
 
   static Future<List<PendingNotificationRequest>>
       getPendingNotifications() async {
+    if (kIsWeb) return [];
     return await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 
@@ -111,8 +115,10 @@ class NotificationService {
   //   await _flutterLocalNotificationsPlugin.cancel(id);
   // }
 
-  static cancelAllNotification() async =>
-      await _flutterLocalNotificationsPlugin.cancelAll();
+  static cancelAllNotification() async {
+    if (kIsWeb) return;
+    await _flutterLocalNotificationsPlugin.cancelAll();
+  }
 
   //*.///////////////.*//
   //*.private methods.*//
@@ -121,14 +127,23 @@ class NotificationService {
       FirebaseMessaging.onMessage.listen(_showNotification);
 
   static Future<void> _requestPermission() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      return;
+    }
+
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()!
           .requestNotificationsPermission();
-    } else if (Platform.isIOS) {
+    } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin>()!
@@ -151,7 +166,7 @@ class NotificationService {
   }
 
   static Future<void> _setupFlutterNotifications() async {
-    if (_isFlutterLocalNotificationsInitialized) return;
+    if (kIsWeb || _isFlutterLocalNotificationsInitialized) return;
 
     _channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
@@ -181,8 +196,19 @@ class NotificationService {
   }
 
   static void _showNotification(RemoteMessage message) {
+    if (kIsWeb) {
+      // On web, Firebase handles notification display via the service worker
+      // for background messages. Foreground messages are handled here but the
+      // browser's Notification API is used automatically by firebase_messaging.
+      log(
+        'Foreground message received: ${message.notification?.title}',
+        name: 'NotificationService',
+      );
+      return;
+    }
+
     Map notification = message.data;
-    
+
     // Get title and body from notification or data
     final String? title = message.notification?.title ?? notification['title'];
     final String? body = message.notification?.body ?? notification['body'];

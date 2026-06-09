@@ -21,9 +21,6 @@ Future<void> initlize() async {
 
   ErrorWidget.builder = (FlutterErrorDetails err) => ErrorScreen('$err');
 
-  // Initialize notification service
-  await NotificationService.init();
-
   FirebaseTool.getFirebaseToken().whenComplete(
     () => FirebaseTool.setFirebaseTopics(),
   );
