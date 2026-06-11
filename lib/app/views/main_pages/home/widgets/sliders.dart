@@ -16,14 +16,14 @@ class Sliders extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final sliderHeight = kIsWeb ? 400.0 : 200.0;
+    // final sliderHeight = kIsWeb ? 400.0 : 200.0;
 
     return SizedBox(
       width: double.infinity,
-      height: sliderHeight,
+      height: 200.0,
       child: CarouselSlider(
         options: CarouselOptions(
-          height: sliderHeight,
+          height: 200.0,
           viewportFraction: 1,
           autoPlay: true,
           enableInfiniteScroll: true,
