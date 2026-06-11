@@ -41,6 +41,7 @@ jobs:
           flutter build web \
           --release \
           --base-href / \
+          --source-maps \
           -t lib/main_${{ env.FLAVOR }}.dart
 
       - name: Create SPA _redirects file
