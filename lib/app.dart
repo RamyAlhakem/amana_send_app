@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '/services/system_chrome_service.dart';
 import '/services/notification_service.dart';
 import 'app/app.dart';
-import 'app/errors/error_screen.dart';
 import 'database/injector.dart';
 import 'global/variables.dart';
 import 'graphql/api/get_metadata.dart';

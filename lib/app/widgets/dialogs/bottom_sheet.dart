@@ -80,7 +80,7 @@ class BottomSheeter {
                               : null,
                           initialData: webHtmlData != null
                               ? InAppWebViewInitialData(
-                                  data: webHtmlData!,
+                                  data: webHtmlData,
                                   baseUrl: WebUri(Configs.apiUrl),
                                 )
                               : null,

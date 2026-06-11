@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:amana_send/app/views/main_pages/home/widgets/sliders.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
-import 'package:amana_send/models/city.dart';
 import 'package:amana_send/models/currency.dart';
 import 'package:amana_send/models/payment_method.dart';
 import 'package:flutter/material.dart';

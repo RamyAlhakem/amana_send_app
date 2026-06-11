@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';

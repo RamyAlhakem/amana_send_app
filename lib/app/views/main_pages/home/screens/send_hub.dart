@@ -3,7 +3,6 @@ import 'package:amana_send/app/views/main_pages/home/screens/payment_method_tran
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '/app/theme/colors/main_colors.dart';
@@ -11,7 +10,6 @@ import '/app/views/main_pages/home/screens/wallet_address.dart';
 import '/app/views/main_pages/home/widgets/send_form.dart';
 import '/app/views/main_pages/provider/calculator.dart';
 import '/app/widgets/auto_app_bar.dart';
-import '/app/widgets/dialogs/submit.dart';
 import '/app/widgets/expander.dart';
 import '/app/widgets/text/text_x.dart';
 import '/global/variables.dart';

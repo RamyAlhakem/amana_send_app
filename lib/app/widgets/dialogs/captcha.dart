@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 
 import 'captcha_stub.dart' if (dart.library.html) 'captcha_web.dart';

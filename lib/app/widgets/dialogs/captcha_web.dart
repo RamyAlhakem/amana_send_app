@@ -3,7 +3,6 @@
 import 'dart:html' as html;
 import 'dart:ui_web' as ui_web;
 
-import 'dart:js_util' as js_util;
 
 void registerCaptchaView(String viewType, String urlStr) {
   ui_web.platformViewRegistry.registerViewFactory(viewType, (int viewId) {

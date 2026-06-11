@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';

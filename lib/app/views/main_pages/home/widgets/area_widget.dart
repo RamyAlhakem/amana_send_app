@@ -1,7 +1,6 @@
 import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/theme/colors/main_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:heroicons/heroicons.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '/app/widgets/text/text_x.dart';

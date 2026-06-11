@@ -1,7 +1,6 @@
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/app/widgets/text_form_field/text_form.dart';
 import 'package:amana_send/extensions/context_extension.dart';
-import 'package:amana_send/global/variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

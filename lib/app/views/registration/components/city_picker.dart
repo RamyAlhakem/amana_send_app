@@ -1,7 +1,6 @@
 import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/views/main_pages/home/widgets/area_widget.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
-import 'package:amana_send/app/widgets/text/text_x.dart';
 import 'package:amana_send/models/city.dart';
 import 'package:amana_send/models/state.dart';
 import 'package:flutter/material.dart';

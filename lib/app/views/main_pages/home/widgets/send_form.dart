@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:amana_send/app/widgets/loading_widget.dart';
-import 'package:amana_send/models/city.dart';
-import 'package:amana_send/models/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amana_send/localization/app_localizations.dart';

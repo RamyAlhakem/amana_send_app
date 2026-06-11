@@ -1,5 +1,3 @@
-import 'package:amana_send/app/extensions/dark_mode.dart';
-import 'package:amana_send/app/theme/colors/dark_colors.dart';
 import 'package:amana_send/app/theme/colors/main_colors.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/extensions/context_extension.dart';

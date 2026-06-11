@@ -21,7 +21,6 @@ class Themes {
         labelMedium: DarkTextStyle.t1,
       ),
       scaffoldBackgroundColor: DarkColors.sec,
-      dialogBackgroundColor: DarkColors.main,
       cardColor: DarkColors.main,
       canvasColor: DarkColors.third,
       primaryColor: DarkColors.main,
@@ -143,7 +142,7 @@ class Themes {
           }
           return null;
         }),
-      ),
+      ), dialogTheme: const DialogThemeData(backgroundColor: DarkColors.main),
     );
   }
 
@@ -158,7 +157,6 @@ class Themes {
         labelMedium: LightTextStyle.t1,
       ),
       scaffoldBackgroundColor: LightColors.sec,
-      dialogBackgroundColor: LightColors.main,
       cardColor: LightColors.main,
       canvasColor: LightColors.sec,
       dividerColor: LightColors.border,
@@ -274,7 +272,7 @@ class Themes {
           }
           return null;
         }),
-      ),
+      ), dialogTheme: const DialogThemeData(backgroundColor: LightColors.main),
     );
   }
 }
