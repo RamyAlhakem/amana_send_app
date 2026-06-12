@@ -41,6 +41,7 @@ jobs:
           flutter build web \
           --release \
           --base-href / \
+          --source-maps \
           -t lib/main_${{ env.FLAVOR }}.dart
 
       - name: Create SPA _redirects file
@@ -48,6 +49,7 @@ jobs:
           echo "/*    /index.html   200" > build/web/_redirects
 
       - name: Deploy to Cloudflare Pages
+        id: deploy
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -63,6 +65,14 @@ jobs:
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Build deploy URL
+        if: always()
+        id: deploy_url
+        run: |
+          DEPLOYMENT_URL="${{ steps.deploy.outputs.deployment-url }}"
+          HOST=$(printf '%s' "$DEPLOYMENT_URL" | sed -E 's#^https?://##' | cut -d. -f1)
+          echo "DEPLOY_URL=https://${HOST}.amanasend-web.pages.dev/" >> $GITHUB_ENV
+
       - name: Send ClickUp Notification
         if: always()
         uses: architweb/ClickUpNotification@v3.2.0
@@ -71,3 +81,7 @@ jobs:
           clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
           clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
           clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_WEB }} - _v${{ env.APP_VERSION }}_"
+          description: "Deploy URL: ${{ env.DEPLOY_URL }}"
+          filter_agent_commits: "true"
+          group_commits_by_type: "true"
+          show_commit_statistics: "true"
