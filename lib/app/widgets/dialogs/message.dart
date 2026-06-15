@@ -22,9 +22,8 @@ class MessageDialog {
       barrierColor: Colors.black.withOpacity(0.2),
       builder: (_) {
         return AlertDialog(
-          // ignore: deprecated_member_use
-          backgroundColor: Theme.of(context).dialogBackgroundColor,
-
+          backgroundColor: Theme.of(context).dialogTheme.backgroundColor ??
+              Theme.of(context).colorScheme.surface,
           title: title ??
               Row(
                 children: [
