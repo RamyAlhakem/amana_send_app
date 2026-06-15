@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
+const String kFirebaseWebVapidKey = 'BHE3CzdUIlatuUyslfjuBRsFTY3zIesi3EjYxJUWOtUnx2WrFqa0OkOZnEmwT4mqjx87YUOE09zRxc1Q5we0V5c';
+
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
@@ -48,7 +50,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBPks5U1NjF7qC8gxz09DF-aFVgA3DRAI8',
-    appId: '1:456472455625:web:0000000000000000000000',
+    appId: '1:456472455625:web:7d57cb5f2991ab609a2018',
     messagingSenderId: '456472455625',
     projectId: 'amana-send',
     storageBucket: 'amana-send.appspot.com',
