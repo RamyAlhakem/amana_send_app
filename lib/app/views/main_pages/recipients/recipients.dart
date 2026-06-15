@@ -105,47 +105,59 @@ class _RecipientsState extends State<Recipients> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                                child: RowSpaceBetween([
-                                  RecipientIconDetail(
-                                      recipient: recipients.receipients[i]),
-                                  Button(
-                                    () {
-                                      if (AppMetadata.get.maintenanceMode) {
-                                        return Helper.bannerWarning(
-                                          '\n${AppMetadata.get.maintenanceMessage}\n',
-                                        );
-                                      }
-                                      final calculator =
-                                          Provider.of<Calculator>(
-                                        context,
-                                        listen: false,
-                                      );
-                                      calculator.clearProviderFieldTransfer();
-                                      calculator.setReceiverCountry(
-                                          recipients.receipients[i].country);
-                                      calculator.agentsVisibility(true);
-                                      // calculator.setIsLoad(true);
-                                      calculator.recipientSend(
-                                        recipients.receipients[i],
-                                        navigate: true,
-                                      );
-                                    },
-                                    height: 38,
-                                    padding: EdgeInsets.zero,
-                                    color: Colors.transparent,
-                                    foregroundColor: context.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                    Row(children: [
-                                      const SizedBox(width: 10),
-                                      TextX(
-                                        _arb!.send.toUpperCase(),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: RecipientIconDetail(
+                                          recipient: recipients.receipients[i]),
+                                    ),
+                                    Flexible(
+                                      child: Button(
+                                        () {
+                                          if (AppMetadata.get.maintenanceMode) {
+                                            return Helper.bannerWarning(
+                                              '\n${AppMetadata.get.maintenanceMessage}\n',
+                                            );
+                                          }
+                                          final calculator =
+                                              Provider.of<Calculator>(
+                                            context,
+                                            listen: false,
+                                          );
+                                          calculator
+                                              .clearProviderFieldTransfer();
+                                          calculator.setReceiverCountry(
+                                              recipients
+                                                  .receipients[i].country);
+                                          calculator.agentsVisibility(true);
+                                          // calculator.setIsLoad(true);
+                                          calculator.recipientSend(
+                                            recipients.receipients[i],
+                                            navigate: true,
+                                          );
+                                        },
+                                        height: 38,
+                                        padding: EdgeInsets.zero,
+                                        color: Colors.transparent,
+                                        foregroundColor: context.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                        Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 10),
+                                              TextX(
+                                                _arb!.send.toUpperCase(),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              const Icon(Icons.chevron_right)
+                                            ]),
                                       ),
-                                      const SizedBox(width: 10),
-                                      const Icon(Icons.chevron_right)
-                                    ]),
-                                  ),
-                                ]),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

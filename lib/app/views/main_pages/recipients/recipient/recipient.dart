@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -138,7 +138,8 @@ class _RecipientState extends State<Recipient> {
         ),
       ]),
       bottomNavigationBar: SizedBox(
-        height: Platform.isIOS ? 70 : 60,
+        height:
+            !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS ? 70 : 60,
         child: Button(
           () {
             if (AppMetadata.get.maintenanceMode) {

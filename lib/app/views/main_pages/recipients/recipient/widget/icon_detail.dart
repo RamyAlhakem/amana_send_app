@@ -22,39 +22,61 @@ class RecipientIconDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAr = LangService.isAR();
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         UserAvatar(code: recipient.country.coCode),
         const SizedBox(width: 10),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.43,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextX(
-                Helper.getRecipientName(recipient),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              Row(children: [
-                if (!isTransfer)
-                  TextX(
-                    '${recipient.country.currency.code} - ',
-                    style: const TextStyle(fontSize: 8),
-                  ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.43,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 TextX(
-                  isTransfer ? date : recipient.country.enName,
-                  style: TextStyle(
-                    fontSize: isTransfer ? 10 : 8,
-                    color: isTransfer ? Colors.grey : null,
-                  ),
+                  Helper.getRecipientName(recipient),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ]),
-              isAr
-                  ? Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Text(
-                          " ${recipient.mobile} ${recipient.country.phoneCode}+"))
-                  : Text("+${recipient.country.phoneCode} ${recipient.mobile}")
-            ],
+                Row(children: [
+                  if (!isTransfer)
+                    Flexible(
+                      child: TextX(
+                        '${recipient.country.currency.code} - ',
+                        style: const TextStyle(fontSize: 8),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  Flexible(
+                    child: TextX(
+                      isTransfer ? date : recipient.country.enName,
+                      style: TextStyle(
+                        fontSize: isTransfer ? 10 : 8,
+                        color: isTransfer ? Colors.grey : null,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ]),
+                isAr
+                    ? Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Text(
+                            " ${recipient.mobile} ${recipient.country.phoneCode}+",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis))
+                    : Text(
+                        "+${recipient.country.phoneCode} ${recipient.mobile}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+              ],
+            ),
           ),
         ),
       ],
