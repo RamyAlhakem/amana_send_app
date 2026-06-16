@@ -69,7 +69,7 @@ class _ResponsiveShell extends StatelessWidget {
   const _ResponsiveShell({required this.child});
   final Widget? child;
 
-  static const double _maxWidth = 480;
+  static const double _maxWidth = 600;
 
   @override
   Widget build(BuildContext context) {
