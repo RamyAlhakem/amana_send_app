@@ -10,7 +10,7 @@ firebase.initializeApp({
   projectId: 'amana-send',
   storageBucket: 'amana-send.appspot.com',
   messagingSenderId: '456472455625',
-  appId: '1:456472455625:web:0000000000000000000000',
+  appId: '1:456472455625:web:7d57cb5f2991ab609a2018',
 });
 
 const messaging = firebase.messaging();

@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
 import '/database/injector.dart';
+import '/firebase_options.dart';
 import '/global/variables.dart';
 import '/helper/helper.dart';
 import '/models/firebase.dart';
@@ -21,7 +22,10 @@ class FirebaseTool {
       // Firebase is already initialized by NotificationService
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-      firebase.token = (await firebaseMessaging.getToken() ?? '');
+      firebase.token = (await firebaseMessaging.getToken(
+            vapidKey: kIsWeb ? kFirebaseWebVapidKey : null,
+          ) ??
+          '');
       user.firebase = firebase;
       Database().setUserBase = user;
     } catch (e) {

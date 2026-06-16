@@ -33,7 +33,9 @@ class NotificationService {
     try {
       await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform);
-      fcmToken = await FirebaseMessaging.instance.getToken();
+      fcmToken = await FirebaseMessaging.instance.getToken(
+        vapidKey: kIsWeb ? kFirebaseWebVapidKey : null,
+      );
       log(fcmToken ?? 'no FCM Token', name: 'FCM token');
 
       await _requestPermission();
