@@ -30,13 +30,14 @@ class TransferRecent extends StatelessWidget {
         color: Theme.of(context).cardColor,
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         RowSpaceBetween([
-          Flexible(
+          Expanded(
             child: RecipientIconDetail(
               recipient: transfer.recipient,
               date: transfer.addedAt,
               isTransfer: true,
             ),
           ),
+          const SizedBox(width: 8),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             child: Column(
