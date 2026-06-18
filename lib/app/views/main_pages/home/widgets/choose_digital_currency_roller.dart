@@ -12,6 +12,7 @@ import 'package:amana_send/models/payment_method.dart';
 import 'package:amana_send/models/user.dart';
 import 'package:amana_send/services/popup_services.dart';
 import 'package:amana_send/localization/app_localizations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
@@ -69,7 +70,7 @@ Future<void> showDigitalCurrencies(BuildContext context) {
   final AppLocalizations? arb = AppLocalizations.of(context);
   final Calculator state = Provider.of<Calculator>(context, listen: false);
   return SettingsDialog(
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
     onSubmit: null,
     // title: arb?.typeOfCurrency ?? '',
     title: "",

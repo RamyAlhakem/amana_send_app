@@ -1,6 +1,7 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:amana_send/helper/helper.dart';
 import 'package:flag/flag.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,8 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                   ? _calculator.sendCountries
                   : _calculator.receiveCountries;
               SettingsDialog(
-                backgroundColor: Colors.transparent,
+                backgroundColor:
+                    Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
                 onChanged: (text) {
                   if (text.isNotEmpty) {
                     List<CountryModel> foundCountries = allCountries

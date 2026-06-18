@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
@@ -31,7 +32,7 @@ class CurrencyRoller extends StatelessWidget {
           // if [usdAvailability] is optional which is equal 1:
           if (state.receiverAgent.usdAvailability == 1) {
             SettingsDialog(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
               onSubmit: null,
               title: arb!.selectCurrency,
               subTitle: arb.selectReceiveCurrencyForThisCountry,
