@@ -1,6 +1,7 @@
 import 'package:amana_send/app/views/main_pages/home/widgets/syria_flag.dart';
 import 'package:amana_send/models/currency.dart';
 import 'package:flag/flag.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:heroicons/heroicons.dart';
@@ -39,7 +40,7 @@ class CountryRoller extends StatelessWidget {
           send ? state.sendCountries : state.receiveCountries;
       child = PickerForm(
         () => SettingsDialog(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
           onChanged: (text) {
             if (text.isNotEmpty) {
               final List<CountryModel> foundContries = allContries
