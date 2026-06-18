@@ -38,8 +38,6 @@ class NotificationService {
       );
       log(fcmToken ?? 'no FCM Token', name: 'FCM token');
 
-      await _requestPermission();
-
       if (!kIsWeb) {
         const AndroidInitializationSettings initializationSettingsAndroid =
             AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -65,6 +63,9 @@ class NotificationService {
             .setForegroundNotificationPresentationOptions(
                 alert: true, badge: true, sound: true);
       }
+
+      // Request permission AFTER plugin initialization so the plugin is ready
+      await _requestPermission();
 
       _startListening();
     } catch (e) {
@@ -143,18 +144,21 @@ class NotificationService {
       return;
     }
 
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-          FlutterLocalNotificationsPlugin();
-      flutterLocalNotificationsPlugin
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final androidPlugin = _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()!
-          .requestNotificationsPermission();
-    } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+              AndroidFlutterLocalNotificationsPlugin>();
+      await androidPlugin?.requestNotificationsPermission();
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
       await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()!
-          .requestPermissions(
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
             alert: true,
             badge: true,
             sound: true,
