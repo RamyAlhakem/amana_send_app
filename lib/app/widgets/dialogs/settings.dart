@@ -2,6 +2,7 @@ import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/database/injector.dart';
 import 'package:amana_send/models/payment_method.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -53,8 +54,8 @@ class SettingsDialog {
               elevation: 0,
               backgroundColor: backgroundColor ??
                   (dialogContext.isDarkMode
-                      ? Colors.transparent
-                      : Colors.white.withValues(alpha: 0.6)),
+                      ? Colors.black.withValues(alpha: kIsWeb ? 0.5 : 0.1)
+                      : Colors.white.withValues(alpha: kIsWeb ? 0.9 : 0.6)),
               title: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
