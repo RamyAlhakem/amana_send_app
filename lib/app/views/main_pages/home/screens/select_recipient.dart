@@ -182,6 +182,7 @@ class _SelectRecipientState extends State<SelectRecipient>
             SearchWidget(
               hint: arb.search,
               onChange: (text) {
+                recipients.resetPage();
                 // recipients.search(text);
                 if (_timer != null) _timer!.cancel();
 

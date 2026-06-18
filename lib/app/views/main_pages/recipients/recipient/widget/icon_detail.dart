@@ -23,69 +23,61 @@ class RecipientIconDetail extends StatelessWidget {
     final isAr = LangService.isAR();
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         UserAvatar(code: recipient.country.coCode),
         const SizedBox(width: 10),
         Flexible(
           fit: FlexFit.loose,
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: constraints.maxWidth,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: LangService.isAR()
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.5,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextX(
+                  Helper.getRecipientName(recipient),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(children: [
+                  if (!isTransfer)
+                    Flexible(
                       child: TextX(
-                        Helper.getRecipientName(recipient),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                        softWrap: false,
-                      ),
-                    ),
-                  ),
-                  Row(children: [
-                    if (!isTransfer)
-                      Flexible(
-                        child: TextX(
-                          '${recipient.country.currency.code} - ',
-                          style: const TextStyle(fontSize: 8),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    Expanded(
-                      child: TextX(
-                        isTransfer ? date : recipient.country.enName,
-                        style: TextStyle(
-                          fontSize: isTransfer ? 10 : 8,
-                          color: isTransfer ? Colors.grey : null,
-                        ),
+                        '${recipient.country.currency.code} - ',
+                        style: const TextStyle(fontSize: 8),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ]),
-                  isAr
-                      ? Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Text(
-                              " ${recipient.mobile} ${recipient.country.phoneCode}+",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis))
-                      : Text(
-                          "+${recipient.country.phoneCode} ${recipient.mobile}",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis),
-                ],
-              );
-            },
+                  Flexible(
+                    child: TextX(
+                      isTransfer ? date : recipient.country.enName,
+                      style: TextStyle(
+                        fontSize: isTransfer ? 10 : 8,
+                        color: isTransfer ? Colors.grey : null,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ]),
+                isAr
+                    ? Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Text(
+                            " ${recipient.mobile} ${recipient.country.phoneCode}+",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis))
+                    : Text(
+                        "+${recipient.country.phoneCode} ${recipient.mobile}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+              ],
+            ),
           ),
         ),
       ],

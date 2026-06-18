@@ -48,11 +48,12 @@ class _RecipientSelectorState extends State<RecipientSelector>
         decoration: Decorations.main(context),
         margin: const EdgeInsets.fromLTRB(12, 8, 12, 8),
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
             RowSpaceBetween([
-              RecipientIconDetail(recipient: recipient),
+              Flexible(
+                child: RecipientIconDetail(recipient: recipient),
+              ),
               Visibility(
                 visible: widget.select,
                 child: const Icon(
