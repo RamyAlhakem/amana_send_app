@@ -3,6 +3,16 @@ name: 🚀 App Store Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      flavor:
+        description: 'Build flavor (production or staging)'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
 
 jobs:
   build_and_deploy:
@@ -14,7 +24,7 @@ jobs:
 
     env:
       FLUTTER_VERSION: 3.32.8
-      FLAVOR: ${{ contains(github.ref_name, 'staging') && 'staging' || 'production' }}
+      FLAVOR: ${{ inputs.flavor || (contains(github.ref_name, 'staging') && 'staging' || 'production') }}
 
     steps:
       - name: Checkout the code
@@ -35,9 +45,20 @@ jobs:
         uses: apple-actions/download-provisioning-profiles@v6
         with:
           bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}
+          profile-type: 'IOS_APP_STORE'
           issuer-id: ${{ secrets.APPSTORE_API_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        continue-on-error: true
+        id: download_profiles
+
+      - name: Verify provisioning profile download
+        if: steps.download_profiles.outcome != 'success'
+        run: |
+          echo "::error::Failed to download provisioning profile for bundle-id: ${{ secrets.IOS_APP_PACKAGE_NAME }}${{ env.FLAVOR == 'staging' && '.staging' || '' }}"
+          echo "::error::Check that the App ID and an App Store Connect profile exist in App Store Connect for this bundle ID."
+          echo "::error::Also verify APPSTORE_API_KEY_ID, APPSTORE_API_ISSUER_ID and APPSTORE_API_PRIVATE_KEY are correct and the API key has the 'App Manager' role."
+          exit 1
 
       - name: Select Xcode 26.3
         run: sudo xcode-select -s /Applications/Xcode_26.3.app/Contents/Developer
