@@ -62,10 +62,12 @@ class NotificationService {
         await FirebaseMessaging.instance
             .setForegroundNotificationPresentationOptions(
                 alert: true, badge: true, sound: true);
-      }
 
-      // Request permission AFTER plugin initialization so the plugin is ready
-      await _requestPermission();
+        // Native platforms can request at startup.
+        await _requestPermission();
+      }
+      // On web, permission must be requested from a user gesture handler.
+      // Call NotificationService.requestWebPermission() from a button tap.
 
       _startListening();
     } catch (e) {
@@ -135,15 +137,6 @@ class NotificationService {
       FirebaseMessaging.onMessage.listen(_showNotification);
 
   static Future<void> _requestPermission() async {
-    if (kIsWeb) {
-      await FirebaseMessaging.instance.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-      return;
-    }
-
     if (defaultTargetPlatform == TargetPlatform.android) {
       final androidPlugin = _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -164,6 +157,27 @@ class NotificationService {
             sound: true,
             critical: true,
           );
+    }
+  }
+
+  // Web only: must be invoked from a user-generated event handler (button tap,
+  // pointer down, scroll, etc.). Idempotent — only the first call does work.
+  static bool _webPermissionRequested = false;
+
+  static Future<void> requestWebPermission() async {
+    if (!kIsWeb || _webPermissionRequested) return;
+    _webPermissionRequested = true;
+    try {
+      // Must be invoked synchronously from the user gesture so the browser's
+      // transient activation is still valid. Do not await before this call.
+      FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } catch (e) {
+      log('Web permission request failed: $e', name: 'NotificationService');
+      _webPermissionRequested = false;
     }
   }
 

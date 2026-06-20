@@ -13,6 +13,7 @@ import '/router/app_route.dart';
 import 'views/main_pages/provider/calculator.dart';
 import 'views/notifications/provider/notifications_state.dart';
 import 'views/registration/provider/registration_state.dart';
+import 'widgets/first_gesture_permission_prompt.dart';
 
 class AmanaSend extends StatelessWidget {
   const AmanaSend({Key? key}) : super(key: key);
@@ -56,7 +57,9 @@ class AmanaSend extends StatelessWidget {
             theme: Themes.light(),
             darkTheme: Themes.dark(),
             themeMode: Global.appSettings.themeMode,
-            builder: (context, child) => _ResponsiveShell(child: child),
+            builder: (context, child) => _ResponsiveShell(
+              child: FirstGesturePermissionPrompt(child: child!),
+            ),
           );
           return main;
         },
