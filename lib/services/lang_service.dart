@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 
@@ -13,7 +14,11 @@ class LangService {
 
     final String? lang = user.lang;
 
-    locale = Locale(lang ?? Platform.localeName.substring(0, 2));
+    final String defaultLang = kIsWeb
+        ? (WidgetsBinding.instance.platformDispatcher.locale.languageCode)
+        : Platform.localeName.substring(0, 2);
+
+    locale = Locale(lang ?? defaultLang);
 
     return locale;
   }

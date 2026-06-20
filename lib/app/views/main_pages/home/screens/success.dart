@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -56,8 +57,9 @@ class _SuccessState extends State<Success> {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           action: () {
-            String url =
-                Platform.isIOS ? Configs.appleStore : Configs.googleStore;
+            String url = !kIsWeb && Platform.isIOS
+                ? Configs.appleStore
+                : Configs.googleStore;
             Helper.launchURL(url);
           },
           actionTitle: arb.rate,

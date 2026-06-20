@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import '/configs/configs.dart';
 import '/helper/safety_model.dart';
 import '/router/app_route.dart';
@@ -26,7 +28,7 @@ class ServerAppVersion extends SafetyModel {
       };
 
   ServerAppVersion.isUpdate() {
-    if (Platform.isIOS) {
+    if (!kIsWeb && Platform.isIOS) {
       api = ServerAppVersion.get.apple;
     } else {
       api = ServerAppVersion.get.android;
