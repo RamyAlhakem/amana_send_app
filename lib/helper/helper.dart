@@ -305,7 +305,7 @@ class Helper {
     int timeInSecForIosWeb = 8,
     bool shortDuration = false,
   }) {
-    Fluttertoast.cancel();
+    if (!kIsWeb) Fluttertoast.cancel();
     Fluttertoast.showToast(
       msg: text,
       gravity: gravity,
