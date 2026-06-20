@@ -55,7 +55,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: >-
             pages deploy ./build/web
-            --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+            --project-name=${{ env.FLAVOR == 'staging' && 'staging-' || '' }}${{ secrets.CLOUDFLARE_PROJECT_NAME }}
             --branch=${{ github.ref_name }}
             --commit-dirty=true
 
@@ -70,7 +70,7 @@ jobs:
         run: |
           DEPLOYMENT_URL="${{ steps.deploy.outputs.deployment-url }}"
           HOST=$(printf '%s' "$DEPLOYMENT_URL" | sed -E 's#^https?://##' | cut -d. -f1)
-          echo "DEPLOY_URL=https://${HOST}.amanasend-web.pages.dev/" >> $GITHUB_ENV
+          # echo "DEPLOY_URL=https://${HOST}.amanasend-web.pages.dev/" >> $GITHUB_ENV
 
       - name: Send ClickUp Notification
         if: always()
@@ -80,7 +80,7 @@ jobs:
           clickup_workspace_id: ${{ secrets.CLICKUP_WORKSPACE_ID }}
           clickup_channel_id: ${{ secrets.CLICKUP_CHANNEL_ID }}
           clickup_project_name: "${{ secrets.CLICKUP_PROJECT_NAME_WEB }} - _v${{ env.APP_VERSION }}_"
-          description: "Deploy URL: ${{ env.DEPLOY_URL }}"
+          # description: "Deploy URL: ${{ env.DEPLOY_URL }}"
           filter_agent_commits: "true"
           group_commits_by_type: "true"
           show_commit_statistics: "true"
