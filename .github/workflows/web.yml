@@ -56,7 +56,7 @@ jobs:
           command: >-
             pages deploy ./build/web
             --project-name=${{ env.FLAVOR == 'staging' && 'staging-' || '' }}${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-            --branch=${{ github.ref_name }}
+            --branch=main
             --commit-dirty=true
 
       - name: Extract App Version
