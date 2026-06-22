@@ -14,9 +14,8 @@ class LangService {
 
     final String? lang = user.lang;
 
-    final String defaultLang = kIsWeb
-        ? (WidgetsBinding.instance.platformDispatcher.locale.languageCode)
-        : Platform.localeName.substring(0, 2);
+    final String defaultLang =
+        kIsWeb ? 'ar' : Platform.localeName.substring(0, 2);
 
     locale = Locale(lang ?? defaultLang);
 
