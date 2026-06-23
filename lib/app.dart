@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '/services/system_chrome_service.dart';
@@ -9,14 +12,31 @@ import 'graphql/api/get_metadata.dart';
 import 'firebase/firebase.dart';
 
 Future<void> initlize() async {
+  // Web needs the binding initialized BEFORE we touch any plugin channel
+  // (SharedPreferences / package_info_plus / GraphQL http link, etc.).
+  if (kIsWeb) {
+    WidgetsFlutterBinding.ensureInitialized();
+  }
+
   SystemChromeService.inject();
 
   await Database.inject();
 
-  GetMetadata.request();
-  await NotificationService.init();
-  // Load the user's preferred theme while the splash screen is displayed.
+  // Load settings synchronously so the first frame is themed + auth-correct.
   await Global.appSettings.loadSettings();
+
+  // Schedule non-essential work AFTER the first frame can render.
+  // These touch the network and the device slow path — none of them should
+  // delay the splash from disappearing.
+  scheduleMicrotask(() {
+    GetMetadata.request();
+  });
+  Future.microtask(() => NotificationService.init());
+  Future.microtask(() {
+    FirebaseTool.getFirebaseToken().whenComplete(
+      () => FirebaseTool.setFirebaseTopics(),
+    );
+  });
 
   ErrorWidget.builder = (FlutterErrorDetails err) {
     return Material(
@@ -31,10 +51,6 @@ Future<void> initlize() async {
       ),
     );
   };
-
-  FirebaseTool.getFirebaseToken().whenComplete(
-    () => FirebaseTool.setFirebaseTopics(),
-  );
 
   // App listens to the [appSettings] for changes, then passes it further
   // down to the widget tree.

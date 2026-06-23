@@ -1,8 +1,9 @@
-
 import 'package:amana_send/flavor.dart';
 import 'package:amana_send/app.dart';
+import 'package:flutter/widgets.dart';
 
-void main(){
-  F.appFlavor=Flavor.staging;
-   initlize();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  F.appFlavor = Flavor.staging;
+  await initlize();
 }
