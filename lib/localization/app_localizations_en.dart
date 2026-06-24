@@ -1272,4 +1272,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadMore => 'Load More';
+
+  @override
+  String get installAppOnYourPhoneForACompleteExperience =>
+      'Install the app on your phone for a complete experience';
+
+  @override
+  String get amanaSendCanBeInstalledAsAnAppOnYourDevice =>
+      'Amana Send website can be installed as an app on your device!';
+
+  @override
+  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
+      'Follow the instructions above to use the site as an app without opening it from the browser';
+
+  @override
+  String get installNow => 'Install Now';
 }

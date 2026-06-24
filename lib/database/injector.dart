@@ -11,6 +11,7 @@ class Database {
   static String userKey = 'user_key';
   static String userBaseKey = 'user_base_key';
   static String paymentKey = 'payment_key';
+  static String installKey = 'install_key';
 
   static Future<void> inject() async {
     _preferences = await SharedPreferences.getInstance();
@@ -20,8 +21,16 @@ class Database {
     _preferences?.setString(userKey, json.encode(user.toJson()));
   }
 
+  set setInstall(bool value) {
+    _preferences?.setBool(installKey, value);
+  }
+
   set setCurrency(PaymentMethodModel payment) {
     _preferences?.setString(paymentKey, json.encode(payment.toJson()));
+  }
+
+  bool get getInstall {
+    return _preferences?.getBool(installKey) ?? true;
   }
 
   PaymentMethodModel get getPaymentMethod {

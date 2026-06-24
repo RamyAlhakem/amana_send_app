@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/database/injector.dart';
@@ -28,6 +29,15 @@ import '/models/user.dart';
 import '/router/app_route.dart';
 
 class Calculator with ChangeNotifier {
+  bool _showInstall = true;
+  bool get showInstall => _showInstall;
+  changeInstall(bool value) {
+    _showInstall = value;
+    Database().setInstall = _showInstall;
+
+    notifyListeners();
+  }
+
   static late AppLocalizations? _arb;
   List<SlidersModel> sliders = [];
   List<AgentModel> providersNew = [];

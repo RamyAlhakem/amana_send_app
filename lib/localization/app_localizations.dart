@@ -2489,6 +2489,31 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Load More'**
   String get loadMore;
+
+  /// No description provided for @installAppOnYourPhoneForACompleteExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Install the app on your phone for a complete experience'**
+  String get installAppOnYourPhoneForACompleteExperience;
+
+  /// No description provided for @amanaSendCanBeInstalledAsAnAppOnYourDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Amana Send website can be installed as an app on your device!'**
+  String get amanaSendCanBeInstalledAsAnAppOnYourDevice;
+
+  /// No description provided for @followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the instructions above to use the site as an app without opening it from the browser'**
+  String
+      get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser;
+
+  /// No description provided for @installNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Install Now'**
+  String get installNow;
 }
 
 class _AppLocalizationsDelegate

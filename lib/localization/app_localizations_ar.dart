@@ -429,7 +429,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get female => 'أنثى';
 
   @override
-  String get ok => 'حسناً';
+  String get ok => 'موافق';
 
   @override
   String get pleaseAvoidStartingMobileNumberWithAZero =>
@@ -1268,4 +1268,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loadMore => 'إظهار المزيد';
+
+  @override
+  String get installAppOnYourPhoneForACompleteExperience =>
+      'ثبت التطبيق على جوالك لتستمتع بتجربة متكاملة';
+
+  @override
+  String get amanaSendCanBeInstalledAsAnAppOnYourDevice =>
+      'موقع أمانة يمكن تحميله كتطبيق على جهازك!';
+
+  @override
+  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
+      'اتبع التعليمات الموضحة أعلاه حتى تستطيع استخدام الموقع كتطبيق بدون الحاجة إلى فتحه من المتصفح';
+
+  @override
+  String get installNow => 'تثبيت الآن';
 }

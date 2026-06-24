@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:amana_send/app/views/main_pages/home/widgets/install_app_banner.dart';
 import 'package:amana_send/app/views/main_pages/home/widgets/sliders.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
 import 'package:amana_send/models/currency.dart';
 import 'package:amana_send/models/payment_method.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +46,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late AppLocalizations arb;
   late UserModel user;
+  late bool showInstall;
+  late Calculator calculator;
   PaymentMethodModel getPaymentMethod = PaymentMethodModel();
   String selection = '';
   late bool isAr;
@@ -84,14 +88,16 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Provider.of<Calculator>(context, listen: false).agentsVisibility(true);
+    calculator = Provider.of<Calculator>(context, listen: false);
+    calculator.agentsVisibility(true);
     getResources().whenComplete(() {
       user = Database().getUser;
+      showInstall = Database().getInstall;
+      calculator.changeInstall(showInstall);
 
       if (mounted) {
         getPaymentMethod = Database().getPaymentMethod;
-        Provider.of<Calculator>(context, listen: false)
-            .setPaymentMethodID(getPaymentMethod);
+        calculator.setPaymentMethodID(getPaymentMethod);
       }
     });
     // Future.delayed( const Duration(seconds: 2),()async{
@@ -116,7 +122,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Consumer<Calculator>(builder: (context, state, child) {
       if (state.paymentMethodName == "") {
-        return CurrencyWidget(arb: arb, controller: state);
+        return Column(
+          children: [
+            if (state.showInstall && kIsWeb)
+              InstallAppBanner(arb: arb, state: state),
+            if (state.showInstall && kIsWeb) const SizedBox(height: 20),
+            CurrencyWidget(arb: arb, controller: state),
+          ],
+        );
       }
       // else if(Global.appSettings.token.isNotEmpty){
       //   return Container();
