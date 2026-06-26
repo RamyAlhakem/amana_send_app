@@ -71,6 +71,7 @@ dependencies:
   carousel_slider: ^5.1.1
   flutter_inappwebview_web: ^1.1.2
   universal_html: ^2.3.0
+  video_player: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,7 @@ flutter:
     - assets/json/
     - assets/svg/
     - assets/icons/
+   
 
   fonts:
     - family: work_sans
