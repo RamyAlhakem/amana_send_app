@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:amana_send/app/views/main_pages/home/widgets/install_app_banner.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:amana_send/app/views/main_pages/home/widgets/sliders.dart';
 import 'package:amana_send/app/widgets/dialogs/settings.dart';
 import 'package:amana_send/graphql/api/get_payments.dart';
@@ -53,6 +54,15 @@ class _HomeState extends State<Home> {
   late bool isAr;
 
   final EdgeInsets padding = const EdgeInsets.fromLTRB(8, 0, 8, 0);
+
+  /// Returns true only when running on the web **and** the browser is Safari.
+  bool get _isSafari {
+    if (!kIsWeb) return false;
+    final ua = html.window.navigator.userAgent ?? '';
+    return ua.contains('Safari') &&
+        !ua.contains('Chrome') &&
+        !ua.contains('Chromium');
+  }
 
   Future<void> getResources() async {
     WidgetsBinding.instance.addPostFrameCallback((_) => LoadingDialog().show());
@@ -124,9 +134,9 @@ class _HomeState extends State<Home> {
       if (state.paymentMethodName == "") {
         return Column(
           children: [
-            if (state.showInstall && kIsWeb)
+            if (state.showInstall && _isSafari)
               InstallAppBanner(arb: arb, state: state),
-            if (state.showInstall && kIsWeb) const SizedBox(height: 20),
+            if (state.showInstall && _isSafari) const SizedBox(height: 20),
             CurrencyWidget(arb: arb, controller: state),
           ],
         );
