@@ -12,6 +12,7 @@
 //   policy allows it (muted + autoplay).
 //   When the dialog closes, we remove the element again.
 
+import 'package:amana_send/app/extensions/dark_mode.dart';
 import 'package:amana_send/app/views/main_pages/provider/calculator.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -211,7 +212,9 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.grey.shade200),
+      decoration: BoxDecoration(
+          color:
+              context.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
@@ -221,7 +224,7 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
           ),
           Text(
             widget.arb.installAppOnYourPhoneForACompleteExperience,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
           ),
           const SizedBox(width: 20),
           ElevatedButton(

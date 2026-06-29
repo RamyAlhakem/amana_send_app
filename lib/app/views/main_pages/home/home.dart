@@ -53,6 +53,10 @@ class _HomeState extends State<Home> {
   String selection = '';
   late bool isAr;
 
+  /// Listener attached to GoRouter's delegate so we can react to route
+  /// changes (e.g. user popping back to Home) and re-enable the install banner.
+  late final VoidCallback _routeListener;
+
   final EdgeInsets padding = const EdgeInsets.fromLTRB(8, 0, 8, 0);
 
   /// Returns true only when running on the web **and** the browser is Safari.
@@ -100,10 +104,24 @@ class _HomeState extends State<Home> {
     super.initState();
     calculator = Provider.of<Calculator>(context, listen: false);
     calculator.agentsVisibility(true);
+
+    // Listen to route changes: whenever the user navigates back to the home
+    // route ('/'), re-enable the install banner. This covers the case where
+    // the user pushes a child route (e.g. SendHub) and then pops back.
+    final goRouter = GoRouter.of(context);
+    _routeListener = () {
+      final uri =
+          goRouter.routerDelegate.currentConfiguration?.uri.toString() ?? '';
+      if (uri == '/' || uri.isEmpty) {
+        calculator.changeInstall(true);
+      }
+    };
+    goRouter.routerDelegate.addListener(_routeListener);
+
     getResources().whenComplete(() {
       user = Database().getUser;
-      showInstall = Database().getInstall;
-      calculator.changeInstall(showInstall);
+      // showInstall = Database().getInstall;
+      // calculator.changeInstall(true);
 
       if (mounted) {
         getPaymentMethod = Database().getPaymentMethod;
@@ -126,6 +144,19 @@ class _HomeState extends State<Home> {
     user = Database().getUser;
     isAr = LangService.isAR();
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the router listener and any active debounce timers.
+    try {
+      final goRouter = GoRouter.of(context);
+      goRouter.routerDelegate.removeListener(_routeListener);
+    } catch (_) {
+      // Widget was already unmounted — ignore.
+    }
+    debounceTimer?.cancel();
+    super.dispose();
   }
 
   @override
