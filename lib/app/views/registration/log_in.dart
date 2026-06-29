@@ -87,7 +87,7 @@ class _LogInState extends State<LogIn> with TickerProviderStateMixin {
           builder: (context, calculator, scaffold) {
             return Column(
               children: [
-                if (calculator.showInstall)
+                if (_isSafari && calculator.showInstall)
                   Material(
                       child: InstallAppBanner(arb: arb!, state: calculator)),
                 Expanded(
