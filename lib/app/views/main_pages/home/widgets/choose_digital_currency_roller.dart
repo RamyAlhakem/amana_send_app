@@ -77,57 +77,61 @@ Future<void> showDigitalCurrencies(BuildContext context) {
     subTitle: arb?.pleaseChooseCurrency ?? "",
     subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
     horizontalPadding: 0,
-    content: (_) => Scrollbar(
-      interactive: true,
-      thumbVisibility: true,
-      thickness: 5,
-      radius: const Radius.circular(100),
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        children: [
-          ListView(
+    content: (_) {
+      final ScrollController dialogScrollController = ScrollController();
+      return Scrollbar(
+          controller: dialogScrollController,
+          interactive: true,
+          thumbVisibility: true,
+          thickness: 5,
+          radius: const Radius.circular(100),
+          child: ListView(
+            controller: dialogScrollController,
             shrinkWrap: true,
-            padding:
-                EdgeInsets.fromLTRB(isAr ? 30 : 10, 20, isAr ? 10 : 30, 15),
-            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
             children: [
-              for (int i = 0; i < state.payments.length; i++)
-                InkWell(
-                  borderRadius: BorderRadius.circular(100),
-                  onTap: () {
-                    PaymentMethodModel payment = state.payments[i];
-                    Database().setCurrency = payment;
-                    state.setPaymentMethodID(payment);
-                    state.setPrice(state.sender.text);
-                    SettingsDialog.dismiss();
-                    getResources(context);
-                  },
-                  child: Row(children: [
-                    Image.network(
-                      state.payments[i].iconUrl,
-                      height: 50,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox(),
+              ListView(
+                shrinkWrap: true,
+                padding:
+                    EdgeInsets.fromLTRB(isAr ? 30 : 10, 20, isAr ? 10 : 30, 15),
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  for (int i = 0; i < state.payments.length; i++)
+                    InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onTap: () {
+                        PaymentMethodModel payment = state.payments[i];
+                        Database().setCurrency = payment;
+                        state.setPaymentMethodID(payment);
+                        state.setPrice(state.sender.text);
+                        SettingsDialog.dismiss();
+                        getResources(context);
+                      },
+                      child: Row(children: [
+                        Image.network(
+                          state.payments[i].iconUrl,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox(),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          state.payments[i].name,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ]),
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      state.payments[i].name,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ]),
-                ),
+                ],
+              ),
             ],
-          ),
-        ],
-      ),
-    ),
+          ));
+    },
   ).show();
 }
 

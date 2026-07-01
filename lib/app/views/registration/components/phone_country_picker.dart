@@ -36,6 +36,7 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
   late List<CountryModel> _countries;
   late List<CountryModel> allCountries;
   late bool isRegistration;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -57,10 +58,11 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
 
   @override
   void dispose() {
-    super.dispose();
+    _scrollController.dispose();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.mobile.clear();
     });
+    super.dispose();
   }
 
   @override
@@ -121,12 +123,14 @@ class _PhoneCountryPickerState extends State<PhoneCountryPicker>
                     const TextStyle(color: Colors.white, fontSize: 14),
                 horizontalPadding: 0,
                 content: (state) => Scrollbar(
+                  controller: _scrollController,
                   interactive: true,
                   thumbVisibility: true,
                   thickness: 5,
                   radius: const Radius.circular(100),
                   child: Consumer<Calculator>(
                     builder: (context, state1, child) => ListView(
+                      controller: _scrollController,
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       children: [

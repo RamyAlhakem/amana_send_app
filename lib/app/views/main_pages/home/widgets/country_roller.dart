@@ -40,80 +40,86 @@ class CountryRoller extends StatelessWidget {
           send ? state.sendCountries : state.receiveCountries;
       child = PickerForm(
         () => SettingsDialog(
-          backgroundColor: Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
-          onChanged: (text) {
-            if (text.isNotEmpty) {
-              final List<CountryModel> foundContries = allContries
-                  .where((e) => isAr
-                      ? e.arName.toLowerCase().contains(text.toLowerCase())
-                      : e.enName.toLowerCase().contains(text.toLowerCase()))
-                  .toList();
-              countries = foundContries;
-              state.updateUi();
-            } else {
-              countries = send ? state.sendCountries : state.receiveCountries;
-              state.updateUi();
-            }
-          },
-          onSubmit: null,
-          title: title,
-          // subTitle: arb.chooseCountry,
-          subTitle: "",
-          subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
-          horizontalPadding: 0,
-          content: (setState) => Scrollbar(
-            interactive: true,
-            thumbVisibility: true,
-            thickness: 5,
-            radius: const Radius.circular(100),
-            child: Consumer<Calculator>(
-              builder: (context, calculater, child) => ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                children: [
-                  ListView(
+            backgroundColor: Colors.grey.withValues(alpha: kIsWeb ? 0.9 : 0),
+            onChanged: (text) {
+              if (text.isNotEmpty) {
+                final List<CountryModel> foundContries = allContries
+                    .where((e) => isAr
+                        ? e.arName.toLowerCase().contains(text.toLowerCase())
+                        : e.enName.toLowerCase().contains(text.toLowerCase()))
+                    .toList();
+                countries = foundContries;
+                state.updateUi();
+              } else {
+                countries = send ? state.sendCountries : state.receiveCountries;
+                state.updateUi();
+              }
+            },
+            onSubmit: null,
+            title: title,
+            // subTitle: arb.chooseCountry,
+            subTitle: "",
+            subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
+            horizontalPadding: 0,
+            content: (setState) {
+              final ScrollController dialogScrollController =
+                  ScrollController();
+              return Scrollbar(
+                controller: dialogScrollController,
+                interactive: true,
+                thumbVisibility: true,
+                thickness: 5,
+                radius: const Radius.circular(100),
+                child: Consumer<Calculator>(
+                  builder: (context, calculater, child) => ListView(
+                    controller: dialogScrollController,
                     shrinkWrap: true,
-                    padding: EdgeInsets.fromLTRB(
-                        isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
-                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
                     children: [
-                      for (int i = 0; i < countries.length; i++)
-                        if (send || countries[i].states.isNotEmpty
-                            // countries[i].states.any((s) => s.cities.isNotEmpty)
-                            )
-                          InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: () => setState(() {
-                              if (send) {
-                                country = state.setSendCountry(
-                                  countries[i],
-                                );
-                                state
-                                    .setCalculateAmount(CalculateAmountModel());
-                              } else {
-                                country = state.setReceiverCountry(
-                                  countries[i],
-                                );
-                                state.clearAgents();
-                                state
-                                    .setCalculateAmount(CalculateAmountModel());
-                              }
-                              state.clearFields();
-                              // state.setPrice(state.sender.text);
-                              SettingsDialog.dismiss();
-                            }),
-                            child: Country(
-                              country: countries[i],
-                              selected: country.coCode == countries[i].coCode,
-                            ),
-                          ),
+                      ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.fromLTRB(
+                            isAr ? 30 : 10, 0, isAr ? 10 : 30, 15),
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          for (int i = 0; i < countries.length; i++)
+                            if (send || countries[i].states.isNotEmpty
+                                // countries[i].states.any((s) => s.cities.isNotEmpty)
+                                )
+                              InkWell(
+                                borderRadius: BorderRadius.circular(100),
+                                onTap: () => setState(() {
+                                  if (send) {
+                                    country = state.setSendCountry(
+                                      countries[i],
+                                    );
+                                    state.setCalculateAmount(
+                                        CalculateAmountModel());
+                                  } else {
+                                    country = state.setReceiverCountry(
+                                      countries[i],
+                                    );
+                                    state.clearAgents();
+                                    state.setCalculateAmount(
+                                        CalculateAmountModel());
+                                  }
+                                  state.clearFields();
+                                  // state.setPrice(state.sender.text);
+                                  SettingsDialog.dismiss();
+                                }),
+                                child: Country(
+                                  country: countries[i],
+                                  selected:
+                                      country.coCode == countries[i].coCode,
+                                ),
+                              ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          ),
-        ).show(),
+                ),
+              );
+            }).show(),
         hint: '${arb!.send} ${send ? arb.from : arb.to}',
         value: country.currency.code,
         width: width,

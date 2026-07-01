@@ -25,7 +25,6 @@ class ResendOTP {
   Future<int> request() async {
     _variables = <String, dynamic>{
       'mobile': mobile,
-      'captchaResponse': captcha,
     };
 
     Helper.debugger('requestNewOTP');
@@ -33,7 +32,7 @@ class ResendOTP {
 
     GraphQL.client().mutate(
       MutationOptions(
-        document: gql(Mutations.requestNewOTP(captcha)),
+        document: gql(Mutations.requestNewOTP),
         variables: _variables,
         update: (GraphQLDataProxy cache, QueryResult<Object?>? result) => cache,
         onCompleted: (Map<String, dynamic>? data) async {

@@ -177,9 +177,9 @@ mutation calculateAmount(\$coCode: String!,\$sendCountryCode: String!, \$isRecei
     }
       ''';
 
-  static String requestNewOTP(String captcha) => '''
-    mutation requestNewOTP(\$mobile: NonEmptyString!${captcha.isNotEmpty ? ', \$captchaResponse: NonEmptyString!' : ''}) {
-      requestNewOTP(mobile: \$mobile${captcha.isNotEmpty ? ', captchaResponse: \$captchaResponse' : ''}) {
+  static const String requestNewOTP = '''
+    mutation requestNewOTP(\$mobile: NonEmptyString!) {
+      requestNewOTP(mobile: \$mobile) {
         message
       }
     }

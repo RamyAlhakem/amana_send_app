@@ -42,9 +42,11 @@ class _CityPickerState extends State<CityPicker> {
 
   final Set<int> _expandedStates = {};
   final Map<int, TextEditingController> _controllers = {};
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
+    _scrollController.dispose();
     for (var controller in _controllers.values) {
       controller.dispose();
     }
@@ -138,12 +140,14 @@ class _CityPickerState extends State<CityPicker> {
           subTitleStyle: const TextStyle(color: Colors.white, fontSize: 14),
           horizontalPadding: 0,
           content: (dialogSetState) => Scrollbar(
+            controller: _scrollController,
             interactive: true,
             thumbVisibility: true,
             thickness: 5,
             radius: const Radius.circular(100),
             child: Consumer<Calculator>(
               builder: (context, calculatorState, child) => ListView(
+                controller: _scrollController,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [

@@ -116,6 +116,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       await CaptchaDialog(
         onSubmit: (value) => ResendOTP(
           mobile: '+${_pr.country?.phoneCode}${_pr.mobile.text}',
+          captcha: value,
           buttonCtrl: buttonCtrl,
         ).request().whenComplete(() => buttonCtrl.reset()),
       ).show();

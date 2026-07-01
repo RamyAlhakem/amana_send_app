@@ -35,9 +35,27 @@
 
 	<title>Amana Send</title>
 	<link rel="manifest" href="manifest.json" />
+
+	<!-- Prevent Roboto font fetch by overriding Material Design default -->
+	<style>
+		@font-face {
+			font-family: 'Roboto';
+			src: local('Arial');
+			display: block;
+		}
+	</style>
 </head>
 
 <body>
+	<script>
+		// Use a CDN mirror for Canvaskit that works in restricted regions.
+		// NOTE: `window.flutterConfiguration` was deprecated in Flutter 3.10+.
+		// The modern entrypoint reads `_flutter.canvasKitBaseUrl` instead —
+		// setting the legacy global would trigger an assertion failure at boot.
+		window._flutter = window._flutter || {};
+		window._flutter.canvasKitBaseUrl =
+			"https://cdn.jsdelivr.net/npm/canvaskit-wasm@0.39.1/bin/";
+	</script>
 	<!-- video_player_web is loaded automatically by Flutter's plugin bootstrap — do NOT add a manual <script> for it. -->
 	<script src="flutter_bootstrap.js" async></script>
 </body>
