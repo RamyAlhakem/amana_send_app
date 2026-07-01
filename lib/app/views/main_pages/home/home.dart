@@ -165,9 +165,9 @@ class _HomeState extends State<Home> {
       if (state.paymentMethodName == "") {
         return Column(
           children: [
-            if (state.showInstall && _isSafari)
-              InstallAppBanner(arb: arb, state: state),
-            if (state.showInstall && _isSafari) const SizedBox(height: 20),
+            // if (state.showInstall && _isSafari)
+            //   InstallAppBanner(arb: arb, state: state),
+            // if (state.showInstall && _isSafari) const SizedBox(height: 20),
             CurrencyWidget(arb: arb, controller: state),
           ],
         );
