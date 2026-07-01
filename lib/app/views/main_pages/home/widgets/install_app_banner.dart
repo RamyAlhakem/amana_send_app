@@ -224,7 +224,7 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
           ),
           Text(
             widget.arb.installAppOnYourPhoneForACompleteExperience,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
           ),
           const SizedBox(width: 20),
           ElevatedButton(
