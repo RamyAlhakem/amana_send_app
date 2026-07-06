@@ -6,11 +6,13 @@ import 'package:amana_send/graphql/api/get_sliders.dart';
 import 'package:amana_send/helper/debug_colors.dart';
 import 'package:amana_send/models/slider_model.dart';
 import 'package:amana_send/models/transfer_provider_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:amana_send/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '/app/views/main_pages/recipients/provider/recipients_state.dart';
 import '/database/injector.dart';
@@ -29,12 +31,42 @@ import '/models/user.dart';
 import '/router/app_route.dart';
 
 class Calculator with ChangeNotifier {
-  bool _showInstall = true;
+  late bool _showInstall;
+
+  Calculator() {
+    // Initialize based on app installation status
+    _showInstall = _shouldShowBanner();
+  }
+
+  /// Detects if the app is installed.
+  /// - On mobile/native: Always true (native app is installed)
+  /// - On web: True if running in standalone/PWA mode
+  bool _isAppInstalled() {
+    if (!kIsWeb) {
+      // Native mobile app is always "installed"
+      return true;
+    }
+    // On web, check if running in standalone mode (PWA)
+    try {
+      final isStandalone =
+          html.window.matchMedia('(display-mode: standalone)').matches;
+      return isStandalone;
+    } catch (e) {
+      Helper.log('Error checking standalone mode: $e');
+      return false;
+    }
+  }
+
+  /// Show banner only if app is NOT installed (i.e., viewing on web as regular site)
+  bool _shouldShowBanner() {
+    return !_isAppInstalled();
+  }
+
   bool get showInstall => _showInstall;
+
   changeInstall(bool value) {
     _showInstall = value;
     Database().setInstall = _showInstall;
-
     notifyListeners();
   }
 
