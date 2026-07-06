@@ -69,38 +69,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recipientProviderMaxAmountIs => 'الحد الأقصى للمزود المستلم';
 
   @override
-  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
-      'يرجى التأكد من إدخال رقم الهاتف ورقم الواتساب والاسم الكامل بشكل صحيح لتجنب تأخير تسليم الحوالة';
+  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery => 'يرجى التأكد من إدخال رقم الهاتف ورقم الواتساب والاسم الكامل بشكل صحيح لتجنب تأخير تسليم الحوالة';
 
   @override
-  String get beforeConfirmingYourOrderYouShouldHaveADigitalWallet =>
-      'قبل تأكيدك للحوالة يجب أن تمتلك محفظة عملات رقمية';
+  String get beforeConfirmingYourOrderYouShouldHaveADigitalWallet => 'قبل تأكيدك للحوالة يجب أن تمتلك محفظة عملات رقمية';
 
   @override
   String get clickHereToLearnHowToPay => 'اضغط هنا لمعرفة طريقة السداد';
 
   @override
-  String get yourOrderHasBeenReceivedSuccessfully =>
-      'لقد تم استلام طلبك بنجاح!';
+  String get yourOrderHasBeenReceivedSuccessfully => 'لقد تم استلام طلبك بنجاح!';
 
   @override
-  String get toCompleteTheTransferPleasePayTheDueAmount =>
-      'لتنفيذ الحوالة يرجى تسديد المبلغ المستحق بالدولار الرقمي';
+  String get toCompleteTheTransferPleasePayTheDueAmount => 'لتنفيذ الحوالة يرجى تسديد المبلغ المستحق بالدولار الرقمي';
 
   @override
   String get toThisWalletAddress => 'الى عنوان المحفظة الآتية';
 
   @override
-  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
-      'بمجرد إتمامك التسديد سوف نعلمك بإستلامنا المبلغ, و نقوم بتنفيذ الحوالة مباشرة حسب شروط التسليم';
+  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately => 'بمجرد إتمامك التسديد سوف نعلمك بإستلامنا المبلغ, و نقوم بتنفيذ الحوالة مباشرة حسب شروط التسليم';
 
   @override
-  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
-      'يرجى مراعاة تسديد المبلغ بالكامل إلى المحفظة وفي حال وصول مبلغ أقل أو أكثر سيتم تحويل قيمة المبلغ المستلم من قبلكم فقط و بنفس سعر الصرف المحدد للحوالة';
+  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate => 'يرجى مراعاة تسديد المبلغ بالكامل إلى المحفظة وفي حال وصول مبلغ أقل أو أكثر سيتم تحويل قيمة المبلغ المستلم من قبلكم فقط و بنفس سعر الصرف المحدد للحوالة';
 
   @override
-  String get yourSendingCountryIsCurrentlyDeactivated =>
-      'بلد الإرسال الخاص بك معطل حالياً';
+  String get yourSendingCountryIsCurrentlyDeactivated => 'بلد الإرسال الخاص بك معطل حالياً';
 
   @override
   String get didNotReceiveCode => 'لم تتلق الرمز؟';
@@ -142,12 +135,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get walletAddress => 'عنوان المحفظة';
 
   @override
-  String get walletAddressWillExpireWithin =>
-      'ستنتهي صلاحية عنوان المحفظة خلال';
+  String get walletAddressWillExpireWithin => 'ستنتهي صلاحية عنوان المحفظة خلال';
 
   @override
-  String get oopsWalletAddressIsExpired =>
-      'عفواً ... انتهت صلاحية عنوان المحفظة';
+  String get oopsWalletAddressIsExpired => 'عفواً ... انتهت صلاحية عنوان المحفظة';
 
   @override
   String get recipientBankDetailsOptional => 'تفاصيل بنك المستلم (اختياري)';
@@ -168,8 +159,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmSendingOrder => 'تأكيد طلب الحوالة';
 
   @override
-  String get weOnlyAcceptInUSDT =>
-      'يتم تسديد الحوالة بواسطة العملة الرقمية المختارة';
+  String get weOnlyAcceptInUSDT => 'يتم تسديد الحوالة بواسطة العملة الرقمية المختارة';
 
   @override
   String get readOnly => 'قراءة فقط';
@@ -187,26 +177,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sentTo => 'مرسلة إلى';
 
   @override
-  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
-      'شكرا لاستخدامكم تطبيق أمانة، بإمكانكم تتبع معالجة وتنفيذ الحوالة في سجل الحوالات';
+  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage => 'شكرا لاستخدامكم تطبيق أمانة، بإمكانكم تتبع معالجة وتنفيذ الحوالة في سجل الحوالات';
 
   @override
   String get trackTransfer => 'تتبع الحوالة';
 
   @override
-  String get receiveTypeIsNotAvailableForThisCountry =>
-      'نوع الاستلام غير متاح لهذا البلد';
+  String get receiveTypeIsNotAvailableForThisCountry => 'نوع الاستلام غير متاح لهذا البلد';
 
   @override
   String get iAccept => 'أنا أقبل';
 
   @override
-  String get noteAllRemittanceWillBeWithin48HoursExceptForPublicHolidays =>
-      'ملحوظة: جميع التحويلات ستكون في غضون 48 ساعة، باستثناء أيام العطل الرسمية';
+  String get noteAllRemittanceWillBeWithin48HoursExceptForPublicHolidays => 'ملحوظة: جميع التحويلات ستكون في غضون 48 ساعة، باستثناء أيام العطل الرسمية';
 
   @override
-  String get pleaseReadOurTermsAndConditions =>
-      'يرجى قراءة الشروط والأحكام الخاصة بنا';
+  String get pleaseReadOurTermsAndConditions => 'يرجى قراءة الشروط والأحكام الخاصة بنا';
 
   @override
   String get cardNumber => 'رقم البطاقة';
@@ -227,8 +213,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cardDetails => 'معلومات البطاقة';
 
   @override
-  String get noteWeAreNotResponsibleForAnyAdditionalFeesThatYourBankMayCharge =>
-      'ملاحظة: نحن لسنا مسؤولين عن أي رسوم إضافية قد يفرضها البنك الذي تتعامل معه';
+  String get noteWeAreNotResponsibleForAnyAdditionalFeesThatYourBankMayCharge => 'ملاحظة: نحن لسنا مسؤولين عن أي رسوم إضافية قد يفرضها البنك الذي تتعامل معه';
 
   @override
   String get expireDateStartsWithMonth => 'تاريخ انتهاء الصلاحية يبدأ بالشهر';
@@ -240,8 +225,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chooseCountry => 'اختر الدولة';
 
   @override
-  String get areYouSureYouWantToCancelThisTransfer =>
-      'هل أنت متأكد أنك تريد إلغاء هذه الحوالة؟';
+  String get areYouSureYouWantToCancelThisTransfer => 'هل أنت متأكد أنك تريد إلغاء هذه الحوالة؟';
 
   @override
   String get pleaseSelectRecipient => 'الرجاء تحديد المستلم';
@@ -262,8 +246,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get share => 'مشاركة';
 
   @override
-  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
-      'يرجى ملاحظة أن عنوان المحفظة مخصص لهذا التحويل فقط، يرجى عدم استخدامه لعمليات تحويل أخرى';
+  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers => 'يرجى ملاحظة أن عنوان المحفظة مخصص لهذا التحويل فقط، يرجى عدم استخدامه لعمليات تحويل أخرى';
 
   @override
   String get paymentDetails => 'تفاصيل الدفع';
@@ -311,8 +294,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get forgotPassword => 'نسيت كلمة السر؟';
 
   @override
-  String get weWillSendResetPassword =>
-      'سوف نرسل رمز إعادة تعيين كلمة المرور عبر رسالة نصية قصيرة إلى رقم هاتفك المحمول';
+  String get weWillSendResetPassword => 'سوف نرسل رمز إعادة تعيين كلمة المرور عبر رسالة نصية قصيرة إلى رقم هاتفك المحمول';
 
   @override
   String get verifyMobileNumber => 'تحقق من رقم الجوال';
@@ -357,12 +339,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lastName => 'الكنية';
 
   @override
-  String get passwordMustContainAtLeast8Characters =>
-      'يجب أن تحتوي كلمة السر على 8 أحرف على الأقل!';
+  String get passwordMustContainAtLeast8Characters => 'يجب أن تحتوي كلمة السر على 8 أحرف على الأقل!';
 
   @override
-  String get passwordAndConfirmPasswordDoesNotMatch =>
-      'كلمة السر وتأكيد كلمة السر غير متطابقتين!';
+  String get passwordAndConfirmPasswordDoesNotMatch => 'كلمة السر وتأكيد كلمة السر غير متطابقتين!';
 
   @override
   String get send => 'إرسال';
@@ -386,8 +366,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewAndCheckout => 'مراجعة والدفع';
 
   @override
-  String get reviewYourTransferDetailsToContinueCheckout =>
-      'قم بمراجعة تفاصيل التحويل الخاصة بك لمواصلة الدفع';
+  String get reviewYourTransferDetailsToContinueCheckout => 'قم بمراجعة تفاصيل التحويل الخاصة بك لمواصلة الدفع';
 
   @override
   String get payment => 'الدفع';
@@ -432,8 +411,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ok => 'موافق';
 
   @override
-  String get pleaseAvoidStartingMobileNumberWithAZero =>
-      'يرجى تجنب بدء رقم الجوال بصفر';
+  String get pleaseAvoidStartingMobileNumberWithAZero => 'يرجى تجنب بدء رقم الجوال بصفر';
 
   @override
   String get systemTheme => 'سمة النظام';
@@ -529,15 +507,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get relation => 'القرابة *';
 
   @override
-  String get youHaveExceededTheMaximumSendingAmountThisMonth =>
-      'لقد تجاوزت الحد الأعلى لمبلغ الإرسال هذا الشهر';
+  String get youHaveExceededTheMaximumSendingAmountThisMonth => 'لقد تجاوزت الحد الأعلى لمبلغ الإرسال هذا الشهر';
 
   @override
   String get country => 'البلد';
 
   @override
-  String get yourMaxSendingAmountWithin =>
-      'الحد الأعلى لمبلغ الإرسال الخاص بك خلال';
+  String get yourMaxSendingAmountWithin => 'الحد الأعلى لمبلغ الإرسال الخاص بك خلال';
 
   @override
   String get contactUs => 'اتصل بنا';
@@ -573,8 +549,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get backside => 'الجانب الخلفي';
 
   @override
-  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
-      'في قسم (المستندات الأخرى) الموجود في أسفل هذه الصفحة، وإلا فسيتم رفض حسابك';
+  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected => 'في قسم (المستندات الأخرى) الموجود في أسفل هذه الصفحة، وإلا فسيتم رفض حسابك';
 
   @override
   String get receipt => 'فاتورة';
@@ -613,8 +588,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bankName => 'اسم البنك';
 
   @override
-  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
-      'معلومات بنك المستلم مفقودة ، يرجى تحرير المستلم بإضافة تفاصيل الحساب المصرفي';
+  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails => 'معلومات بنك المستلم مفقودة ، يرجى تحرير المستلم بإضافة تفاصيل الحساب المصرفي';
 
   @override
   String get selectCity => 'حدد المدينة';
@@ -632,8 +606,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectCountry => 'حدد البلد';
 
   @override
-  String get selectCountryPhoneCodeFromTheListBelow =>
-      'حدد رمز هاتف الدولة من القائمة أدناه';
+  String get selectCountryPhoneCodeFromTheListBelow => 'حدد رمز هاتف الدولة من القائمة أدناه';
 
   @override
   String get selectCityFromTheListBelow => 'حدد المدينة من القائمة أدناه';
@@ -669,27 +642,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attentionWhenMakingThePayment => 'يرجى الإنتباه عند السداد:';
 
   @override
-  String get makeSureToEnterTheWalletAddressCorrectly =>
-      'تأكد من إدخال عنوان المحفظة بشكل كامل و صحيح و استخدام شبكة';
+  String get makeSureToEnterTheWalletAddressCorrectly => 'تأكد من إدخال عنوان المحفظة بشكل كامل و صحيح و استخدام شبكة';
 
   @override
-  String get polygonNetworkOnly =>
-      'حصراً, علماً أن أي خطأ أو استخدام أي شبكة أخرى سيؤدي إلى خسارة أموالك نهائياً و لا تعتبر حوالتك مسددة.';
+  String get polygonNetworkOnly => 'حصراً, علماً أن أي خطأ أو استخدام أي شبكة أخرى سيؤدي إلى خسارة أموالك نهائياً و لا تعتبر حوالتك مسددة.';
 
   @override
   String get pleaseEnterSendingAmount => 'الرجاء إدخال مبلغ الإرسال';
 
   @override
-  String get minimumReceivingLimitToThisPickUpPointIs =>
-      'الحد الأدنى للاستلام إلى نقطة التسليم هذه هو';
+  String get minimumReceivingLimitToThisPickUpPointIs => 'الحد الأدنى للاستلام إلى نقطة التسليم هذه هو';
 
   @override
-  String get maximumReceivingLimitToThisPickUpPointIs =>
-      'الحد الأعلى للاستلام إلى نقطة التسليم هذه هو';
+  String get maximumReceivingLimitToThisPickUpPointIs => 'الحد الأعلى للاستلام إلى نقطة التسليم هذه هو';
 
   @override
-  String get useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly =>
-      'هذه المحفظة خاصة بهذا التحويل فقط, وتستخدم لمرة واحدة فقط';
+  String get useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly => 'هذه المحفظة خاصة بهذا التحويل فقط, وتستخدم لمرة واحدة فقط';
 
   @override
   String get walletNetwork => 'عند الدفع اختر الشبكة';
@@ -701,52 +669,40 @@ class AppLocalizationsAr extends AppLocalizations {
   String get timeLimitToPay => 'يجب السداد خلال مدة أقصاها';
 
   @override
-  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
-      'في حال عدم السداد وإنتهاء المدة, لا يمكن استخدام المحفظة و ستيم إلغاء طلب الحوالة.';
+  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled => 'في حال عدم السداد وإنتهاء المدة, لا يمكن استخدام المحفظة و ستيم إلغاء طلب الحوالة.';
 
   @override
-  String get yourMaxLevelSendingAmountIs =>
-      'الحد الأعلى لمبلغ الإرسال الخاص بك هو';
+  String get yourMaxLevelSendingAmountIs => 'الحد الأعلى لمبلغ الإرسال الخاص بك هو';
 
   @override
-  String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount =>
-      'لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى ترقية الحساب';
+  String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount => 'لزيادة الحد الأعلى لمبلغ الإرسال الخاص بك، يرجى ترقية الحساب';
 
   @override
-  String get selectTheCountryYouWantToTransferTo =>
-      'حدد البلد المطلوب التحويل إليها';
+  String get selectTheCountryYouWantToTransferTo => 'حدد البلد المطلوب التحويل إليها';
 
   @override
   String get selectTheReceivingCity => 'حدد مدينة الاستلام';
 
   @override
-  String get knowTheCurrentExchangeRateAndChooseYourPreferredAgent =>
-      'أعرف سعر الصرف الحالي واختر وكيل التسليم المفضل إليك';
+  String get knowTheCurrentExchangeRateAndChooseYourPreferredAgent => 'أعرف سعر الصرف الحالي واختر وكيل التسليم المفضل إليك';
 
   @override
-  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
-      'ادخل المبلغ الذي ترغب بتحويله بالدولار الرقميUSDT والذي يساوي بقيمته الدولار الأميريكي \$';
+  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar => 'ادخل المبلغ الذي ترغب بتحويله بالدولار الرقميUSDT والذي يساوي بقيمته الدولار الأميريكي \$';
 
   @override
-  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
-      'قيمة المبلغ المطلوب تحويله بعملتك المحلية بشكل تقريبي حسب سعر الصرف الحالي';
+  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate => 'قيمة المبلغ المطلوب تحويله بعملتك المحلية بشكل تقريبي حسب سعر الصرف الحالي';
 
   @override
-  String
-      get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
-          'المبلغ الذي سيحصل عليه المستلم حسب سعر الصرف للوكيل المحدد';
+  String get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent => 'المبلغ الذي سيحصل عليه المستلم حسب سعر الصرف للوكيل المحدد';
 
   @override
-  String
-      get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
-          'بعد إتمام معلومات التحويل اضغط هنا لتحديد اسم المستلم و سداد المبلغ';
+  String get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount => 'بعد إتمام معلومات التحويل اضغط هنا لتحديد اسم المستلم و سداد المبلغ';
 
   @override
   String get cameraPermission => 'إذن الكاميرا';
 
   @override
-  String get pleaseAllowAppToAccessCamera =>
-      'يرجى السماح للتطبيق بالوصول إلى الكاميرا';
+  String get pleaseAllowAppToAccessCamera => 'يرجى السماح للتطبيق بالوصول إلى الكاميرا';
 
   @override
   String get skip => 'تخطي';
@@ -761,23 +717,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get area => 'المنطقة';
 
   @override
-  String get clickOnTheFocusedBoxToContinue =>
-      'انقر على المستطيل المحدد للمتابعة';
+  String get clickOnTheFocusedBoxToContinue => 'انقر على المستطيل المحدد للمتابعة';
 
   @override
-  String get noNewChangesInTheFieldsToSave =>
-      'لا توجد تغييرات جديدة في الحقول للحفظ';
+  String get noNewChangesInTheFieldsToSave => 'لا توجد تغييرات جديدة في الحقول للحفظ';
 
   @override
   String get selectCurrency => 'اختر العملة';
 
   @override
-  String get selectReceiveCurrencyForThisCountry =>
-      'حدد عملة الاستلام لهذا البلد';
+  String get selectReceiveCurrencyForThisCountry => 'حدد عملة الاستلام لهذا البلد';
 
   @override
-  String get usdIsNotAvailableForThisCountry =>
-      'الدولار الأمريكي غير متوفر لهذا البلد';
+  String get usdIsNotAvailableForThisCountry => 'الدولار الأمريكي غير متوفر لهذا البلد';
 
   @override
   String get usdDollar => 'USD (دولار أمريكي)';
@@ -798,20 +750,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterOTPcodeSentToTheNumber => 'أدخل رمز التحقق المرسل إلى الرقم';
 
   @override
-  String get enterOTPcodeSentToTheEmail =>
-      'أدخل رمز التحقق المرسل إلى البريد الإلكتروني';
+  String get enterOTPcodeSentToTheEmail => 'أدخل رمز التحقق المرسل إلى البريد الإلكتروني';
 
   @override
-  String get enterOTPVerificationCodeToResetYourPassword =>
-      'أدخل رمز التحقق لإعادة تعيين كلمة المرور الخاصة بك';
+  String get enterOTPVerificationCodeToResetYourPassword => 'أدخل رمز التحقق لإعادة تعيين كلمة المرور الخاصة بك';
 
   @override
-  String get codeSuccessfullySentKindlyWait =>
-      'تم إرسال الرمز بنجاح، يرجى الانتظار';
+  String get codeSuccessfullySentKindlyWait => 'تم إرسال الرمز بنجاح، يرجى الانتظار';
 
   @override
-  String get youCanRequestAnotherOTPagainWithin =>
-      'يمكنك طلب الرمز مرة أخرى خلال';
+  String get youCanRequestAnotherOTPagainWithin => 'يمكنك طلب الرمز مرة أخرى خلال';
 
   @override
   String get resendCode => 'أعد إرسال الرمز';
@@ -820,23 +768,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get validate => 'تحقق';
 
   @override
-  String get newPasswordMustContainAtLeastEightLetters =>
-      'يجب أن تحتوي كلمة المرور الجديدة على ثمانية أحرف على الأقل!';
+  String get newPasswordMustContainAtLeastEightLetters => 'يجب أن تحتوي كلمة المرور الجديدة على ثمانية أحرف على الأقل!';
 
   @override
-  String get newPasswordAndConfirmPasswordDoesNotMatch =>
-      'كلمة السر الجديدة وتأكيد كلمة السر غير متطابقين!';
+  String get newPasswordAndConfirmPasswordDoesNotMatch => 'كلمة السر الجديدة وتأكيد كلمة السر غير متطابقين!';
 
   @override
   String get enterCode => 'ادخل الرمز';
 
   @override
-  String get recipientCountryUnavailableAtTheMoment =>
-      'بلد المستلم غير متوفر في الوقت الحالي';
+  String get recipientCountryUnavailableAtTheMoment => 'بلد المستلم غير متوفر في الوقت الحالي';
 
   @override
-  String get passwordSuccessfullyChangedPleaseLoginToContinue =>
-      'تم تغيير كلمة السر بنجاح، يرجى تسجيل الدخول للمتابعة';
+  String get passwordSuccessfullyChangedPleaseLoginToContinue => 'تم تغيير كلمة السر بنجاح، يرجى تسجيل الدخول للمتابعة';
 
   @override
   String get pleaseloginToContinue => 'الرجاء تسجيل الدخول ';
@@ -845,8 +789,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get incorrectPassword => 'كلمة السر خاطئة';
 
   @override
-  String get newPasswordCannotBeTheSameAsTheCurrentPassword =>
-      'لا يمكن أن تكون كلمة السر الجديدة هي نفسها كلمة السر الحالية';
+  String get newPasswordCannotBeTheSameAsTheCurrentPassword => 'لا يمكن أن تكون كلمة السر الجديدة هي نفسها كلمة السر الحالية';
 
   @override
   String get recipientHasBeenDeletedSuccessfully => 'تم حذف المستلم بنجاح';
@@ -873,8 +816,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accountDeactivated => 'الحساب معطل';
 
   @override
-  String get youHaveTriedThreeWrongAttemptsYouCanTryAgainNext24h =>
-      'لقد حاولت ثلاث محاولات خاطئة. يمكنك المحاولة مرة أخرى خلال24 ساعة القادمة';
+  String get youHaveTriedThreeWrongAttemptsYouCanTryAgainNext24h => 'لقد حاولت ثلاث محاولات خاطئة. يمكنك المحاولة مرة أخرى خلال24 ساعة القادمة';
 
   @override
   String get iDExpireDateAlreadyExpired => 'بطاقة الهوية انتهت بالفعل';
@@ -946,8 +888,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mainInformation => 'المعلومات الرئيسية';
 
   @override
-  String get firstNameFatherNameLastName =>
-      'الاسم الأول - اسم الأب - اسم العائلة';
+  String get firstNameFatherNameLastName => 'الاسم الأول - اسم الأب - اسم العائلة';
 
   @override
   String get address => 'العنوان *';
@@ -995,9 +936,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newVersionIsAvailable => 'إصدار جديد متاح للتحديث';
 
   @override
-  String
-      get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
-          'هناك إصدار جديد متاح للتنزيل! يرجى تحديث تطبيق امانة للمتابعة';
+  String get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue => 'هناك إصدار جديد متاح للتنزيل! يرجى تحديث تطبيق امانة للمتابعة';
 
   @override
   String get updateAmanaSend => 'تحديث تطبيق امانة';
@@ -1018,8 +957,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get proofOfAddress => 'إثبات العنوان';
 
   @override
-  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
-      'وثيقة تثبت مكان إقامتك مع عنوانك المكتوب عليها، مثل (فاتورة خدمات / عقد إيجار / تصريح إقامة)';
+  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit => 'وثيقة تثبت مكان إقامتك مع عنوانك المكتوب عليها، مثل (فاتورة خدمات / عقد إيجار / تصريح إقامة)';
 
   @override
   String get birthday => 'تاريخ الميلاد *';
@@ -1031,12 +969,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get identity => 'الهوية *';
 
   @override
-  String get privacyPolicyAndPersonalDataProtection =>
-      'سياسة الخصوصية وحماية البيانات الشخصية';
+  String get privacyPolicyAndPersonalDataProtection => 'سياسة الخصوصية وحماية البيانات الشخصية';
 
   @override
-  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
-      'لكي نتمكن من استخدام خدماتنا، يجب علينا التحقق من هويتك. قم بتحميل نسخة واضحة من بطاقة الهوية وإثبات عنوان الإقامة، بالإضافة إلى التقاط صورة سيلفي بدون قبعة أو نظارة شمسية على العين.';
+  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye => 'لكي نتمكن من استخدام خدماتنا، يجب علينا التحقق من هويتك. قم بتحميل نسخة واضحة من بطاقة الهوية وإثبات عنوان الإقامة، بالإضافة إلى التقاط صورة سيلفي بدون قبعة أو نظارة شمسية على العين.';
 
   @override
   String get identityNumber => 'رقم الهوية';
@@ -1048,8 +984,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get expiryDate => 'تاريخ الانتهاء';
 
   @override
-  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
-      'قم بتحميل نسخة واضحة من وثيقة الهوية مثل جواز السفر - رخصة القيادة - تصريح الإقامة';
+  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit => 'قم بتحميل نسخة واضحة من وثيقة الهوية مثل جواز السفر - رخصة القيادة - تصريح الإقامة';
 
   @override
   String get fullNameArabic => 'الاسم الكامل (عربي)';
@@ -1064,15 +999,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get takeSelfie => 'التقط صورة شخصية';
 
   @override
-  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
-      'التقط صورة سيلفي بدون قبعة أو نظارة شمسية على العين لمقارنة صورتك في وثيقة الهوية';
+  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument => 'التقط صورة سيلفي بدون قبعة أو نظارة شمسية على العين لمقارنة صورتك في وثيقة الهوية';
 
   @override
   String get otherDocuments => 'المستندات الأخرى';
 
   @override
-  String get noteYourTransferLimitWillIncreaseIfYouProvideSecondID =>
-      'ملاحظة: سيتم زيادة حد التحويل الخاص بك إذا قدمت معرفاً ثانياً.';
+  String get noteYourTransferLimitWillIncreaseIfYouProvideSecondID => 'ملاحظة: سيتم زيادة حد التحويل الخاص بك إذا قدمت معرفاً ثانياً.';
 
   @override
   String get uploadDocumentImage => 'تحميل صورة الوثيقة';
@@ -1090,37 +1023,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sendingAmount => 'مبلغ التحويل';
 
   @override
-  String get estimatedValueInLocalCurrency =>
-      'القيمة التقريبية بالعملة المحلية';
+  String get estimatedValueInLocalCurrency => 'القيمة التقريبية بالعملة المحلية';
 
   @override
   String get currenciesExchangeRate => 'سعر صرف العملات';
 
   @override
-  String get providerIsInactiveForTheReceivingCity =>
-      'الموفر غير نشط للمدينة المستقبلة';
+  String get providerIsInactiveForTheReceivingCity => 'الموفر غير نشط للمدينة المستقبلة';
 
   @override
-  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
-      'بمجرد تأكيد الدفع في نظامنا، سيتم إعلامك وستبدأ معالجة المعاملة خلال 24 ساعة';
+  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours => 'بمجرد تأكيد الدفع في نظامنا، سيتم إعلامك وستبدأ معالجة المعاملة خلال 24 ساعة';
 
   @override
-  String get areYouSureYouWantToDeleteYourAccount =>
-      'هل انت متأكد انك تريد حذف حسابك!؟';
+  String get areYouSureYouWantToDeleteYourAccount => 'هل انت متأكد انك تريد حذف حسابك!؟';
 
   @override
   String get support => 'الدعم';
 
   @override
-  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
-      'لا يمكن إرسال هذه الحوالة بسبب تعديل أو حذف معلومات المستلم، يرجى إرسال حوالة جديدة';
+  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer => 'لا يمكن إرسال هذه الحوالة بسبب تعديل أو حذف معلومات المستلم، يرجى إرسال حوالة جديدة';
 
   @override
   String get amanaSendSupportTeam => 'فريق دعم تطبيق امانة';
 
   @override
-  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
-      'عزيزي العميل، فريق دعم تطبيق امانة هنا لمساعدتك، لا تتردد في الاتصال بنا عبر ما يلي:';
+  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing => 'عزيزي العميل، فريق دعم تطبيق امانة هنا لمساعدتك، لا تتردد في الاتصال بنا عبر ما يلي:';
 
   @override
   String get enterMobileNumber => 'ادخل رقم الجوال';
@@ -1180,16 +1107,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verificationCodeWhatsApp => 'سيتم إرسال كود التحقق عبر الواتساب';
 
   @override
-  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
-      'التحقق من الحساب قيد المعالجة، بمجرد التحقق من الحساب، ستتمكن من تحويل الأموال حول العالم';
+  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide => 'التحقق من الحساب قيد المعالجة، بمجرد التحقق من الحساب، ستتمكن من تحويل الأموال حول العالم';
 
   @override
-  String get toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount =>
-      'للتأكد من أنه يمكنك إرسال الأموال إلى جميع أنحاء العالم، يرجى التحقق من حسابك.';
+  String get toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount => 'للتأكد من أنه يمكنك إرسال الأموال إلى جميع أنحاء العالم، يرجى التحقق من حسابك.';
 
   @override
-  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
-      'الرجاء القيام بدفع مبلغ التحويل في اقرب مركز للدفع معتمد لدى شركتنا خلال ثلاث ايام من تاريخ التحويل.';
+  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress => 'الرجاء القيام بدفع مبلغ التحويل في اقرب مركز للدفع معتمد لدى شركتنا خلال ثلاث ايام من تاريخ التحويل.';
 
   @override
   String get verified => 'تم التحقق';
@@ -1270,16 +1194,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loadMore => 'إظهار المزيد';
 
   @override
-  String get installAppOnYourPhoneForACompleteExperience =>
-      'ثبت التطبيق على جوالك لتستمتع بتجربة متكاملة';
+  String get installAppOnYourPhoneForACompleteExperience => 'ثبت التطبيق على جوالك لتستمتع بتجربة متكاملة';
 
   @override
-  String get amanaSendCanBeInstalledAsAnAppOnYourDevice =>
-      'موقع أمانة يمكن تحميله كتطبيق على جهازك!';
+  String get amanaSendCanBeInstalledAsAnAppOnYourDevice => 'موقع أمانة يمكن تحميله كتطبيق على جهازك!';
 
   @override
-  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
-      'اتبع التعليمات لإضافة واستخدام الموقع كتطبيق على الموبايل بدون فتح المتصفح';
+  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser => 'اتبع التعليمات لإضافة واستخدام الموقع كتطبيق على الموبايل بدون فتح المتصفح';
 
   @override
   String get installNow => 'تثبيت الآن';

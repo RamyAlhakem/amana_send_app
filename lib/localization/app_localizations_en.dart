@@ -66,42 +66,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noTransfersFoundYet => 'No transfers found yet';
 
   @override
-  String get recipientProviderMaxAmountIs =>
-      'المزود المستلم يمكنه الحصول على الحد الأقصى ';
+  String get recipientProviderMaxAmountIs => 'المزود المستلم يمكنه الحصول على الحد الأقصى ';
 
   @override
-  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery =>
-      'Please make sure to enter phone number, WhatsApp number, and full name correctly to avoid delaying the transfer delivery';
+  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery => 'Please make sure to enter phone number, WhatsApp number, and full name correctly to avoid delaying the transfer delivery';
 
   @override
-  String get beforeConfirmingYourOrderYouShouldHaveADigitalWallet =>
-      'Before confirming your order you should have a digital wallet';
+  String get beforeConfirmingYourOrderYouShouldHaveADigitalWallet => 'Before confirming your order you should have a digital wallet';
 
   @override
   String get clickHereToLearnHowToPay => 'Click here to learn how to pay';
 
   @override
-  String get yourOrderHasBeenReceivedSuccessfully =>
-      'Your order has been received successfully!';
+  String get yourOrderHasBeenReceivedSuccessfully => 'Your order has been received successfully!';
 
   @override
-  String get toCompleteTheTransferPleasePayTheDueAmount =>
-      'To complete the transfer please pay the due amount';
+  String get toCompleteTheTransferPleasePayTheDueAmount => 'To complete the transfer please pay the due amount';
 
   @override
   String get toThisWalletAddress => 'To this Wallet Address';
 
   @override
-  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately =>
-      'Once the payment is being confirmed, we will notify you and process the transfer immediately';
+  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately => 'Once the payment is being confirmed, we will notify you and process the transfer immediately';
 
   @override
-  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate =>
-      'Please Make sure to pay the exact amount to the WALLET in one go, otherwise if the amount paid in more or less we will pay out exactly what we received on same exchange rate';
+  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate => 'Please Make sure to pay the exact amount to the WALLET in one go, otherwise if the amount paid in more or less we will pay out exactly what we received on same exchange rate';
 
   @override
-  String get yourSendingCountryIsCurrentlyDeactivated =>
-      'Your sending country is currently deactivated';
+  String get yourSendingCountryIsCurrentlyDeactivated => 'Your sending country is currently deactivated';
 
   @override
   String get didNotReceiveCode => 'Didn\'t receive code?';
@@ -143,15 +135,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletAddress => 'Wallet address';
 
   @override
-  String get walletAddressWillExpireWithin =>
-      'Wallet address will expire within';
+  String get walletAddressWillExpireWithin => 'Wallet address will expire within';
 
   @override
   String get oopsWalletAddressIsExpired => 'Oops... Wallet address is expired';
 
   @override
-  String get recipientBankDetailsOptional =>
-      'Recipient Bank details (Optional)';
+  String get recipientBankDetailsOptional => 'Recipient Bank details (Optional)';
 
   @override
   String get editRecipient => 'Edit recipient';
@@ -160,8 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentSuccessful => 'Payment Successful';
 
   @override
-  String get yourPaymentHasBeenSubmittedSuccessfully =>
-      'Your payment has been submitted successfully';
+  String get yourPaymentHasBeenSubmittedSuccessfully => 'Your payment has been submitted successfully';
 
   @override
   String get success => 'Success';
@@ -170,8 +159,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmSendingOrder => 'Confirm sending order';
 
   @override
-  String get weOnlyAcceptInUSDT =>
-      'The transfer is paid using the chosen digital currency';
+  String get weOnlyAcceptInUSDT => 'The transfer is paid using the chosen digital currency';
 
   @override
   String get readOnly => 'Read Only';
@@ -189,26 +177,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sentTo => 'Sent to';
 
   @override
-  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage =>
-      'Thank you for using AmanaSend. You can track the transaction processing on the transfers page';
+  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage => 'Thank you for using AmanaSend. You can track the transaction processing on the transfers page';
 
   @override
   String get trackTransfer => 'Track transfer';
 
   @override
-  String get receiveTypeIsNotAvailableForThisCountry =>
-      'Receive type isn\'t available for this country';
+  String get receiveTypeIsNotAvailableForThisCountry => 'Receive type isn\'t available for this country';
 
   @override
   String get iAccept => 'I accept';
 
   @override
-  String get noteAllRemittanceWillBeWithin48HoursExceptForPublicHolidays =>
-      'Note: All remittance will be within 48 hours, except for public holidays';
+  String get noteAllRemittanceWillBeWithin48HoursExceptForPublicHolidays => 'Note: All remittance will be within 48 hours, except for public holidays';
 
   @override
-  String get pleaseReadOurTermsAndConditions =>
-      'Please read our terms & conditions';
+  String get pleaseReadOurTermsAndConditions => 'Please read our terms & conditions';
 
   @override
   String get cardNumber => 'Card number';
@@ -229,8 +213,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cardDetails => 'Card details';
 
   @override
-  String get noteWeAreNotResponsibleForAnyAdditionalFeesThatYourBankMayCharge =>
-      'Note: We\'re not responsible for any additional fees that your bank may charge';
+  String get noteWeAreNotResponsibleForAnyAdditionalFeesThatYourBankMayCharge => 'Note: We\'re not responsible for any additional fees that your bank may charge';
 
   @override
   String get expireDateStartsWithMonth => 'Expire date starts with month';
@@ -242,8 +225,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseCountry => 'Choose country';
 
   @override
-  String get areYouSureYouWantToCancelThisTransfer =>
-      'Are you sure you want to cancel this transfer?';
+  String get areYouSureYouWantToCancelThisTransfer => 'Are you sure you want to cancel this transfer?';
 
   @override
   String get pleaseSelectRecipient => 'Please select recipient';
@@ -264,8 +246,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get share => 'Share';
 
   @override
-  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers =>
-      'Please note that this wallet address is just for this transfer, please don\'t use it for another transfers';
+  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers => 'Please note that this wallet address is just for this transfer, please don\'t use it for another transfers';
 
   @override
   String get paymentDetails => 'Payment details';
@@ -313,8 +294,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot password?';
 
   @override
-  String get weWillSendResetPassword =>
-      'We will send reset password OTP code via SMS message to your mobile number';
+  String get weWillSendResetPassword => 'We will send reset password OTP code via SMS message to your mobile number';
 
   @override
   String get verifyMobileNumber => 'Verify mobile number';
@@ -359,12 +339,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastName => 'Last name';
 
   @override
-  String get passwordMustContainAtLeast8Characters =>
-      'Password must contain at least 8 characters!';
+  String get passwordMustContainAtLeast8Characters => 'Password must contain at least 8 characters!';
 
   @override
-  String get passwordAndConfirmPasswordDoesNotMatch =>
-      'Password & confirm password doesn\'t match!';
+  String get passwordAndConfirmPasswordDoesNotMatch => 'Password & confirm password doesn\'t match!';
 
   @override
   String get send => 'Send';
@@ -388,15 +366,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewAndCheckout => 'Review & Checkout';
 
   @override
-  String get reviewYourTransferDetailsToContinueCheckout =>
-      'Review your transfer details to continue checkout';
+  String get reviewYourTransferDetailsToContinueCheckout => 'Review your transfer details to continue checkout';
 
   @override
   String get payment => 'Payment';
 
   @override
-  String get enterDebitCreditCardToContinue =>
-      'Enter Debit/Credit card to continue';
+  String get enterDebitCreditCardToContinue => 'Enter Debit/Credit card to continue';
 
   @override
   String get somethingWentWrong => 'Something went wrong';
@@ -435,8 +411,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get pleaseAvoidStartingMobileNumberWithAZero =>
-      'Please avoid starting mobile number with a zero';
+  String get pleaseAvoidStartingMobileNumberWithAZero => 'Please avoid starting mobile number with a zero';
 
   @override
   String get systemTheme => 'System theme';
@@ -520,22 +495,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipientNameEnglish => 'Recipient name (English)*';
 
   @override
-  String get recipientNameEnglishOptional =>
-      'Recipient name (English) / Optional';
+  String get recipientNameEnglishOptional => 'Recipient name (English) / Optional';
 
   @override
   String get recipientNameArabic => 'Recipient name (Arabic)*';
 
   @override
-  String get recipientNameArabicOptional =>
-      'Recipient name (Arabic) / Optional';
+  String get recipientNameArabicOptional => 'Recipient name (Arabic) / Optional';
 
   @override
   String get relation => 'Relation *';
 
   @override
-  String get youHaveExceededTheMaximumSendingAmountThisMonth =>
-      'You\'ve exceeded the maximum sending amount this month';
+  String get youHaveExceededTheMaximumSendingAmountThisMonth => 'You\'ve exceeded the maximum sending amount this month';
 
   @override
   String get country => 'Country';
@@ -577,8 +549,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backside => 'backside';
 
   @override
-  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected =>
-      'in the (other documents) section below on this page, otherwise your account will be rejected';
+  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected => 'in the (other documents) section below on this page, otherwise your account will be rejected';
 
   @override
   String get receipt => 'Receipt';
@@ -617,8 +588,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bankName => 'Bank name';
 
   @override
-  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails =>
-      'Recipient bank info is missing, Please Edit recipient by adding bank account details';
+  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails => 'Recipient bank info is missing, Please Edit recipient by adding bank account details';
 
   @override
   String get selectCity => 'Select city';
@@ -636,8 +606,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectCountry => 'Select country';
 
   @override
-  String get selectCountryPhoneCodeFromTheListBelow =>
-      'Select country phone code from the list below';
+  String get selectCountryPhoneCodeFromTheListBelow => 'Select country phone code from the list below';
 
   @override
   String get selectCityFromTheListBelow => 'Select city from the list below';
@@ -670,86 +639,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receiverCountries => 'Receiver Countries';
 
   @override
-  String get attentionWhenMakingThePayment =>
-      'Attention when making the payment:';
+  String get attentionWhenMakingThePayment => 'Attention when making the payment:';
 
   @override
-  String get makeSureToEnterTheWalletAddressCorrectly =>
-      'Make sure to enter the wallet address correctly and completely, and use';
+  String get makeSureToEnterTheWalletAddressCorrectly => 'Make sure to enter the wallet address correctly and completely, and use';
 
   @override
-  String get polygonNetworkOnly =>
-      'network only, as any error or use of another network will result in the permanent loss of your funds, and your transactions will not be considered as paid.';
+  String get polygonNetworkOnly => 'network only, as any error or use of another network will result in the permanent loss of your funds, and your transactions will not be considered as paid.';
 
   @override
   String get pleaseEnterSendingAmount => 'Please enter sending amount';
 
   @override
-  String get minimumReceivingLimitToThisPickUpPointIs =>
-      'Minimum receiving limit to this pickup point is';
+  String get minimumReceivingLimitToThisPickUpPointIs => 'Minimum receiving limit to this pickup point is';
 
   @override
-  String get maximumReceivingLimitToThisPickUpPointIs =>
-      'Maximum receiving limit to this pickup point is';
+  String get maximumReceivingLimitToThisPickUpPointIs => 'Maximum receiving limit to this pickup point is';
 
   @override
-  String get useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly =>
-      'Use this unique wallet address for one time and for this transfer only';
+  String get useThisUniqueWalletAddressForOneTimeAndForThisTransferOnly => 'Use this unique wallet address for one time and for this transfer only';
 
   @override
   String get walletNetwork => 'Wallet network';
 
   @override
-  String get pleasePayWithinAMaximumPeriod =>
-      'Please pay within a maximum period';
+  String get pleasePayWithinAMaximumPeriod => 'Please pay within a maximum period';
 
   @override
   String get timeLimitToPay => 'Time limit to pay';
 
   @override
-  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled =>
-      'If the payment has not been done in certain time, it is no longer possible to use this wallet and the order will be canceled.';
+  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled => 'If the payment has not been done in certain time, it is no longer possible to use this wallet and the order will be canceled.';
 
   @override
   String get yourMaxLevelSendingAmountIs => 'Your max level sending amount is';
 
   @override
-  String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount =>
-      'To increase your max level amount, Kindly upgrade your account';
+  String get toIncreaseYourMaxLevelAmountKindlyVerifyYourAccount => 'To increase your max level amount, Kindly upgrade your account';
 
   @override
-  String get selectTheCountryYouWantToTransferTo =>
-      'Select the country you want to transfer to';
+  String get selectTheCountryYouWantToTransferTo => 'Select the country you want to transfer to';
 
   @override
   String get selectTheReceivingCity => 'Select the receiving city';
 
   @override
-  String get knowTheCurrentExchangeRateAndChooseYourPreferredAgent =>
-      'Know the current exchange rate and choose your preferred agent';
+  String get knowTheCurrentExchangeRateAndChooseYourPreferredAgent => 'Know the current exchange rate and choose your preferred agent';
 
   @override
-  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar =>
-      'Enter the amount you want to transfer in the USDT which is equal to the value of the US dollar \$';
+  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar => 'Enter the amount you want to transfer in the USDT which is equal to the value of the US dollar \$';
 
   @override
-  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate =>
-      'The amount required to be transferred in your local currency is approximately based on the current exchange rate';
+  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate => 'The amount required to be transferred in your local currency is approximately based on the current exchange rate';
 
   @override
-  String get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent =>
-      'The amount the recipient will receive depends on the exchange rate of the selected agent';
+  String get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent => 'The amount the recipient will receive depends on the exchange rate of the selected agent';
 
   @override
-  String get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount =>
-      'After completing the transfer information, click here to specify the name of the recipient and pay the amount';
+  String get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount => 'After completing the transfer information, click here to specify the name of the recipient and pay the amount';
 
   @override
   String get cameraPermission => 'Camera permission';
 
   @override
-  String get pleaseAllowAppToAccessCamera =>
-      'Please allow app to access camera';
+  String get pleaseAllowAppToAccessCamera => 'Please allow app to access camera';
 
   @override
   String get skip => 'Skip';
@@ -764,23 +717,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get area => 'Area';
 
   @override
-  String get clickOnTheFocusedBoxToContinue =>
-      'Click on the focused box to continue';
+  String get clickOnTheFocusedBoxToContinue => 'Click on the focused box to continue';
 
   @override
-  String get noNewChangesInTheFieldsToSave =>
-      'There are no new changes in the fields to save';
+  String get noNewChangesInTheFieldsToSave => 'There are no new changes in the fields to save';
 
   @override
   String get selectCurrency => 'Select currency';
 
   @override
-  String get selectReceiveCurrencyForThisCountry =>
-      'Select receive currency for this country';
+  String get selectReceiveCurrencyForThisCountry => 'Select receive currency for this country';
 
   @override
-  String get usdIsNotAvailableForThisCountry =>
-      'USD is not available for this country';
+  String get usdIsNotAvailableForThisCountry => 'USD is not available for this country';
 
   @override
   String get usdDollar => 'USD (US Dollar)';
@@ -804,16 +753,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterOTPcodeSentToTheEmail => 'Enter OTP code sent to the email';
 
   @override
-  String get enterOTPVerificationCodeToResetYourPassword =>
-      'Enter OTP verification code to reset your password';
+  String get enterOTPVerificationCodeToResetYourPassword => 'Enter OTP verification code to reset your password';
 
   @override
-  String get codeSuccessfullySentKindlyWait =>
-      'Code successfully sent, Kindly wait';
+  String get codeSuccessfullySentKindlyWait => 'Code successfully sent, Kindly wait';
 
   @override
-  String get youCanRequestAnotherOTPagainWithin =>
-      'You can request another OTP again within';
+  String get youCanRequestAnotherOTPagainWithin => 'You can request another OTP again within';
 
   @override
   String get resendCode => 'Resend code';
@@ -822,23 +768,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validate => 'Validate';
 
   @override
-  String get newPasswordMustContainAtLeastEightLetters =>
-      'New password must contain at least eight letters!';
+  String get newPasswordMustContainAtLeastEightLetters => 'New password must contain at least eight letters!';
 
   @override
-  String get newPasswordAndConfirmPasswordDoesNotMatch =>
-      'New password & confirm password doesn\'t match!';
+  String get newPasswordAndConfirmPasswordDoesNotMatch => 'New password & confirm password doesn\'t match!';
 
   @override
   String get enterCode => 'Enter code';
 
   @override
-  String get recipientCountryUnavailableAtTheMoment =>
-      'Recipient country unavailable at the moment';
+  String get recipientCountryUnavailableAtTheMoment => 'Recipient country unavailable at the moment';
 
   @override
-  String get passwordSuccessfullyChangedPleaseLoginToContinue =>
-      'Password successfully changed, Please login to continue';
+  String get passwordSuccessfullyChangedPleaseLoginToContinue => 'Password successfully changed, Please login to continue';
 
   @override
   String get pleaseloginToContinue => 'Please login to continue';
@@ -847,16 +789,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get incorrectPassword => 'Incorrect password';
 
   @override
-  String get newPasswordCannotBeTheSameAsTheCurrentPassword =>
-      'New password cannot be the same as the current password';
+  String get newPasswordCannotBeTheSameAsTheCurrentPassword => 'New password cannot be the same as the current password';
 
   @override
-  String get recipientHasBeenDeletedSuccessfully =>
-      'Recipient has been deleted successfully';
+  String get recipientHasBeenDeletedSuccessfully => 'Recipient has been deleted successfully';
 
   @override
-  String get accountHasBeenDeletedSuccessfully =>
-      'Account has been deleted successfully';
+  String get accountHasBeenDeletedSuccessfully => 'Account has been deleted successfully';
 
   @override
   String get invalidMobileNumber => 'Invalid mobile number';
@@ -877,8 +816,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountDeactivated => 'Account deactivated';
 
   @override
-  String get youHaveTriedThreeWrongAttemptsYouCanTryAgainNext24h =>
-      'You\'ve tried three wrong attempts. You can try again next 24h';
+  String get youHaveTriedThreeWrongAttemptsYouCanTryAgainNext24h => 'You\'ve tried three wrong attempts. You can try again next 24h';
 
   @override
   String get iDExpireDateAlreadyExpired => 'ID Expire date already expired';
@@ -950,8 +888,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mainInformation => 'Main information';
 
   @override
-  String get firstNameFatherNameLastName =>
-      'First name - Father name - Last name';
+  String get firstNameFatherNameLastName => 'First name - Father name - Last name';
 
   @override
   String get address => 'Address *';
@@ -999,8 +936,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newVersionIsAvailable => 'New Version is available';
 
   @override
-  String get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue =>
-      'There\'s a new version available to download! Please update AmanaSend to continue';
+  String get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue => 'There\'s a new version available to download! Please update AmanaSend to continue';
 
   @override
   String get updateAmanaSend => 'Update AmanaSend';
@@ -1021,8 +957,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proofOfAddress => 'Proof of address';
 
   @override
-  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit =>
-      'A document proving your place of residence with your address written on it, such as (Utility bill / Lease contract / Residence permit)';
+  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit => 'A document proving your place of residence with your address written on it, such as (Utility bill / Lease contract / Residence permit)';
 
   @override
   String get birthday => 'Birthday *';
@@ -1034,12 +969,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get identity => 'Identity *';
 
   @override
-  String get privacyPolicyAndPersonalDataProtection =>
-      'Privacy policy and personal data protection';
+  String get privacyPolicyAndPersonalDataProtection => 'Privacy policy and personal data protection';
 
   @override
-  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye =>
-      'In order to be able to use our services, we must verify your identity. Upload a clear copy of identification card and proof of residence address, in addition to Take a selfie without a hat or sunglasses on the eye.';
+  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye => 'In order to be able to use our services, we must verify your identity. Upload a clear copy of identification card and proof of residence address, in addition to Take a selfie without a hat or sunglasses on the eye.';
 
   @override
   String get identityNumber => 'Identity number';
@@ -1051,8 +984,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expiryDate => 'Expiry date';
 
   @override
-  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit =>
-      'Upload a clear copy of identity document such as a Passport – Driving License - Residence Permit';
+  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit => 'Upload a clear copy of identity document such as a Passport – Driving License - Residence Permit';
 
   @override
   String get fullNameArabic => 'Full name (Arabic)';
@@ -1067,15 +999,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get takeSelfie => 'Take selfie';
 
   @override
-  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument =>
-      'Take a selfie without a hat or sunglasses on the eye to compare your photo on the identification document';
+  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument => 'Take a selfie without a hat or sunglasses on the eye to compare your photo on the identification document';
 
   @override
   String get otherDocuments => 'Other documents';
 
   @override
-  String get noteYourTransferLimitWillIncreaseIfYouProvideSecondID =>
-      'Note: Your transfer limit will increase if you provide a second ID.';
+  String get noteYourTransferLimitWillIncreaseIfYouProvideSecondID => 'Note: Your transfer limit will increase if you provide a second ID.';
 
   @override
   String get uploadDocumentImage => 'Upload document image';
@@ -1093,37 +1023,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendingAmount => 'Sending amount';
 
   @override
-  String get estimatedValueInLocalCurrency =>
-      'Estimated value in local currency';
+  String get estimatedValueInLocalCurrency => 'Estimated value in local currency';
 
   @override
   String get currenciesExchangeRate => 'Currencies exchange rate';
 
   @override
-  String get providerIsInactiveForTheReceivingCity =>
-      'Provider is inactive for the receiving city';
+  String get providerIsInactiveForTheReceivingCity => 'Provider is inactive for the receiving city';
 
   @override
-  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours =>
-      'Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours';
+  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours => 'Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours';
 
   @override
-  String get areYouSureYouWantToDeleteYourAccount =>
-      'Are you sure you want to delete your account!?';
+  String get areYouSureYouWantToDeleteYourAccount => 'Are you sure you want to delete your account!?';
 
   @override
   String get support => 'Support';
 
   @override
-  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer =>
-      'Cannot send this transfer due to recipient details has been modified or delete, Kindly make new transfer';
+  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer => 'Cannot send this transfer due to recipient details has been modified or delete, Kindly make new transfer';
 
   @override
   String get amanaSendSupportTeam => 'AmanaSend support team';
 
   @override
-  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing =>
-      'Dear valued customer, AmanaSend support team is here to help you, please feel free to contact us via the following:';
+  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing => 'Dear valued customer, AmanaSend support team is here to help you, please feel free to contact us via the following:';
 
   @override
   String get enterMobileNumber => 'Enter mobile number';
@@ -1180,20 +1104,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verificationInProcess => 'Verification in process';
 
   @override
-  String get verificationCodeWhatsApp =>
-      'The verification code will be sent via WhatsApp';
+  String get verificationCodeWhatsApp => 'The verification code will be sent via WhatsApp';
 
   @override
-  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide =>
-      'Account verification in process, once account is verified, you will be able to transfer money worldwide';
+  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide => 'Account verification in process, once account is verified, you will be able to transfer money worldwide';
 
   @override
-  String get toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount =>
-      'To ensure that you can send money worldwide, please verify your account.';
+  String get toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount => 'To ensure that you can send money worldwide, please verify your account.';
 
   @override
-  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress =>
-      'Please pay the balance for this transaction within 3 days at your nearest approved cash payment address.';
+  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress => 'Please pay the balance for this transaction within 3 days at your nearest approved cash payment address.';
 
   @override
   String get verified => 'Verified';
@@ -1274,16 +1194,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loadMore => 'Load More';
 
   @override
-  String get installAppOnYourPhoneForACompleteExperience =>
-      'Install the app on your phone for a complete experience';
+  String get installAppOnYourPhoneForACompleteExperience => 'Install the app on your phone for a complete experience';
 
   @override
-  String get amanaSendCanBeInstalledAsAnAppOnYourDevice =>
-      'Amana Send website can be installed as an app on your device!';
+  String get amanaSendCanBeInstalledAsAnAppOnYourDevice => 'Amana Send website can be installed as an app on your device!';
 
   @override
-  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
-      'Follow the instructions above to add and use the site as an app on your phone without opening it from the browser';
+  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser => 'Follow the instructions above to add and use the site as an app on your phone without opening it from the browser';
 
   @override
   String get installNow => 'Install Now';

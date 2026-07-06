@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,8 +82,7 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -222,8 +219,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Please make sure to enter phone number, WhatsApp number, and full name correctly to avoid delaying the transfer delivery'**
-  String
-      get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery;
+  String get pleaseMakeSureToEnterPhoneNumberWhatsAppNumberAndFullNameCorrectlyToAvoidDelayingTheTransferDelivery;
 
   /// No description provided for @beforeConfirmingYourOrderYouShouldHaveADigitalWallet.
   ///
@@ -259,15 +255,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Once the payment is being confirmed, we will notify you and process the transfer immediately'**
-  String
-      get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately;
+  String get onceThePaymentIsBeingConfirmedWeWillNotifyYouAndProcessTheTransferImmediately;
 
   /// No description provided for @pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate.
   ///
   /// In en, this message translates to:
   /// **'Please Make sure to pay the exact amount to the WALLET in one go, otherwise if the amount paid in more or less we will pay out exactly what we received on same exchange rate'**
-  String
-      get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate;
+  String get pleaseMakeSureToPayTheExactAmountToTheWALLETInOneGoOtherwiseIfTheAmountPaidInMoreOrLessWeWillPayOutExactlyWhatWeReceivedOnSameExchangeRate;
 
   /// No description provided for @yourSendingCountryIsCurrentlyDeactivated.
   ///
@@ -441,8 +435,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Thank you for using AmanaSend. You can track the transaction processing on the transfers page'**
-  String
-      get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage;
+  String get thankYouForUsingAmanaSendYouCanTrackTheTransactionProcessingOnTheTransfersPage;
 
   /// No description provided for @trackTransfer.
   ///
@@ -580,8 +573,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Please note that this wallet address is just for this transfer, please don\'t use it for another transfers'**
-  String
-      get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers;
+  String get pleaseNoteThatThisWalletAddressIsJustForThisTransferPleaseDoNotUseItForAnotherTransfers;
 
   /// No description provided for @paymentDetails.
   ///
@@ -1187,8 +1179,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'in the (other documents) section below on this page, otherwise your account will be rejected'**
-  String
-      get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected;
+  String get inTheOtherDocumentsSectionBelowOnThisPageOtherwiseYourAccountWillBeRejected;
 
   /// No description provided for @receipt.
   ///
@@ -1266,8 +1257,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Recipient bank info is missing, Please Edit recipient by adding bank account details'**
-  String
-      get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails;
+  String get recipientBankInfoIsMissingPleaseEditRecipientByAddingBankAccountDetails;
 
   /// No description provided for @selectCity.
   ///
@@ -1429,8 +1419,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'If the payment has not been done in certain time, it is no longer possible to use this wallet and the order will be canceled.'**
-  String
-      get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled;
+  String get ifThePaymentHasNotBeenDoneInCertainTimeItIsNoLongerPossibleToUseThisWalletAndTheOrderWillBeCanceled;
 
   /// No description provided for @yourMaxLevelSendingAmountIs.
   ///
@@ -1466,29 +1455,25 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Enter the amount you want to transfer in the USDT which is equal to the value of the US dollar \$'**
-  String
-      get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar;
+  String get enterTheAmountYouWantToTransferInTheUSDTWhichIsEqualToTheValueOfTheUSDollar;
 
   /// No description provided for @theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate.
   ///
   /// In en, this message translates to:
   /// **'The amount required to be transferred in your local currency is approximately based on the current exchange rate'**
-  String
-      get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate;
+  String get theAmountRequiredToBeTransferredInYourLocalCurrencyIsApproximatelyBasedOnTheCurrentExchangeRate;
 
   /// No description provided for @theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent.
   ///
   /// In en, this message translates to:
   /// **'The amount the recipient will receive depends on the exchange rate of the selected agent'**
-  String
-      get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent;
+  String get theAmountTheRecipientWillReceiveDependsOnTheExchangeRateOfTheSelectedAgent;
 
   /// No description provided for @afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount.
   ///
   /// In en, this message translates to:
   /// **'After completing the transfer information, click here to specify the name of the recipient and pay the amount'**
-  String
-      get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount;
+  String get afterCompletingTheTransferInformationClickHereToSpecifyTheNameOfTheRecipientAndPayTheAmount;
 
   /// No description provided for @cameraPermission.
   ///
@@ -1968,8 +1953,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'There\'s a new version available to download! Please update AmanaSend to continue'**
-  String
-      get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue;
+  String get thereIsANewVersionAvailableToDownloadPleaseUpdateAmanaSendToContinue;
 
   /// No description provided for @updateAmanaSend.
   ///
@@ -2011,8 +1995,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'A document proving your place of residence with your address written on it, such as (Utility bill / Lease contract / Residence permit)'**
-  String
-      get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit;
+  String get documentProvingYourPlaceOfResidenceWithYourAddressWrittenOnItSuchAsUtilityBillLeaseContractResidencePermit;
 
   /// No description provided for @birthday.
   ///
@@ -2042,8 +2025,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'In order to be able to use our services, we must verify your identity. Upload a clear copy of identification card and proof of residence address, in addition to Take a selfie without a hat or sunglasses on the eye.'**
-  String
-      get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye;
+  String get inOrderToBeAbleToUseOurServicesWeMustVerifyYourIdentityUploadClearCopyOfIdentificationCardAndProofOfResidenceAddressInAdditionToTakeSelfieWithoutHatOrSunglassesOnTheEye;
 
   /// No description provided for @identityNumber.
   ///
@@ -2067,8 +2049,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Upload a clear copy of identity document such as a Passport – Driving License - Residence Permit'**
-  String
-      get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit;
+  String get uploadClearCopyOfIdentityDocumentSuchAsPassportDrivingLicenseResidencePermit;
 
   /// No description provided for @fullNameArabic.
   ///
@@ -2098,8 +2079,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Take a selfie without a hat or sunglasses on the eye to compare your photo on the identification document'**
-  String
-      get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument;
+  String get takeSelfieWithoutHatOrSunglassesOnTheEyeToCompareYourPhotoOnTheIdentificationDocument;
 
   /// No description provided for @otherDocuments.
   ///
@@ -2165,8 +2145,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Once payment has been confirmed in our system, you will get notified and the transaction will start to processed within 24 hours'**
-  String
-      get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours;
+  String get oncePaymentHasBeenConfirmedInOurSystemYouWillGetNotifiedAndTheTransactionWillStartToProcessedWithin24hours;
 
   /// No description provided for @areYouSureYouWantToDeleteYourAccount.
   ///
@@ -2184,8 +2163,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Cannot send this transfer due to recipient details has been modified or delete, Kindly make new transfer'**
-  String
-      get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer;
+  String get cannotSendThisTransferDueToRecipientDetailsHasBeenModifiedOrDeleteKindlyMakeNewTransfer;
 
   /// No description provided for @amanaSendSupportTeam.
   ///
@@ -2197,8 +2175,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Dear valued customer, AmanaSend support team is here to help you, please feel free to contact us via the following:'**
-  String
-      get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing;
+  String get dearValuedCustomerAmanaSendSupportTeamIsHereToHelpYouPleaseFeelFreeToContactUsViaTheFollowing;
 
   /// No description provided for @enterMobileNumber.
   ///
@@ -2318,8 +2295,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Account verification in process, once account is verified, you will be able to transfer money worldwide'**
-  String
-      get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide;
+  String get accountVerificationInProcessOnceAccountIsVerifiedYouWillBeAbleToTransferMoneyWorldwide;
 
   /// No description provided for @toEnsureThatYouCanSendMoneyWorldwidePleaseVerifyYourAccount.
   ///
@@ -2331,8 +2307,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Please pay the balance for this transaction within 3 days at your nearest approved cash payment address.'**
-  String
-      get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress;
+  String get pleasePayTheBalanceForThisTransactionWithin3DaysAtYourNearestApprovedCashPaymentAddress;
 
   /// No description provided for @verified.
   ///
@@ -2506,8 +2481,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Follow the instructions above to add and use the site as an app on your phone without opening it from the browser'**
-  String
-      get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser;
+  String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser;
 
   /// No description provided for @installNow.
   ///
@@ -2516,8 +2490,7 @@ abstract class AppLocalizations {
   String get installNow;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -2526,25 +2499,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'ar': return AppLocalizationsAr();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.'
+  );
 }
