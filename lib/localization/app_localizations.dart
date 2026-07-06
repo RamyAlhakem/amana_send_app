@@ -2505,7 +2505,7 @@ abstract class AppLocalizations {
   /// No description provided for @followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser.
   ///
   /// In en, this message translates to:
-  /// **'Follow the instructions above to use the site as an app without opening it from the browser'**
+  /// **'Follow the instructions above to add and use the site as an app on your phone without opening it from the browser'**
   String
       get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser;
 

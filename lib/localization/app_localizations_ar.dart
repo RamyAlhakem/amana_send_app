@@ -1279,7 +1279,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
-      'اتبع التعليمات الموضحة أعلاه حتى تستطيع استخدام الموقع كتطبيق بدون الحاجة إلى فتحه من المتصفح';
+      'اتبع التعليمات لإضافة واستخدام الموقع كتطبيق على الموبايل بدون فتح المتصفح';
 
   @override
   String get installNow => 'تثبيت الآن';

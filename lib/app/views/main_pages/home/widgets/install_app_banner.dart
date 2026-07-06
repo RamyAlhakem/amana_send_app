@@ -264,7 +264,8 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  widget.arb.amanaSendCanBeInstalledAsAnAppOnYourDevice,
+                  widget.arb
+                      .followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -283,16 +284,16 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
                   // No child — the real <video> floats above this rect.
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  widget.arb
-                      .followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 20),
+                // Text(
+                //   widget.arb
+                //       .followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser,
+                //   textAlign: TextAlign.center,
+                //   style: const TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 18,
+                //   ),
+                // ),
+                // const SizedBox(height: 20),
                 SizedBox(
                   width: size.width,
                   child: ElevatedButton(

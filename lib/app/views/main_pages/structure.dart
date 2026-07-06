@@ -184,7 +184,7 @@ class _StructureState extends State<Structure> {
           ),
         );
 
-        if (_isSafari && showBanner) {
+        if (showBanner) {
           return Column(
             children: [
               Material(child: InstallAppBanner(arb: arb, state: state)),

@@ -1283,7 +1283,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get followTheInstructionsAboveToUseTheSiteAsAnAppWithoutOpeningItFromTheBrowser =>
-      'Follow the instructions above to use the site as an app without opening it from the browser';
+      'Follow the instructions above to add and use the site as an app on your phone without opening it from the browser';
 
   @override
   String get installNow => 'Install Now';
