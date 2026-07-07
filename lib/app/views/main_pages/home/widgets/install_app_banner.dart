@@ -211,6 +211,17 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
 
   @override
   Widget build(BuildContext context) {
+    final shouldShowBanner = widget.state.showInstall &&
+        shouldShowInstallBanner(
+          isWeb: kIsWeb,
+          isSafari: isSafariBrowserUserAgent(html.window.navigator.userAgent),
+          isAppInstalled: false,
+        );
+
+    if (!shouldShowBanner) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       decoration: BoxDecoration(
           color:
@@ -243,14 +254,23 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
     final dialogMaxHeight = size.height * 0.75;
     final videoHeight = dialogMaxHeight * 0.68;
 
+    final isSafari = kIsWeb &&
+        isSafariBrowserUserAgent(html.window.navigator.userAgent);
+
     // On web, spawn a native <video> overlay BEFORE the dialog paints.
-    if (kIsWeb) {
+    // Safari is excluded here to avoid the web overlay instability that can
+    // lead to blank rendering while still allowing the banner to appear.
+    if (kIsWeb && !isSafari) {
       _videoOverlay?.dispose();
       _videoOverlay = _NativeVideoOverlay.create('/videos/install_app.mp4');
       // After the first frame the preview Container has laid out — position.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _positionOverlayOverPreview();
       });
+    } else {
+      _videoOverlay?.hide();
+      _videoOverlay?.dispose();
+      _videoOverlay = null;
     }
 
     showDialog<void>(

@@ -30,6 +30,24 @@ import '/models/transfer.dart';
 import '/models/user.dart';
 import '/router/app_route.dart';
 
+bool isSafariBrowserUserAgent(String? userAgent) {
+  final ua = (userAgent ?? '').toLowerCase();
+  return ua.contains('safari') &&
+      !ua.contains('chrome') &&
+      !ua.contains('chromium') &&
+      !ua.contains('fxios') &&
+      !ua.contains('opr/');
+}
+
+bool shouldShowInstallBanner({
+  required bool isWeb,
+  required bool isSafari,
+  required bool isAppInstalled,
+}) {
+  if (!isWeb) return false;
+  return isSafari && !isAppInstalled;
+}
+
 class Calculator with ChangeNotifier {
   late bool _showInstall;
 
@@ -57,9 +75,14 @@ class Calculator with ChangeNotifier {
     }
   }
 
-  /// Show banner only if app is NOT installed (i.e., viewing on web as regular site)
+  /// Show the install banner only for Safari on web when the app is not yet
+  /// running in standalone/PWA mode.
   bool _shouldShowBanner() {
-    return !_isAppInstalled();
+    return shouldShowInstallBanner(
+      isWeb: kIsWeb,
+      isSafari: isSafariBrowserUserAgent(html.window.navigator.userAgent),
+      isAppInstalled: _isAppInstalled(),
+    );
   }
 
   bool get showInstall => _showInstall;
