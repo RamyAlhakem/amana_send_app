@@ -36,6 +36,41 @@
 	<title>Amana Send</title>
 	<link rel="manifest" href="manifest.json" />
 
+	<!-- Inline loader styles so a native HTML spinner shows before Flutter loads -->
+	<style>
+		#flutter_loader {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #ffffff;
+			z-index: 2147483647;
+			/* very high so it appears above anything */
+			transition: opacity 240ms ease;
+		}
+
+		#flutter_loader.hidden {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		#flutter_loader .spinner {
+			width: 64px;
+			height: 64px;
+			border-radius: 50%;
+			border: 6px solid rgba(0, 0, 0, 0.08);
+			border-top-color: #0175C2;
+			animation: _spin 1s linear infinite;
+		}
+
+		@keyframes _spin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
+
 	<!-- Prevent Roboto font fetch by overriding Material Design default -->
 	<style>
 		@font-face {
@@ -56,6 +91,31 @@
 		window._flutter.canvasKitBaseUrl =
 			"https://cdn.jsdelivr.net/npm/canvaskit-wasm@0.39.1/bin/";
 	</script>
+	<!-- Native HTML loader shown until Flutter paints the first frame -->
+	<div id="flutter_loader" aria-hidden="false">
+		<div class="spinner" role="status" aria-label="Loading"></div>
+	</div>
+
+	<script>
+		(function () {
+			function removeLoader() {
+				var el = document.getElementById('flutter_loader');
+				if (!el) return;
+				el.classList.add('hidden');
+				setTimeout(function () {
+					if (el && el.parentNode) el.parentNode.removeChild(el);
+				}, 300);
+			}
+
+			// Remove when Flutter renders its first frame.
+			window.addEventListener('flutter-first-frame', removeLoader, { once: true });
+
+			// Fallbacks: remove on global error or after a timeout so loader doesn't hang.
+			window.addEventListener('error', removeLoader);
+			setTimeout(removeLoader, 30000);
+		})();
+	</script>
+
 	<!-- video_player_web is loaded automatically by Flutter's plugin bootstrap — do NOT add a manual <script> for it. -->
 	<script src="flutter_bootstrap.js" async></script>
 </body>

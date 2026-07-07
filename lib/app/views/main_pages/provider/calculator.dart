@@ -39,6 +39,13 @@ bool isSafariBrowserUserAgent(String? userAgent) {
       !ua.contains('opr/');
 }
 
+bool shouldUseEmbeddedVideoPlayer({
+  required bool isWeb,
+  required bool isSafari,
+}) {
+  return isWeb && isSafari;
+}
+
 bool shouldShowInstallBanner({
   required bool isWeb,
   required bool isSafari,
@@ -55,6 +62,8 @@ class Calculator with ChangeNotifier {
     // Initialize based on app installation status
     _showInstall = _shouldShowBanner();
   }
+
+  bool get isAppInstalled => _isAppInstalled();
 
   /// Detects if the app is installed.
   /// - On mobile/native: Always true (native app is installed)
@@ -85,7 +94,14 @@ class Calculator with ChangeNotifier {
     );
   }
 
-  bool get showInstall => _showInstall;
+  bool get showInstall {
+    if (!_showInstall) return false;
+    return shouldShowInstallBanner(
+      isWeb: kIsWeb,
+      isSafari: isSafariBrowserUserAgent(html.window.navigator.userAgent),
+      isAppInstalled: _isAppInstalled(),
+    );
+  }
 
   changeInstall(bool value) {
     _showInstall = value;

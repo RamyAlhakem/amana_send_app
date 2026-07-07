@@ -36,79 +36,114 @@ class _NativeVideoOverlay {
 
   /// Create the <video> and append it to the page body.
   factory _NativeVideoOverlay.create(String videoSrc) {
-    // Remove any previous orphan instance (e.g. after an abnormal close).
-    _tryRemoveExisting();
+    try {
+      // Remove any previous orphan instance (e.g. after an abnormal close).
+      _tryRemoveExisting();
 
-    final video = html.VideoElement()
-      ..id = _instanceId
-      ..src = videoSrc
-      ..muted = true
-      ..autoplay = true
-      ..loop = true
-      ..setAttribute('playsinline', '')
-      ..setAttribute('preload', 'auto')
-      ..style.position = 'fixed'
-      ..style.left = '0'
-      ..style.top = '0'
-      ..style.width = '1px'
-      ..style.height = '1px'
-      ..style.objectFit = 'fill'
-      ..style.backgroundColor = '#000'
-      ..style.zIndex = '1000000'
-      ..style.borderRadius = '8px'
-      ..style.pointerEvents = 'none'
-      ..style.opacity = '0'; // hidden until positioned
+      final video = html.VideoElement()
+        ..id = _instanceId
+        ..src = videoSrc
+        ..muted = true
+        ..autoplay = true
+        ..loop = true
+        ..setAttribute('playsinline', '')
+        ..setAttribute('preload', 'auto')
+        ..style.position = 'fixed'
+        ..style.left = '0'
+        ..style.top = '0'
+        ..style.width = '1px'
+        ..style.height = '1px'
+        ..style.objectFit = 'fill'
+        ..style.backgroundColor = '#000'
+        ..style.zIndex = '1000000'
+        ..style.borderRadius = '8px'
+        ..style.pointerEvents = 'none'
+        ..style.opacity = '0'; // hidden until positioned
 
-    html.document.body!.append(video);
+      try {
+        final body = html.document.body;
+        if (body == null) {
+          Helper.log('WebVideo: document.body is null; cannot append video');
+        } else {
+          body.append(video);
+          Helper.log(
+              'WebVideo: <video#${_instanceId}> appended to body, src=$videoSrc');
+        }
+      } catch (e, st) {
+        Helper.log('WebVideo: append() failed: $e\n$st');
+      }
 
-    Helper.log(
-        'WebVideo: <video#${_instanceId}> appended to body, src=$videoSrc');
+      // Try to play. Because the element is already in the live DOM and is
+      // muted, the browser should allow this. If it rejects for any reason,
+      // retry once after a short delay.
+      void attemptPlay() {
+        try {
+          video.muted = true;
+          final playFuture = video.play();
+          if (playFuture != null) {
+            playFuture.catchError((e) {
+              Helper.log('WebVideo: play() rejected: $e');
+            });
+          }
+        } catch (e) {
+          Helper.log('WebVideo: play() threw: $e');
+        }
+      }
 
-    // Try to play. Because the element is already in the live DOM and is
-    // muted, the browser should allow this. If it rejects for any reason,
-    // retry once after a short delay.
-    void attemptPlay() {
-      video.muted = true;
-      video.play().catchError((e) {
-        Helper.log('WebVideo: play() rejected: $e');
-      });
-    }
-
-    // Attempt once now and again once the element reports it's ready.
-    attemptPlay();
-    video.onLoadedData.listen(
-        (_) {
+      // Attempt once now and again once the element reports it's ready.
+      attemptPlay();
+      try {
+        video.onLoadedData.listen((_) {
           attemptPlay();
-        },
-        onDone: null,
-        onError: (e) {
+        }, onError: (e) {
           Helper.log('WebVideo: onLoadedData error: $e');
         });
-    video.onCanPlay.listen((_) => attemptPlay());
+        video.onCanPlay.listen((_) => attemptPlay());
+      } catch (e) {
+        Helper.log('WebVideo: attaching listeners failed: $e');
+      }
 
-    return _NativeVideoOverlay._(video);
+      return _NativeVideoOverlay._(video);
+    } catch (e, st) {
+      Helper.log('WebVideo: create() unexpected error: $e\n$st');
+      // Return a best-effort overlay backed by an unattached element so
+      // callers can safely call position/hide/dispose without crashing.
+      return _NativeVideoOverlay._(html.VideoElement());
+    }
   }
 
   /// Position this <video> so it covers [bounds]. The caller passes the
   /// preview widget's screen rect, which we compute from its GlobalKey.
   void position({required Rect bounds}) {
-    _video.style.opacity = '1';
-    _video.style.left = '${bounds.left}px';
-    _video.style.top = '${bounds.top}px';
-    _video.style.width = '${bounds.width}px';
-    _video.style.height = '${bounds.height}px';
-    Helper.log('WebVideo: positioned at bounds=$bounds');
+    try {
+      _video.style.opacity = '1';
+      _video.style.left = '${bounds.left}px';
+      _video.style.top = '${bounds.top}px';
+      _video.style.width = '${bounds.width}px';
+      _video.style.height = '${bounds.height}px';
+      Helper.log('WebVideo: positioned at bounds=$bounds');
+    } catch (e) {
+      Helper.log('WebVideo: position() failed: $e');
+    }
   }
 
   void hide() {
-    _video.style.opacity = '0';
-    _video.style.pointerEvents = 'none';
-    _video.pause();
+    try {
+      _video.style.opacity = '0';
+      _video.style.pointerEvents = 'none';
+      _video.pause();
+    } catch (e) {
+      Helper.log('WebVideo: hide() failed: $e');
+    }
   }
 
   void dispose() {
-    _video.remove();
-    Helper.log('WebVideo: <video#${_instanceId}> removed from body');
+    try {
+      _video.remove();
+      Helper.log('WebVideo: <video#${_instanceId}> removed from body');
+    } catch (e) {
+      Helper.log('WebVideo: dispose() failed: $e');
+    }
   }
 
   static void _tryRemoveExisting() {
@@ -215,7 +250,7 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
         shouldShowInstallBanner(
           isWeb: kIsWeb,
           isSafari: isSafariBrowserUserAgent(html.window.navigator.userAgent),
-          isAppInstalled: false,
+          isAppInstalled: widget.state.isAppInstalled,
         );
 
     if (!shouldShowBanner) {
@@ -254,13 +289,16 @@ class _InstallAppBannerState extends State<InstallAppBanner> {
     final dialogMaxHeight = size.height * 0.75;
     final videoHeight = dialogMaxHeight * 0.68;
 
-    final isSafari = kIsWeb &&
-        isSafariBrowserUserAgent(html.window.navigator.userAgent);
+    final isSafari =
+        kIsWeb && isSafariBrowserUserAgent(html.window.navigator.userAgent);
 
-    // On web, spawn a native <video> overlay BEFORE the dialog paints.
-    // Safari is excluded here to avoid the web overlay instability that can
-    // lead to blank rendering while still allowing the banner to appear.
-    if (kIsWeb && !isSafari) {
+    // On web, spawn a native <video> overlay before the dialog paints only
+    // for Safari, where the native video path is stable and avoids the blank
+    // rendering issue seen in other browsers.
+    if (kIsWeb && shouldUseEmbeddedVideoPlayer(
+      isWeb: kIsWeb,
+      isSafari: isSafari,
+    )) {
       _videoOverlay?.dispose();
       _videoOverlay = _NativeVideoOverlay.create('/videos/install_app.mp4');
       // After the first frame the preview Container has laid out — position.

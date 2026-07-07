@@ -37,6 +37,28 @@ void main() {
     });
   });
 
+  group('shouldUseEmbeddedVideoPlayer', () {
+    test('returns true for Safari on web', () {
+      expect(
+        shouldUseEmbeddedVideoPlayer(
+          isWeb: true,
+          isSafari: true,
+        ),
+        isTrue,
+      );
+    });
+
+    test('returns false for non-Safari web', () {
+      expect(
+        shouldUseEmbeddedVideoPlayer(
+          isWeb: true,
+          isSafari: false,
+        ),
+        isFalse,
+      );
+    });
+  });
+
   group('isSafariBrowserUserAgent', () {
     test('returns true for a Safari browser user agent', () {
       final userAgent =
