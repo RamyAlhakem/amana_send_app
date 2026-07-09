@@ -333,7 +333,7 @@ class _HomeState extends State<Home> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Sliders(),
+                  child: Center(child: Sliders()),
                 ),
                 const SizedBox(
                   height: 20,
