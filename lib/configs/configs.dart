@@ -11,10 +11,11 @@ class Configs {
   static String version = ''; // initialized in Metadata API request.
   static String buildNumber = ''; // initialized in Metadata API request.
 
-  static  String baseUrl = AppConfig.baseUrl;
-  static  String graphql = AppConfig.graphql;
-  static  String apiRestPhoto = AppConfig.apiRestPhoto;
-  static  String apiUrl = AppConfig.apiUrl;
+  static String baseUrl = AppConfig.baseUrl;
+  static String graphql = AppConfig.graphql;
+  static String apiRestPhoto = AppConfig.apiRestPhoto;
+  static String apiUrl = AppConfig.apiUrl;
+  static String storageUrl = AppConfig.storageUrl;
 
   static String storeUrl = !kIsWeb && Platform.isIOS ? appleStore : googleStore;
   static String appleStore = 'https://apps.apple.com/app/id6474017595';

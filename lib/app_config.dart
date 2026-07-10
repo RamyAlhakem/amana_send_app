@@ -44,4 +44,15 @@ class AppConfig {
         return 'https://s.amanasend.com/';
     }
   }
+
+  static String get storageUrl {
+    switch (F.appFlavor) {
+      case Flavor.production:
+        return 'https://storage.amanasend.com/';
+      case Flavor.staging:
+        return 'https://staging-storage.amanasend.com/';
+      default:
+        return 'https://staging-storage.amanasend.com/';
+    }
+  }
 }
