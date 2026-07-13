@@ -154,7 +154,7 @@ class _SendFormFieldsState extends State<SendFormFields>
                       padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: ScreenSize.isTablet ? 4 : 2,
+                      crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                       itemCount: state.agents.length,

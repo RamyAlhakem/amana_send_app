@@ -1,85 +1,36 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-import 'dart:ui_web' as ui_web;
 import 'package:flutter/material.dart';
-import '/configs/configs.dart';
 
-final Set<String> _registeredViewTypes = {};
-
-/// Resolves relative URLs against [Configs.storageUrl].
-/// Backend may return relative paths like `files/123.png`; on web the browser
-/// would otherwise resolve those against the page origin, so we prefix the storage base.
-String _resolveUrl(String? raw) {
-  if (raw == null || raw.isEmpty) return raw ?? '';
-  final url = raw.trim();
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  return '${Configs.storageUrl}$url';
-}
-
-/// Creates a network image for Flutter web using HtmlElementView.
+/// Creates a network image for Flutter web.
 ///
-/// Uses the native browser `<img>` element to work without CORS restrictions.
-/// On debug builds Flutter web uses the HTML renderer (which renders images
-/// natively), but release builds use **CanvasKit** — and CanvasKit's
-/// `Image.network` requires `Access-Control-Allow-Origin` from the server.
-/// If the storage server lacks CORS headers, all images fail silently in
-/// release. This HtmlElementView approach avoids that entirely.
-Widget createPlatformImage(String? rawUrl, {BoxFit fit = BoxFit.contain}) {
-  final url = _resolveUrl(rawUrl);
-  if (url.isEmpty) {
+/// Since Flutter 3.7+, `Image.network` on web automatically handles
+/// cross-origin images by falling back to a native `<img>` element when
+/// the server doesn't send CORS headers. This eliminates the need for
+/// the old `HtmlElementView` platform-view workaround.
+///
+/// On the HTML renderer, `Image.network` always renders as `<img>`.
+/// On CanvasKit (default since Flutter 3.7), it falls back to `<img>`
+/// for cross-origin requests that lack `Access-Control-Allow-Origin`.
+Widget createPlatformImage(String? url, {BoxFit fit = BoxFit.contain}) {
+  if (url == null || url.isEmpty) {
     return const Icon(Icons.image, size: 24);
   }
 
-  final viewType = 'network-img-${url.hashCode}';
-
-  if (!_registeredViewTypes.contains(viewType)) {
-    try {
-      ui_web.platformViewRegistry.registerViewFactory(
-        viewType,
-        (int viewId) {
-          final img = html.ImageElement()
-            ..src = url
-            ..style.border = 'none'
-            ..style.width = '100%'
-            ..style.height = '100%'
-            ..style.objectFit = _fitToCss(fit)
-            ..onError.listen((_) {
-              debugPrint('Failed to load image: $url');
-            });
-
-          return html.DivElement()
-            ..style.width = '100%'
-            ..style.height = '100%'
-            ..append(img);
-        },
-      );
-      _registeredViewTypes.add(viewType);
-    } catch (e) {
-      debugPrint('Failed to register view factory: $e');
+  return Image.network(
+    url,
+    fit: fit,
+    width: null, // let parent constrain
+    height: null,
+    errorBuilder: (context, error, stackTrace) {
+      // Show a placeholder icon if the image fails to load.
       return const Icon(Icons.broken_image, size: 24);
-    }
-  }
-
-  return SizedBox.expand(
-    child: HtmlElementView(viewType: viewType),
+    },
+    loadingBuilder: (context, child, loadingProgress) {
+      if (loadingProgress == null) return child;
+      return const SizedBox(
+        width: 24,
+        height: 24,
+        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    },
   );
-}
-
-String _fitToCss(BoxFit fit) {
-  switch (fit) {
-    case BoxFit.cover:
-      return 'cover';
-    case BoxFit.contain:
-      return 'contain';
-    case BoxFit.fill:
-      return 'fill';
-    case BoxFit.fitWidth:
-      return '100% auto';
-    case BoxFit.fitHeight:
-      return 'auto 100%';
-    case BoxFit.none:
-      return 'none';
-    case BoxFit.scaleDown:
-      return 'scale-down';
-  }
 }
