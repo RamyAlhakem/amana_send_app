@@ -101,9 +101,7 @@ class _StructureState extends State<Structure> {
   Widget build(BuildContext context) {
     return Consumer<Calculator>(
       builder: (context, state, child) {
-        final showBanner = _index == Pages.home.index &&
-            state.paymentMethodName == '' &&
-            state.showInstall;
+        final showBanner = _index == Pages.home.index && state.showInstall;
 
         final scaffold = GestureDetector(
           onTap: () {
