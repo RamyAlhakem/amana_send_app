@@ -193,7 +193,6 @@ class _SelectRecipientState extends State<SelectRecipient>
             ),
             Expanded(
               child: ListView.builder(
-                shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                 itemCount: recipients.receipients.length,
                 itemBuilder: (BuildContext context, int i) {

@@ -327,8 +327,6 @@ class __TranfersTabState extends State<_TranfersTab> {
                             page: provider.page, status: widget.status)
                         .request();
                   },
-
-                  
                   child: Visibility(
                     visible: widget.transfers.isNotEmpty,
                     replacement: FadeSwitcher(
@@ -342,7 +340,6 @@ class __TranfersTabState extends State<_TranfersTab> {
                       ),
                     ),
                     child: ListView.builder(
-                      shrinkWrap: true,
                       controller: widget.ctrl,
                       itemCount: widget.transfers.length,
                       padding: const EdgeInsets.fromLTRB(0, 6, 0, 100),

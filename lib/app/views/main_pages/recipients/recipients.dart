@@ -87,7 +87,6 @@ class _RecipientsState extends State<Recipients> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        shrinkWrap: true,
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
                         itemCount: recipients.receipients.length,
                         itemBuilder: (BuildContext context, int i) {
